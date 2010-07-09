@@ -699,46 +699,46 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
                 0x0000000008067b21       0x25 c_debug.o
                                          0x2e (size before relaxing)
  .rodata.str1.1
-                0x0000000008067b46      0x9b3 c_main.o
-                                        0xb80 (size before relaxing)
- *fill*         0x00000000080684f9        0x3 00
+                0x0000000008067b46      0x9c0 c_main.o
+                                        0xb8d (size before relaxing)
+ *fill*         0x0000000008068506        0x2 00
  .rodata.str1.4
-                0x00000000080684fc       0xeb c_main.o
+                0x0000000008068508       0xeb c_main.o
                                         0x147 (size before relaxing)
  .rodata.str1.1
-                0x00000000080685e7       0x2a codeblock.o
+                0x00000000080685f3       0x2a codeblock.o
                                          0x3e (size before relaxing)
- *fill*         0x0000000008068611        0x3 00
+ *fill*         0x000000000806861d        0x3 00
  .rodata.str1.4
-                0x0000000008068614       0x2b codeblock.o
+                0x0000000008068620       0x2b codeblock.o
  .rodata.str1.1
-                0x000000000806863f       0x41 constants.o
+                0x000000000806864b       0x41 constants.o
  .rodata.str1.4
-                0x0000000008068680       0x40 constants.o
+                0x000000000806868c       0x40 constants.o
  .rodata.str1.1
-                0x00000000080686c0      0x16c dcbw.o
+                0x00000000080686cc      0x16c dcbw.o
                                         0x172 (size before relaxing)
- .rodata        0x000000000806882c       0x12 dcbw.o
- *fill*         0x000000000806883e        0x2 00
+ .rodata        0x0000000008068838       0x12 dcbw.o
+ *fill*         0x000000000806884a        0x2 00
  .rodata.str1.4
-                0x0000000008068840      0x166 dcbw.o
+                0x000000000806884c      0x166 dcbw.o
  .rodata.str1.1
-                0x00000000080689a6        0x5 error.o
+                0x00000000080689b2        0x5 error.o
                                           0x9 (size before relaxing)
- *fill*         0x00000000080689ab        0x1 00
+ *fill*         0x00000000080689b7        0x1 00
  .rodata.str1.4
-                0x00000000080689ac       0x1f identifier.o
+                0x00000000080689b8       0x1f identifier.o
  .rodata.str1.1
-                0x00000000080689cb       0x35 identifier.o
+                0x00000000080689d7       0x35 identifier.o
  .rodata.str1.4
-                0x0000000008068a00      0x4cf main.o
+                0x0000000008068a0c      0x4cf main.o
  .rodata.str1.1
-                0x0000000008068ecf       0xb3 main.o
+                0x0000000008068edb       0xb3 main.o
                                          0xb4 (size before relaxing)
  .rodata.str1.1
-                0x0000000008068f82      0x129 main_core.o
+                0x0000000008068f8e      0x129 main_core.o
                                         0x134 (size before relaxing)
- *fill*         0x00000000080690ab       0x15 00
+ *fill*         0x00000000080690b7        0x9 00
  .rodata        0x00000000080690c0      0x194 main_core.o
  .rodata.str1.4
                 0x0000000008069254       0xcb main_core.o
@@ -879,7 +879,7 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  *(.igot.plt)
  .igot.plt      0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
 
-.data           0x000000000806b100    0x166e0
+.data           0x000000000806b100    0x16720
  *(.data .data.* .gnu.linkonce.d.*)
  .data          0x000000000806b100        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
                 0x000000000806b100                data_start
@@ -892,7 +892,7 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  .data          0x000000000806b10c        0x0 c_data.o
  .data          0x000000000806b10c        0x0 c_debug.o
  *fill*         0x000000000806b10c       0x14 00
- .data          0x000000000806b120      0xf38 c_main.o
+ .data          0x000000000806b120      0xf74 c_main.o
                 0x000000000806b120                libjoy_constants_def
                 0x000000000806b198                libjoy_modules_dependency
                 0x000000000806b1a0                mod_say_functions_exports
@@ -914,263 +914,264 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
                 0x000000000806be20                mod_timers_globals_def
                 0x000000000806be2b                mod_regex_globals_def
                 0x000000000806be60                mod_regex_functions_exports
-                0x000000000806bec0                symbol_list
- .data          0x000000000806c058        0x0 codeblock.o
- .data          0x000000000806c058        0x0 constants.o
- .data          0x000000000806c058        0x0 dcbw.o
- .data          0x000000000806c058        0x0 error.o
- .data          0x000000000806c058        0x4 identifier.o
- .data          0x000000000806c05c        0x4 main.o
-                0x000000000806c05c                autodeclare
- .data          0x000000000806c060        0x0 main_core.o
- .data          0x000000000806c060        0x4 procedure.o
-                0x000000000806c060                procdef_maxid
- .data          0x000000000806c064        0x0 segment.o
- .data          0x000000000806c064        0x8 strings.o
-                0x000000000806c064                validchars
-                0x000000000806c068                invalidchars
- *fill*         0x000000000806c06c       0x14 00
- .data          0x000000000806c080    0x15000 sysstub.o
-                0x000000000806c080                sysprocs
- .data          0x0000000008081080        0x0 token.o
- .data          0x0000000008081080        0x0 typedef.o
- .data          0x0000000008081080        0x0 varspace.o
- .data          0x0000000008081080      0x4d4 ../../common/debug.o
-                0x0000000008081080                mnemonics
- *fill*         0x0000000008081554        0xc 00
- .data          0x0000000008081560       0x80 ../../common/files.o
-                0x0000000008081560                possible_paths
- .data          0x00000000080815e0      0x200 ../../common/xctype.o
-                0x00000000080815e0                dos_to_win
-                0x00000000080816e0                win_to_dos
- .data          0x00000000080817e0        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
- .data          0x00000000080817e0        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
- .data          0x00000000080817e0        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+                0x000000000806beb0                libgrbase_globals_def
+                0x000000000806bee0                symbol_list
+ .data          0x000000000806c094        0x0 codeblock.o
+ .data          0x000000000806c094        0x0 constants.o
+ .data          0x000000000806c094        0x0 dcbw.o
+ .data          0x000000000806c094        0x0 error.o
+ .data          0x000000000806c094        0x4 identifier.o
+ .data          0x000000000806c098        0x4 main.o
+                0x000000000806c098                autodeclare
+ .data          0x000000000806c09c        0x0 main_core.o
+ .data          0x000000000806c09c        0x4 procedure.o
+                0x000000000806c09c                procdef_maxid
+ .data          0x000000000806c0a0        0x0 segment.o
+ .data          0x000000000806c0a0        0x8 strings.o
+                0x000000000806c0a0                validchars
+                0x000000000806c0a4                invalidchars
+ *fill*         0x000000000806c0a8       0x18 00
+ .data          0x000000000806c0c0    0x15000 sysstub.o
+                0x000000000806c0c0                sysprocs
+ .data          0x00000000080810c0        0x0 token.o
+ .data          0x00000000080810c0        0x0 typedef.o
+ .data          0x00000000080810c0        0x0 varspace.o
+ .data          0x00000000080810c0      0x4d4 ../../common/debug.o
+                0x00000000080810c0                mnemonics
+ *fill*         0x0000000008081594        0xc 00
+ .data          0x00000000080815a0       0x80 ../../common/files.o
+                0x00000000080815a0                possible_paths
+ .data          0x0000000008081620      0x200 ../../common/xctype.o
+                0x0000000008081620                dos_to_win
+                0x0000000008081720                win_to_dos
+ .data          0x0000000008081820        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .data          0x0000000008081820        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .data          0x0000000008081820        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
 
 .data1
  *(.data1)
-                0x00000000080817e0                _edata = .
-                0x00000000080817e0                PROVIDE (edata, .)
-                0x00000000080817e0                __bss_start = .
+                0x0000000008081820                _edata = .
+                0x0000000008081820                PROVIDE (edata, .)
+                0x0000000008081820                __bss_start = .
 
-.bss            0x00000000080817e0   0x1189e0
+.bss            0x0000000008081820   0x1189e0
  *(.dynbss)
- .dynbss        0x00000000080817e0        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
-                0x00000000080817e0                stdout@@GLIBC_2.0
+ .dynbss        0x0000000008081820        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x0000000008081820                stdout@@GLIBC_2.0
  *(.bss .bss.* .gnu.linkonce.b.*)
- .bss           0x00000000080817e4        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
- .bss           0x00000000080817e4        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
- .bss           0x00000000080817e4        0x8 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
- .bss           0x00000000080817ec        0x0 c_code.o
- .bss           0x00000000080817ec        0x0 c_data.o
- .bss           0x00000000080817ec        0x0 c_debug.o
- .bss           0x00000000080817ec       0x10 c_main.o
-                0x00000000080817ec                nimports_aux
-                0x00000000080817f0                nimports
- .bss           0x00000000080817fc        0x0 codeblock.o
- .bss           0x00000000080817fc        0xc constants.o
- .bss           0x0000000008081808       0x1c dcbw.o
-                0x0000000008081808                dcb_files
-                0x000000000808180c                dcb_ef_alloc
-                0x0000000008081810                dcb_filecount
-                0x0000000008081814                dcb_fullname
-                0x0000000008081818                dcb_options
-                0x000000000808181c                dcb_orig_varspace
-                0x0000000008081820                dcb_varspaces
- .bss           0x0000000008081824        0x0 error.o
- *fill*         0x0000000008081824       0x1c 00
- .bss           0x0000000008081840      0x120 identifier.o
-                0x0000000008081840                identifier_count
- .bss           0x0000000008081960       0x13 main.o
-                0x0000000008081960                debug
-                0x0000000008081964                main_path
- *fill*         0x0000000008081973        0x1 00
- .bss           0x0000000008081974        0x0 main_core.o
- .bss           0x0000000008081974       0x10 procedure.o
-                0x0000000008081974                mainproc
-                0x0000000008081978                procdef_count
-                0x000000000808197c                procs
-                0x0000000008081980                procs_allocated
- *fill*         0x0000000008081984       0x1c 00
- .bss           0x00000000080819a0     0x1020 segment.o
- .bss           0x00000000080829c0       0x20 strings.o
-                0x00000000080829c0                string_mem
-                0x00000000080829c4                string_allocated
-                0x00000000080829c8                string_used
-                0x00000000080829cc                string_offset
-                0x00000000080829d0                string_max
-                0x00000000080829d4                string_count
-                0x00000000080829d8                autoinclude
-                0x00000000080829dc                no_include_this_file
- .bss           0x00000000080829e0       0x14 sysstub.o
-                0x00000000080829e0                sysproc_list
-                0x00000000080829e4                sysproc_maxid
- *fill*         0x00000000080829f4        0xc 00
- .bss           0x0000000008082a00    0x1189c token.o
-                0x0000000008082a00                line_count
-                0x0000000008082a04                current_file
-                0x0000000008082a08                n_files
- .bss           0x000000000809429c       0x10 typedef.o
- .bss           0x00000000080942ac        0x0 varspace.o
- .bss           0x00000000080942ac        0x4 ../../common/debug.o
- .bss           0x00000000080942b0       0x10 ../../common/files.o
-                0x00000000080942b0                opened_files
-                0x00000000080942b4                x_file
-                0x00000000080942b8                max_x_files
-                0x00000000080942bc                x_files_count
- .bss           0x00000000080942c0        0x8 ../../common/xctype.o
-                0x00000000080942c0                dos_chars
-                0x00000000080942c4                c_type_initialized
- .bss           0x00000000080942c8        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
- .bss           0x00000000080942c8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
- .bss           0x00000000080942c8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+ .bss           0x0000000008081824        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ .bss           0x0000000008081824        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ .bss           0x0000000008081824        0x8 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .bss           0x000000000808182c        0x0 c_code.o
+ .bss           0x000000000808182c        0x0 c_data.o
+ .bss           0x000000000808182c        0x0 c_debug.o
+ .bss           0x000000000808182c       0x10 c_main.o
+                0x000000000808182c                nimports_aux
+                0x0000000008081830                nimports
+ .bss           0x000000000808183c        0x0 codeblock.o
+ .bss           0x000000000808183c        0xc constants.o
+ .bss           0x0000000008081848       0x1c dcbw.o
+                0x0000000008081848                dcb_files
+                0x000000000808184c                dcb_ef_alloc
+                0x0000000008081850                dcb_filecount
+                0x0000000008081854                dcb_fullname
+                0x0000000008081858                dcb_options
+                0x000000000808185c                dcb_orig_varspace
+                0x0000000008081860                dcb_varspaces
+ .bss           0x0000000008081864        0x0 error.o
+ *fill*         0x0000000008081864       0x1c 00
+ .bss           0x0000000008081880      0x120 identifier.o
+                0x0000000008081880                identifier_count
+ .bss           0x00000000080819a0       0x13 main.o
+                0x00000000080819a0                debug
+                0x00000000080819a4                main_path
+ *fill*         0x00000000080819b3        0x1 00
+ .bss           0x00000000080819b4        0x0 main_core.o
+ .bss           0x00000000080819b4       0x10 procedure.o
+                0x00000000080819b4                mainproc
+                0x00000000080819b8                procdef_count
+                0x00000000080819bc                procs
+                0x00000000080819c0                procs_allocated
+ *fill*         0x00000000080819c4       0x1c 00
+ .bss           0x00000000080819e0     0x1020 segment.o
+ .bss           0x0000000008082a00       0x20 strings.o
+                0x0000000008082a00                string_mem
+                0x0000000008082a04                string_allocated
+                0x0000000008082a08                string_used
+                0x0000000008082a0c                string_offset
+                0x0000000008082a10                string_max
+                0x0000000008082a14                string_count
+                0x0000000008082a18                autoinclude
+                0x0000000008082a1c                no_include_this_file
+ .bss           0x0000000008082a20       0x14 sysstub.o
+                0x0000000008082a20                sysproc_list
+                0x0000000008082a24                sysproc_maxid
+ *fill*         0x0000000008082a34        0xc 00
+ .bss           0x0000000008082a40    0x1189c token.o
+                0x0000000008082a40                line_count
+                0x0000000008082a44                current_file
+                0x0000000008082a48                n_files
+ .bss           0x00000000080942dc       0x10 typedef.o
+ .bss           0x00000000080942ec        0x0 varspace.o
+ .bss           0x00000000080942ec        0x4 ../../common/debug.o
+ .bss           0x00000000080942f0       0x10 ../../common/files.o
+                0x00000000080942f0                opened_files
+                0x00000000080942f4                x_file
+                0x00000000080942f8                max_x_files
+                0x00000000080942fc                x_files_count
+ .bss           0x0000000008094300        0x8 ../../common/xctype.o
+                0x0000000008094300                dos_chars
+                0x0000000008094304                c_type_initialized
+ .bss           0x0000000008094308        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .bss           0x0000000008094308        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .bss           0x0000000008094308        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  *(COMMON)
- COMMON         0x00000000080942c8        0x8 c_code.o
-                0x00000000080942c8                code
-                0x00000000080942cc                proc
- *fill*         0x00000000080942d0       0x10 00
- COMMON         0x00000000080942e0     0x11d8 c_main.o
-                0x00000000080942e0                identifier_end
-                0x00000000080942e4                identifier_eq
-                0x00000000080942e8                identifier_rolequal
-                0x00000000080942ec                identifier_twopoints
-                0x00000000080942f0                identifier_unsigned
-                0x00000000080942f4                identifier_include
-                0x00000000080942f8                identifier_not
-                0x00000000080942fc                reserved_words
-                0x0000000008094300                identifier_leftb
-                0x0000000008094320                imports
-                0x0000000008094b20                identifier_type
-                0x0000000008094b24                identifier_rightb
-                0x0000000008094b28                identifier_lte
-                0x0000000008094b2c                identifier_function
-                0x0000000008094b30                identifier_bxor
-                0x0000000008094b34                identifier_multiply
-                0x0000000008094b38                identifier_equal
-                0x0000000008094b3c                identifier_word
-                0x0000000008094b40                identifier_struct
-                0x0000000008094b44                identifier_divequal
-                0x0000000008094b48                identifier_from
-                0x0000000008094b4c                identifier_band
-                0x0000000008094b50                identifier_minusequal
-                0x0000000008094b54                identifier_string
-                0x0000000008094b58                identifier_onexit
-                0x0000000008094b5c                identifier_debug
-                0x0000000008094b60                identifier_ne
-                0x0000000008094b64                identifier_divide
-                0x0000000008094b68                identifier_xor
-                0x0000000008094b80                imports_aux
-                0x0000000008095380                identifier_dword
-                0x0000000008095384                identifier_point
-                0x0000000008095388                identifier_ror
-                0x000000000809538c                identifier_plusplus
-                0x0000000008095390                identifier_float
-                0x0000000008095394                identifier_gte
-                0x0000000008095398                identifier_error
-                0x000000000809539c                identifier_minusminus
-                0x00000000080953a0                identifier_rightp
-                0x00000000080953a4                identifier_short
-                0x00000000080953a8                identifier_multequal
-                0x00000000080953ac                identifier_char
-                0x00000000080953b0                identifier_for
-                0x00000000080953b4                identifier_const
-                0x00000000080953b8                identifier_rorequal
-                0x00000000080953bc                identifier_clone
-                0x00000000080953c0                identifier_jmp
-                0x00000000080953c4                identifier_loop
-                0x00000000080953c8                identifier_begin
-                0x00000000080953cc                identifier_local
-                0x00000000080953d0                identifier_question
-                0x00000000080953d4                identifier_sizeof
-                0x00000000080953d8                identifier_bor
-                0x00000000080953dc                identifier_bnot
-                0x00000000080953e0                identifier_comma
-                0x00000000080953e4                identifier_call
-                0x00000000080953e8                identifier_return
-                0x00000000080953ec                identifier_plusequal
-                0x00000000080953f0                identifier_elseif
-                0x00000000080953f4                identifier_repeat
-                0x00000000080953f8                identifier_exit
-                0x00000000080953fc                identifier_plus
-                0x0000000008095400                identifier_semicolon
-                0x0000000008095404                identifier_leftp
-                0x0000000008095408                identifier_bandoffset
-                0x000000000809540c                identifier_while
-                0x0000000008095410                identifier_step
-                0x0000000008095414                identifier_continue
-                0x0000000008095418                identifier_offset
-                0x000000000809541c                identifier_until
-                0x0000000008095420                identifier_signed
-                0x0000000008095424                identifier_dup
-                0x0000000008095428                identifier_to
-                0x000000000809542c                identifier_minus
-                0x0000000008095430                identifier_frame
-                0x0000000008095434                identifier_yield
-                0x0000000008095438                identifier_private
-                0x000000000809543c                identifier_default
-                0x0000000008095440                identifier_public
-                0x0000000008095444                identifier_mod
-                0x0000000008095448                identifier_mouse
-                0x000000000809544c                identifier_switch
-                0x0000000008095450                identifier_rol
-                0x0000000008095454                identifier_onerror
-                0x0000000008095458                identifier_break
-                0x000000000809545c                identifier_andequal
-                0x0000000008095460                identifier_byte
-                0x0000000008095464                identifier_resume
-                0x0000000008095468                identifier_gt
-                0x000000000809546c                identifier_or
-                0x0000000008095470                identifier_process
-                0x0000000008095474                identifier_declare
-                0x0000000008095478                identifier_xorequal
-                0x000000000809547c                identifier_if
-                0x0000000008095480                identifier_pointer
-                0x0000000008095484                identifier_on
-                0x0000000008095488                identifier_else
-                0x000000000809548c                identifier_and
-                0x0000000008095490                identifier_int
-                0x0000000008095494                identifier_global
-                0x0000000008095498                identifier_orequal
-                0x000000000809549c                identifier_colon
-                0x00000000080954a0                identifier_lt
-                0x00000000080954a4                identifier_program
-                0x00000000080954a8                identifier_stm_next
-                0x00000000080954ac                identifier_import
-                0x00000000080954b0                identifier_modequal
-                0x00000000080954b4                identifier_case
- *fill*         0x00000000080954b8        0x8 00
- COMMON         0x00000000080954c0       0xb8 dcbw.o
-                0x00000000080954c0                dcb
- *fill*         0x0000000008095578        0x8 00
- COMMON         0x0000000008095580       0x50 error.o
-                0x0000000008095580                errtable
- *fill*         0x00000000080955d0       0x10 00
- COMMON         0x00000000080955e0       0x40 main.o
-                0x00000000080955e0                langinfo
- COMMON         0x0000000008095620        0x8 segment.o
-                0x0000000008095620                globaldata
-                0x0000000008095624                localdata
- *fill*         0x0000000008095628       0x18 00
- COMMON         0x0000000008095640   0x104040 token.o
-                0x0000000008095640                token_prev
-                0x0000000008095654                token
-                0x0000000008095668                token_saved
-                0x0000000008095680                files
- COMMON         0x0000000008199680       0x40 varspace.o
-                0x0000000008199680                global
-                0x00000000081996a0                local
- COMMON         0x00000000081996c0      0x800 ../../common/debug.o
-                0x00000000081996c0                mnemonics_sorted
- COMMON         0x0000000008199ec0      0x300 ../../common/xctype.o
-                0x0000000008199ec0                c_upper
-                0x0000000008199fc0                c_type
-                0x000000000819a0c0                c_lower
-                0x000000000819a1c0                . = ALIGN ((. != 0x0)?0x4:0x1)
-                0x000000000819a1c0                . = ALIGN (0x4)
-                0x000000000819a1c0                . = ALIGN (0x4)
-                0x000000000819a1c0                _end = .
-                0x000000000819a1c0                PROVIDE (end, .)
-                0x000000000819a1c0                . = DATA_SEGMENT_END (.)
+ COMMON         0x0000000008094308        0x8 c_code.o
+                0x0000000008094308                code
+                0x000000000809430c                proc
+ *fill*         0x0000000008094310       0x10 00
+ COMMON         0x0000000008094320     0x11d8 c_main.o
+                0x0000000008094320                identifier_end
+                0x0000000008094324                identifier_eq
+                0x0000000008094328                identifier_rolequal
+                0x000000000809432c                identifier_twopoints
+                0x0000000008094330                identifier_unsigned
+                0x0000000008094334                identifier_include
+                0x0000000008094338                identifier_not
+                0x000000000809433c                reserved_words
+                0x0000000008094340                identifier_leftb
+                0x0000000008094360                imports
+                0x0000000008094b60                identifier_type
+                0x0000000008094b64                identifier_rightb
+                0x0000000008094b68                identifier_lte
+                0x0000000008094b6c                identifier_function
+                0x0000000008094b70                identifier_bxor
+                0x0000000008094b74                identifier_multiply
+                0x0000000008094b78                identifier_equal
+                0x0000000008094b7c                identifier_word
+                0x0000000008094b80                identifier_struct
+                0x0000000008094b84                identifier_divequal
+                0x0000000008094b88                identifier_from
+                0x0000000008094b8c                identifier_band
+                0x0000000008094b90                identifier_minusequal
+                0x0000000008094b94                identifier_string
+                0x0000000008094b98                identifier_onexit
+                0x0000000008094b9c                identifier_debug
+                0x0000000008094ba0                identifier_ne
+                0x0000000008094ba4                identifier_divide
+                0x0000000008094ba8                identifier_xor
+                0x0000000008094bc0                imports_aux
+                0x00000000080953c0                identifier_dword
+                0x00000000080953c4                identifier_point
+                0x00000000080953c8                identifier_ror
+                0x00000000080953cc                identifier_plusplus
+                0x00000000080953d0                identifier_float
+                0x00000000080953d4                identifier_gte
+                0x00000000080953d8                identifier_error
+                0x00000000080953dc                identifier_minusminus
+                0x00000000080953e0                identifier_rightp
+                0x00000000080953e4                identifier_short
+                0x00000000080953e8                identifier_multequal
+                0x00000000080953ec                identifier_char
+                0x00000000080953f0                identifier_for
+                0x00000000080953f4                identifier_const
+                0x00000000080953f8                identifier_rorequal
+                0x00000000080953fc                identifier_clone
+                0x0000000008095400                identifier_jmp
+                0x0000000008095404                identifier_loop
+                0x0000000008095408                identifier_begin
+                0x000000000809540c                identifier_local
+                0x0000000008095410                identifier_question
+                0x0000000008095414                identifier_sizeof
+                0x0000000008095418                identifier_bor
+                0x000000000809541c                identifier_bnot
+                0x0000000008095420                identifier_comma
+                0x0000000008095424                identifier_call
+                0x0000000008095428                identifier_return
+                0x000000000809542c                identifier_plusequal
+                0x0000000008095430                identifier_elseif
+                0x0000000008095434                identifier_repeat
+                0x0000000008095438                identifier_exit
+                0x000000000809543c                identifier_plus
+                0x0000000008095440                identifier_semicolon
+                0x0000000008095444                identifier_leftp
+                0x0000000008095448                identifier_bandoffset
+                0x000000000809544c                identifier_while
+                0x0000000008095450                identifier_step
+                0x0000000008095454                identifier_continue
+                0x0000000008095458                identifier_offset
+                0x000000000809545c                identifier_until
+                0x0000000008095460                identifier_signed
+                0x0000000008095464                identifier_dup
+                0x0000000008095468                identifier_to
+                0x000000000809546c                identifier_minus
+                0x0000000008095470                identifier_frame
+                0x0000000008095474                identifier_yield
+                0x0000000008095478                identifier_private
+                0x000000000809547c                identifier_default
+                0x0000000008095480                identifier_public
+                0x0000000008095484                identifier_mod
+                0x0000000008095488                identifier_mouse
+                0x000000000809548c                identifier_switch
+                0x0000000008095490                identifier_rol
+                0x0000000008095494                identifier_onerror
+                0x0000000008095498                identifier_break
+                0x000000000809549c                identifier_andequal
+                0x00000000080954a0                identifier_byte
+                0x00000000080954a4                identifier_resume
+                0x00000000080954a8                identifier_gt
+                0x00000000080954ac                identifier_or
+                0x00000000080954b0                identifier_process
+                0x00000000080954b4                identifier_declare
+                0x00000000080954b8                identifier_xorequal
+                0x00000000080954bc                identifier_if
+                0x00000000080954c0                identifier_pointer
+                0x00000000080954c4                identifier_on
+                0x00000000080954c8                identifier_else
+                0x00000000080954cc                identifier_and
+                0x00000000080954d0                identifier_int
+                0x00000000080954d4                identifier_global
+                0x00000000080954d8                identifier_orequal
+                0x00000000080954dc                identifier_colon
+                0x00000000080954e0                identifier_lt
+                0x00000000080954e4                identifier_program
+                0x00000000080954e8                identifier_stm_next
+                0x00000000080954ec                identifier_import
+                0x00000000080954f0                identifier_modequal
+                0x00000000080954f4                identifier_case
+ *fill*         0x00000000080954f8        0x8 00
+ COMMON         0x0000000008095500       0xb8 dcbw.o
+                0x0000000008095500                dcb
+ *fill*         0x00000000080955b8        0x8 00
+ COMMON         0x00000000080955c0       0x50 error.o
+                0x00000000080955c0                errtable
+ *fill*         0x0000000008095610       0x10 00
+ COMMON         0x0000000008095620       0x40 main.o
+                0x0000000008095620                langinfo
+ COMMON         0x0000000008095660        0x8 segment.o
+                0x0000000008095660                globaldata
+                0x0000000008095664                localdata
+ *fill*         0x0000000008095668       0x18 00
+ COMMON         0x0000000008095680   0x104040 token.o
+                0x0000000008095680                token_prev
+                0x0000000008095694                token
+                0x00000000080956a8                token_saved
+                0x00000000080956c0                files
+ COMMON         0x00000000081996c0       0x40 varspace.o
+                0x00000000081996c0                global
+                0x00000000081996e0                local
+ COMMON         0x0000000008199700      0x800 ../../common/debug.o
+                0x0000000008199700                mnemonics_sorted
+ COMMON         0x0000000008199f00      0x300 ../../common/xctype.o
+                0x0000000008199f00                c_upper
+                0x000000000819a000                c_type
+                0x000000000819a100                c_lower
+                0x000000000819a200                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x000000000819a200                . = ALIGN (0x4)
+                0x000000000819a200                . = ALIGN (0x4)
+                0x000000000819a200                _end = .
+                0x000000000819a200                PROVIDE (end, .)
+                0x000000000819a200                . = DATA_SEGMENT_END (.)
 
 .stab
  *(.stab)
@@ -1276,7 +1277,7 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
                 0x0000000000000280       0x20 ../../common/xctype.o
 
 .debug_pubnames
-                0x0000000000000000     0x1f7e
+                0x0000000000000000     0x1f98
  *(.debug_pubnames)
  .debug_pubnames
                 0x0000000000000000      0x26a c_code.o
@@ -1285,65 +1286,65 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  .debug_pubnames
                 0x00000000000002c0       0x25 c_debug.o
  .debug_pubnames
-                0x00000000000002e5      0xc48 c_main.o
+                0x00000000000002e5      0xc62 c_main.o
  .debug_pubnames
-                0x0000000000000f2d      0x159 codeblock.o
+                0x0000000000000f47      0x159 codeblock.o
  .debug_pubnames
-                0x0000000000001086       0x73 constants.o
+                0x00000000000010a0       0x73 constants.o
  .debug_pubnames
-                0x00000000000010f9       0xd7 dcbw.o
+                0x0000000000001113       0xd7 dcbw.o
  .debug_pubnames
-                0x00000000000011d0       0x8a error.o
+                0x00000000000011ea       0x8a error.o
  .debug_pubnames
-                0x000000000000125a      0x177 identifier.o
+                0x0000000000001274      0x177 identifier.o
  .debug_pubnames
-                0x00000000000013d1       0x50 main.o
+                0x00000000000013eb       0x50 main.o
  .debug_pubnames
-                0x0000000000001421       0x20 main_core.o
+                0x000000000000143b       0x20 main_core.o
  .debug_pubnames
-                0x0000000000001441       0xf2 procedure.o
+                0x000000000000145b       0xf2 procedure.o
  .debug_pubnames
-                0x0000000000001533      0x14b segment.o
+                0x000000000000154d      0x14b segment.o
  .debug_pubnames
-                0x000000000000167e      0x140 strings.o
+                0x0000000000001698      0x140 strings.o
  .debug_pubnames
-                0x00000000000017be       0x97 sysstub.o
+                0x00000000000017d8       0x97 sysstub.o
  .debug_pubnames
-                0x0000000000001855      0x133 token.o
+                0x000000000000186f      0x133 token.o
  .debug_pubnames
-                0x0000000000001988       0xe4 typedef.o
+                0x00000000000019a2       0xe4 typedef.o
  .debug_pubnames
-                0x0000000000001a6c       0xc0 varspace.o
+                0x0000000000001a86       0xc0 varspace.o
  .debug_pubnames
-                0x0000000000001b2c       0x47 ../../common/debug.o
+                0x0000000000001b46       0x47 ../../common/debug.o
  .debug_pubnames
-                0x0000000000001b73      0x377 ../../common/files.o
+                0x0000000000001b8d      0x377 ../../common/files.o
  .debug_pubnames
-                0x0000000000001eea       0x94 ../../common/xctype.o
+                0x0000000000001f04       0x94 ../../common/xctype.o
 
-.debug_info     0x0000000000000000    0x11135
+.debug_info     0x0000000000000000    0x11157
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x0000000000000000     0x2343 c_code.o
  .debug_info    0x0000000000002343      0xfae c_data.o
  .debug_info    0x00000000000032f1      0x566 c_debug.o
- .debug_info    0x0000000000003857     0x1f7f c_main.o
- .debug_info    0x00000000000057d6      0xd61 codeblock.o
- .debug_info    0x0000000000006537      0x77b constants.o
- .debug_info    0x0000000000006cb2     0x18df dcbw.o
- .debug_info    0x0000000000008591      0x704 error.o
- .debug_info    0x0000000000008c95      0x914 identifier.o
- .debug_info    0x00000000000095a9     0x10b7 main.o
- .debug_info    0x000000000000a660      0x5ea main_core.o
- .debug_info    0x000000000000ac4a      0x9a9 procedure.o
- .debug_info    0x000000000000b5f3      0x9d5 segment.o
- .debug_info    0x000000000000bfc8      0x698 strings.o
- .debug_info    0x000000000000c660      0x592 sysstub.o
- .debug_info    0x000000000000cbf2     0x117b token.o
- .debug_info    0x000000000000dd6d      0x9a4 typedef.o
- .debug_info    0x000000000000e711      0x78e varspace.o
- .debug_info    0x000000000000ee9f      0x5c9 ../../common/debug.o
- .debug_info    0x000000000000f468     0x1583 ../../common/files.o
- .debug_info    0x00000000000109eb      0x74a ../../common/xctype.o
+ .debug_info    0x0000000000003857     0x1fa1 c_main.o
+ .debug_info    0x00000000000057f8      0xd61 codeblock.o
+ .debug_info    0x0000000000006559      0x77b constants.o
+ .debug_info    0x0000000000006cd4     0x18df dcbw.o
+ .debug_info    0x00000000000085b3      0x704 error.o
+ .debug_info    0x0000000000008cb7      0x914 identifier.o
+ .debug_info    0x00000000000095cb     0x10b7 main.o
+ .debug_info    0x000000000000a682      0x5ea main_core.o
+ .debug_info    0x000000000000ac6c      0x9a9 procedure.o
+ .debug_info    0x000000000000b615      0x9d5 segment.o
+ .debug_info    0x000000000000bfea      0x698 strings.o
+ .debug_info    0x000000000000c682      0x592 sysstub.o
+ .debug_info    0x000000000000cc14     0x117b token.o
+ .debug_info    0x000000000000dd8f      0x9a4 typedef.o
+ .debug_info    0x000000000000e733      0x78e varspace.o
+ .debug_info    0x000000000000eec1      0x5c9 ../../common/debug.o
+ .debug_info    0x000000000000f48a     0x1583 ../../common/files.o
+ .debug_info    0x0000000000010a0d      0x74a ../../common/xctype.o
 
 .debug_abbrev   0x0000000000000000     0x2ebe
  *(.debug_abbrev)
@@ -1369,29 +1370,29 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  .debug_abbrev  0x00000000000029ae      0x35f ../../common/files.o
  .debug_abbrev  0x0000000000002d0d      0x1b1 ../../common/xctype.o
 
-.debug_line     0x0000000000000000     0x64fa
+.debug_line     0x0000000000000000     0x6554
  *(.debug_line)
  .debug_line    0x0000000000000000     0x18ce c_code.o
  .debug_line    0x00000000000018ce      0x673 c_data.o
  .debug_line    0x0000000000001f41      0x19b c_debug.o
- .debug_line    0x00000000000020dc      0xd84 c_main.o
- .debug_line    0x0000000000002e60      0x394 codeblock.o
- .debug_line    0x00000000000031f4      0x20f constants.o
- .debug_line    0x0000000000003403      0x55f dcbw.o
- .debug_line    0x0000000000003962      0x266 error.o
- .debug_line    0x0000000000003bc8      0x25b identifier.o
- .debug_line    0x0000000000003e23      0x43c main.o
- .debug_line    0x000000000000425f      0x187 main_core.o
- .debug_line    0x00000000000043e6      0x214 procedure.o
- .debug_line    0x00000000000045fa      0x2f4 segment.o
- .debug_line    0x00000000000048ee      0x26d strings.o
- .debug_line    0x0000000000004b5b      0x1f0 sysstub.o
- .debug_line    0x0000000000004d4b      0xa23 token.o
- .debug_line    0x000000000000576e      0x321 typedef.o
- .debug_line    0x0000000000005a8f      0x253 varspace.o
- .debug_line    0x0000000000005ce2      0x16e ../../common/debug.o
- .debug_line    0x0000000000005e50      0x50e ../../common/files.o
- .debug_line    0x000000000000635e      0x19c ../../common/xctype.o
+ .debug_line    0x00000000000020dc      0xdde c_main.o
+ .debug_line    0x0000000000002eba      0x394 codeblock.o
+ .debug_line    0x000000000000324e      0x20f constants.o
+ .debug_line    0x000000000000345d      0x55f dcbw.o
+ .debug_line    0x00000000000039bc      0x266 error.o
+ .debug_line    0x0000000000003c22      0x25b identifier.o
+ .debug_line    0x0000000000003e7d      0x43c main.o
+ .debug_line    0x00000000000042b9      0x187 main_core.o
+ .debug_line    0x0000000000004440      0x214 procedure.o
+ .debug_line    0x0000000000004654      0x2f4 segment.o
+ .debug_line    0x0000000000004948      0x26d strings.o
+ .debug_line    0x0000000000004bb5      0x1f0 sysstub.o
+ .debug_line    0x0000000000004da5      0xa23 token.o
+ .debug_line    0x00000000000057c8      0x321 typedef.o
+ .debug_line    0x0000000000005ae9      0x253 varspace.o
+ .debug_line    0x0000000000005d3c      0x16e ../../common/debug.o
+ .debug_line    0x0000000000005eaa      0x50e ../../common/files.o
+ .debug_line    0x00000000000063b8      0x19c ../../common/xctype.o
 
 .debug_frame    0x0000000000000000     0x1980
  *(.debug_frame)
@@ -1417,7 +1418,7 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
  .debug_frame   0x0000000000001480      0x4b4 ../../common/files.o
  .debug_frame   0x0000000000001934       0x4c ../../common/xctype.o
 
-.debug_str      0x0000000000000000     0x2d60
+.debug_str      0x0000000000000000     0x2d76
  *(.debug_str)
  .debug_str     0x0000000000000000      0xf25 c_code.o
                                        0x1133 (size before relaxing)
@@ -1425,41 +1426,41 @@ LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
                                         0x8d0 (size before relaxing)
  .debug_str     0x00000000000010ce       0x50 c_debug.o
                                         0x339 (size before relaxing)
- .debug_str     0x000000000000111e      0x5aa c_main.o
-                                       0x1287 (size before relaxing)
- .debug_str     0x00000000000016c8      0x17d codeblock.o
+ .debug_str     0x000000000000111e      0x5c0 c_main.o
+                                       0x129d (size before relaxing)
+ .debug_str     0x00000000000016de      0x17d codeblock.o
                                         0x70f (size before relaxing)
- .debug_str     0x0000000000001845       0xaa constants.o
+ .debug_str     0x000000000000185b       0xaa constants.o
                                         0x494 (size before relaxing)
- .debug_str     0x00000000000018ef      0x470 dcbw.o
+ .debug_str     0x0000000000001905      0x470 dcbw.o
                                         0xada (size before relaxing)
- .debug_str     0x0000000000001d5f       0xbf error.o
+ .debug_str     0x0000000000001d75       0xbf error.o
                                         0x368 (size before relaxing)
- .debug_str     0x0000000000001e1e      0x170 identifier.o
+ .debug_str     0x0000000000001e34      0x170 identifier.o
                                         0x4df (size before relaxing)
- .debug_str     0x0000000000001f8e      0x131 main.o
+ .debug_str     0x0000000000001fa4      0x131 main.o
                                         0x7e5 (size before relaxing)
- .debug_str     0x00000000000020bf       0x45 main_core.o
+ .debug_str     0x00000000000020d5       0x45 main_core.o
                                         0x430 (size before relaxing)
- .debug_str     0x0000000000002104       0xce procedure.o
+ .debug_str     0x000000000000211a       0xce procedure.o
                                         0x5f7 (size before relaxing)
- .debug_str     0x00000000000021d2      0x191 segment.o
+ .debug_str     0x00000000000021e8      0x191 segment.o
                                         0x5a2 (size before relaxing)
- .debug_str     0x0000000000002363       0xcf strings.o
+ .debug_str     0x0000000000002379       0xcf strings.o
                                         0x3d3 (size before relaxing)
- .debug_str     0x0000000000002432       0xb8 sysstub.o
+ .debug_str     0x0000000000002448       0xb8 sysstub.o
                                         0x3d4 (size before relaxing)
- .debug_str     0x00000000000024ea      0x29d token.o
+ .debug_str     0x0000000000002500      0x29d token.o
                                         0x7e6 (size before relaxing)
- .debug_str     0x0000000000002787       0xeb typedef.o
+ .debug_str     0x000000000000279d       0xeb typedef.o
                                         0x4ca (size before relaxing)
- .debug_str     0x0000000000002872       0xba varspace.o
+ .debug_str     0x0000000000002888       0xba varspace.o
                                         0x464 (size before relaxing)
- .debug_str     0x000000000000292c       0x80 ../../common/debug.o
+ .debug_str     0x0000000000002942       0x80 ../../common/debug.o
                                         0x2d3 (size before relaxing)
- .debug_str     0x00000000000029ac      0x31a ../../common/files.o
+ .debug_str     0x00000000000029c2      0x31a ../../common/files.o
                                         0x645 (size before relaxing)
- .debug_str     0x0000000000002cc6       0x9a ../../common/xctype.o
+ .debug_str     0x0000000000002cdc       0x9a ../../common/xctype.o
                                         0x33e (size before relaxing)
 
 .debug_loc      0x0000000000000000     0xa2fd
