@@ -67,7 +67,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
-                ../../modules/lbblit/
+                ../../modules/libblit/
 
 #---------------------------------------------------------------------------------
 # options for code generation
