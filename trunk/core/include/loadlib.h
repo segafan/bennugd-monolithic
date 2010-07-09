@@ -46,6 +46,7 @@
 #include <libgrbase_symbols.h>
 #include <libblit_symbols.h>
 #include <libvideo_symbols.h>
+#include <librender_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -261,6 +262,7 @@ basic_symbols symbol_list[] =
 	{ "libgrbase.so"    , NULL, NULL, NULL, libgrbase_globals_def, NULL, NULL },
 	{ "libblit.so"      , NULL, libblit_constants_def, NULL, NULL, NULL, NULL },
 	{ "libvideo.so"     , libvideo_modules_dependency, libvideo_constants_def, NULL, libvideo_globals_def, NULL, NULL },
+	{ "librender.so"    , librender_modules_dependency, librender_constants_def, NULL, librender_globals_def, librender_locals_def, NULL },
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -285,6 +287,7 @@ extra_symbols symbol_list_runtime[] =
 	{ libgrbase_globals_fixup, NULL, libgrbase_module_initialize, NULL, NULL, NULL, NULL, NULL }, //libgrbase
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libblit
 	{ libvideo_globals_fixup, NULL, libvideo_module_initialize, libvideo_module_finalize, NULL, NULL, NULL, NULL }, //libvideo
+	{ librender_globals_fixup, librender_locals_fixup, librender_module_initialize, librender_module_finalize, librender_instance_create_hook, librender_instance_destroy_hook, NULL, librender_handler_hooks }, //librender
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math

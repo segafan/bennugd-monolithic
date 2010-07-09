@@ -67,7 +67,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
-                ../../modules/libblit/ ../../modules/libvideo/
+                ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -131,7 +131,18 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/libblit/g_pixel.c \
               ../../../modules/libblit/libblit.c \
               ../../../modules/libvideo/g_regions.c \
-              ../../../modules/libvideo/g_video.c
+              ../../../modules/libvideo/g_video.c \
+              ../../../modules/librender/g_fade.c \
+              ../../../modules/librender/g_frame.c \
+              ../../../modules/librender/g_instance.c \
+              ../../../modules/librender/g_object.c \
+              ../../../modules/librender/g_rects.c \
+              ../../../modules/librender/g_screen.c \
+              ../../../modules/librender/librender.c \
+              ../../../modules/librender/scaler_hq2x.c \
+              ../../../modules/librender/scaler_normal.c \
+              ../../../modules/librender/scaler_scale2x.c \
+              ../../../modules/librender/scaler_scanline.c              
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
