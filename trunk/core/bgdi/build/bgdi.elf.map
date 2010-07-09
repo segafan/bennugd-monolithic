@@ -1,0 +1,1526 @@
+Archive member included because of file (symbol)
+
+../../bgdrtm/bgdrtm.a(dcbr.o)
+                              main.o (mainproc)
+../../bgdrtm/bgdrtm.a(sysprocs.o)
+                              ../../bgdrtm/bgdrtm.a(dcbr.o) (sysprocs)
+../../bgdrtm/bgdrtm.a(strings.o)
+                              main.o (string_init)
+../../bgdrtm/bgdrtm.a(dirs.o)
+                              ../../bgdrtm/bgdrtm.a(dcbr.o) (dir_path_convert)
+../../bgdrtm/bgdrtm.a(copy.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (bgd_copy_struct)
+../../bgdrtm/bgdrtm.a(misc.o)
+                              main.o (appname)
+../../bgdrtm/bgdrtm.a(instance.o)
+                              main.o (instance_new)
+../../bgdrtm/bgdrtm.a(interpreter.o)
+                              main.o (instance_go_all)
+../../bgdrtm/bgdrtm.a(files.o)
+                              ../../bgdrtm/bgdrtm.a(dcbr.o) (file_eof)
+../../bgdrtm/bgdrtm.a(xctype.o)
+                              main.o (init_c_type)
+../../bgdrtm/bgdrtm.a(mod_say.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modsay_say)
+../../bgdrtm/bgdrtm.a(mod_string.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modstring_strlen)
+../../bgdrtm/bgdrtm.a(mod_math.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (math_abs)
+../../bgdrtm/bgdrtm.a(mod_time.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modtime_get_timer)
+../../bgdrtm/bgdrtm.a(mod_file.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modfile_save)
+../../bgdrtm/bgdrtm.a(mod_sound.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (mod_sound_globals_fixup)
+../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (libsdlhandler_module_initialize)
+../../bgdrtm/bgdrtm.a(libjoy.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (libjoy_module_initialize)
+../../bgdrtm/bgdrtm.a(mod_joy.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modjoy_num)
+../../bgdrtm/bgdrtm.a(mod_proc.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (mod_proc_locals_fixup)
+../../bgdrtm/bgdrtm.a(mod_sort.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (modsort_sort)
+../../bgdrtm/bgdrtm.a(mod_timers.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (mod_timers_globals_fixup)
+../../bgdrtm/bgdrtm.a(mod_regex.o)
+                              ../../bgdrtm/bgdrtm.a(sysprocs.o) (mod_regex_globals_fixup)
+../../bgdrtm/bgdrtm.a(regex.o)
+                              ../../bgdrtm/bgdrtm.a(mod_regex.o) (re_syntax_options)
+../../bgdrtm/bgdrtm.a(varspace_file.o)
+                              ../../bgdrtm/bgdrtm.a(mod_file.o) (loadtypes)
+/usr/lib/libc_nonshared.a(elf-init.oS)
+                              /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o (__libc_csu_fini)
+/usr/lib/libc_nonshared.a(stat.oS)
+                              ../../bgdrtm/bgdrtm.a(dirs.o) (stat)
+
+Allocating common symbols
+Common symbol       size              file
+
+c_lower             0x100             ../../bgdrtm/bgdrtm.a(xctype.o)
+c_upper             0x100             ../../bgdrtm/bgdrtm.a(xctype.o)
+dcb                 0xb8              ../../bgdrtm/bgdrtm.a(dcbr.o)
+c_type              0x100             ../../bgdrtm/bgdrtm.a(xctype.o)
+
+Discarded input sections
+
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ .gnu_debuglink
+                0x0000000000000000        0xc /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ .gnu_debuglink
+                0x0000000000000000        0xc /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 main.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(strings.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(copy.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(misc.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(instance.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(files.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(regex.o)
+ .note.GNU-stack
+                0x0000000000000000        0x0 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+ .group         0x0000000000000000        0x8 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .group         0x0000000000000000        0x8 /usr/lib/libc_nonshared.a(stat.oS)
+ .text.__i686.get_pc_thunk.bx
+                0x0000000000000000        0x4 /usr/lib/libc_nonshared.a(stat.oS)
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/libc_nonshared.a(stat.oS)
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .note.GNU-stack
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+ .gnu_debuglink
+                0x0000000000000000        0xc /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+LOAD main.o
+LOAD ../../bgdrtm/bgdrtm.a
+LOAD /usr/lib/libSDL_mixer.so
+LOAD /usr/lib/libsmpeg.so
+LOAD /usr/lib/libjpeg.so
+LOAD /usr/lib/libpng.so
+LOAD /usr/lib/libSDL.so
+LOAD /usr/lib/libvorbis.so
+LOAD /usr/lib/libz.so
+LOAD /usr/lib/libc.so
+START GROUP
+LOAD /lib/libc.so.6
+LOAD /usr/lib/libc_nonshared.a
+LOAD /lib/ld-linux.so.2
+END GROUP
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/libstdc++.so
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/libgcc.a
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/libgcc_s.so
+LOAD /usr/lib/libc.so
+START GROUP
+LOAD /lib/libc.so.6
+LOAD /usr/lib/libc_nonshared.a
+LOAD /lib/ld-linux.so.2
+END GROUP
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/libgcc.a
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/libgcc_s.so
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+LOAD /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+                0x0000000008048000                PROVIDE (__executable_start, 0x8048000)
+                0x0000000008048134                . = (0x8048000 + SIZEOF_HEADERS)
+
+.interp         0x0000000008048134       0x13
+ *(.interp)
+ .interp        0x0000000008048134       0x13 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.note.ABI-tag   0x0000000008048148       0x20
+ .note.ABI-tag  0x0000000008048148       0x20 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.note.gnu.build-id
+                0x0000000008048168       0x24
+ *(.note.gnu.build-id)
+ .note.gnu.build-id
+                0x0000000008048168       0x24 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.hash           0x000000000804818c      0x498
+ *(.hash)
+ .hash          0x000000000804818c      0x498 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.gnu.hash       0x0000000008048624       0xbc
+ *(.gnu.hash)
+ .gnu.hash      0x0000000008048624       0xbc /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.dynsym         0x00000000080486e0      0xa10
+ *(.dynsym)
+ .dynsym        0x00000000080486e0      0xa10 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.dynstr         0x00000000080490f0      0x758
+ *(.dynstr)
+ .dynstr        0x00000000080490f0      0x758 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.gnu.version    0x0000000008049848      0x142
+ *(.gnu.version)
+ .gnu.version   0x0000000008049848      0x142 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.gnu.version_d  0x000000000804998c        0x0 load address 0x000000000804998a
+ *(.gnu.version_d)
+ .gnu.version_d
+                0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.gnu.version_r  0x000000000804998c       0x80
+ *(.gnu.version_r)
+ .gnu.version_r
+                0x000000000804998c       0x80 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.rel.dyn        0x0000000008049a0c       0x18
+ *(.rel.init)
+ *(.rel.text .rel.text.* .rel.gnu.linkonce.t.*)
+ .rel.text      0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ *(.rel.fini)
+ *(.rel.rodata .rel.rodata.* .rel.gnu.linkonce.r.*)
+ *(.rel.data.rel.ro* .rel.gnu.linkonce.d.rel.ro.*)
+ *(.rel.data .rel.data.* .rel.gnu.linkonce.d.*)
+ .rel.data      0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ *(.rel.tdata .rel.tdata.* .rel.gnu.linkonce.td.*)
+ *(.rel.tbss .rel.tbss.* .rel.gnu.linkonce.tb.*)
+ *(.rel.ctors)
+ *(.rel.dtors)
+ *(.rel.got)
+ .rel.got       0x0000000008049a0c        0x8 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ *(.rel.bss .rel.bss.* .rel.gnu.linkonce.b.*)
+ .rel.bss       0x0000000008049a14       0x10 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ *(.rel.ifunc)
+
+.rel.plt        0x0000000008049a24      0x448
+ *(.rel.plt)
+ .rel.plt       0x0000000008049a24      0x448 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x0000000008049e6c                PROVIDE (__rel_iplt_start, .)
+ *(.rel.iplt)
+ .rel.iplt      0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x0000000008049e6c                PROVIDE (__rel_iplt_end, .)
+
+.init           0x0000000008049e6c       0x30
+ *(.init)
+ .init          0x0000000008049e6c       0x22 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+                0x0000000008049e6c                _init
+ .init          0x0000000008049e8e        0x5 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .init          0x0000000008049e93        0x5 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .init          0x0000000008049e98        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+
+.plt            0x0000000008049e9c      0x8a0
+ *(.plt)
+ .plt           0x0000000008049e9c      0x8a0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x0000000008049eac                rewind@@GLIBC_2.0
+                0x0000000008049ebc                strcat@@GLIBC_2.0
+                0x0000000008049ecc                fread@@GLIBC_2.0
+                0x0000000008049edc                Mix_Resume
+                0x0000000008049eec                Mix_LoadMUS_RW
+                0x0000000008049efc                mkdir@@GLIBC_2.0
+                0x0000000008049f0c                Mix_CloseAudio
+                0x0000000008049f1c                atan2@@GLIBC_2.0
+                0x0000000008049f2c                Mix_PlayChannelTimed
+                0x0000000008049f3c                Mix_SetPosition
+                0x0000000008049f4c                gzseek
+                0x0000000008049f5c                gzeof
+                0x0000000008049f6c                strdup@@GLIBC_2.0
+                0x0000000008049f7c                SDL_PeepEvents
+                0x0000000008049f8c                SDL_JoystickClose
+                0x0000000008049f9c                SDL_JoystickOpen
+                0x0000000008049fac                calloc@@GLIBC_2.0
+                0x0000000008049fbc                SDL_JoystickNumAxes
+                0x0000000008049fcc                Mix_FreeChunk
+                0x0000000008049fdc                SDL_JoystickName
+                0x0000000008049fec                strncat@@GLIBC_2.0
+                0x0000000008049ffc                fgets@@GLIBC_2.0
+                0x000000000804a00c                fwrite@@GLIBC_2.0
+                0x000000000804a01c                memcpy@@GLIBC_2.0
+                0x000000000804a02c                tan@@GLIBC_2.0
+                0x000000000804a03c                malloc@@GLIBC_2.0
+                0x000000000804a04c                strlen@@GLIBC_2.0
+                0x000000000804a05c                fprintf@@GLIBC_2.0
+                0x000000000804a06c                globfree@@GLIBC_2.0
+                0x000000000804a07c                getcwd@@GLIBC_2.0
+                0x000000000804a08c                SDL_WasInit
+                0x000000000804a09c                atof@@GLIBC_2.0
+                0x000000000804a0ac                gztell
+                0x000000000804a0bc                SDL_AllocRW
+                0x000000000804a0cc                sprintf@@GLIBC_2.0
+                0x000000000804a0dc                SDL_NumJoysticks
+                0x000000000804a0ec                __xstat@@GLIBC_2.0
+                0x000000000804a0fc                Mix_FadeInMusic
+                0x000000000804a10c                Mix_OpenAudio
+                0x000000000804a11c                Mix_PlayingMusic
+                0x000000000804a12c                __isnan@@GLIBC_2.0
+                0x000000000804a13c                strcmp@@GLIBC_2.0
+                0x000000000804a14c                SDL_GetError
+                0x000000000804a15c                toupper@@GLIBC_2.0
+                0x000000000804a16c                time@@GLIBC_2.0
+                0x000000000804a17c                tolower@@GLIBC_2.0
+                0x000000000804a18c                strncpy@@GLIBC_2.0
+                0x000000000804a19c                fflush@@GLIBC_2.0
+                0x000000000804a1ac                Mix_VolumeMusic
+                0x000000000804a1bc                memcmp@@GLIBC_2.0
+                0x000000000804a1cc                Mix_SetPanning
+                0x000000000804a1dc                Mix_PauseMusic
+                0x000000000804a1ec                SDL_PumpEvents
+                0x000000000804a1fc                Mix_SetDistance
+                0x000000000804a20c                __strcpy_chk@@GLIBC_2.3.4
+                0x000000000804a21c                strrchr@@GLIBC_2.0
+                0x000000000804a22c                fseek@@GLIBC_2.0
+                0x000000000804a23c                fputs@@GLIBC_2.0
+                0x000000000804a24c                Mix_FreeMusic
+                0x000000000804a25c                SDL_JoystickEventState
+                0x000000000804a26c                acos@@GLIBC_2.0
+                0x000000000804a27c                sin@@GLIBC_2.0
+                0x000000000804a28c                SDL_JoystickNumHats
+                0x000000000804a29c                SDL_InitSubSystem
+                0x000000000804a2ac                SDL_FreeRW
+                0x000000000804a2bc                strchr@@GLIBC_2.0
+                0x000000000804a2cc                Mix_ResumeMusic
+                0x000000000804a2dc                rename@@GLIBC_2.0
+                0x000000000804a2ec                SDL_JoystickGetAxis
+                0x000000000804a2fc                __libc_start_main@@GLIBC_2.0
+                0x000000000804a30c                SDL_JoystickNumBalls
+                0x000000000804a31c                chdir@@GLIBC_2.0
+                0x000000000804a32c                glob@@GLIBC_2.0
+                0x000000000804a33c                __strcat_chk@@GLIBC_2.3.4
+                0x000000000804a34c                Mix_FadeOutMusic
+                0x000000000804a35c                atan@@GLIBC_2.0
+                0x000000000804a36c                SDL_GetTicks
+                0x000000000804a37c                Mix_HaltMusic
+                0x000000000804a38c                SDL_JoystickGetHat
+                0x000000000804a39c                SDL_JoystickNumButtons
+                0x000000000804a3ac                __ctype_b_loc@@GLIBC_2.3
+                0x000000000804a3bc                __stack_chk_fail@@GLIBC_2.4
+                0x000000000804a3cc                gzrewind
+                0x000000000804a3dc                sqrt@@GLIBC_2.0
+                0x000000000804a3ec                Mix_SetReverseStereo
+                0x000000000804a3fc                SDL_QuitSubSystem
+                0x000000000804a40c                Mix_AllocateChannels
+                0x000000000804a41c                free@@GLIBC_2.0
+                0x000000000804a42c                Mix_Volume
+                0x000000000804a43c                strncmp@@GLIBC_2.0
+                0x000000000804a44c                qsort@@GLIBC_2.0
+                0x000000000804a45c                __isinf@@GLIBC_2.0
+                0x000000000804a46c                Mix_QuerySpec
+                0x000000000804a47c                bcopy@@GLIBC_2.0
+                0x000000000804a48c                exit@@GLIBC_2.0
+                0x000000000804a49c                printf@@GLIBC_2.0
+                0x000000000804a4ac                gzwrite
+                0x000000000804a4bc                gzopen
+                0x000000000804a4cc                asin@@GLIBC_2.0
+                0x000000000804a4dc                feof@@GLIBC_2.0
+                0x000000000804a4ec                puts@@GLIBC_2.0
+                0x000000000804a4fc                Mix_VolumeChunk
+                0x000000000804a50c                atoi@@GLIBC_2.0
+                0x000000000804a51c                Mix_ReserveChannels
+                0x000000000804a52c                Mix_PlayMusic
+                0x000000000804a53c                SDL_JoystickGetButton
+                0x000000000804a54c                cos@@GLIBC_2.0
+                0x000000000804a55c                memset@@GLIBC_2.0
+                0x000000000804a56c                putchar@@GLIBC_2.0
+                0x000000000804a57c                strftime@@GLIBC_2.0
+                0x000000000804a58c                remove@@GLIBC_2.0
+                0x000000000804a59c                SDL_JoystickUpdate
+                0x000000000804a5ac                gzclose
+                0x000000000804a5bc                gzgets
+                0x000000000804a5cc                snprintf@@GLIBC_2.0
+                0x000000000804a5dc                __strdup@@GLIBC_2.0
+                0x000000000804a5ec                Mix_HaltChannel
+                0x000000000804a5fc                Mix_Playing
+                0x000000000804a60c                abort@@GLIBC_2.0
+                0x000000000804a61c                pow@@GLIBC_2.0
+                0x000000000804a62c                fclose@@GLIBC_2.1
+                0x000000000804a63c                Mix_Pause
+                0x000000000804a64c                memmove@@GLIBC_2.0
+                0x000000000804a65c                rmdir@@GLIBC_2.0
+                0x000000000804a66c                unlink@@GLIBC_2.0
+                0x000000000804a67c                gzread
+                0x000000000804a68c                Mix_LoadWAV_RW
+                0x000000000804a6ac                strcpy@@GLIBC_2.0
+                0x000000000804a6bc                localtime@@GLIBC_2.0
+                0x000000000804a6cc                __assert_fail@@GLIBC_2.0
+                0x000000000804a6dc                SDL_JoystickGetBall
+                0x000000000804a6ec                bzero@@GLIBC_2.0
+                0x000000000804a6fc                bcmp@@GLIBC_2.0
+                0x000000000804a70c                realloc@@GLIBC_2.0
+                0x000000000804a71c                fopen@@GLIBC_2.1
+                0x000000000804a72c                ftell@@GLIBC_2.0
+ *(.iplt)
+ .iplt          0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.text           0x000000000804a740    0x1ac8c
+ *(.text.unlikely .text.*_unlikely)
+ *(.text .stub .text.* .gnu.linkonce.t.*)
+ .text          0x000000000804a740       0x24 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x000000000804a740                _start
+ .text          0x000000000804a764        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ *fill*         0x000000000804a764        0xc 90909090
+ .text          0x000000000804a770       0x83 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ *fill*         0x000000000804a7f3        0x1 90909090
+ .text          0x000000000804a7f4      0x538 main.o
+                0x000000000804a7f4                main
+ .text          0x000000000804ad2c     0x18e4 ../../bgdrtm/bgdrtm.a(dcbr.o)
+                0x000000000804ad2c                sysprocs_fixup
+                0x000000000804adf2                procdef_get
+                0x000000000804ae24                procdef_get_by_name
+                0x000000000804b10a                dcb_load
+                0x000000000804b180                read_and_arrange_varspace
+                0x000000000804b1f6                dcb_load_from
+                0x000000000804c572                getid_name
+                0x000000000804c5ba                getid
+ .text          0x000000000804c610     0x18c2 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+                0x000000000804d330                compare_priority
+                0x000000000804d345                sysproc_add
+                0x000000000804d455                sysproc_get
+                0x000000000804d469                sysproc_add_tab
+                0x000000000804d4b6                sysproc_init
+                0x000000000804de7d                sysproc_name
+ *fill*         0x000000000804ded2        0x2 90909090
+ .text          0x000000000804ded4     0x1b9c ../../bgdrtm/bgdrtm.a(strings.o)
+                0x000000000804ded4                _string_ptoa
+                0x000000000804e04e                _string_ntoa
+                0x000000000804e0f7                _string_utoa
+                0x000000000804e298                string_init
+                0x000000000804e2ca                string_dump
+                0x000000000804e4be                string_get
+                0x000000000804e509                string_load
+                0x000000000804e728                string_use
+                0x000000000804e741                string_discard
+                0x000000000804ead8                string_new
+                0x000000000804eb49                string_newa
+                0x000000000804ebe2                string_concat
+                0x000000000804ecf0                string_add
+                0x000000000804ee2b                string_ptoa
+                0x000000000804eeaf                string_ftoa
+                0x000000000804ef9a                string_itoa
+                0x000000000804f01e                string_uitoa
+                0x000000000804f0a2                string_comp
+                0x000000000804f0d8                string_char
+                0x000000000804f14a                string_substr
+                0x000000000804f28b                string_find
+                0x000000000804f3c8                string_ucase
+                0x000000000804f4b3                string_lcase
+                0x000000000804f59e                string_strip
+                0x000000000804f699                string_format
+                0x000000000804f87a                string_casecmp
+                0x000000000804f913                string_pad
+ .text          0x000000000804fa70      0x6ed ../../bgdrtm/bgdrtm.a(dirs.o)
+                0x000000000804fa70                dir_path_convert
+                0x000000000804faaf                dir_current
+                0x000000000804facb                dir_change
+                0x000000000804fafd                dir_create
+                0x000000000804fb37                dir_delete
+                0x000000000804fb69                dir_deletefile
+                0x000000000804fba2                dir_open
+                0x000000000804fd4e                dir_close
+                0x000000000804fd7c                dir_read
+ *fill*         0x000000000805015d        0x3 90909090
+ .text          0x0000000008050160      0x2f5 ../../bgdrtm/bgdrtm.a(copy.o)
+                0x0000000008050160                copyvars
+                0x00000000080501b0                copytypes
+                0x00000000080503cf                bgd_copy_struct
+                0x000000000805041f                bgd_internal_memcopy
+ *fill*         0x0000000008050455        0x3 90909090
+ .text          0x0000000008050458      0x150 ../../bgdrtm/bgdrtm.a(misc.o)
+                0x0000000008050458                strncmpi
+                0x00000000080504e6                bgdrtm_entry
+                0x0000000008050566                bgdrtm_exit
+ .text          0x00000000080505a8     0x1391 ../../bgdrtm/bgdrtm.a(instance.o)
+                0x00000000080505a8                instance_add_to_list_by_id
+                0x00000000080505eb                instance_remove_from_list_by_id
+                0x0000000008050609                instance_add_to_list_by_instance
+                0x0000000008050689                instance_remove_from_list_by_instance
+                0x00000000080506fb                instance_add_to_list_by_type
+                0x0000000008050778                instance_remove_from_list_by_type
+                0x00000000080507e7                instance_add_to_list_by_priority
+                0x00000000080508ce                instance_remove_from_list_by_priority
+                0x00000000080509fd                instance_dirty
+                0x0000000008050a29                instance_get
+                0x0000000008050a59                instance_getid
+                0x0000000008050bcb                instance_duplicate
+                0x000000000805100c                instance_new
+                0x0000000008051436                instance_getfather
+                0x0000000008051450                instance_getson
+                0x000000000805146a                instance_getbigbro
+                0x0000000008051484                instance_getsmallbro
+                0x000000000805149e                instance_destroy_all
+                0x00000000080514d8                instance_destroy
+                0x000000000805177e                instance_exists
+                0x00000000080517dc                instance_next_by_priority
+                0x000000000805189b                instance_get_by_type
+ *fill*         0x0000000008051939        0x3 90909090
+ .text          0x000000000805193c     0x4a98 ../../bgdrtm/bgdrtm.a(interpreter.o)
+                0x000000000805193c                instance_go_all
+                0x0000000008051bdc                instance_go
+ *fill*         0x00000000080563d4        0xc 90909090
+ .text          0x00000000080563e0     0x14b2 ../../bgdrtm/bgdrtm.a(files.o)
+                0x00000000080563e0                file_fp
+                0x0000000008056430                file_eof
+                0x0000000008056490                file_move
+                0x00000000080564a0                file_remove
+                0x00000000080564b0                file_addp
+                0x00000000080565b0                file_close
+                0x0000000008056610                xfile_init
+                0x0000000008056640                file_add_xfile
+                0x00000000080567e0                file_open
+                0x0000000008056b20                file_exists
+                0x0000000008056b50                file_rewind
+                0x0000000008056ba0                file_seek
+                0x0000000008056cf0                file_pos
+                0x0000000008056d40                file_write
+                0x0000000008056e60                file_writeSint32A
+                0x0000000008056e90                file_writeUint32A
+                0x0000000008056ea0                file_writeSint16A
+                0x0000000008056ed0                file_writeUint16A
+                0x0000000008056ee0                file_writeUint8A
+                0x0000000008056ef0                file_writeSint8A
+                0x0000000008056f00                file_writeSint32
+                0x0000000008056f30                file_writeUint32
+                0x0000000008056f40                file_writeSint16
+                0x0000000008056f70                file_writeUint16
+                0x0000000008056f80                file_writeUint8
+                0x0000000008056fb0                file_writeSint8
+                0x0000000008056fe0                file_puts
+                0x0000000008057010                file_qputs
+                0x0000000008057110                file_gets
+                0x00000000080572f0                file_qgets
+                0x0000000008057500                file_read
+                0x0000000008057640                file_size
+                0x0000000008057720                file_readSint32A
+                0x0000000008057750                file_readUint32A
+                0x0000000008057760                file_readSint16A
+                0x0000000008057790                file_readUint16A
+                0x00000000080577a0                file_readUint8A
+                0x00000000080577b0                file_readSint8A
+                0x00000000080577c0                file_readSint32
+                0x00000000080577f0                file_readUint32
+                0x0000000008057800                file_readSint16
+                0x0000000008057830                file_readUint16
+                0x0000000008057840                file_readUint8
+                0x0000000008057870                file_readSint8
+ *fill*         0x0000000008057892        0xe 90909090
+ .text          0x00000000080578a0      0x470 ../../bgdrtm/bgdrtm.a(xctype.o)
+                0x00000000080578a0                convert
+                0x00000000080578c0                init_c_type
+ .text          0x0000000008057d10       0x6b ../../bgdrtm/bgdrtm.a(mod_say.o)
+                0x0000000008057d10                modsay_say
+                0x0000000008057d4c                modsay_say_fast
+ *fill*         0x0000000008057d7b        0x1 90909090
+ .text          0x0000000008057d7c      0x5b3 ../../bgdrtm/bgdrtm.a(mod_string.o)
+                0x0000000008057d7c                modstring_strlen
+                0x0000000008057dbf                modstring_strupper
+                0x0000000008057df2                modstring_strlower
+                0x0000000008057e25                modstring_strcasecmp
+                0x0000000008057e69                modstring_substr
+                0x0000000008057ecd                modstring_substr2
+                0x0000000008057f14                modstring_strfind
+                0x0000000008057f60                modstring_strfindSSI
+                0x0000000008057fb0                modstring_lpad
+                0x0000000008057ff7                modstring_rpad
+                0x000000000805803e                modstring_itos
+                0x0000000008058064                modstring_ftos
+                0x000000000805808a                modstring_stoi
+                0x00000000080580cd                modstring_stof
+                0x0000000008058115                modstring_asc
+                0x0000000008058156                modstring_chr
+                0x000000000805818d                modstring_trim
+                0x000000000805821d                modstring_strrev
+                0x000000000805826b                modstring_formatI
+                0x00000000080582af                modstring_formatF
+                0x00000000080582ed                modstring_formatFI
+ *fill*         0x000000000805832f        0x1 90909090
+ .text          0x0000000008058330      0x563 ../../bgdrtm/bgdrtm.a(mod_math.o)
+                0x0000000008058330                math_abs
+                0x0000000008058365                math_pow
+                0x0000000008058396                math_sqrt
+                0x00000000080583d0                math_cos
+                0x0000000008058409                math_sin
+                0x0000000008058442                math_tan
+                0x000000000805847b                math_acos
+                0x00000000080584b4                math_asin
+                0x00000000080584ed                math_atan
+                0x0000000008058526                math_atan2
+                0x0000000008058573                math_isinf
+                0x000000000805858e                math_isnan
+                0x00000000080585a9                math_finite
+                0x00000000080585d4                math_get_disty
+                0x0000000008058634                math_fget_angle
+                0x00000000080586fe                math_fget_dist
+                0x0000000008058770                math_near_angle
+                0x0000000008058835                math_get_distx
+ *fill*         0x0000000008058893        0x1 90909090
+ .text          0x0000000008058894      0x161 ../../bgdrtm/bgdrtm.a(mod_time.o)
+                0x0000000008058894                modtime_get_timer
+                0x00000000080588a1                modtime_time
+                0x00000000080588b5                modtime_ftime
+                0x00000000080589ad                mod_time_module_initialize
+                0x00000000080589d1                mod_time_module_finalize
+ *fill*         0x00000000080589f5        0x3 90909090
+ .text          0x00000000080589f8      0x6d8 ../../bgdrtm/bgdrtm.a(mod_file.o)
+                0x00000000080589f8                modfile_save
+                0x0000000008058a97                modfile_load
+                0x0000000008058b36                modfile_fopen
+                0x0000000008058ba0                modfile_fclose
+                0x0000000008058bba                modfile_fread
+                0x0000000008058c04                modfile_fwrite
+                0x0000000008058c4e                modfile_freadC
+                0x0000000008058c7d                modfile_fwriteC
+                0x0000000008058cac                modfile_fseek
+                0x0000000008058cd9                modfile_frewind
+                0x0000000008058cf3                modfile_ftell
+                0x0000000008058d08                modfile_filelength
+                0x0000000008058d1d                modfile_fputs
+                0x0000000008058d8f                modfile_fgets
+                0x0000000008058edd                modfile_file
+                0x0000000008059000                modfile_feof
+                0x0000000008059015                modfile_exists
+                0x0000000008059045                modfile_remove
+                0x0000000008059075                modfile_move
+ .text          0x00000000080590d0      0xd1a ../../bgdrtm/bgdrtm.a(mod_sound.o)
+                0x0000000008059a24                modsound_load_song
+                0x0000000008059a67                modsound_play_song
+                0x0000000008059a99                modsound_unload_song
+                0x0000000008059abf                modsound_stop_song
+                0x0000000008059acc                modsound_pause_song
+                0x0000000008059ad9                modsound_resume_song
+                0x0000000008059ae6                modsound_is_playing_song
+                0x0000000008059af3                modsound_set_song_volume
+                0x0000000008059b08                modsound_fade_music_in
+                0x0000000008059b46                modsound_fade_music_off
+                0x0000000008059b5b                modsound_load_wav
+                0x0000000008059b9e                modsound_play_wav
+                0x0000000008059bd8                modsound_play_wav_channel
+                0x0000000008059c16                modsound_unload_wav
+                0x0000000008059c3c                modsound_stop_wav
+                0x0000000008059c51                modsound_pause_wav
+                0x0000000008059c66                modsound_resume_wav
+                0x0000000008059c7b                modsound_is_playing_wav
+                0x0000000008059c90                modsound_set_channel_volume
+                0x0000000008059cb1                modsound_reserve_channels
+                0x0000000008059cc6                modsound_set_wav_volume
+                0x0000000008059ce7                modsound_set_panning
+                0x0000000008059d14                modsound_set_position
+                0x0000000008059d41                modsound_set_distance
+                0x0000000008059d62                modsound_reverse_stereo
+                0x0000000008059d83                modsound_init
+                0x0000000008059d90                modsound_close
+                0x0000000008059da2                mod_sound_module_initialize
+                0x0000000008059dc6                mod_sound_module_finalize
+ *fill*         0x0000000008059dea        0x2 90909090
+ .text          0x0000000008059dec       0x7c ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+                0x0000000008059e20                libsdlhandler_module_initialize
+                0x0000000008059e44                libsdlhandler_module_finalize
+ .text          0x0000000008059e68      0x5da ../../bgdrtm/bgdrtm.a(libjoy.o)
+                0x0000000008059e68                libjoy_num
+                0x0000000008059e72                libjoy_name
+                0x0000000008059e9e                libjoy_select
+                0x0000000008059eb0                libjoy_buttons
+                0x0000000008059eeb                libjoy_axes
+                0x0000000008059f26                libjoy_get_button
+                0x0000000008059f6b                libjoy_get_position
+                0x0000000008059fae                libjoy_hats
+                0x0000000008059fe9                libjoy_balls
+                0x000000000805a024                libjoy_get_hat
+                0x000000000805a088                libjoy_get_ball
+                0x000000000805a0f5                libjoy_buttons_specific
+                0x000000000805a126                libjoy_axes_specific
+                0x000000000805a157                libjoy_get_button_specific
+                0x000000000805a1af                libjoy_get_position_specific
+                0x000000000805a205                libjoy_hats_specific
+                0x000000000805a236                libjoy_balls_specific
+                0x000000000805a267                libjoy_get_hat_specific
+                0x000000000805a2bf                libjoy_get_ball_specific
+                0x000000000805a322                libjoy_module_initialize
+                0x000000000805a3e7                libjoy_module_finalize
+ *fill*         0x000000000805a442        0x2 90909090
+ .text          0x000000000805a444      0x1d4 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+                0x000000000805a444                modjoy_num
+                0x000000000805a451                modjoy_name
+                0x000000000805a466                modjoy_select
+                0x000000000805a47b                modjoy_buttons
+                0x000000000805a488                modjoy_axes
+                0x000000000805a495                modjoy_get_button
+                0x000000000805a4aa                modjoy_get_position
+                0x000000000805a4bf                modjoy_hats
+                0x000000000805a4cc                modjoy_balls
+                0x000000000805a4d9                modjoy_get_hat
+                0x000000000805a4ee                modjoy_get_ball
+                0x000000000805a51f                modjoy_buttons_specific
+                0x000000000805a534                modjoy_axes_specific
+                0x000000000805a549                modjoy_get_button_specific
+                0x000000000805a56a                modjoy_get_position_specific
+                0x000000000805a58b                modjoy_hats_specific
+                0x000000000805a5a0                modjoy_balls_specific
+                0x000000000805a5b5                modjoy_get_hat_specific
+                0x000000000805a5d6                modjoy_get_ball_specific
+ .text          0x000000000805a618      0xd6b ../../bgdrtm/bgdrtm.a(mod_proc.o)
+                0x000000000805a618                mod_proc_process_exec_hook
+                0x000000000805a692                modproc_exit_0
+                0x000000000805a6b0                modproc_exit_1
+                0x000000000805a70c                modproc_exit
+                0x000000000805a770                modproc_running
+                0x000000000805a81f                modproc_signal
+                0x000000000805acb5                modproc_signal_action
+                0x000000000805b055                modproc_signal_action3
+                0x000000000805b119                modproc_let_me_alone
+                0x000000000805b1b3                modproc_get_id
+                0x000000000805b344                modproc_get_status
+ *fill*         0x000000000805b383        0x1 90909090
+ .text          0x000000000805b384      0xe4d ../../bgdrtm/bgdrtm.a(mod_sort.o)
+                0x000000000805b7ae                modsort_sort
+                0x000000000805b933                modsort_ksort
+                0x000000000805bb42                modsort_sort_n
+                0x000000000805bcd9                modsort_ksort_n
+                0x000000000805c193                modsort_quicksort
+ *fill*         0x000000000805c1d1        0x3 90909090
+ .text          0x000000000805c1d4       0xa7 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+                0x000000000805c1d4                _advance_timers
+ *fill*         0x000000000805c27b        0x1 90909090
+ .text          0x000000000805c27c      0xca2 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+                0x000000000805c27c                modregex_regex
+                0x000000000805c486                modregex_regex_replace
+                0x000000000805cb49                modregex_split
+                0x000000000805cda2                modregex_join
+ *fill*         0x000000000805cf1e        0x2 90909090
+ .text          0x000000000805cf20     0x7e4c ../../bgdrtm/bgdrtm.a(regex.o)
+                0x000000000805cfa6                re_set_syntax
+                0x0000000008061044                re_compile_fastmap
+                0x00000000080615e6                re_set_registers
+                0x0000000008061649                re_search
+                0x0000000008061696                re_search_2
+                0x0000000008061958                re_match
+                0x000000000806199e                re_match_2
+                0x00000000080648da                re_compile_pattern
+                0x0000000008064938                regcomp
+                0x0000000008064aa3                regexec
+                0x0000000008064c4d                regerror
+                0x0000000008064ce0                regfree
+ .text          0x0000000008064d6c      0x579 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+                0x0000000008064d6c                loadvars
+                0x0000000008064dbd                loadtypes
+                0x0000000008064e0e                savevars
+                0x0000000008064e5f                savetypes
+                0x0000000008064eb0                savetype
+                0x000000000806508e                loadtype
+ *fill*         0x00000000080652e5        0xb 90909090
+ .text          0x00000000080652f0       0x6a /usr/lib/libc_nonshared.a(elf-init.oS)
+                0x00000000080652f0                __libc_csu_fini
+                0x0000000008065300                __libc_csu_init
+ .text.__i686.get_pc_thunk.bx
+                0x000000000806535a        0x4 /usr/lib/libc_nonshared.a(elf-init.oS)
+                0x000000000806535a                __i686.get_pc_thunk.bx
+ *fill*         0x000000000806535e        0x2 90909090
+ .text          0x0000000008065360       0x32 /usr/lib/libc_nonshared.a(stat.oS)
+                0x0000000008065360                __stat
+                0x0000000008065360                stat
+ *fill*         0x0000000008065392        0xe 90909090
+ .text          0x00000000080653a0       0x2a /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ *fill*         0x00000000080653ca        0x2 90909090
+ .text          0x00000000080653cc        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+ *(.gnu.warning)
+
+.fini           0x00000000080653cc       0x1c
+ *(.fini)
+ .fini          0x00000000080653cc       0x13 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+                0x00000000080653cc                _fini
+ .fini          0x00000000080653df        0x5 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .fini          0x00000000080653e4        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+                0x00000000080653e8                PROVIDE (__etext, .)
+                0x00000000080653e8                PROVIDE (_etext, .)
+                0x00000000080653e8                PROVIDE (etext, .)
+
+.rodata         0x00000000080653e8     0x4c5c
+ *(.rodata .rodata.* .gnu.linkonce.r.*)
+ .rodata        0x00000000080653e8        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x00000000080653e8                _fp_hw
+ .rodata.cst4   0x00000000080653ec        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x00000000080653ec                _IO_stdin_used
+ .rodata        0x00000000080653f0      0x30a main.o
+ *fill*         0x00000000080656fa        0x2 00
+ .rodata        0x00000000080656fc       0x78 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .rodata        0x0000000008065774      0x961 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ *fill*         0x00000000080660d5        0x3 00
+ .rodata        0x00000000080660d8      0x2c3 ../../bgdrtm/bgdrtm.a(strings.o)
+ .rodata        0x000000000806639b        0x2 ../../bgdrtm/bgdrtm.a(dirs.o)
+ *fill*         0x000000000806639d        0x3 00
+ .rodata        0x00000000080663a0       0x80 ../../bgdrtm/bgdrtm.a(copy.o)
+ .rodata        0x0000000008066420       0x5e ../../bgdrtm/bgdrtm.a(instance.o)
+ *fill*         0x000000000806647e        0x2 00
+ .rodata        0x0000000008066480     0x2e80 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .rodata.str1.1
+                0x0000000008069300       0x5d ../../bgdrtm/bgdrtm.a(files.o)
+                                         0x61 (size before relaxing)
+ .rodata        0x000000000806935d       0x2d ../../bgdrtm/bgdrtm.a(files.o)
+ .rodata.str1.1
+                0x000000000806938a       0x3d ../../bgdrtm/bgdrtm.a(xctype.o)
+ *fill*         0x00000000080693c7        0x1 00
+ .rodata.str1.4
+                0x00000000080693c8       0xa8 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .rodata        0x0000000008069470        0x2 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ *fill*         0x0000000008069472        0x6 00
+ .rodata        0x0000000008069478       0x18 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .rodata        0x0000000008069490       0x18 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .rodata        0x00000000080694a8       0x95 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ *fill*         0x000000000806953d        0x3 00
+ .rodata        0x0000000008069540       0x5f ../../bgdrtm/bgdrtm.a(libjoy.o)
+ *fill*         0x000000000806959f        0x1 00
+ .rodata        0x00000000080695a0      0x304 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .rodata        0x00000000080698a4       0x94 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .rodata        0x0000000008069938        0x6 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .rodata        0x000000000806993e        0xa ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .rodata        0x0000000008069948      0x640 ../../bgdrtm/bgdrtm.a(regex.o)
+ .rodata        0x0000000008069f88       0xbc ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.rodata1
+ *(.rodata1)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame       0x000000000806a044        0x4
+ *(.eh_frame)
+ .eh_frame      0x000000000806a044        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+                0x000000000806a048                . = (ALIGN (0x1000) - ((0x1000 - .) & 0xfff))
+                0x000000000806bec4                . = (0x1000 DATA_SEGMENT_ALIGN 0x1000)
+
+.eh_frame
+ *(.eh_frame)
+
+.gcc_except_table
+ *(.gcc_except_table .gcc_except_table.*)
+
+.tdata
+ *(.tdata .tdata.* .gnu.linkonce.td.*)
+
+.tbss
+ *(.tbss .tbss.* .gnu.linkonce.tb.*)
+ *(.tcommon)
+
+.preinit_array  0x000000000806bec4        0x0
+                0x000000000806bec4                PROVIDE (__preinit_array_start, .)
+ *(.preinit_array)
+                0x000000000806bec4                PROVIDE (__preinit_array_end, .)
+
+.init_array     0x000000000806bec4        0x0
+                0x000000000806bec4                PROVIDE (__init_array_start, .)
+ *(SORT(.init_array.*))
+ *(.init_array)
+                0x000000000806bec4                PROVIDE (__init_array_end, .)
+
+.fini_array     0x000000000806bec4        0x0
+                0x000000000806bec4                PROVIDE (__fini_array_start, .)
+ *(.fini_array)
+ *(SORT(.fini_array.*))
+                0x000000000806bec4                PROVIDE (__fini_array_end, .)
+
+.ctors          0x000000000806bec4        0x8
+ *crtbegin.o(.ctors)
+ .ctors         0x000000000806bec4        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ *crtbegin?.o(.ctors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+ *(SORT(.ctors.*))
+ *(.ctors)
+ .ctors         0x000000000806bec8        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+
+.dtors          0x000000000806becc        0x8
+ *crtbegin.o(.dtors)
+ .dtors         0x000000000806becc        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ *crtbegin?.o(.dtors)
+ *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+ *(SORT(.dtors.*))
+ *(.dtors)
+ .dtors         0x000000000806bed0        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+                0x000000000806bed0                __DTOR_END__
+
+.jcr            0x000000000806bed4        0x4
+ *(.jcr)
+ .jcr           0x000000000806bed4        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .jcr           0x000000000806bed4        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+
+.data.rel.ro
+ *(.data.rel.ro.local* .gnu.linkonce.d.rel.ro.local.*)
+ *(.data.rel.ro* .gnu.linkonce.d.rel.ro.*)
+
+.dynamic        0x000000000806bed8      0x118
+ *(.dynamic)
+ .dynamic       0x000000000806bed8      0x118 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x000000000806bed8                _DYNAMIC
+
+.got            0x000000000806bff0        0x4
+ *(.got)
+ .got           0x000000000806bff0        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ *(.igot)
+                0x000000000806bff4                . = (. DATA_SEGMENT_RELRO_END 0xc)
+
+.got.plt        0x000000000806bff4      0x230
+ *(.got.plt)
+ .got.plt       0x000000000806bff4      0x230 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x000000000806bff4                _GLOBAL_OFFSET_TABLE_
+ *(.igot.plt)
+ .igot.plt      0x0000000000000000        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+
+.data           0x000000000806c240    0x16588
+ *(.data .data.* .gnu.linkonce.d.*)
+ .data          0x000000000806c240        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x000000000806c240                data_start
+                0x000000000806c240                __data_start
+ .data          0x000000000806c244        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ .data          0x000000000806c244        0x4 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+                0x000000000806c244                __dso_handle
+ .data          0x000000000806c248       0x10 main.o
+ .data          0x000000000806c258        0x0 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ *fill*         0x000000000806c258        0x8 00
+ .data          0x000000000806c260    0x160e0 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+                0x000000000806c260                libjoy_constants_def
+                0x000000000806c2d8                libjoy_modules_dependency
+                0x000000000806c2e0                mod_say_functions_exports
+                0x000000000806c320                mod_string_functions_exports
+                0x000000000806c490                mod_math_constants_def
+                0x000000000806c4c0                mod_math_functions_exports
+                0x000000000806c600                mod_time_functions_exports
+                0x000000000806c640                mod_file_constants_def
+                0x000000000806c6c0                mod_file_functions_exports
+                0x000000000806c820                mod_sound_constants_def
+                0x000000000806c860                mod_sound_globals_def
+                0x000000000806c8c0                mod_sound_functions_exports
+                0x000000000806ca80                mod_joy_functions_exports
+                0x000000000806cc90                mod_joy_modules_dependency
+                0x000000000806cca0                mod_proc_constants_def
+                0x000000000806cdc0                mod_proc_locals_def
+                0x000000000806ce40                mod_proc_functions_exports
+                0x000000000806cf00                mod_sort_functions_exports
+                0x000000000806cf60                mod_timers_globals_def
+                0x000000000806cf6b                mod_regex_globals_def
+                0x000000000806cfa0                mod_regex_functions_exports
+                0x000000000806d000                symbol_list
+                0x000000000806d1a0                symbol_list_runtime
+                0x000000000806d340                sysprocs
+ .data          0x0000000008082340        0x4 ../../bgdrtm/bgdrtm.a(strings.o)
+ .data          0x0000000008082344        0x0 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .data          0x0000000008082344        0x0 ../../bgdrtm/bgdrtm.a(copy.o)
+ .data          0x0000000008082344        0x0 ../../bgdrtm/bgdrtm.a(misc.o)
+ .data          0x0000000008082344       0x10 ../../bgdrtm/bgdrtm.a(instance.o)
+ .data          0x0000000008082354        0x4 ../../bgdrtm/bgdrtm.a(interpreter.o)
+                0x0000000008082354                trace_sentence
+ *fill*         0x0000000008082358        0x8 00
+ .data          0x0000000008082360       0x80 ../../bgdrtm/bgdrtm.a(files.o)
+                0x0000000008082360                possible_paths
+ .data          0x00000000080823e0      0x200 ../../bgdrtm/bgdrtm.a(xctype.o)
+                0x00000000080823e0                dos_to_win
+                0x00000000080824e0                win_to_dos
+ .data          0x00000000080825e0        0x0 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .data          0x00000000080825e0        0x0 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .data          0x00000000080825e0        0x0 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .data          0x00000000080825e0        0x0 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .data          0x00000000080825e0       0x14 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ *fill*         0x00000000080825f4        0xc 00
+ .data          0x0000000008082600       0x40 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+                0x0000000008082600                mod_sound_globals_fixup
+ .data          0x0000000008082640       0x10 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+                0x0000000008082640                libsdlhandler_handler_hooks
+ .data          0x0000000008082650        0x4 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .data          0x0000000008082654        0x0 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ *fill*         0x0000000008082654        0xc 00
+ .data          0x0000000008082660       0x80 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+                0x0000000008082660                mod_proc_locals_fixup
+ .data          0x00000000080826e0        0x0 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .data          0x00000000080826e0       0x68 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+                0x00000000080826e0                mod_timers_globals_fixup
+                0x0000000008082700                mod_timers_handler_hooks
+ *fill*         0x0000000008082748       0x18 00
+ .data          0x0000000008082760       0x20 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+                0x0000000008082760                mod_regex_globals_fixup
+ .data          0x0000000008082780       0x48 ../../bgdrtm/bgdrtm.a(regex.o)
+                0x00000000080827c4                re_max_failures
+ .data          0x00000000080827c8        0x0 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+ .data          0x00000000080827c8        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .data          0x00000000080827c8        0x0 /usr/lib/libc_nonshared.a(stat.oS)
+ .data          0x00000000080827c8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .data          0x00000000080827c8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+
+.data1
+ *(.data1)
+                0x00000000080827c8                _edata = .
+                0x00000000080827c8                PROVIDE (edata, .)
+                0x00000000080827c8                __bss_start = .
+
+.bss            0x00000000080827e0      0x7e0
+ *(.dynbss)
+ .dynbss        0x00000000080827e0        0x8 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+                0x00000000080827e0                stdout@@GLIBC_2.0
+                0x00000000080827e4                stderr@@GLIBC_2.0
+ *(.bss .bss.* .gnu.linkonce.b.*)
+ .bss           0x00000000080827e8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crt1.o
+ .bss           0x00000000080827e8        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crti.o
+ .bss           0x00000000080827e8        0x8 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+ .bss           0x00000000080827f0        0x8 main.o
+ .bss           0x00000000080827f8       0x24 ../../bgdrtm/bgdrtm.a(dcbr.o)
+                0x00000000080827f8                globaldata
+                0x00000000080827fc                localdata
+                0x0000000008082800                local_size
+                0x0000000008082804                localstr
+                0x0000000008082808                local_strings
+                0x000000000808280c                procs
+                0x0000000008082810                mainproc
+                0x0000000008082814                procdef_count
+                0x0000000008082818                sysproc_code_ref
+ *fill*         0x000000000808281c        0x4 00
+ .bss           0x0000000008082820      0x114 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+                0x0000000008082820                handler_hook_list
+                0x0000000008082824                handler_hook_allocated
+                0x0000000008082828                handler_hook_count
+                0x000000000808282c                instance_create_hook_list
+                0x0000000008082830                instance_create_hook_allocated
+                0x0000000008082834                instance_create_hook_count
+                0x0000000008082838                instance_destroy_hook_list
+                0x000000000808283c                instance_destroy_hook_allocated
+                0x0000000008082840                instance_destroy_hook_count
+                0x0000000008082844                instance_pre_execute_hook_list
+                0x0000000008082848                instance_pre_execute_hook_allocated
+                0x000000000808284c                instance_pre_execute_hook_count
+                0x0000000008082850                instance_pos_execute_hook_list
+                0x0000000008082854                instance_pos_execute_hook_allocated
+                0x0000000008082858                instance_pos_execute_hook_count
+                0x000000000808285c                process_exec_hook_list
+                0x0000000008082860                process_exec_hook_allocated
+                0x0000000008082864                process_exec_hook_count
+                0x0000000008082868                module_initialize_list
+                0x000000000808286c                module_initialize_allocated
+                0x0000000008082870                module_initialize_count
+                0x0000000008082874                module_finalize_list
+                0x0000000008082878                module_finalize_allocated
+                0x000000000808287c                module_finalize_count
+ .bss           0x0000000008082934       0x1c ../../bgdrtm/bgdrtm.a(strings.o)
+ .bss           0x0000000008082950        0x0 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .bss           0x0000000008082950        0x0 ../../bgdrtm/bgdrtm.a(copy.o)
+ .bss           0x0000000008082950        0x8 ../../bgdrtm/bgdrtm.a(misc.o)
+                0x0000000008082950                appname
+                0x0000000008082954                debug
+ .bss           0x0000000008082958       0x18 ../../bgdrtm/bgdrtm.a(instance.o)
+                0x0000000008082958                hashed_by_id
+                0x000000000808295c                hashed_by_instance
+                0x0000000008082960                hashed_by_type
+                0x0000000008082964                hashed_by_priority
+                0x0000000008082968                first_instance
+ .bss           0x0000000008082970       0x2c ../../bgdrtm/bgdrtm.a(interpreter.o)
+                0x0000000008082970                debug_mode
+                0x0000000008082974                exit_value
+                0x0000000008082978                must_exit
+                0x000000000808297c                force_debug
+                0x0000000008082980                debug_next
+                0x0000000008082984                trace_instance
+ .bss           0x000000000808299c       0x10 ../../bgdrtm/bgdrtm.a(files.o)
+                0x000000000808299c                opened_files
+                0x00000000080829a0                x_file
+                0x00000000080829a4                max_x_files
+                0x00000000080829a8                x_files_count
+ .bss           0x00000000080829ac        0x8 ../../bgdrtm/bgdrtm.a(xctype.o)
+                0x00000000080829ac                dos_chars
+                0x00000000080829b0                c_type_initialized
+ .bss           0x00000000080829b4        0x0 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .bss           0x00000000080829b4        0x0 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .bss           0x00000000080829b4        0x0 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .bss           0x00000000080829b4        0x0 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .bss           0x00000000080829b4        0x0 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .bss           0x00000000080829b4        0x4 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .bss           0x00000000080829b8        0x0 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ *fill*         0x00000000080829b8        0x8 00
+ .bss           0x00000000080829c0       0xa0 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .bss           0x0000000008082a60        0x0 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .bss           0x0000000008082a60        0x0 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .bss           0x0000000008082a60        0x4 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ *fill*         0x0000000008082a64       0x1c 00
+ .bss           0x0000000008082a80       0x28 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .bss           0x0000000008082aa8        0x0 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ *fill*         0x0000000008082aa8       0x18 00
+ .bss           0x0000000008082ac0      0x124 ../../bgdrtm/bgdrtm.a(regex.o)
+                0x0000000008082ac0                re_syntax_options
+ .bss           0x0000000008082be4        0x0 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+ .bss           0x0000000008082be4        0x0 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .bss           0x0000000008082be4        0x0 /usr/lib/libc_nonshared.a(stat.oS)
+ .bss           0x0000000008082be4        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+ .bss           0x0000000008082be4        0x0 /usr/lib/gcc/i486-linux-gnu/4.4.3/../../../../lib/crtn.o
+ *(COMMON)
+ *fill*         0x0000000008082be4       0x1c 00
+ COMMON         0x0000000008082c00       0xb8 ../../bgdrtm/bgdrtm.a(dcbr.o)
+                0x0000000008082c00                dcb
+ *fill*         0x0000000008082cb8        0x8 00
+ COMMON         0x0000000008082cc0      0x300 ../../bgdrtm/bgdrtm.a(xctype.o)
+                0x0000000008082cc0                c_lower
+                0x0000000008082dc0                c_upper
+                0x0000000008082ec0                c_type
+                0x0000000008082fc0                . = ALIGN ((. != 0x0)?0x4:0x1)
+                0x0000000008082fc0                . = ALIGN (0x4)
+                0x0000000008082fc0                . = ALIGN (0x4)
+                0x0000000008082fc0                _end = .
+                0x0000000008082fc0                PROVIDE (end, .)
+                0x0000000008082fc0                . = DATA_SEGMENT_END (.)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment        0x0000000000000000       0x23
+ *(.comment)
+ .comment       0x0000000000000000       0x23 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtbegin.o
+                                         0x24 (size before relaxing)
+ .comment       0x0000000000000000       0x24 main.o
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(strings.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(copy.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(misc.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(instance.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(files.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(regex.o)
+ .comment       0x0000000000000000       0x24 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+ .comment       0x0000000000000000       0x24 /usr/lib/libc_nonshared.a(elf-init.oS)
+ .comment       0x0000000000000000       0x24 /usr/lib/libc_nonshared.a(stat.oS)
+ .comment       0x0000000000000000       0x24 /usr/lib/gcc/i486-linux-gnu/4.4.3/crtend.o
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x0000000000000000      0x340
+ *(.debug_aranges)
+ .debug_aranges
+                0x0000000000000000       0x20 main.o
+ .debug_aranges
+                0x0000000000000020       0x20 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_aranges
+                0x0000000000000040       0x20 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_aranges
+                0x0000000000000060       0x20 ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_aranges
+                0x0000000000000080       0x20 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_aranges
+                0x00000000000000a0       0x20 ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_aranges
+                0x00000000000000c0       0x20 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_aranges
+                0x00000000000000e0       0x20 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_aranges
+                0x0000000000000100       0x20 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_aranges
+                0x0000000000000120       0x20 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_aranges
+                0x0000000000000140       0x20 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_aranges
+                0x0000000000000160       0x20 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_aranges
+                0x0000000000000180       0x20 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_aranges
+                0x00000000000001a0       0x20 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_aranges
+                0x00000000000001c0       0x20 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_aranges
+                0x00000000000001e0       0x20 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_aranges
+                0x0000000000000200       0x20 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_aranges
+                0x0000000000000220       0x20 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_aranges
+                0x0000000000000240       0x20 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_aranges
+                0x0000000000000260       0x20 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_aranges
+                0x0000000000000280       0x20 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_aranges
+                0x00000000000002a0       0x20 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_aranges
+                0x00000000000002c0       0x20 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_aranges
+                0x00000000000002e0       0x20 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_aranges
+                0x0000000000000300       0x20 ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_aranges
+                0x0000000000000320       0x20 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_pubnames
+                0x0000000000000000     0x2220
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x0000000000000000       0x1b main.o
+ .debug_pubnames
+                0x000000000000001b      0x134 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_pubnames
+                0x000000000000014f      0x5fc ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_pubnames
+                0x000000000000074b      0x1d0 ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_pubnames
+                0x000000000000091b       0x9f ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_pubnames
+                0x00000000000009ba       0x5a ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_pubnames
+                0x0000000000000a14       0x56 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_pubnames
+                0x0000000000000a6a      0x2d2 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_pubnames
+                0x0000000000000d3c       0xa7 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_pubnames
+                0x0000000000000de3      0x377 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_pubnames
+                0x000000000000115a       0x94 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_pubnames
+                0x00000000000011ee       0x35 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_pubnames
+                0x0000000000001223      0x1c9 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_pubnames
+                0x00000000000013ec      0x129 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_pubnames
+                0x0000000000001515       0x87 ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_pubnames
+                0x000000000000159c      0x171 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_pubnames
+                0x000000000000170d      0x317 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_pubnames
+                0x0000000000001a24       0x78 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_pubnames
+                0x0000000000001a9c      0x1f5 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_pubnames
+                0x0000000000001c91      0x1bd ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_pubnames
+                0x0000000000001e4e      0x121 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_pubnames
+                0x0000000000001f6f       0x72 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_pubnames
+                0x0000000000001fe1       0x60 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_pubnames
+                0x0000000000002041       0x81 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_pubnames
+                0x00000000000020c2       0xfc ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_pubnames
+                0x00000000000021be       0x62 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_info     0x0000000000000000    0x149d4
+ *(.debug_info .gnu.linkonce.wi.*)
+ .debug_info    0x0000000000000000      0xe67 main.o
+ .debug_info    0x0000000000000e67     0x12d2 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_info    0x0000000000002139     0x1b75 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_info    0x0000000000003cae     0x10e4 ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_info    0x0000000000004d92      0x71b ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_info    0x00000000000054ad      0xe78 ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_info    0x0000000000006325      0x1b5 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_info    0x00000000000064da      0xa20 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_info    0x0000000000006efa      0xfbc ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_info    0x0000000000007eb6     0x1583 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_info    0x0000000000009439      0x74a ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_info    0x0000000000009b83      0x619 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_info    0x000000000000a19c      0x9bc ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_info    0x000000000000ab58      0x90d ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_info    0x000000000000b465      0x54f ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_info    0x000000000000b9b4      0xbe5 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_info    0x000000000000c599     0x178d ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_info    0x000000000000dd26      0xdde ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_info    0x000000000000eb04      0x541 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_info    0x000000000000f045      0x781 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_info    0x000000000000f7c6      0x9bd ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_info    0x0000000000010183     0x115c ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_info    0x00000000000112df      0x277 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_info    0x0000000000011556      0x926 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_info    0x0000000000011e7c     0x1d87 ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_info    0x0000000000013c03      0xdd1 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_abbrev   0x0000000000000000     0x2b1f
+ *(.debug_abbrev)
+ .debug_abbrev  0x0000000000000000      0x176 main.o
+ .debug_abbrev  0x0000000000000176      0x239 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_abbrev  0x00000000000003af      0x2b8 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_abbrev  0x0000000000000667      0x216 ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_abbrev  0x000000000000087d      0x1aa ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_abbrev  0x0000000000000a27      0x191 ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_abbrev  0x0000000000000bb8       0xe3 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_abbrev  0x0000000000000c9b      0x1b3 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_abbrev  0x0000000000000e4e      0x1d8 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_abbrev  0x0000000000001026      0x35f ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_abbrev  0x0000000000001385      0x1b1 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_abbrev  0x0000000000001536       0xf1 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_abbrev  0x0000000000001627      0x15f ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_abbrev  0x0000000000001786       0xe9 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_abbrev  0x000000000000186f      0x10d ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_abbrev  0x000000000000197c      0x13f ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_abbrev  0x0000000000001abb      0x275 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_abbrev  0x0000000000001d30      0x14b ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_abbrev  0x0000000000001e7b      0x132 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_abbrev  0x0000000000001fad      0x102 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_abbrev  0x00000000000020af      0x1c2 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_abbrev  0x0000000000002271      0x212 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_abbrev  0x0000000000002483       0xf0 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_abbrev  0x0000000000002573      0x1c7 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_abbrev  0x000000000000273a      0x202 ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_abbrev  0x000000000000293c      0x1e3 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_line     0x0000000000000000     0x4bfc
+ *(.debug_line)
+ .debug_line    0x0000000000000000      0x23e main.o
+ .debug_line    0x000000000000023e      0x383 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_line    0x00000000000005c1      0x85e ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_line    0x0000000000000e1f      0x41e ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_line    0x000000000000123d      0x1c5 ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_line    0x0000000000001402      0x1bf ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_line    0x00000000000015c1      0x11f ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_line    0x00000000000016e0      0x326 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_line    0x0000000000001a06      0x900 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_line    0x0000000000002306      0x50e ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_line    0x0000000000002814      0x19c ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_line    0x00000000000029b0      0x12f ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_line    0x0000000000002adf      0x152 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_line    0x0000000000002c31      0x13a ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_line    0x0000000000002d6b      0x10e ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_line    0x0000000000002e79      0x1f5 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_line    0x000000000000306e      0x39a ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_line    0x0000000000003408      0x120 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_line    0x0000000000003528      0x142 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_line    0x000000000000366a      0x110 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_line    0x000000000000377a      0x2f6 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_line    0x0000000000003a70      0x260 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_line    0x0000000000003cd0       0xd9 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_line    0x0000000000003da9      0x22c ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_line    0x0000000000003fd5      0x9f2 ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_line    0x00000000000049c7      0x235 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_frame    0x0000000000000000     0x2704
+ *(.debug_frame)
+ .debug_frame   0x0000000000000000       0x38 main.o
+ .debug_frame   0x0000000000000038      0x110 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_frame   0x0000000000000148      0x170 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_frame   0x00000000000002b8      0x2ec ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_frame   0x00000000000005a4       0xec ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_frame   0x0000000000000690       0x94 ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_frame   0x0000000000000724       0x64 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_frame   0x0000000000000788      0x224 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_frame   0x00000000000009ac       0x4c ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_frame   0x00000000000009f8      0x4b4 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_frame   0x0000000000000eac       0x4c ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_frame   0x0000000000000ef8       0x44 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_frame   0x0000000000000f3c      0x224 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_frame   0x0000000000001160      0x1c4 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_frame   0x0000000000001324       0x8c ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_frame   0x00000000000013b0      0x1ec ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_frame   0x000000000000159c      0x5bc ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_frame   0x0000000000001b58       0x5c ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_frame   0x0000000000001bb4      0x210 ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_frame   0x0000000000001dc4      0x1e0 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_frame   0x0000000000001fa4      0x134 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_frame   0x00000000000020d8      0x1fc ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_frame   0x00000000000022d4       0x34 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_frame   0x0000000000002308       0x88 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_frame   0x0000000000002390      0x2cc ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_frame   0x000000000000265c       0xa8 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_str      0x0000000000000000     0x49af
+ *(.debug_str)
+ .debug_str     0x0000000000000000      0x6d8 main.o
+                                        0x7d0 (size before relaxing)
+ .debug_str     0x00000000000006d8      0x222 ../../bgdrtm/bgdrtm.a(dcbr.o)
+                                        0x982 (size before relaxing)
+ .debug_str     0x00000000000008fa      0x821 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+                                       0x110b (size before relaxing)
+ .debug_str     0x000000000000111b      0x295 ../../bgdrtm/bgdrtm.a(strings.o)
+                                        0x5a7 (size before relaxing)
+ .debug_str     0x00000000000013b0      0x313 ../../bgdrtm/bgdrtm.a(dirs.o)
+                                        0x3e2 (size before relaxing)
+ .debug_str     0x00000000000016c3       0xa5 ../../bgdrtm/bgdrtm.a(copy.o)
+                                        0x82f (size before relaxing)
+ .debug_str     0x0000000000001768       0x6a ../../bgdrtm/bgdrtm.a(misc.o)
+                                        0x15f (size before relaxing)
+ .debug_str     0x00000000000017d2      0x30f ../../bgdrtm/bgdrtm.a(instance.o)
+                                        0x62b (size before relaxing)
+ .debug_str     0x0000000000001ae1       0xeb ../../bgdrtm/bgdrtm.a(interpreter.o)
+                                        0x94c (size before relaxing)
+ .debug_str     0x0000000000001bcc      0x360 ../../bgdrtm/bgdrtm.a(files.o)
+                                        0x645 (size before relaxing)
+ .debug_str     0x0000000000001f2c       0xae ../../bgdrtm/bgdrtm.a(xctype.o)
+                                        0x33e (size before relaxing)
+ .debug_str     0x0000000000001fda       0x71 ../../bgdrtm/bgdrtm.a(mod_say.o)
+                                        0x422 (size before relaxing)
+ .debug_str     0x000000000000204b      0x191 ../../bgdrtm/bgdrtm.a(mod_string.o)
+                                        0x407 (size before relaxing)
+ .debug_str     0x00000000000021dc      0x10d ../../bgdrtm/bgdrtm.a(mod_math.o)
+                                        0x38d (size before relaxing)
+ .debug_str     0x00000000000022e9       0x86 ../../bgdrtm/bgdrtm.a(mod_time.o)
+                                        0x364 (size before relaxing)
+ .debug_str     0x000000000000236f      0x13d ../../bgdrtm/bgdrtm.a(mod_file.o)
+                                        0x54e (size before relaxing)
+ .debug_str     0x00000000000024ac      0x59a ../../bgdrtm/bgdrtm.a(mod_sound.o)
+                                        0xbc6 (size before relaxing)
+ .debug_str     0x0000000000002a46      0xd68 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+                                       0x107f (size before relaxing)
+ .debug_str     0x00000000000037ae      0x1e6 ../../bgdrtm/bgdrtm.a(libjoy.o)
+                                        0x48d (size before relaxing)
+ .debug_str     0x0000000000003994      0x182 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+                                        0x3de (size before relaxing)
+ .debug_str     0x0000000000003b16      0x153 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+                                        0x59d (size before relaxing)
+ .debug_str     0x0000000000003c69      0x191 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+                                        0x803 (size before relaxing)
+ .debug_str     0x0000000000003dfa       0x61 ../../bgdrtm/bgdrtm.a(mod_timers.o)
+                                        0x357 (size before relaxing)
+ .debug_str     0x0000000000003e5b      0x1d2 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+                                        0x4d1 (size before relaxing)
+ .debug_str     0x000000000000402d      0x8ff ../../bgdrtm/bgdrtm.a(regex.o)
+                                        0xc04 (size before relaxing)
+ .debug_str     0x000000000000492c       0x83 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+                                        0x6b0 (size before relaxing)
+
+.debug_loc      0x0000000000000000     0x5386
+ *(.debug_loc)
+ .debug_loc     0x0000000000000000       0x2c main.o
+ .debug_loc     0x000000000000002c      0x1b8 ../../bgdrtm/bgdrtm.a(dcbr.o)
+ .debug_loc     0x00000000000001e4      0x268 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_loc     0x000000000000044c      0x4fc ../../bgdrtm/bgdrtm.a(strings.o)
+ .debug_loc     0x0000000000000948      0x18c ../../bgdrtm/bgdrtm.a(dirs.o)
+ .debug_loc     0x0000000000000ad4       0xdc ../../bgdrtm/bgdrtm.a(copy.o)
+ .debug_loc     0x0000000000000bb0       0x84 ../../bgdrtm/bgdrtm.a(misc.o)
+ .debug_loc     0x0000000000000c34      0x3c8 ../../bgdrtm/bgdrtm.a(instance.o)
+ .debug_loc     0x0000000000000ffc       0x58 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_loc     0x0000000000001054     0x1705 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_loc     0x0000000000002759      0x371 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_loc     0x0000000000002aca       0x58 ../../bgdrtm/bgdrtm.a(mod_say.o)
+ .debug_loc     0x0000000000002b22      0x3c8 ../../bgdrtm/bgdrtm.a(mod_string.o)
+ .debug_loc     0x0000000000002eea      0x318 ../../bgdrtm/bgdrtm.a(mod_math.o)
+ .debug_loc     0x0000000000003202       0xdc ../../bgdrtm/bgdrtm.a(mod_time.o)
+ .debug_loc     0x00000000000032de      0x344 ../../bgdrtm/bgdrtm.a(mod_file.o)
+ .debug_loc     0x0000000000003622      0xa50 ../../bgdrtm/bgdrtm.a(mod_sound.o)
+ .debug_loc     0x0000000000004072       0x84 ../../bgdrtm/bgdrtm.a(libsdlhandler.o)
+ .debug_loc     0x00000000000040f6      0x39c ../../bgdrtm/bgdrtm.a(libjoy.o)
+ .debug_loc     0x0000000000004492      0x344 ../../bgdrtm/bgdrtm.a(mod_joy.o)
+ .debug_loc     0x00000000000047d6      0x210 ../../bgdrtm/bgdrtm.a(mod_proc.o)
+ .debug_loc     0x00000000000049e6      0x344 ../../bgdrtm/bgdrtm.a(mod_sort.o)
+ .debug_loc     0x0000000000004d2a       0x2c ../../bgdrtm/bgdrtm.a(mod_timers.o)
+ .debug_loc     0x0000000000004d56       0xb0 ../../bgdrtm/bgdrtm.a(mod_regex.o)
+ .debug_loc     0x0000000000004e06      0x478 ../../bgdrtm/bgdrtm.a(regex.o)
+ .debug_loc     0x000000000000527e      0x108 ../../bgdrtm/bgdrtm.a(varspace_file.o)
+
+.debug_macinfo
+ *(.debug_macinfo)
+
+.debug_weaknames
+ *(.debug_weaknames)
+
+.debug_funcnames
+ *(.debug_funcnames)
+
+.debug_typenames
+ *(.debug_typenames)
+
+.debug_varnames
+ *(.debug_varnames)
+
+.debug_pubtypes
+ *(.debug_pubtypes)
+
+.debug_ranges   0x0000000000000000      0x250
+ *(.debug_ranges)
+ .debug_ranges  0x0000000000000000       0x18 main.o
+ .debug_ranges  0x0000000000000018       0x30 ../../bgdrtm/bgdrtm.a(sysprocs.o)
+ .debug_ranges  0x0000000000000048       0x18 ../../bgdrtm/bgdrtm.a(interpreter.o)
+ .debug_ranges  0x0000000000000060       0x60 ../../bgdrtm/bgdrtm.a(files.o)
+ .debug_ranges  0x00000000000000c0       0xf8 ../../bgdrtm/bgdrtm.a(xctype.o)
+ .debug_ranges  0x00000000000001b8       0x98 ../../bgdrtm/bgdrtm.a(regex.o)
+
+.gnu.attributes
+ *(.gnu.attributes)
+
+/DISCARD/
+ *(.note.GNU-stack)
+ *(.gnu_debuglink)
+ *(.gnu.lto_*)
+OUTPUT(/home/joseba/cvs/bennugd/console/core/bgdi/bgdi.elf elf32-i386)

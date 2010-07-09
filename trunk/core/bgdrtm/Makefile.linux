@@ -1,0 +1,175 @@
+#---------------------------------------------------------------------------------
+# Clear the implicit built in rules
+#---------------------------------------------------------------------------------
+.SUFFIXES:
+#---------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+%.a:
+#---------------------------------------------------------------------------------
+	@echo $(notdir $@)
+	@rm -f $@
+	@$(AR) -rc $@ $^
+
+#---------------------------------------------------------------------------------
+%.o: %.cpp
+	@echo $(notdir $<)
+	@$(CXX) -MMD -MP -MF $(DEPSDIR)/$*.d $(CXXFLAGS) -c $< -o $@ $(ERROR_FILTER)
+	
+#---------------------------------------------------------------------------------
+%.o: %.c
+	@echo $(notdir $<)
+	@$(CC) -MMD -MP -MF $(DEPSDIR)/$*.d $(CFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
+#---------------------------------------------------------------------------------
+%.o: %.m
+	@echo $(notdir $<)
+	@$(CC) -MMD -MP -MF $(DEPSDIR)/$*.d $(OBJCFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
+#---------------------------------------------------------------------------------
+%.o: %.s
+	@echo $(notdir $<)
+	@$(CC) -MMD -MP -MF $(DEPSDIR)/$*.d -x assembler-with-cpp $(ASFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
+#---------------------------------------------------------------------------------
+%.o: %.S
+	@echo $(notdir $<)
+	@$(CC) -MMD -MP -MF $(DEPSDIR)/$*.d -x assembler-with-cpp $(ASFLAGS) -c $< -o $@ $(ERROR_FILTER)
+
+#---------------------------------------------------------------------------------
+%.elf:
+	@echo linking ... $(notdir $@)
+	$(LD)  $^ $(LDFLAGS) $(LIBPATHS) $(LIBS) -o $@
+
+#---------------------------------------------------------------------------------
+# canned command sequence for binary data
+#---------------------------------------------------------------------------------
+define bin2o
+	bin2s -a 32 $< | $(AS) -o $(@)
+	echo "extern const u8" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"_end[];" > `(echo $(<F) | tr . _)`.h
+	echo "extern const u8" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`"[];" >> `(echo $(<F) | tr . _)`.h
+	echo "extern const u32" `(echo $(<F) | sed -e 's/^\([0-9]\)/_\1/' | tr . _)`_size";" >> `(echo $(<F) | tr . _)`.h
+endef
+
+
+
+
+#---------------------------------------------------------------------------------
+# TARGET is the name of the output
+# BUILD is the directory where object files & intermediate files will be placed
+# SOURCES is a list of directories containing source code
+# INCLUDES is a list of directories containing extra header files
+#---------------------------------------------------------------------------------
+TARGET		:=	bgdrtm
+BUILD     :=	build
+SOURCES		:=	src
+INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ \
+                        ../../modules/mod_math/ ../../modules/mod_time/ ../../modules/mod_file/ \
+                        ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
+                        ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
+                        ../../modules/mod_timers/ ../../modules/mod_regex/
+
+#---------------------------------------------------------------------------------
+# options for code generation
+#---------------------------------------------------------------------------------
+
+CFLAGS		=	-g -O0 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_LINUX -DVERSION='"1.0"' $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
+CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
+LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+
+#---------------------------------------------------------------------------------
+# any extra libraries we wish to link with the project
+#---------------------------------------------------------------------------------
+LIBS := -lc -lm
+#---------------------------------------------------------------------------------
+# list of directories containing libraries, this must be the top level containing
+# include and lib
+#---------------------------------------------------------------------------------
+LIBDIRS	:= $(CURDIR)
+
+#---------------------------------------------------------------------------------
+# no real need to edit anything past this point unless you need to add additional
+# rules for different file extensions
+#---------------------------------------------------------------------------------
+ifneq ($(BUILD),$(notdir $(CURDIR)))
+#---------------------------------------------------------------------------------
+
+export OUTPUT	:=	$(CURDIR)/$(TARGETDIR)/$(TARGET)
+export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir))
+export DEPSDIR	:=	$(CURDIR)/$(BUILD)
+
+#---------------------------------------------------------------------------------
+# automatically build a list of object files for our project
+#---------------------------------------------------------------------------------
+CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
+              interpreter.c varspace_file.c \
+              ../../common/debug.c \
+              ../../common/files.c \
+              ../../common/xctype.c \
+              ../../../modules/mod_say/mod_say.c \
+              ../../../modules/mod_string/mod_string.c \
+              ../../../modules/mod_math/mod_math.c \
+              ../../../modules/mod_time/mod_time.c \
+              ../../../modules/mod_file/mod_file.c \
+              ../../../modules/mod_sound/mod_sound.c \
+              ../../../modules/libsdlhandler/libsdlhandler.c \
+              ../../../modules/libjoy/libjoy.c \
+              ../../../modules/mod_joy/mod_joy.c \
+              ../../../modules/mod_proc/mod_proc.c \
+              ../../../modules/mod_sort/mod_sort.c \
+              ../../../modules/mod_timers/mod_timers.c \
+              ../../../modules/mod_regex/mod_regex.c \
+              ../../../modules/mod_regex/regex.c
+
+#---------------------------------------------------------------------------------
+# use CXX for linking C++ projects, CC for standard C
+#---------------------------------------------------------------------------------
+export LD	:=	$(CC)
+
+export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
+					$(sFILES:.s=.o) $(SFILES:.S=.o)
+
+#---------------------------------------------------------------------------------
+# build a list of include paths
+#---------------------------------------------------------------------------------
+export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
+					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
+					-I$(CURDIR)/$(BUILD) -I/usr/include \
+					-I/usr/include/SDL
+
+#---------------------------------------------------------------------------------
+# build a list of library paths
+#---------------------------------------------------------------------------------
+export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
+					-L/usr/lib
+
+export OUTPUT	:=	$(CURDIR)/$(TARGET)
+.PHONY: $(BUILD) clean
+
+#---------------------------------------------------------------------------------
+$(BUILD):
+	@[ -d $@ ] || mkdir -p $@
+	make -C $(BUILD) -f $(CURDIR)/Makefile.linux
+
+#---------------------------------------------------------------------------------
+clean:
+	@echo clean ...
+	@rm -fr $(BUILD) $(TARGET).a
+
+#---------------------------------------------------------------------------------
+else
+
+DEPENDS	:=	$(OFILES:.o=.d)
+
+#---------------------------------------------------------------------------------
+# main targets
+#---------------------------------------------------------------------------------
+$(OUTPUT).a: $(OFILES)
+	@echo Gonna link $(OUTPUT).a
+	@ar crs $@ $(OFILES)
+	@echo done linking
+
+-include $(DEPENDS)
+
+#---------------------------------------------------------------------------------
+endif
+#---------------------------------------------------------------------------------
