@@ -67,7 +67,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
-                ../../modules/libblit/
+                ../../modules/libblit/ ../../modules/libvideo/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -129,7 +129,9 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/libgrbase/libgrbase.c \
               ../../../modules/libblit/g_blit.c \
               ../../../modules/libblit/g_pixel.c \
-              ../../../modules/libblit/libblit.c
+              ../../../modules/libblit/libblit.c \
+              ../../../modules/libvideo/g_regions.c \
+              ../../../modules/libvideo/g_video.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
