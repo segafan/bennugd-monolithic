@@ -45,6 +45,7 @@
 #include <mod_regex_symbols.h>
 #include <libgrbase_symbols.h>
 #include <libblit_symbols.h>
+#include <libvideo_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -259,6 +260,7 @@ basic_symbols symbol_list[] =
 	{ "libjoy.so"       , libjoy_modules_dependency, libjoy_constants_def, NULL, NULL, NULL, NULL },
 	{ "libgrbase.so"    , NULL, NULL, NULL, libgrbase_globals_def, NULL, NULL },
 	{ "libblit.so"      , NULL, libblit_constants_def, NULL, NULL, NULL, NULL },
+	{ "libvideo.so"     , libvideo_modules_dependency, libvideo_constants_def, NULL, libvideo_globals_def, NULL, NULL },
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -282,6 +284,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, libjoy_module_initialize, libjoy_module_finalize, NULL, NULL, NULL, NULL }, //libjoy
 	{ libgrbase_globals_fixup, NULL, libgrbase_module_initialize, NULL, NULL, NULL, NULL, NULL }, //libgrbase
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libblit
+	{ libvideo_globals_fixup, NULL, libvideo_module_initialize, libvideo_module_finalize, NULL, NULL, NULL, NULL }, //libvideo
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
