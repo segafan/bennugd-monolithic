@@ -55,6 +55,7 @@
 #include <mod_dir_symbols.h>
 #include <libtext_symbols.h>
 #include <mod_text_symbols.h>
+#include <mod_rand_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -290,6 +291,7 @@ basic_symbols symbol_list[] =
 	{ "mod_map.so"      , mod_map_modules_dependency, mod_map_constants_def, NULL, NULL, NULL, mod_map_functions_exports },
 	{ "mod_dir.so"      , NULL, NULL, NULL, mod_dir_globals_def, NULL, mod_dir_functions_exports },
 	{ "mod_text.so"     , mod_text_modules_dependency, mod_text_constants_def, NULL, NULL, NULL, mod_text_functions_exports },
+	{ "mod_rand.so"     , NULL, NULL, NULL, NULL, NULL, NULL },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -323,6 +325,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_map
 	{ mod_dir_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_dir
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_text
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_rand
 };
 #endif
 
