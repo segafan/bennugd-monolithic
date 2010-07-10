@@ -63,6 +63,7 @@
 #include <mod_key_symbols.h>
 #include <mod_draw_symbols.h>
 #include <mod_screen_symbols.h>
+#include <mod_path_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -307,6 +308,7 @@ basic_symbols symbol_list[] =
 	{ "mod_key.so"      , mod_key_modules_dependency, NULL, NULL, NULL, NULL, mod_key_functions_exports },
 	{ "mod_draw.so"     , mod_draw_modules_dependency, NULL, NULL, NULL, NULL, mod_draw_functions_exports },
 	{ "mod_screen.so"   , mod_screen_modules_dependency, NULL, NULL, NULL, NULL, mod_screen_functions_exports },
+	{ "mod_path.so"     , mod_path_modules_dependency, NULL, NULL, NULL, NULL, mod_path_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -349,6 +351,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_key
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_draw
 	{ mod_screen_globals_fixup, mod_screen_locals_fixup, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_screen
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_path
 };
 #endif
 
