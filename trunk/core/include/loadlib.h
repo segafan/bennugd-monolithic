@@ -282,6 +282,7 @@ basic_symbols symbol_list[] =
 	{ "libtext.so"      , libtext_modules_dependency, NULL, NULL, libtext_globals_def, NULL, NULL },
 	{ "libscroll.so"    , libscroll_modules_dependency, libscroll_constants_def, NULL, libscroll_globals_def, libscroll_locals_def, NULL },
 	{ "libkey.so"       , libkey_modules_dependency, libkey_constants_def, NULL, libkey_globals_def, NULL, NULL},
+	{ "libdraw.so"      , NULL, NULL, NULL, NULL, NULL, NULL },
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -321,6 +322,7 @@ extra_symbols symbol_list_runtime[] =
 	{ libtext_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libtext
 	{ libscroll_globals_fixup, libscroll_locals_fixup, NULL, NULL, NULL, NULL, NULL, NULL }, //libscroll
 	{ libkey_globals_fixup, NULL, libkey_module_initialize, libkey_module_finalize, NULL, NULL, NULL, libkey_handler_hooks }, //libkey
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libdraw
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
