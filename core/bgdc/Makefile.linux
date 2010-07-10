@@ -73,7 +73,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/ \
                 ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
                 ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
-                ../../modules/libkey/ ../../modules/mod_key/
+                ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/
 
 #---------------------------------------------------------------------------------
 # options for code generation
