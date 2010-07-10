@@ -1,0 +1,28 @@
+#summary Status of the BennuGD port
+#labels Featured,Phase-Implementation
+
+= Introduction =
+
+This page describes the status of the BennuGD port and its various modules.
+
+= Details =
+
+Integrated components:
+  * *bgdc*
+  * *bgdrtm*
+  * *bgdi*
+  * *mod_file*
+  * *mod_joy*
+  * *mod_map*
+  * *mod_math*
+  * *mod_mouse*
+  * *mod_proc*
+  * *mod_regex*
+  * *mod_say*
+  * *mod_sort*
+  * *mod_sound*
+  * *mod_string*
+  * *mod_time*
+  * *mod_timers*
+  * *mod_video*
+  * All the lower level libs needed to make the modules work.
