@@ -59,6 +59,8 @@
 #include <mod_grproc_symbols.h>
 #include <libscroll_symbols.h>
 #include <mod_scroll_symbols.h>
+#include <libkey_symbols.h>
+#include <mod_key_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -279,6 +281,7 @@ basic_symbols symbol_list[] =
 	{ "libfont.so"      , libfont_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	{ "libtext.so"      , libtext_modules_dependency, NULL, NULL, libtext_globals_def, NULL, NULL },
 	{ "libscroll.so"    , libscroll_modules_dependency, libscroll_constants_def, NULL, libscroll_globals_def, libscroll_locals_def, NULL },
+	{ "libkey.so"       , libkey_modules_dependency, libkey_constants_def, NULL, libkey_globals_def, NULL, NULL},
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -298,6 +301,7 @@ basic_symbols symbol_list[] =
 	{ "mod_rand.so"     , NULL, NULL, NULL, NULL, NULL, mod_rand_functions_exports },
 	{ "mod_grproc.so"   , mod_grproc_modules_dependency, NULL, NULL, NULL, mod_grproc_locals_def, mod_grproc_functions_exports },
 	{ "mod_scroll.so"   , mod_scroll_modules_dependency, NULL, NULL, NULL, NULL, mod_scroll_functions_exports },
+	{ "mod_key.so"      , mod_key_modules_dependency, NULL, NULL, NULL, NULL, mod_key_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -316,6 +320,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, libfont_module_initialize, NULL, NULL, NULL, NULL, NULL }, //libfont
 	{ libtext_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libtext
 	{ libscroll_globals_fixup, libscroll_locals_fixup, NULL, NULL, NULL, NULL, NULL, NULL }, //libscroll
+	{ libkey_globals_fixup, NULL, libkey_module_initialize, libkey_module_finalize, NULL, NULL, NULL, libkey_handler_hooks }, //libkey
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
@@ -335,6 +340,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_rand
 	{ mod_grproc_globals_fixup, mod_grproc_locals_fixup, mod_grproc_module_initialize, NULL, NULL, NULL, mod_grproc_process_exec_hook, NULL }, //mod_grproc
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_scroll
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_key
 };
 #endif
 
