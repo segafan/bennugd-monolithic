@@ -67,7 +67,8 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
-                ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/
+                ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
+                ../../modules/mod_video/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -142,7 +143,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/librender/scaler_hq2x.c \
               ../../../modules/librender/scaler_normal.c \
               ../../../modules/librender/scaler_scale2x.c \
-              ../../../modules/librender/scaler_scanline.c              
+              ../../../modules/librender/scaler_scanline.c \
+              ../../../modules/mod_video/mod_video.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
