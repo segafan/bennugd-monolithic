@@ -75,7 +75,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
                 ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
                 ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
-                ../../modules/mod_effects/
+                ../../modules/mod_effects/ ../../modules/mod_blendop/
 
 #---------------------------------------------------------------------------------
 # options for code generation
