@@ -70,7 +70,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
                 ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
                 ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
-                ../../modules/mod_map/ ../../modules/libfont/
+                ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/
 
 #---------------------------------------------------------------------------------
 # options for code generation
