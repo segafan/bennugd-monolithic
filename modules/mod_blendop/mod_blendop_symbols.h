@@ -21,24 +21,49 @@
  *
  */
 
-#ifndef __MODSAY_SYMBOLS_H
-#define __MODSAY_SYMBOLS_H
+#ifndef __MODBLENDOP_SYMBOLS_H
+#define __MODBLENDOP_SYMBOLS_H
 
 #include <bgddl.h>
 
 #ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_create_blendop( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_apply( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_assign( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_free( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_identity( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_grayscale( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_translucency( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_intensity( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_swap( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modblendop_tint( INSTANCE * my, int * params );
 #endif
 
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
+/* ---------------------------------------------------------------------- */
 
-DLSYSFUNCS  __bgdexport( mod_say, functions_exports )[] =
+DLSYSFUNCS __bgdexport( mod_blendop, functions_exports)[] =
 {
-    { "SAY"     , "S", TYPE_UNDEFINED, SYSMACRO(modsay_say)     },
-    { "SAY_FAST", "S", TYPE_UNDEFINED, SYSMACRO(modsay_say_fast)},
-    { 0         , 0  , 0             , 0              }
+    /* Blendops */
+    { "BLENDOP_NEW"          , ""      , TYPE_INT   , SYSMACRO(modblendop_create_blendop) },
+    { "BLENDOP_IDENTITY"     , "I"     , TYPE_INT   , SYSMACRO(modblendop_identity)       },
+    { "BLENDOP_TINT"         , "IFIII" , TYPE_INT   , SYSMACRO(modblendop_tint)           },
+    { "BLENDOP_TRANSLUCENCY" , "IF"    , TYPE_INT   , SYSMACRO(modblendop_translucency)   },
+    { "BLENDOP_INTENSITY"    , "IF"    , TYPE_INT   , SYSMACRO(modblendop_intensity)      },
+    { "BLENDOP_SWAP"         , "I"     , TYPE_INT   , SYSMACRO(modblendop_swap)           },
+    { "BLENDOP_ASSIGN"       , "III"   , TYPE_INT   , SYSMACRO(modblendop_assign)         },
+    { "BLENDOP_APPLY"        , "III"   , TYPE_INT   , SYSMACRO(modblendop_apply)          },
+    { "BLENDOP_FREE"         , "I"     , TYPE_INT   , SYSMACRO(modblendop_free)           },
+    { "BLENDOP_GRAYSCALE"    , "II"    , TYPE_INT   , SYSMACRO(modblendop_grayscale)      },
+
+    { 0                      , 0       , 0          , 0                                 }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_blendop, modules_dependency )[] =
+{
+    "libgrbase",
+    NULL
 };
 
 #endif

@@ -65,6 +65,7 @@
 #include <mod_screen_symbols.h>
 #include <mod_path_symbols.h>
 #include <mod_effects_symbols.h>
+#include <mod_blendop_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -311,6 +312,7 @@ basic_symbols symbol_list[] =
 	{ "mod_screen.so"   , mod_screen_modules_dependency, NULL, NULL, NULL, NULL, mod_screen_functions_exports },
 	{ "mod_path.so"     , mod_path_modules_dependency, NULL, NULL, NULL, NULL, mod_path_functions_exports },
 	{ "mod_effects.so"  , mod_effects_modules_dependency, mod_effects_constants_def, NULL, NULL, NULL, mod_effects_functions_exports },
+	{ "mod_blendop.so"  , mod_blendop_modules_dependency, NULL, NULL, NULL, NULL, mod_blendop_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -355,6 +357,7 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_screen_globals_fixup, mod_screen_locals_fixup, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_screen
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_path
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_effects
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_blendop
 };
 #endif
 
