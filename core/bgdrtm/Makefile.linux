@@ -69,7 +69,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
                 ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
                 ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
-                ../../modules/mod_map/ ../../modules/libfont/
+                ../../modules/mod_map/ ../../modules/libfont/ ../../modules/mod_dir/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -154,7 +154,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_map/file_pcx.c \
               ../../../modules/mod_map/file_png.c \
               ../../../modules/mod_map/mod_map.c \
-              ../../../modules/libfont/libfont.c          
+              ../../../modules/libfont/libfont.c \
+              ../../../modules/mod_dir/mod_dir.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

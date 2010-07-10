@@ -21,8 +21,8 @@
  *
  */
 
-#ifndef __MODSAY_H
-#define __MODSAY_H
+#ifndef __MODSAY_SYMBOLS_H
+#define __MODSAY_SYMBOLS_H
 
 #include <bgddl.h>
 
