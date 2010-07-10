@@ -72,7 +72,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
                 ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/ \
                 ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
-                ../../modules/mod_grproc/ ../../modules/libscroll/
+                ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/
 
 #---------------------------------------------------------------------------------
 # options for code generation

@@ -58,6 +58,7 @@
 #include <mod_rand_symbols.h>
 #include <mod_grproc_symbols.h>
 #include <libscroll_symbols.h>
+#include <mod_scroll_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -296,6 +297,7 @@ basic_symbols symbol_list[] =
 	{ "mod_text.so"     , mod_text_modules_dependency, mod_text_constants_def, NULL, NULL, NULL, mod_text_functions_exports },
 	{ "mod_rand.so"     , NULL, NULL, NULL, NULL, NULL, mod_rand_functions_exports },
 	{ "mod_grproc.so"   , mod_grproc_modules_dependency, NULL, NULL, NULL, mod_grproc_locals_def, mod_grproc_functions_exports },
+	{ "mod_scroll.so"   , mod_scroll_modules_dependency, NULL, NULL, NULL, NULL, mod_scroll_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -332,6 +334,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_text
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_rand
 	{ mod_grproc_globals_fixup, mod_grproc_locals_fixup, mod_grproc_module_initialize, NULL, NULL, NULL, mod_grproc_process_exec_hook, NULL }, //mod_grproc
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_scroll
 };
 #endif
 
