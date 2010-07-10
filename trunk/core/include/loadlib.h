@@ -47,6 +47,7 @@
 #include <libblit_symbols.h>
 #include <libvideo_symbols.h>
 #include <librender_symbols.h>
+#include <mod_video_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -274,6 +275,7 @@ basic_symbols symbol_list[] =
 	{ "mod_sort.so"     , NULL, NULL, NULL, NULL, NULL, mod_sort_functions_exports },
 	{ "mod_timers.so"   , NULL, NULL, NULL, mod_timers_globals_def, NULL, NULL },
 	{ "mod_regex.so"    , NULL, NULL, NULL, mod_regex_globals_def, NULL, mod_regex_functions_exports },
+	{ "mod_video.so"    , mod_video_modules_dependency, NULL, NULL, NULL, NULL, mod_video_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -299,6 +301,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sort
 	{ mod_timers_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, mod_timers_handler_hooks }, //mod_timers
 	{ mod_regex_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_regex
+	{ mod_video_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_video
 };
 #endif
 
