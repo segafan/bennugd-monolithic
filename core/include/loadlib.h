@@ -61,6 +61,7 @@
 #include <mod_scroll_symbols.h>
 #include <libkey_symbols.h>
 #include <mod_key_symbols.h>
+#include <mod_draw_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -303,6 +304,7 @@ basic_symbols symbol_list[] =
 	{ "mod_grproc.so"   , mod_grproc_modules_dependency, NULL, NULL, NULL, mod_grproc_locals_def, mod_grproc_functions_exports },
 	{ "mod_scroll.so"   , mod_scroll_modules_dependency, NULL, NULL, NULL, NULL, mod_scroll_functions_exports },
 	{ "mod_key.so"      , mod_key_modules_dependency, NULL, NULL, NULL, NULL, mod_key_functions_exports },
+	{ "mod_draw.so"     , mod_draw_modules_dependency, NULL, NULL, NULL, NULL, mod_draw_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -343,6 +345,7 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_grproc_globals_fixup, mod_grproc_locals_fixup, mod_grproc_module_initialize, NULL, NULL, NULL, mod_grproc_process_exec_hook, NULL }, //mod_grproc
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_scroll
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_key
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_draw
 };
 #endif
 
