@@ -53,6 +53,7 @@
 #include <mod_map_symbols.h>
 #include <libfont_symbols.h>
 #include <mod_dir_symbols.h>
+#include <libtext_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -271,6 +272,7 @@ basic_symbols symbol_list[] =
 	{ "librender.so"    , librender_modules_dependency, librender_constants_def, NULL, librender_globals_def, librender_locals_def, NULL },
 	{ "libmouse.so"     , libmouse_modules_dependency, NULL, NULL, libmouse_globals_def, NULL, NULL },
 	{ "libfont.so"      , libfont_modules_dependency, NULL, NULL, NULL, NULL, NULL },
+	{ "libtext.so"      , libtext_modules_dependency, NULL, NULL, libtext_globals_def, NULL, NULL },
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -302,6 +304,7 @@ extra_symbols symbol_list_runtime[] =
 	{ librender_globals_fixup, librender_locals_fixup, librender_module_initialize, librender_module_finalize, librender_instance_create_hook, librender_instance_destroy_hook, NULL, librender_handler_hooks }, //librender
 	{ libmouse_globals_fixup, NULL, libmouse_module_initialize, NULL, NULL, NULL, NULL, libmouse_handler_hooks}, //libmouse
 	{ NULL, NULL, libfont_module_initialize, NULL, NULL, NULL, NULL, NULL }, //libfont
+	{ libtext_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libtext
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
