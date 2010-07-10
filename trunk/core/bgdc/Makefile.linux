@@ -71,7 +71,8 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
                 ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
                 ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/ \
-                ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/
+                ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
+                ../../modules/mod_grproc/ ../../modules/libscroll/
 
 #---------------------------------------------------------------------------------
 # options for code generation
