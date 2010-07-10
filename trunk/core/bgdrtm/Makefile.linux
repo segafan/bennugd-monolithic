@@ -71,7 +71,8 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
                 ../../modules/mod_map/ ../../modules/libfont/ ../../modules/mod_dir/ \
                 ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
-                ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/
+                ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
+                ../../modules/libkey/ ../../modules/mod_key/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -163,7 +164,9 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_rand/mod_rand.c \
               ../../../modules/mod_grproc/mod_grproc.c \
               ../../../modules/libscroll/libscroll.c \
-              ../../../modules/mod_scroll/mod_scroll.c
+              ../../../modules/mod_scroll/mod_scroll.c \
+              ../../../modules/libkey/libkey.c \
+              ../../../modules/mod_key/mod_key.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
