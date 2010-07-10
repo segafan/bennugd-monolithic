@@ -50,6 +50,8 @@
 #include <mod_video_symbols.h>
 #include <libmouse_symbols.h>
 #include <mod_mouse_symbols.h>
+#include <mod_map_symbols.h>
+#include <libfont_symbols.h>
 #endif
 #include <unistd.h>
 #include <stdlib.h>
@@ -267,6 +269,7 @@ basic_symbols symbol_list[] =
 	{ "libvideo.so"     , libvideo_modules_dependency, libvideo_constants_def, NULL, libvideo_globals_def, NULL, NULL },
 	{ "librender.so"    , librender_modules_dependency, librender_constants_def, NULL, librender_globals_def, librender_locals_def, NULL },
 	{ "libmouse.so"     , libmouse_modules_dependency, NULL, NULL, libmouse_globals_def, NULL, NULL },
+	{ "libfont.so"      , libfont_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
@@ -280,6 +283,7 @@ basic_symbols symbol_list[] =
 	{ "mod_regex.so"    , NULL, NULL, NULL, mod_regex_globals_def, NULL, mod_regex_functions_exports },
 	{ "mod_video.so"    , mod_video_modules_dependency, NULL, NULL, NULL, NULL, mod_video_functions_exports },
 	{ "mod_mouse.so"    , mod_mouse_modules_dependency, NULL, NULL, NULL, NULL, NULL },
+	{ "mod_map.so"      , mod_map_modules_dependency, mod_map_constants_def, NULL, NULL, NULL, mod_map_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -295,6 +299,7 @@ extra_symbols symbol_list_runtime[] =
 	{ libvideo_globals_fixup, NULL, libvideo_module_initialize, libvideo_module_finalize, NULL, NULL, NULL, NULL }, //libvideo
 	{ librender_globals_fixup, librender_locals_fixup, librender_module_initialize, librender_module_finalize, librender_instance_create_hook, librender_instance_destroy_hook, NULL, librender_handler_hooks }, //librender
 	{ libmouse_globals_fixup, NULL, libmouse_module_initialize, NULL, NULL, NULL, NULL, libmouse_handler_hooks}, //libmouse
+	{ NULL, NULL, libfont_module_initialize, NULL, NULL, NULL, NULL, NULL }, //libfont
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
@@ -308,6 +313,7 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_regex_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_regex
 	{ mod_video_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_video
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mouse
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_map
 };
 #endif
 

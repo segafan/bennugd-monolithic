@@ -68,7 +68,8 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
                 ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
                 ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
-                ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/
+                ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
+                ../../modules/mod_map/ ../../modules/libfont/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -145,7 +146,15 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/librender/scaler_scale2x.c \
               ../../../modules/librender/scaler_scanline.c \
               ../../../modules/mod_video/mod_video.c \
-              ../../../modules/libmouse/libmouse.c
+              ../../../modules/libmouse/libmouse.c \
+              ../../../modules/mod_map/file_fnt.c \
+              ../../../modules/mod_map/file_fpg.c \
+              ../../../modules/mod_map/file_map.c \
+              ../../../modules/mod_map/file_pal.c \
+              ../../../modules/mod_map/file_pcx.c \
+              ../../../modules/mod_map/file_png.c \
+              ../../../modules/mod_map/mod_map.c \
+              ../../../modules/libfont/libfont.c          
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

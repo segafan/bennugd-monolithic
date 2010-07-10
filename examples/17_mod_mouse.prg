@@ -11,10 +11,10 @@ Private
 
 Begin
     // Check that we can set the video mode before actually setting it
-    if(!mode_is_ok(640, 480, 16, MODE_FULLSCREEN))
+    if(!mode_is_ok(640, 480, 16, MODE_WINDOW))
         return -1;
     end;
-    set_mode(640, 480, 16, MODE_FULLSCREEN);
+    set_mode(640, 480, 16, MODE_WINDOW);
     // Load a few things and display them
     mouse.graph = png_load("mouse.png");
     song = load_song("game.s3m");
