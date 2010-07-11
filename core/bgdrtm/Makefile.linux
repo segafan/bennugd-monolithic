@@ -74,7 +74,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
                 ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
                 ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
-                ../../modules/mod_effects/ ../../modules/mod_blendop/
+                ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -174,7 +174,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_screen/mod_screen.c \
               ../../../modules/mod_path/mod_path.c \
               ../../../modules/mod_effects/mod_effects.c \
-              ../../../modules/mod_blendop/mod_blendop.c
+              ../../../modules/mod_blendop/mod_blendop.c \
+              ../../../modules/mod_m7/mod_m7.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

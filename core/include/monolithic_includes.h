@@ -58,5 +58,6 @@
 #include <mod_path_symbols.h>
 #include <mod_effects_symbols.h>
 #include <mod_blendop_symbols.h>
+#include <mod_m7_symbols.h>
 
 #endif
