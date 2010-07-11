@@ -1,0 +1,18 @@
+#summary Getting started with BennuGD-monolithic on PSP.
+#labels Phase-Deploy
+
+= Introduction =
+
+This page describes how to get BennuGD-monolithic working on your PSP. This approach is in very very alpha stage, so don't expect too much.
+
+
+= Requirements =
+
+The following is needed in order to run BennuGD-monolithic on PSP:
+  * a homebrew capable PSP: any PSP capable of running unsigned code is fine. Be it a pandorized 2000 series or 3000 series (plus TA88v3 MB) with ChickHEN exploit running does not matter. Note that ChickHEN only works in firmwares up to version 5.03. If you have a more recent version you should look for another way to run unsigned code.
+
+Please note that PSP-Go and PSP-3000 with firmware version newer than 5.50 will not be "officialy" supported simply because I don't have one to test. So we are not covering these cases for now. There is a PLAN to do so in the future.
+
+= Running BennuGD-monolithic =
+
+BennuGD is an ordinary homebrew application. One should load it with the same steps which loads every other homebrews (emulators, media players, etc).
