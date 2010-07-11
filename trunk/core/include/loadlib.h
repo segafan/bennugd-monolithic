@@ -278,6 +278,7 @@ basic_symbols symbol_list[] =
 	{ "mod_path.so"     , mod_path_modules_dependency, NULL, NULL, NULL, NULL, mod_path_functions_exports },
 	{ "mod_effects.so"  , mod_effects_modules_dependency, mod_effects_constants_def, NULL, NULL, NULL, mod_effects_functions_exports },
 	{ "mod_blendop.so"  , mod_blendop_modules_dependency, NULL, NULL, NULL, NULL, mod_blendop_functions_exports },
+	{ "mod_m7.so"       , mod_m7_modules_dependency, mod_m7_constants_def, NULL, mod_m7_globals_def, mod_m7_locals_def, mod_m7_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -323,6 +324,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_path
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_effects
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_blendop
+	{ mod_m7_globals_fixup, mod_m7_locals_fixup, mod_m7_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_m7
 };
 #endif
 
