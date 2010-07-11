@@ -18,7 +18,19 @@ include $(DEVKITPPC)/wii_rules
 TARGET		:=	bgdc
 BUILD     :=	build
 SOURCES		:=	src
-INCLUDES	:=	include ../include ../../modules/mod_say/
+INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ \
+                ../../modules/mod_math/ ../../modules/mod_time/ ../../modules/mod_file/ \
+                ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
+                ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
+                ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
+                ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
+                ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
+                ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/ \
+                ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
+                ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
+                ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
+                ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
+                ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/
 
 #---------------------------------------------------------------------------------
 # options for code generation
