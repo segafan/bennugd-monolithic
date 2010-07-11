@@ -15,4 +15,4 @@ Please note that PSP-Go and PSP-3000 with firmware version newer than 5.50 will 
 
 = Running BennuGD-monolithic =
 
-BennuGD is an ordinary homebrew application. One should load it with the same steps which loads every other homebrews (emulators, media players, etc).
+BennuGD is an ordinary homebrew application. One should load it with the same steps which loads every other homebrews (emulators, media players, etc). For now, BennuGD-monolithic does not have any kernel code so loading should be no problem. This may change in the future as the code evolves.
