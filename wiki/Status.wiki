@@ -11,17 +11,29 @@ Integrated components:
   * *bgdc*
   * *bgdrtm*
   * *bgdi*
+  * *mod_blendop*
+  * *mod_dir*
+  * *mod_draw*
+  * *mod_effects*
   * *mod_file*
+  * *mod_grproc*
   * *mod_joy*
+  * *mod_key*
+  * *mod_m7*
   * *mod_map*
   * *mod_math*
   * *mod_mouse*
+  * *mod_path*
   * *mod_proc*
+  * *mod_rand*
   * *mod_regex*
   * *mod_say*
+  * *mod_screen*
+  * *mod_scroll*
   * *mod_sort*
   * *mod_sound*
   * *mod_string*
+  * *mod_text*
   * *mod_time*
   * *mod_timers*
   * *mod_video*
