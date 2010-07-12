@@ -62,6 +62,7 @@
 #include <libwm_symbols.h>
 #include <mod_wm_symbols.h>
 #include <mod_sys_symbols.h>
+#include <mod_mem_symbols.h>
 
 typedef struct
 {
@@ -133,6 +134,7 @@ basic_symbols symbol_list[] =
 	{ "mod_m7.so"       , mod_m7_modules_dependency, mod_m7_constants_def, NULL, mod_m7_globals_def, mod_m7_locals_def, mod_m7_functions_exports },
 	{ "mod_wm.so"       , NULL, NULL, NULL, NULL, NULL, NULL },
 	{ "mod_sys.so"      , NULL, mod_sys_constants_def, NULL, NULL, NULL, mod_sys_functions_exports },
+	{ "mod_mem.so"      , NULL, NULL, NULL, NULL, NULL, mod_mem_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -182,6 +184,7 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_m7_globals_fixup, mod_m7_locals_fixup, mod_m7_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_m7
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wm
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sys
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mem
 };
 #endif
 
