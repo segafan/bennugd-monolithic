@@ -60,6 +60,7 @@
 #include <mod_blendop_symbols.h>
 #include <mod_m7_symbols.h>
 #include <libwm_symbols.h>
+#include <mod_wm_symbols.h>
 
 typedef struct
 {
@@ -129,6 +130,7 @@ basic_symbols symbol_list[] =
 	{ "mod_effects.so"  , mod_effects_modules_dependency, mod_effects_constants_def, NULL, NULL, NULL, mod_effects_functions_exports },
 	{ "mod_blendop.so"  , mod_blendop_modules_dependency, NULL, NULL, NULL, NULL, mod_blendop_functions_exports },
 	{ "mod_m7.so"       , mod_m7_modules_dependency, mod_m7_constants_def, NULL, mod_m7_globals_def, mod_m7_locals_def, mod_m7_functions_exports },
+	{ "mod_wm.so"       , NULL, NULL, NULL, NULL, NULL, NULL },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -176,6 +178,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_effects
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_blendop
 	{ mod_m7_globals_fixup, mod_m7_locals_fixup, mod_m7_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_m7
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wm
 };
 #endif
 
