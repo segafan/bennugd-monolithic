@@ -8,7 +8,20 @@ This page describes how to get BennuGD-monolithic working on your PSP. This appr
 
 = Requirements =
 
-The following is needed in order to run BennuGD-monolithic on PSP:
+The following is needed in order to run BennuGD-monolithic on PSP. Until now, these are the PSPs capable of running BennuGD:
+  * PSP-1000 or PSP-2000 without motherboard TA88v3
+  * PSP-2000 with motherboard TA88v3 and firmware version older or equal than 5.03
+  * PSP-2000 with motherboard TA88v3 and firmware version newer than 5.03
+  * PSP-3000 with firmware version older or equal than 5.03
+  * PSP-3000 with firmware version newer than 5.03
+  * PSP-Go
+  
+  == PSP-2000 series without TA88v3 motherboard ==
+These are the finest. Custom firmwares works really fine and they are the easier to get BennuGD running.
+
+  == PSP-2000 series with TA88v3 motherboard and firmware version older than 5.03 ==
+This needs some way to load unsigned code in the PSP. 
+
   * a homebrew capable PSP: any PSP capable of running unsigned code is fine. Be it a pandorized 2000 series or 3000 series (plus TA88v3 MB) with ChickHEN exploit running does not matter. Note that ChickHEN only works in firmwares up to version 5.03. If you have a more recent version you should look for another way to run unsigned code.
 
 Please note that PSP-Go and PSP-3000 with firmware version newer than 5.50 will not be "officialy" supported simply because I don't have one to test. So we are not covering these cases for now. There is a PLAN to do so in the future.
