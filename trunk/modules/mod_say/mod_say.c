@@ -36,10 +36,19 @@
 
 CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params )
 {
+#ifdef TARGET_WII
+	FILE *fd = fopen("stdout.txt", "a");
+
+	fprintf(fd, "%s\n", string_get( params[0] ));
+	fflush( fd );
+	string_discard( params[0] ) ;
+	fclose( fd );
+#else
     /* Show debugging info also in stdout */
     printf( "%s\n", string_get( params[0] ) );
     fflush( stdout );
     string_discard( params[0] ) ;
+#endif
     return 1 ;
 }
 
@@ -47,9 +56,17 @@ CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params )
 
 CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params )
 {
+#ifdef TARGET_WII
+	FILE *fd = fopen("stdout.txt", "a");
+
+	fprintf(fd, "%s\n", string_get( params[0] ));
+	string_discard( params[0] ) ;
+	fclose( fd );
+#else
     /* Show debugging info also in stdout */
     printf( "%s\n", string_get( params[0] ) );
     string_discard( params[0] ) ;
+#endif
     return 1 ;
 }
 
