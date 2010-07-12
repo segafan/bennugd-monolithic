@@ -73,7 +73,11 @@ DLCONSTANT  __bgdexport( mod_sound, constants_def )[] =
 /* Definicion de variables globales (usada en tiempo de compilacion)           */
 
 char __bgdexport( mod_sound, globals_def )[] =
+#ifdef TARGET_WII
+    "   sound_freq = 32000 ;\n"
+#else
     "   sound_freq = 22050 ;\n"
+#endif
     "   sound_mode = MODE_STEREO ;\n"
     "   sound_channels = 8 ;\n";
 
