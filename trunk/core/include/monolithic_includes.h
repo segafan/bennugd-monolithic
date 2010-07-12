@@ -27,6 +27,7 @@
 #include <mod_say_symbols.h>
 #include <mod_string_symbols.h>
 #include <mod_math_symbols.h>
+#include <mod_mathi_symbols.h>
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
 #include <mod_sound_symbols.h>
@@ -63,6 +64,7 @@
 #include <mod_wm_symbols.h>
 #include <mod_sys_symbols.h>
 #include <mod_mem_symbols.h>
+#include <mod_flic_symbols.h>
 
 typedef struct
 {
@@ -109,6 +111,7 @@ basic_symbols symbol_list[] =
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
+	{ "mod_mathi.so"    , NULL, mod_mathi_constants_def, NULL, NULL, NULL, mod_mathi_functions_exports },
 	{ "mod_time.so"     , NULL, NULL, NULL, NULL, NULL, mod_time_functions_exports },
 	{ "mod_file.so"     , NULL, mod_file_constants_def, NULL, NULL, NULL, mod_file_functions_exports },
 	{ "mod_sound.so"    , NULL, mod_sound_constants_def, NULL, mod_sound_globals_def, NULL, mod_sound_functions_exports },
@@ -135,6 +138,7 @@ basic_symbols symbol_list[] =
 	{ "mod_wm.so"       , NULL, NULL, NULL, NULL, NULL, NULL },
 	{ "mod_sys.so"      , NULL, mod_sys_constants_def, NULL, NULL, NULL, mod_sys_functions_exports },
 	{ "mod_mem.so"      , NULL, NULL, NULL, NULL, NULL, mod_mem_functions_exports },
+	{ "mod_flic.so"      , NULL, NULL, NULL, NULL, NULL, mod_flic_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -159,6 +163,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mathi
 	{ NULL, NULL, mod_time_module_initialize, mod_time_module_finalize, NULL, NULL, NULL, NULL }, //mod_time
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_file
 	{ mod_sound_globals_fixup, NULL, mod_sound_module_initialize, mod_sound_module_finalize, NULL, NULL, NULL, NULL}, //mod_sound
@@ -185,6 +190,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wm
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sys
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mem
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_flic
 };
 #endif
 
