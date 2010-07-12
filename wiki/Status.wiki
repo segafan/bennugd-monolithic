@@ -48,5 +48,6 @@ Integrated components:
   * *mod_wm*
   * All the lower level libs needed to make the modules work.
 
-Not integrated components:
+Not integrated modules:
   * *mod_crypt*
+  * Unofficial-but-useful-anyway modules.
