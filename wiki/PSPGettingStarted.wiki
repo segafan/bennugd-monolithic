@@ -1,5 +1,5 @@
 #summary Getting started with BennuGD-monolithic on PSP.
-#labels Phase-Deploy
+#labels Featured
 
 = Introduction =
 
