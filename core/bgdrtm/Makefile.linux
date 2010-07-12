@@ -76,7 +76,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
                 ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
 				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
-				../../modules/mod_mem/
+				../../modules/mod_mem/ ../../modules/mod_flic/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -181,7 +181,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/libwm/libwm.c \
 			  ../../../modules/mod_wm/mod_wm.c \
 			  ../../../modules/mod_sys/mod_sys.c \
-			  ../../../modules/mod_mem/mod_mem.c
+			  ../../../modules/mod_mem/mod_mem.c \
+			  ../../../modules/mod_flic/mod_flic.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
