@@ -85,6 +85,13 @@ int main( int argc, char **argv )
         printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
         exit(1);
     }
+	
+	// Delete stdout.txt, so mod_say can use it
+	FILE *fd = fopen("stdout.txt", "r");
+	if(fd != NULL) {
+		fclose(fd);
+		unlink("stdout.txt");
+	}
 #endif
 
     /* Find out if we are calling bgdi.exe or whatever.exe */
