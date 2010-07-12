@@ -30,7 +30,10 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
                 ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
                 ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
-                ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/
+                ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
+				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
+				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
+				../../modules/mod_debug/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -72,6 +75,7 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_say/mod_say.c \
               ../../../modules/mod_string/mod_string.c \
               ../../../modules/mod_math/mod_math.c \
+			  ../../../modules/mod_mathi/mod_mathi.c \
               ../../../modules/mod_time/mod_time.c \
               ../../../modules/mod_file/mod_file.c \
               ../../../modules/mod_sound/mod_sound.c \
@@ -131,7 +135,14 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_path/mod_path.c \
               ../../../modules/mod_effects/mod_effects.c \
               ../../../modules/mod_blendop/mod_blendop.c \
-              ../../../modules/mod_m7/mod_m7.c
+              ../../../modules/mod_m7/mod_m7.c \
+			  ../../../modules/libwm/libwm.c \
+			  ../../../modules/mod_wm/mod_wm.c \
+			  ../../../modules/mod_sys/mod_sys.c \
+			  ../../../modules/mod_mem/mod_mem.c \
+			  ../../../modules/mod_flic/mod_flic.c \
+			  ../../../modules/mod_debug/systexts.c \
+			  ../../../modules/mod_debug/mod_debug.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
