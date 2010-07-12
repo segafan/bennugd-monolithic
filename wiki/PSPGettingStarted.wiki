@@ -15,11 +15,13 @@ The following is needed in order to run BennuGD-monolithic on PSP. Until now, th
   * PSP-3000 with firmware version older or equal than 5.03
   * PSP-3000 with firmware version newer than 5.03
   * PSP-Go
+
+= Running BennuGD in PSP =
   
-  == PSP-1000 or PSP-2000 without motherboard TA88v3 ==
+== PSP-1000 or PSP-2000 without motherboard TA88v3 ==
 These are the finest. Custom firmwares works really fine and they are the easier to get BennuGD running. This needed to be 'pandorized' using a Pandora's battery. After that, custom firmware gets loaded every boot and there is nothing more to worry about. Just go to Game -> Memory Stick and launch BennuGD.
 
-  == PSP-2000 series with TA88v3 motherboard and firmware version older or equal than 5.03 ==
+== PSP-2000 series with TA88v3 motherboard and firmware version older or equal than 5.03 ==
 This needs some way to load unsigned code in the PSP. One possible alternative is to use the ChickHEN exploit. This is a software-only exploit and does not harm your PSP, altough it is somewhat instable and does not work correctly every time. When the exploit gets loaded, the homebrew icon shows in the XMB Game -> Memory Stick option and you can launch BennuGD from there.
 
 One can check if the exploit worked by looking at System Settings -> Version to see if the word "ChickHEN" is in the version string.
