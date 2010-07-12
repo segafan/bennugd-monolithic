@@ -132,7 +132,7 @@ CONDITIONALLY_STATIC int modmem_memory_free( INSTANCE * my, int * params )
     get_system_info( &info );
     return B_PAGE_SIZE * ( info.max_pages - info.used_pages );
 
-#elif !defined(TARGET_MAC)
+#elif defined(TARGET_LINUX)
     /* Linux and other Unix (?) */
     struct sysinfo meminf;
     int fv;
@@ -170,7 +170,7 @@ CONDITIONALLY_STATIC int modmem_memory_total( INSTANCE * my, int * params )
     get_system_info( &info );
     return  B_PAGE_SIZE * ( info.max_pages );
 
-#elif !defined(TARGET_MAC)
+#elif defined(TARGET_LINUX)
     /* Linux and other Unix (?) */
     struct sysinfo meminf;
     int fv;

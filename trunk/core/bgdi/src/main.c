@@ -33,6 +33,7 @@
 
 #ifdef TARGET_WII
 #include <fat.h>
+#include <SDL.h>
 #endif
 
 #include <stdio.h>

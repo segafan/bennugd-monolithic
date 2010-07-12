@@ -45,6 +45,9 @@
 
 CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
 {
+#ifdef TARGET_WII
+	return 0;
+#else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
     int argc = params[2];
@@ -99,6 +102,7 @@ CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
     if ( argv ) free( argv );
 
     return ( status ) ;
+#endif //TARGET_WII
 }
 
 /* ---------------------------------------------------------------------- */
