@@ -27,8 +27,18 @@
 #include <bgddl.h>
 
 #ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memory_free( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memory_total( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memcmp( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memmove( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memcopy( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memset( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memsetw( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_memseti( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_calloc( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_alloc( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_realloc( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmem_free( INSTANCE * my, int * params );
 #endif
 
 /* ---------------------------------------------------------------------- */
