@@ -425,7 +425,7 @@ void sysproc_init()
         library  = dlibopen( filename ) ;
         if ( !library )
         {
-            printf( dliberror() ) ;
+            printf( "%s\n", dliberror() ) ;
             exit( 0 );
         }
 
