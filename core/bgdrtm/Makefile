@@ -33,7 +33,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
 				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
 				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
-				../../modules/mod_debug/ ../../modules/mod_iconv/
+				../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wiiuse/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -143,7 +143,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/mod_flic/mod_flic.c \
 			  ../../../modules/mod_debug/systexts.c \
 			  ../../../modules/mod_debug/mod_debug.c \
-			  ../../../modules/mod_iconv/iconv.c
+			  ../../../modules/mod_iconv/iconv.c \
+			  ../../../modules/mod_wiiuse/mod_wiiuse.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
