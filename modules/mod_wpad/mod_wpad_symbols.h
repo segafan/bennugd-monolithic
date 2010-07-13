@@ -49,11 +49,10 @@ DLCONSTANT __bgdexport( mod_wpad, constants_def )[] =
     { "WPAD_WTR",        TYPE_INT,   WPAD_WTR          },
     { "WPAD_WBL",        TYPE_INT,   WPAD_WBL          },
     { "WPAD_WBR",        TYPE_INT,   WPAD_WBR          },
-    { "WPAD_HAS_NUNCHUK",TYPE_INT,   WPAD_HAS_NUNCHUK  }, /* Balance Board-only constants */
-    { "WPAD_WTL",        TYPE_INT,   WPAD_WTL          },
-    { "WPAD_WTR",        TYPE_INT,   WPAD_WTR          },
-    { "WPAD_WBL",        TYPE_INT,   WPAD_WBL          },
-    { "WPAD_WBR",        TYPE_INT,   WPAD_WBR          },
+    { "WPAD_HAS_NUNCHUK",TYPE_INT,   WPAD_HAS_NUNCHUK  }, /* Nunchuk */
+    { "WPAD_GX",         TYPE_INT,   WPAD_WTL          }, /* Gravity constants */
+    { "WPAD_GY",         TYPE_INT,   WPAD_WTR          },
+    { "WPAD_GZ",         TYPE_INT,   WPAD_WBL          },
 	
     { NULL              , 0       , 0           }
 } ;

@@ -30,11 +30,14 @@
 #define WPAD_ACCELX      7
 #define WPAD_ACCELY      8
 #define WPAD_ACCELZ      9
-#define WPAD_IS_BB       10
 #define WPAD_WTL         3
 #define WPAD_WTR         4
 #define WPAD_WBL         5
 #define WPAD_WBR         6
-#define WPAD_HAS_NUNCHUK 11
+#define WPAD_GX			 10
+#define WPAD_GY	         11
+#define WPAD_GZ          12
+#define WPAD_IS_BB       100
+#define WPAD_HAS_NUNCHUK 101
 
 #endif
