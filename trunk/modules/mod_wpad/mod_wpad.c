@@ -30,9 +30,9 @@
 #include "mod_wpad.h"
 
 
-#ifdef TARGET_WII
-// Checks wether a given wpad number corresponds to a Wii Balance Board
-int is_bb(int i) {
+// Checks wether a given wpad channel corresponds to a Wii Balance Board
+int is_bb(int i)
+{
     u32 type;
 
     WPAD_Probe(i, &type);
@@ -41,12 +41,22 @@ int is_bb(int i) {
     else
         return 0;
 }
-#endif
+
+// Checks wether a given wpad channel has a nunchuk attached to it
+int has_nunchuk(int i)
+{
+    u32 type;
+	
+    WPAD_Probe(i, &type);
+    if (type==WPAD_EXP_NUNCHUK)
+        return 1;
+    else
+        return 0;
+}
 
 /* Check the status of each Wiimote */
 int modwpad_is_ready( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
     int res=0;
     u32 type;
 
@@ -55,15 +65,11 @@ int modwpad_is_ready( INSTANCE * my, int * params )
         return 1;   // So it's true in BennuGD code
     else
         return res;
-#else
-    return -1;  // No wiimote
-#endif
 }
 
 // Get info from generic controller
 int modwpad_info( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
     u32 type;
     WPADData *wd;
 
@@ -74,57 +80,93 @@ int modwpad_info( INSTANCE * my, int * params )
     // Return the info the user asked for
     wd = WPAD_Data(params[0]);
     switch(params[1]) {
-        case 0:     // Battery level (0<level<256)
+        case WPAD_BATT:     // Battery level (0<level<256)
             return (int)WPAD_BatteryLevel(params[0]);
-        case 1:     // X position
+        case WPAD_X:     // X position
             return wd->ir.x;
-        case 2:     // Y position
+        case WPAD_Y:     // Y position
             return wd->ir.y;
-        case 3:     // Z position (distance from screen in m)
+        case WPAD_Z:     // Z position (distance from screen in m)
             return wd->ir.z;
-        case 4:     // Angle, BennuGD likes 1/1000th of degrees
+        case WPAD_ANGLE:     // Angle, BennuGD likes 1/1000th of degrees
             return -(int)(wd->ir.angle*1000.);
-        case 5:     // Pitch angle, BennuGD likes 1/1000th of degrees
+        case WPAD_PITCH:     // Pitch angle, BennuGD likes 1/1000th of degrees
             return (int)(wd->orient.pitch*1000.);
-        case 6:     // Roll angle,  BennuGD likes 1/1000th of degrees
+        case WPAD_ROLL:     // Roll angle,  BennuGD likes 1/1000th of degrees
             return (int)(wd->orient.roll*1000.);    // Uses accelerometer
-        case 7:     // Acceleration in x axis
+        case WPAD_ACCELX:     // Acceleration in x axis
             return wd->accel.x;
-        case 8:     // Acceleration in y axis
+        case WPAD_ACCELY:     // Acceleration in y axis
             return wd->accel.y;
-        case 9:     // Acceleration in z axis
+        case WPAD_ACCELZ:     // Acceleration in z axis
             return wd->accel.z;
-        case 10:    // Check wether controller is a balance board
+        case WPAD_IS_BB:    // Check wether controller is a balance board
             return is_bb(params[0]);
+		case WPAD_HAS_NUNCHUK: // Nunchuk attached to this controller?
+			return has_nunchuk(params[0]);
     }
-#endif
 
+    return 0;
+}
+
+// Get info from generic controller
+int modwpad_info_nunchuk( INSTANCE * my, int * params )
+{
+    u32 type;
+    struct expansion_t exp;
+	
+    // Ensure it's been correctly initialized
+    if( WPAD_Probe(params[0], &type) != 0 )
+        return 0;
+
+	// Make sure the device has a nunchuk attached to it
+	if( type != WPAD_EXP_NUNCHUK )
+		return 0;
+	
+    // Return the info the user asked for
+    WPAD_Expansion(params[0], &exp);
+    switch(params[1]) {
+        case WPAD_BATT:     // Battery level (0<level<256)
+            return (int)WPAD_BatteryLevel(params[0]);
+        case WPAD_ANGLE:     // Angle, BennuGD likes 1/1000th of degrees
+            return -(int)(exp.nunchuk.orient.yaw*1000.); // Cehck this is correct
+        case WPAD_PITCH:     // Pitch angle, BennuGD likes 1/1000th of degrees
+            return (int)(exp.nunchuk.orient.pitch*1000.);
+        case WPAD_ROLL:     // Roll angle,  BennuGD likes 1/1000th of degrees
+            return (int)(exp.nunchuk.orient.roll*1000.);    // Uses accelerometer
+        case WPAD_ACCELX:     // Acceleration in x axis
+            return exp.nunchuk.accel.x;
+        case WPAD_ACCELY:     // Acceleration in y axis
+            return exp.nunchuk.accel.y;
+        case WPAD_ACCELZ:     // Acceleration in z axis
+            return exp.nunchuk.accel.z;
+    }
+	
     return 0;
 }
 
 // Get data from the Wii Balance Board
 int modwpad_info_bb( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
     struct expansion_t exp;
     u32 type;
-
-    // First of all, check if the given wpad is a balanceboard
-    if (! is_bb(params[0]))
-        return 0;
 
     // Ensure it's been correctly initialized
     if( WPAD_Probe(params[0], &type) != 0 )
         return 0;
+	
+	// Make sure the device is a BB
+	if( type != WPAD_EXP_WIIBOARD )
+		return 0;
 
     // Return the info the user asked for
     WPAD_Expansion(params[0], &exp);
     switch(params[1]) {
-        case 0:     // Battery level (0<level<256)
+        case WPAD_BATT:     // Battery level (0<level<256)
             return (int)WPAD_BatteryLevel(params[0]);
-        case 1:     // X position
+        case WPAD_X:     // X position
             return (int)exp.wb.x;
-        case 2:     // Y position
+        case WPAD_Y:     // Y position
             return (int)exp.wb.y;
         case WPAD_WTL:     // Weight measured on the TOP-LEFT base (Balance Board)
             return (int)exp.wb.tl;
@@ -135,7 +177,6 @@ int modwpad_info_bb( INSTANCE * my, int * params )
         case WPAD_WBR:     // Weight in BOTTOM-RIGHT
             return (int)exp.wb.br;
     }
-#endif
 
     return 0;
 }
@@ -143,9 +184,7 @@ int modwpad_info_bb( INSTANCE * my, int * params )
 // Make a controller rumble (or stop rumbling)
 void modwpad_rumble( INSTANCE * my, int * params)
 {
-#ifdef TARGET_WII
     WPAD_Rumble(params[0], params[1]);
-#endif
 }
 
 /* ----------------------------------------------------------------- */

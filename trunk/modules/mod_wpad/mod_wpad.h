@@ -35,5 +35,6 @@
 #define WPAD_WTR         4
 #define WPAD_WBL         5
 #define WPAD_WBR         6
+#define WPAD_HAS_NUNCHUK 11
 
 #endif
