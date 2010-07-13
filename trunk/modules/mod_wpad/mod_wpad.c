@@ -94,13 +94,19 @@ int modwpad_info( INSTANCE * my, int * params )
             return (int)(wd->orient.pitch*1000.);
         case WPAD_ROLL:     // Roll angle,  BennuGD likes 1/1000th of degrees
             return (int)(wd->orient.roll*1000.);    // Uses accelerometer
-        case WPAD_ACCELX:     // Acceleration in x axis
+        case WPAD_ACCELX:     // Acceleration in (local) x axis
             return wd->accel.x;
-        case WPAD_ACCELY:     // Acceleration in y axis
+        case WPAD_ACCELY:     // Acceleration in (local) y axis
             return wd->accel.y;
-        case WPAD_ACCELZ:     // Acceleration in z axis
+        case WPAD_ACCELZ:     // Acceleration in (local) z axis
             return wd->accel.z;
-        case WPAD_IS_BB:    // Check wether controller is a balance board
+		case WPAD_GX:         // Gravity in the (local) X axis 
+			return wd->gforce.x;
+		case WPAD_GY:         // Gravity in the (local) Y axis 
+			return wd->gforce.y;
+		case WPAD_GZ:         // Gravity in the (local) Z axis 
+			return wd->gforce.z;
+        case WPAD_IS_BB:      // Check wether controller is a balance board
             return is_bb(params[0]);
 		case WPAD_HAS_NUNCHUK: // Nunchuk attached to this controller?
 			return has_nunchuk(params[0]);
@@ -140,6 +146,12 @@ int modwpad_info_nunchuk( INSTANCE * my, int * params )
             return exp.nunchuk.accel.y;
         case WPAD_ACCELZ:     // Acceleration in z axis
             return exp.nunchuk.accel.z;
+		case WPAD_GX:         // Gravity in the (local) X axis 
+			return exp.nunchuk.gforce.x;
+		case WPAD_GY:         // Gravity in the (local) Y axis 
+			return exp.nunchuk.gforce.y;
+		case WPAD_GZ:         // Gravity in the (local) Z axis 
+			return exp.nunchuk.gforce.z;
     }
 	
     return 0;
