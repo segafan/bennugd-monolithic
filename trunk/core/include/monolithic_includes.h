@@ -68,7 +68,9 @@
 #include <mod_debug_symbols.h>
 /* Unofficial modules */
 #include <iconv_symbols.h>
-#include <mod_wiiuse_symbols.h>
+#ifdef TARGET_WII
+#include <mod_wpad_symbols.h>
+#endif
 
 typedef struct
 {
@@ -146,7 +148,9 @@ basic_symbols symbol_list[] =
 	{ "mod_debug.so"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
 	{ "mod_iconv.so"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
-	{ "mod_wiiuse.so"   , NULL, mod_wiiuse_constants_def, NULL, NULL, NULL, mod_wiiuse_functions_exports },
+#ifdef TARGET_WII
+	{ "mod_wpad.so"     , NULL, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
+#endif
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -202,7 +206,9 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_debug_globals_fixup, mod_debug_locals_fixup, mod_debug_module_initialize, mod_debug_module_finalize, NULL, NULL, mod_debug_process_exec_hook, NULL }, //mod_debug
 	/* Unofficial modules */
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_iconv
+#ifdef TARGET_WII
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wiiuse
+#endif
 };
 #endif
 
