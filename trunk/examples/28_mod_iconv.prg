@@ -1,9 +1,7 @@
-#ifdef __VERSION__
 import "mod_say";
 import "mod_key";
 import "mod_video";
 import "mod_text";
-#endif
 import "mod_iconv";
 
 Process Main()

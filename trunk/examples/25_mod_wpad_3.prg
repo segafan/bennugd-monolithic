@@ -1,7 +1,9 @@
+import "mod_joy"
 import "mod_wpad"
 import "mod_video"
 import "mod_text"
 import "mod_mouse"
+import "mod_map"
 
 GLOBAL
 scr_width = 640, scr_height=480;
@@ -36,6 +38,17 @@ Begin
         write(0, scr_width/2, scr_height/2+10, 4, "ACCELX: "+wpad_info(0, WPAD_ACCELX));
         write(0, scr_width/2, scr_height/2+20, 4, "ACCELY: "+wpad_info(0, WPAD_ACCELY));
         write(0, scr_width/2, scr_height/2+30, 4, "ACCELZ: "+wpad_info(0, WPAD_ACCELZ));
+        write(0, scr_width/2, scr_height/2+40, 4, "GX: "+wpad_info(0, WPAD_GX));
+        write(0, scr_width/2, scr_height/2+50, 4, "GY: "+wpad_info(0, WPAD_GY));
+        write(0, scr_width/2, scr_height/2+60, 4, "GZ: "+wpad_info(0, WPAD_GZ));
+        if(wpad_info(0, WPAD_HAS_NUNCHUK))
+            write(0, scr_width/2, scr_height/2+70, 4, "NUNCHUK ACCELX: "+wpad_info_nunchuk(0, WPAD_ACCELX));
+            write(0, scr_width/2, scr_height/2+80, 4, "NUNCHUK ACCELY: "+wpad_info_nunchuk(0, WPAD_ACCELY));
+            write(0, scr_width/2, scr_height/2+90, 4, "NUNCHUK ACCELZ: "+wpad_info_nunchuk(0, WPAD_ACCELZ));
+            write(0, scr_width/2, scr_height/2+100, 4, "NUNCHUK GX: "+wpad_info_nunchuk(0, WPAD_GX));
+            write(0, scr_width/2, scr_height/2+110, 4, "NUNCHUK GY: "+wpad_info_nunchuk(0, WPAD_GY));
+            write(0, scr_width/2, scr_height/2+120, 4, "NUNCHUK GZ: "+wpad_info_nunchuk(0, WPAD_GZ));
+        end;
         FRAME;
         delete_text(ALL_TEXT);
     End;
