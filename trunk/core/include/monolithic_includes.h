@@ -71,6 +71,7 @@
 #ifdef TARGET_WII
 #include <mod_wpad_symbols.h>
 #endif
+#include <image_symbols.h>
 
 typedef struct
 {
@@ -151,6 +152,7 @@ basic_symbols symbol_list[] =
 #ifdef TARGET_WII
 	{ "mod_wpad.so"     , NULL, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif
+	{ "image.so"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
