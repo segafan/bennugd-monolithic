@@ -33,7 +33,8 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
 				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
 				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
-				../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wpad/
+				../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wpad/ \
+				../../modules/mod_image/
 
 #---------------------------------------------------------------------------------
 # options for code generation
