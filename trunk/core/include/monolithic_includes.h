@@ -150,7 +150,7 @@ basic_symbols symbol_list[] =
 	/* Unofficial modules */
 	{ "mod_iconv.so"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
 #ifdef TARGET_WII
-	{ "mod_wpad.so"     , NULL, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
+	{ "mod_wpad.so"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif
 	{ "image.so"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
@@ -209,8 +209,9 @@ extra_symbols symbol_list_runtime[] =
 	/* Unofficial modules */
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_iconv
 #ifdef TARGET_WII
-	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wiiuse
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wpad
 #endif
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
 };
 #endif
 

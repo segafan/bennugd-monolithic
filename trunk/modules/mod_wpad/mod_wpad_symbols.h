@@ -69,4 +69,12 @@ DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[] =
     { 0                        , 0   , 0             , 0                              }
 };
 
+/* ----------------------------------------------------------------- */
+
+char * __bgdexport( mod_wpad, modules_dependency )[] =
+{
+    "libjoy",
+    NULL
+};
+
 #endif
