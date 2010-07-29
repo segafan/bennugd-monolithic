@@ -28,8 +28,10 @@
 extern int modwpad_is_ready( INSTANCE * my, int * params );
 extern int modwpad_info( INSTANCE * my, int * params );
 extern int modwpad_info_nunchuk( INSTANCE * my, int * params );
+extern int modwpad_info_classic( INSTANCE * my, int * params );
+extern int modwpad_info_guitar( INSTANCE * my, int * params );
 extern int modwpad_info_bb( INSTANCE * my, int * params );
-extern void modwpad_rumble( INSTANCE * my, int * params);
+extern int modwpad_rumble( INSTANCE * my, int * params);
 
 
 DLCONSTANT __bgdexport( mod_wpad, constants_def )[] =
@@ -49,10 +51,12 @@ DLCONSTANT __bgdexport( mod_wpad, constants_def )[] =
     { "WPAD_WTR",        TYPE_INT,   WPAD_WTR          },
     { "WPAD_WBL",        TYPE_INT,   WPAD_WBL          },
     { "WPAD_WBR",        TYPE_INT,   WPAD_WBR          },
-    { "WPAD_HAS_NUNCHUK",TYPE_INT,   WPAD_HAS_NUNCHUK  }, /* Nunchuk */
     { "WPAD_GX",         TYPE_INT,   WPAD_WTL          }, /* Gravity constants */
     { "WPAD_GY",         TYPE_INT,   WPAD_WTR          },
     { "WPAD_GZ",         TYPE_INT,   WPAD_WBL          },
+    { "WPAD_HAS_NUNCHUK",TYPE_INT,   WPAD_HAS_NUNCHUK  }, /* Nunchuk */
+    { "WPAD_HAS_CLASSIC",TYPE_INT,   WPAD_HAS_CLASSIC  }, /* Classic controller */
+    { "WPAD_HAS_GUITAR" ,TYPE_INT,   WPAD_HAS_GUITAR   }, /* Guitar */
 	
     { NULL              , 0       , 0           }
 } ;
@@ -64,8 +68,10 @@ DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[] =
     { "WPAD_IS_READY"          , "I" , TYPE_INT      , SYSMACRO(modwpad_is_ready)     },
     { "WPAD_INFO"              , "II", TYPE_INT      , SYSMACRO(modwpad_info)         },
     { "WPAD_INFO_NUNCHUK"      , "II", TYPE_INT      , SYSMACRO(modwpad_info_nunchuk) },
+    { "WPAD_INFO_CLASSIC"      , "II", TYPE_INT      , SYSMACRO(modwpad_info_classic) },
+    { "WPAD_INFO_GUITAR"       , "II", TYPE_INT      , SYSMACRO(modwpad_info_guitar)  },
     { "WPAD_INFO_BB"           , "II", TYPE_INT      , SYSMACRO(modwpad_info_bb)      },
-    { "WPAD_RUMBLE"            , "II", TYPE_UNDEFINED, SYSMACRO(modwpad_rumble)       },
+    { "WPAD_RUMBLE"            , "II", TYPE_INT      , SYSMACRO(modwpad_rumble)       },
     { 0                        , 0   , 0             , 0                              }
 };
 

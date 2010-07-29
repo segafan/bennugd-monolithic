@@ -39,5 +39,7 @@
 #define WPAD_GZ          12
 #define WPAD_IS_BB       100
 #define WPAD_HAS_NUNCHUK 101
+#define WPAD_HAS_CLASSIC 102
+#define WPAD_HAS_GUITAR  103
 
 #endif
