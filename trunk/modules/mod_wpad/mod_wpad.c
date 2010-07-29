@@ -54,6 +54,37 @@ int has_nunchuk(int i)
         return 0;
 }
 
+// Checks wether a given wpad channel has a Wii MotionPlus attached to it
+int has_motionplus(int i)
+{
+    return 0;
+}
+
+// Checks wether a given wpad channel has a classic controller attached to it
+int has_classic(int i)
+{
+    u32 type;
+	
+    WPAD_Probe(i, &type);
+    if (type==WPAD_EXP_CLASSIC)
+        return 1;
+    else
+        return 0;
+}
+
+// Checks wether a given wpad channel has a guitar hero 3
+// controller attached to it
+int has_guitar(int i)
+{
+    u32 type;
+	
+    WPAD_Probe(i, &type);
+    if (type==WPAD_EXP_GUITARHERO3)
+        return 1;
+    else
+        return 0;
+}
+
 /* Check the status of each Wiimote */
 int modwpad_is_ready( INSTANCE * my, int * params )
 {
@@ -110,12 +141,16 @@ int modwpad_info( INSTANCE * my, int * params )
             return is_bb(params[0]);
 		case WPAD_HAS_NUNCHUK: // Nunchuk attached to this controller?
 			return has_nunchuk(params[0]);
+		case WPAD_HAS_CLASSIC: // Classic attached to this controller?
+			return has_classic(params[0]);
+		case WPAD_HAS_GUITAR: // Guitar Hero 3 attached to this controller?
+			return has_guitar(params[0]);
     }
 
     return 0;
 }
 
-// Get info from generic controller
+// Get info from nunchuk
 int modwpad_info_nunchuk( INSTANCE * my, int * params )
 {
     u32 type;
@@ -193,10 +228,63 @@ int modwpad_info_bb( INSTANCE * my, int * params )
     return 0;
 }
 
-// Make a controller rumble (or stop rumbling)
-void modwpad_rumble( INSTANCE * my, int * params)
+// Get info from classic controller
+int modwpad_info_classic( INSTANCE * my, int * params )
 {
+    u32 type;
+    struct expansion_t exp;
+	
+    // Ensure it's been correctly initialized
+    if( WPAD_Probe(params[0], &type) != 0 )
+        return 0;
+
+	// Make sure the device has a classic controller attached to it
+	if( type != WPAD_EXP_CLASSIC )
+		return 0;
+	
+    // Return the info the user asked for
+    WPAD_Expansion(params[0], &exp);
+    switch(params[1]) {
+        case WPAD_BATT:     // Battery level (0<level<256)
+            return (int)WPAD_BatteryLevel(params[0]);
+    }
+	
+    return 0;
+}
+
+// Get info from guitar controller
+int modwpad_info_guitar( INSTANCE * my, int * params )
+{
+    u32 type;
+    struct expansion_t exp;
+	
+    // Ensure it's been correctly initialized
+    if( WPAD_Probe(params[0], &type) != 0 )
+        return 0;
+
+	// Make sure the device has a guitar attached to it
+	if( type != WPAD_EXP_GUITARHERO3 )
+		return 0;
+	
+    // Return the info the user asked for
+    WPAD_Expansion(params[0], &exp);
+    switch(params[1]) {
+        case WPAD_BATT:     // Battery level (0<level<256)
+            return (int)WPAD_BatteryLevel(params[0]);
+    }
+	
+    return 0;
+}
+
+// Make a controller rumble (or stop rumbling)
+int modwpad_rumble( INSTANCE * my, int * params)
+{
+    // Ensure it's been correctly initialized
+    if( WPAD_Probe(params[0], NULL) != 0 )
+        return 0;
+
     WPAD_Rumble(params[0], params[1]);
+    return 0;
 }
 
 /* ----------------------------------------------------------------- */
