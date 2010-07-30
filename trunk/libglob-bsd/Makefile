@@ -53,12 +53,12 @@ INCLUDES		:= -Iinclude -I$(DEVKITPRO)/libogc/include
 # -include sys/wait.h 
 # -include sys/syslimits.h
 
-DEFINES			:= -DGEKKO
+DEFINES			:= -DGEKKO -DTARGET_WII
 
-CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES) -DTARGET_WII
+CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
 
 # Test link flags.
-LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(DEVKITPRO)/libogc/lib/wii -lwiiuse -lbte -logc -lm
+LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(DEVKITPRO)/libogc/lib/wii -logc
 
 # How to compile C file (SDL library).
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
