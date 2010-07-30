@@ -55,7 +55,7 @@ INCLUDES		:= -Iinclude -I$(DEVKITPRO)/libogc/include
 
 DEFINES			:= -DGEKKO
 
-CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
+CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES) -DTARGET_WII
 
 # Test link flags.
 LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(DEVKITPRO)/libogc/lib/wii -lwiiuse -lbte -logc -lm

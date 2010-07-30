@@ -87,8 +87,6 @@ __FBSDID("$FreeBSD: src/lib/libc/gen/glob.c,v 1.27 2008/06/26 07:12:35 mtm Exp $
 #include <unistd.h>
 #include <wchar.h>
 
-#include "collate.h"
-
 #define	DOLLAR		'$'
 #define	DOT		'.'
 #define	EOS		'\0'
@@ -390,6 +388,7 @@ globtilde(const Char *pattern, Char *patbuf, size_t patbuf_len, glob_t *pglob)
 		 * we're not running setuid or setgid) and then trying
 		 * the password file
 		 */
+#ifndef TARGET_WII
 		if (issetugid() != 0 ||
 		    (h = getenv("HOME")) == NULL) {
 			if (((h = getlogin()) != NULL &&
@@ -399,15 +398,22 @@ globtilde(const Char *pattern, Char *patbuf, size_t patbuf_len, glob_t *pglob)
 			else
 				return pattern;
 		}
+#else
+		return pattern;
+#endif
 	}
 	else {
 		/*
 		 * Expand a ~user
 		 */
+#ifndef TARGET_WII
 		if ((pwd = getpwnam((char*) patbuf)) == NULL)
 			return pattern;
 		else
 			h = pwd->pw_dir;
+#else
+		return pattern;
+#endif
 	}
 
 	/* Copy the home directory */
@@ -775,12 +781,7 @@ match(Char *name, Char *pat, Char *patend)
 				++pat;
 			while (((c = *pat++) & M_MASK) != M_END)
 				if ((*pat & M_MASK) == M_RNG) {
-					if (__collate_load_error ?
-					    CHAR(c) <= CHAR(k) && CHAR(k) <= CHAR(pat[1]) :
-					       __collate_range_cmp(CHAR(c), CHAR(k)) <= 0
-					    && __collate_range_cmp(CHAR(k), CHAR(pat[1])) <= 0
-					   )
-						ok = 1;
+					ok = 1;
 					pat += 2;
 				} else if (c == k)
 					ok = 1;
@@ -834,6 +835,7 @@ g_opendir(Char *str, glob_t *pglob)
 static int
 g_lstat(Char *fn, struct stat *sb, glob_t *pglob)
 {
+#ifndef TARGET_WII
 	char buf[MAXPATHLEN];
 
 	if (g_Ctoc(fn, buf, sizeof(buf))) {
@@ -843,6 +845,9 @@ g_lstat(Char *fn, struct stat *sb, glob_t *pglob)
 	if (pglob->gl_flags & GLOB_ALTDIRFUNC)
 		return((*pglob->gl_lstat)(buf, sb));
 	return(lstat(buf, sb));
+#else
+	return g_stat(fn, sb, pglob);
+#endif
 }
 
 static int
