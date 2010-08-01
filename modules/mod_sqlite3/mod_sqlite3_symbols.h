@@ -27,7 +27,17 @@
 #include <bgddl.h>
 
 #ifndef __BGDC__
-
+extern CONDITIONALLY_STATIC int modsqlite3_enableCache(INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_openDb (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_closeDb (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_execDb (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_openTable (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_closeTable (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_getFieldName (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_getFieldValue (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_lastId (INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_totalChanges(INSTANCE * my, int * params);
+extern CONDITIONALLY_STATIC int modsqlite3_errMsg (INSTANCE * my, int * params);
 #endif
 
 /* ----------------------------------------------------------------- */
@@ -64,7 +74,7 @@ DLCONSTANT  __bgdexport( mod_sqlite3, constants_def )[] =
 /* ----------------------------------------------------------------- */
 /*           Types definitions                                  */
 
-char * __bgdexport( mod_sqlite3, types_def ) =
+char __bgdexport( mod_sqlite3, types_def )[] =
    "TYPE SqlResult\n"
    " int cols;\n"
    " int rows;\n"
@@ -72,29 +82,6 @@ char * __bgdexport( mod_sqlite3, types_def ) =
    " pointer pointer pazResult;\n"
    "END\n"
    ;
-
-DLSYSFUNCS __bgdexport( image, functions_exports )[] =
-{
-	{"LOAD_IMAGE", "S", TYPE_DWORD, SYSMACRO(bgd_load_image) },
-	{"IS_BMP", "S", TYPE_DWORD, SYSMACRO(bgd_is_BMP)},
-	{"IS_GIF", "S", TYPE_DWORD, SYSMACRO(bgd_is_GIF)},
-	{"IS_JPG", "S", TYPE_DWORD, SYSMACRO(bgd_is_JPG)},
-	{"IS_LBM", "S", TYPE_DWORD, SYSMACRO(bgd_is_LBM)},
-	{"IS_PCX", "S", TYPE_DWORD, SYSMACRO(bgd_is_PCX)},
-	{"IS_PNG", "S", TYPE_DWORD, SYSMACRO(bgd_is_PNG)},
-	{"IS_PNM", "S", TYPE_DWORD, SYSMACRO(bgd_is_PNM)},
-	{"IS_TIF", "S", TYPE_DWORD, SYSMACRO(bgd_is_TIF)},
-	{"IS_XCF", "S", TYPE_DWORD, SYSMACRO(bgd_is_XCF)},
-	{"IS_XPM", "S", TYPE_DWORD, SYSMACRO(bgd_is_XPM)},
-	{0, 0, 0, 0}
-};
-
-char * __bgdexport( image, modules_dependency )[] =
-{
-	"libgrbase",
-	"libvideo",
-	NULL
-};
 
 DLSYSFUNCS  __bgdexport( mod_sqlite3, functions_exports )[] =
 {
