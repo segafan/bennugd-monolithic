@@ -72,6 +72,7 @@
 #include <mod_wpad_symbols.h>
 #endif
 #include <image_symbols.h>
+#include <mod_sqlite3_symbols.h>
 
 typedef struct
 {
@@ -153,6 +154,7 @@ basic_symbols symbol_list[] =
 	{ "mod_wpad.so"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif
 	{ "image.so"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
+	{ "image.so"        , NULL, mod_sqlite3_constants_def, mod_sqlite3_types_def, NULL, NULL, mod_sqlite3_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -212,6 +214,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wpad
 #endif
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
 };
 #endif
 
