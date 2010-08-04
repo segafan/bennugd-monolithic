@@ -241,16 +241,6 @@ int main( int argc, char **argv )
     if ( dwProcessId == GetCurrentProcessId() ) ShowWindow( hWnd, SW_HIDE );
 #endif
 
-#ifdef TARGET_WII
-    // Delete stdout.txt if it exists (we'll overwrite it)
-    FILE *fd;
-
-    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
-        fclose(fd);
-        unlink("stdout.txt");
-    }
-#endif
-
     argv[0] = filename;
     bgdrtm_entry( argc, argv );
 

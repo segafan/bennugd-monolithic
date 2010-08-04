@@ -145,9 +145,7 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/mod_debug/systexts.c \
 			  ../../../modules/mod_debug/mod_debug.c \
 			  ../../../modules/mod_iconv/iconv.c \
-			  ../../../modules/mod_wpad/mod_wpad.c \
-			  ../../../modules/mod_image/image.c \
-			  ../../../modules/mod_sqlite3/mod_sqlite3.c
+			  ../../../modules/mod_wpad/mod_wpad.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C

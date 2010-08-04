@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "bgddl.h"
 #include "xstrings.h"
@@ -71,3 +72,15 @@ CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params )
 }
 
 /* ----------------------------------------------------------------- */
+void  __bgdexport( mod_say, module_initialize )()
+{
+#ifdef TARGET_WII
+    // Delete stdout.txt if it exists (we'll overwrite it)
+    FILE *fd;
+
+    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
+        fclose(fd);
+        unlink("stdout.txt");
+    }
+#endif
+}
