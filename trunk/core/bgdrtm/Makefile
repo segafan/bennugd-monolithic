@@ -142,8 +142,6 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/mod_sys/mod_sys.c \
 			  ../../../modules/mod_mem/mod_mem.c \
 			  ../../../modules/mod_flic/mod_flic.c \
-			  ../../../modules/mod_debug/systexts.c \
-			  ../../../modules/mod_debug/mod_debug.c \
 			  ../../../modules/mod_iconv/iconv.c \
 			  ../../../modules/mod_wpad/mod_wpad.c
 
