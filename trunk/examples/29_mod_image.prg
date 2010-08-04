@@ -1,5 +1,6 @@
 import "mod_video";
 import "mod_map";
+import "mod_joy"
 import "mod_mouse";
 import "mod_say";
 import "mod_screen";

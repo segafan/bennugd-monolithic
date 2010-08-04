@@ -1,9 +1,10 @@
+import "mod_joy"
 import "mod_mouse"
 import "mod_video"
-import "mod_say"
 import "mod_timers"
 import "mod_map"
 import "mod_sound"
+import "mod_text"
 
 Process main()
 Private
@@ -20,7 +21,9 @@ Begin
     song = load_song("game.s3m");
     play_song(song, 0);
     //map_save(0, mouse.graph, "mouse.map");
-    while(! mouse.left)
+    while(! mouse.left && is_playing_song())
+        delete_text(ALL_TEXT);
+        write(0, 0, 0, 0, "X: "+mouse.x+" Y: "+mouse.y);
         FRAME;
     end;
     //Unload stuff
