@@ -65,7 +65,7 @@
 #include <mod_sys_symbols.h>
 #include <mod_mem_symbols.h>
 #include <mod_flic_symbols.h>
-#include <mod_debug_symbols.h>
+//#include <mod_debug_symbols.h>
 /* Unofficial modules */
 #include <iconv_symbols.h>
 #ifdef TARGET_WII
@@ -147,7 +147,7 @@ basic_symbols symbol_list[] =
 	{ "mod_sys.so"      , NULL, mod_sys_constants_def, NULL, NULL, NULL, mod_sys_functions_exports },
 	{ "mod_mem.so"      , NULL, NULL, NULL, NULL, NULL, mod_mem_functions_exports },
 	{ "mod_flic.so"     , NULL, NULL, NULL, NULL, NULL, mod_flic_functions_exports },
-	{ "mod_debug.so"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
+//	{ "mod_debug.so"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
 	{ "mod_iconv.so"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
 #ifdef TARGET_WII
@@ -207,7 +207,7 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sys
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mem
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_flic
-	{ mod_debug_globals_fixup, mod_debug_locals_fixup, mod_debug_module_initialize, mod_debug_module_finalize, NULL, NULL, mod_debug_process_exec_hook, NULL }, //mod_debug
+//	{ mod_debug_globals_fixup, mod_debug_locals_fixup, mod_debug_module_initialize, mod_debug_module_finalize, NULL, NULL, mod_debug_process_exec_hook, NULL }, //mod_debug
 	/* Unofficial modules */
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_iconv
 #ifdef TARGET_WII
