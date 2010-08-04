@@ -71,8 +71,8 @@
 #ifdef TARGET_WII
 #include <mod_wpad_symbols.h>
 #endif
-#include <image_symbols.h>
-#include <mod_sqlite3_symbols.h>
+//#include <image_symbols.h>
+//#include <mod_sqlite3_symbols.h>
 
 typedef struct
 {
@@ -153,8 +153,8 @@ basic_symbols symbol_list[] =
 #ifdef TARGET_WII
 	{ "mod_wpad.so"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif
-	{ "image.so"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
-	{ "mod_sqlite3.so"        , NULL, mod_sqlite3_constants_def, mod_sqlite3_types_def, NULL, NULL, mod_sqlite3_functions_exports },
+	//{ "image.so"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
+	//{ "mod_sqlite3.so"        , NULL, mod_sqlite3_constants_def, mod_sqlite3_types_def, NULL, NULL, mod_sqlite3_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -176,7 +176,7 @@ extra_symbols symbol_list_runtime[] =
 	{ libkey_globals_fixup, NULL, libkey_module_initialize, libkey_module_finalize, NULL, NULL, NULL, libkey_handler_hooks }, //libkey
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libdraw
 	{ libwm_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, libwm_handler_hooks }, //libwm
-	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
+	{ NULL, NULL, mod_say_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mathi
@@ -213,8 +213,8 @@ extra_symbols symbol_list_runtime[] =
 #ifdef TARGET_WII
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wpad
 #endif
-	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
-	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
+	//{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
+	//{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
 };
 #endif
 

@@ -27,6 +27,7 @@
 #include <bgddl.h>
 
 #ifndef __BGDC__
+extern void __bgdexport( mod_say, module_initialize )();
 extern CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params );
 #endif
