@@ -15,8 +15,6 @@ LIB_DIR			:= lib
 BIN_DIR			:= bin
 SRC_DIR			:= src
 INCLUDE_DIR		:= include
-INSTALL_HEADER_DIR	?= $(DEVKITPRO)/libogc/include
-INSTALL_LIB_DIR		?= $(DEVKITPRO)/libogc/lib/wii
 
 # Tools.
 PIPE_TO_SED := 2>&1 | sed "s/:\([0-9]*\):/\(\1\) :/"
@@ -44,7 +42,7 @@ install:
 $(LIB_DIR)/libglob.a: $(OBJS)
 	@echo Archiving $@
 	@-mkdir -p $(dir $@)
-	@powerpc-eabi-ar crs $@ $(OBJS)
+	powerpc-eabi-ar crs $@ $(OBJS)
 	@echo ----
 
 # Compilation flags.
@@ -57,11 +55,9 @@ DEFINES			:= -DGEKKO -DTARGET_WII
 
 CFLAGS			:= $(COMMON_FLAGS) $(INCLUDES) $(DEFINES)
 
-# Test link flags.
-LDFLAGS			:= $(COMMON_FLAGS) -L$(LIB_DIR) -L$(DEVKITPRO)/libogc/lib/wii -logc
-
 # How to compile C file (SDL library).
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@echo Compiling $<
 	@-mkdir -p $(dir $@)
-	@powerpc-eabi-gcc $(CFLAGS) -c $< -o $@ $(PIPE_TO_SED)
+	powerpc-eabi-gcc $(CFLAGS) -c $< -o $@ $(PIPE_TO_SED)
+

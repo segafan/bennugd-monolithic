@@ -22,7 +22,7 @@ import "mod_text"
 
 GLOBAL
     res,db,i;
-    filepath="score.db";
+    filepath="sd://APPS/examples/score.db";
     SqlResult sqlRes;  // It's an Struct
     string fieldname[20];
     string fieldvalue[20];
