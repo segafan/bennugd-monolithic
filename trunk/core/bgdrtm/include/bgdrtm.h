@@ -65,9 +65,11 @@ extern INSTANCE * trace_instance;
 
 /* --------------------------------------------------------------------------- */
 // Devkitpro defines strcmpi to strncascmp, but we don't want that
+
 #ifdef strncmpi
   #undef strncmpi
 #endif
+
 extern int strncmpi( char * str1, char * str2, int sz );
 
 extern int dcb_load( const char * filename ) ;
@@ -81,6 +83,22 @@ extern void mnemonic_dump( int i, int param );
 
 extern void bgdrtm_entry( int argc, char * argv[] );
 extern void bgdrtm_exit( int n );
+
+/* --------------------------------------------------------------------------- */
+
+#if defined( TARGET_GP2X_WIZ ) || defined( TARGET_CAANOO )
+
+#define TIMER_BASE3 0x1980
+#define TIMER_REG(x) __bgdrtm_memregl[(TIMER_BASE3 + x) >> 2]
+
+extern volatile unsigned long *__bgdrtm_memregl;
+extern int __bgdrtm_memdev;
+
+extern void bgdrtm_ptimer_init(void);
+extern unsigned long bgdrtm_ptimer_get_ticks_us(void);
+extern void bgdrtm_ptimer_cleanup(void);
+
+#endif
 
 /* --------------------------------------------------------------------------- */
 

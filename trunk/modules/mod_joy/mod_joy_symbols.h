@@ -38,6 +38,7 @@ extern CONDITIONALLY_STATIC int modjoy_hats( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_balls( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_get_hat( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_get_ball( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modjoy_get_accel( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_buttons_specific( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_axes_specific( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_get_button_specific( INSTANCE * my, int * params );
@@ -46,6 +47,7 @@ extern CONDITIONALLY_STATIC int modjoy_hats_specific( INSTANCE * my, int * param
 extern CONDITIONALLY_STATIC int modjoy_balls_specific( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_get_hat_specific( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modjoy_get_ball_specific( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modjoy_get_accel_specific( INSTANCE * my, int * params );
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -76,7 +78,7 @@ DLSYSFUNCS  __bgdexport( mod_joy, functions_exports )[] =
     { "JOY_GETBUTTON"       , "II"    , TYPE_INT    , SYSMACRO(modjoy_get_button_specific)   },
     { "JOY_GETPOSITION"     , "I"     , TYPE_INT    , SYSMACRO(modjoy_get_position)          },
     { "JOY_GETPOSITION"     , "II"    , TYPE_INT    , SYSMACRO(modjoy_get_position_specific) },
-	
+
     { "JOY_NUMHATS"         , ""      , TYPE_INT    , SYSMACRO(modjoy_hats)                  },
     { "JOY_NUMHATS"         , "I"     , TYPE_INT    , SYSMACRO(modjoy_hats_specific)         },   /* Added by Sandman */
     { "JOY_NUMBALLS"        , ""      , TYPE_INT    , SYSMACRO(modjoy_balls)                 },
@@ -85,6 +87,9 @@ DLSYSFUNCS  __bgdexport( mod_joy, functions_exports )[] =
     { "JOY_GETHAT"          , "II"    , TYPE_INT    , SYSMACRO(modjoy_get_hat_specific)      },   /* Added by Sandman */
     { "JOY_GETBALL"         , "IPP"   , TYPE_INT    , SYSMACRO(modjoy_get_ball)              },
     { "JOY_GETBALL"         , "IIPP"  , TYPE_INT    , SYSMACRO(modjoy_get_ball_specific)     },   /* Added by Sandman */
+
+    { "JOY_GETACCEL"        , "PPP"   , TYPE_INT    , SYSMACRO(modjoy_get_accel)             },
+    { "JOY_GETACCEL"        , "IPPP"  , TYPE_INT    , SYSMACRO(modjoy_get_accel_specific)    },
 	
     /* Compatibility */
 	
