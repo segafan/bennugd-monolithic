@@ -194,6 +194,13 @@ CONDITIONALLY_STATIC int modjoy_get_ball( INSTANCE * my, int * params )
 }
 
 /* --------------------------------------------------------------------------- */
+
+CONDITIONALLY_STATIC int modjoy_get_accel( INSTANCE * my, int * params )
+{
+    return ( libjoy_get_accel( ( int * ) params[0], ( int * ) params[1], ( int * ) params[2] ) );
+}
+
+/* --------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------- */
 
@@ -308,3 +315,11 @@ CONDITIONALLY_STATIC int modjoy_get_ball_specific( INSTANCE * my, int * params )
     return ( libjoy_get_ball_specific( params[0], params[1], ( int * ) params[2], ( int * ) params[3] ) );
 }
 
+/* --------------------------------------------------------------------------- */
+
+CONDITIONALLY_STATIC int modjoy_get_accel_specific( INSTANCE * my, int * params )
+{
+    return ( libjoy_get_accel_specific( params[0], ( int * ) params[1], ( int * ) params[2], ( int * ) params[3] ) );
+}
+
+/* ----------------------------------------------------------------- */
