@@ -269,6 +269,14 @@ CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params )
     }
     wminfo.info.x11.unlock_func();
 #endif
+#elif defined(TARGET_WII)
+    // Not really returning desktop size, but at least a mode the user
+    // can set_mode
+    SDL_Surface* screen = NULL;
+    
+    screen = SDL_GetVideoSurface();
+    *(( int * )( params[0] ) ) = screen->w;
+    *(( int * )( params[1] ) ) = screen->h;
 #endif
 
     return 1 ;
