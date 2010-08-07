@@ -1,9 +1,7 @@
-#ifndef OS_WII
 import "mod_say";
 import "mod_proc";
 import "mod_time";
 import "mod_joy";
-#endif
 
 /* Not really a zombie, but it'll refuse to die */
 Process zombie()
