@@ -7,7 +7,7 @@ This page describes how to get BennuGD-monolithic working on your PSP. This appr
 
 = Requirements =
 
-One must have a PSP capable of running homebrews (aka unsigned code). There are several so called loaders or HEN (HomeBrew Enablers) in the wild and people should look for information regarding the specific PSP they own.
+One must have a PSP capable of running homebrews, aka unsigned code. There are several so called loaders or HEN HomeBrew Enablers) in the wild and people should look for information regarding the specific PSP they own.
 
 = Running BennuGD in PSP =
   
@@ -26,9 +26,9 @@ When the exploit gets loaded, the homebrew icon shows in the XMB Game -> Memory 
 This approach also works for PSP-3000 and firmware version older or equal than 5.03.
 
 The remaning models are:
-* PSP-2000 with motherboard TA88v3 and firmware version newer than 5.03
-* PSP-3000 with firmware version newer than 5.03
-* PSP-Go
+  * PSP-2000 with motherboard TA88v3 and firmware version newer than 5.03
+  * PSP-3000 with firmware version newer than 5.03
+  * PSP-Go
 
 At the time of this writing the only way to load homebrew application in these models is to use [http://http://www.wololo.net/wagic/hbl/ HalfByte Loader] by wololo and his team (nice job, guys). Please note that the developer does not have any of these models so they are not tested. Reports on this are welcome.
 
