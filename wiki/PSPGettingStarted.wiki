@@ -7,15 +7,15 @@ This page describes how to get BennuGD-monolithic working on your PSP. This appr
 
 = Requirements =
 
-One must have a PSP capable of running homebrews, aka unsigned code. There are several so called loaders or [PSPHomeBrew_Enablers] in the wild and people should look for information regarding the specific PSP they own.
+One must have a PSP capable of running homebrews, aka unsigned code. There are several so called loaders or [PSPHomeBrewEnablers] in the wild and people should look for information regarding the specific PSP they own.
 
 = Running BennuGD in PSP =
 
 There are several combinations of PSP models, motherboard revisions and firmware versions. For each combination a different approach should be taken in order to use BennuGD.
 
-For information on how to find your PSP model, check [PSP_ModelInfo].
-For information on how to find your PSP motherboard revision, check [PSP_MotherboardRevision].
-For information on how to find your PSP firmware version, check [PSP_FirmwareVersion].
+For information on how to find your PSP model, check [PSPModelInfo].
+For information on how to find your PSP motherboard revision, check [PSPMotherboardRevision].
+For information on how to find your PSP firmware version, check [PSPFirmwareVersion].
   
 == PSP-1000 or PSP-2000 without motherboard TA88v3 ==
 These are the finest. Custom firmwares works really fine and they are the easier to get BennuGD running. This needs to be 'pandorized' using a Pandora's battery. After that, custom firmware gets loaded every boot and there is nothing more to worry about. Copy the EBOOT.PBP file and the DCBs you want to run to /GAME/BENNUGD. Then go to Game -> Memory Stick and launch BennuGD.
