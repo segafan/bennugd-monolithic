@@ -1,13 +1,31 @@
-#summary One-sentence summary of this page.
+#summary This page explains what is a homebrew enabler.
 
-= Introduction =
+= Homebrew enabler =
 
-Add your content here.
+== Disclaimer ==
 
+The developers of this software does not endorse piracy in any form. This is just an informative page.
 
-= Details =
+== Introduction ==
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+PSP does have a complex protection scheme. It is designed to not allow people to run unsigned code: code that was not digitally signed by Sony. 
+
+People have created ways to bypass this copy protection scheme. One of these ways is a homebrew enabler: a piece of software that enables people to run unsigned code on their PSP. This can be used to load and run applications which are neither written using an official Sony Development Kit nor digitally signed by Sony.
+
+== Homebrew ==
+
+Homebrew is the name given to a software written using the unoffical PSPSDK. For most people, which cannot afford an official development kit from Sony, this is the way they can write code to run in their PSP.
+
+== Why I need a Homebrew Enabler? ==
+
+Simply because even tough the PSPSDK is capable of producing a correct binary (executable code) to be run in PSP, the protection scheme will not let you do that.
+
+== What about custom firmware? ==
+
+Custom firmware (CFW, for short) is a software which adds several capabilities to the PSP operating system (aka kernel). Among these capabilities is the one that allows one to run iso files directly from the memory stick, not using the UMD media to play games.
+
+== And what is a homebrew enabler anyway? ==
+
+A homebrew enabler (HEN) is a piece of software which takes advantage from a exploitable bug in an official game, demo or internal PSP software library to allow people to run unsigned code in their PSP. The most famous of these is [http://davee.x-fusion.co.uk/ ChickHEN] created by Davee, a HEN which uses an exploit in the PSP's library for the graphical format tiff.
+
+The HEN works by exploiting the bug, whose internals are out of scope right now, and then rebooting the PSP in a HEN environment. Please note that no apparent visual changes happens after the reboot but you can check if the exploit worked by looking at the XMB menu
