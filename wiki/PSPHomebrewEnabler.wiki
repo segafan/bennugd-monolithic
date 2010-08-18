@@ -28,4 +28,4 @@ Custom firmware (CFW, for short) is a software which adds several capabilities t
 
 A homebrew enabler (HEN) is a piece of software which takes advantage from a exploitable bug in an official game, demo or internal PSP software library to allow people to run unsigned code in their PSP. The most famous of these is [http://davee.x-fusion.co.uk/ ChickHEN] created by Davee, a HEN which uses an exploit in the PSP's library for the graphical format tiff.
 
-The HEN works by exploiting the bug, whose internals are out of scope right now, and then rebooting the PSP in a HEN environment. Please note that no apparent visual changes happens after the reboot but you can check if the exploit worked by looking at the XMB menu
+The HEN works by exploiting the bug, whose internals are out of scope right now, and then rebooting the PSP in a HEN environment. Please note that no apparent visual changes happens after the reboot but you can check if the exploit worked by looking at the XMB menu Settings -> System Settings -> System Information.
