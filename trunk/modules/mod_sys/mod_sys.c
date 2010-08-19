@@ -45,7 +45,8 @@
 
 CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
+#if defined TARGET_WII || defined TARGET_PSP
+	#warning NOT IMPLEMENTED FOR PSP or WII!
 	return 0;
 #else
     int mode = params[0];

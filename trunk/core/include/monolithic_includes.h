@@ -27,7 +27,9 @@
 #include <mod_say_symbols.h>
 #include <mod_string_symbols.h>
 #include <mod_math_symbols.h>
-#include <mod_mathi_symbols.h>
+#ifndef TARGET_PSP
+	#include <mod_mathi_symbols.h>
+#endif
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
 #include <mod_sound_symbols.h>
@@ -67,7 +69,9 @@
 #include <mod_flic_symbols.h>
 //#include <mod_debug_symbols.h>
 /* Unofficial modules */
-#include <iconv_symbols.h>
+#ifndef TARGET_PSP
+	#include <iconv_symbols.h>
+#endif
 #ifdef TARGET_WII
 #include <mod_wpad_symbols.h>
 #endif
@@ -119,7 +123,11 @@ basic_symbols symbol_list[] =
 	{ "mod_say.so"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.so"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.so"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
+
+	#ifndef TARGET_PSP
 	{ "mod_mathi.so"    , NULL, mod_mathi_constants_def, NULL, NULL, NULL, mod_mathi_functions_exports },
+#endif
+
 	{ "mod_time.so"     , NULL, NULL, NULL, NULL, NULL, mod_time_functions_exports },
 	{ "mod_file.so"     , NULL, mod_file_constants_def, NULL, NULL, NULL, mod_file_functions_exports },
 	{ "mod_sound.so"    , NULL, mod_sound_constants_def, NULL, mod_sound_globals_def, NULL, mod_sound_functions_exports },
@@ -149,7 +157,11 @@ basic_symbols symbol_list[] =
 	{ "mod_flic.so"     , NULL, NULL, NULL, NULL, NULL, mod_flic_functions_exports },
 //	{ "mod_debug.so"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
+
+	#ifndef TARGET_PSP
 	{ "mod_iconv.so"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
+#endif
+
 #ifdef TARGET_WII
 	{ "mod_wpad.so"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif

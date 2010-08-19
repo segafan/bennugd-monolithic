@@ -36,6 +36,10 @@
 #include <SDL.h>
 #endif
 
+#ifdef TARGET_PSP
+	#include "psp.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,11 +57,10 @@ static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 
 /* ---------------------------------------------------------------------- */
-
 /*
  *  FUNCTION : main
  *
- *  Main function
+ *  BennuGD PSP port main function (based on ScummVM PSP Port) 
  *
  *  PARAMS:
  *      INT n: ERROR LEVEL to return to OS
@@ -66,8 +69,25 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  *      No value
  *
  */
+#ifdef TARGET_PSP
+int main(void)
+{
+	int res; 
+	SetupCallbacks();
 
-int main( int argc, char **argv )
+	static char *argv[] = { "bgdi", NULL };
+	static int argc = ( sizeof(argv) / (sizeof(char *)-1) );
+
+	res = bgdi_main(argc, argv);
+
+	sceKernelSleepThread();
+
+	return res;
+}
+int bgdi_main( int argc, char *argv[] )
+#else
+int main(void)
+#endif
 {
     char * filename = 0 ;
     char dcbname[__MAX_PATH] ;
@@ -78,12 +98,19 @@ int main( int argc, char **argv )
     int ret = -1;
 
     dcb_signature dcb_signature;
+	
+#ifdef TARGET_PSP
+	pspDebugScreenSetBackColor(0xFFFFFFFF);
+	pspDebugScreenSetTextColor(0);
+	pspDebugScreenInit();
+	SetupCallbacks();
+#endif
     
 #ifdef TARGET_WII
     // Initialize the Wii FAT filesystem, check stuff
     if (!fatInitDefault()) {
         printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
-        exit(1);
+		exit(1);
     }
 #endif
 
@@ -239,6 +266,16 @@ int main( int argc, char **argv )
     DWORD dwProcessId;
     GetWindowThreadProcessId( hWnd, &dwProcessId );
     if ( dwProcessId == GetCurrentProcessId() ) ShowWindow( hWnd, SW_HIDE );
+#endif
+
+#ifdef TARGET_WII
+    // Delete stdout.txt if it exists (we'll overwrite it)
+    FILE *fd;
+
+    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
+        fclose(fd);
+        unlink("stdout.txt");
+    }
 #endif
 
     argv[0] = filename;
