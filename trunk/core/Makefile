@@ -8,5 +8,10 @@ linux:
 	cd bgdrtm; $(MAKE) -f Makefile.linux
 	cd bgdi; $(MAKE) -f Makefile.linux
 
+psp:
+	cd bgdc; $(MAKE) -f Makefile.psp
+	cd bgdrtm; $(MAKE) -f Makefile.psp
+	cd bgdi; $(MAKE) -f Makefile.psp
+
 clean:
 	./clean
