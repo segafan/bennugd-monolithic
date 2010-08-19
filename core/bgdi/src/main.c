@@ -86,7 +86,7 @@ int main(void)
 }
 int bgdi_main( int argc, char *argv[] )
 #else
-int main(void)
+int main(int argc, char **argv)
 #endif
 {
     char * filename = 0 ;
@@ -100,10 +100,10 @@ int main(void)
     dcb_signature dcb_signature;
 	
 #ifdef TARGET_PSP
-	pspDebugScreenSetBackColor(0xFFFFFFFF);
-	pspDebugScreenSetTextColor(0);
-	pspDebugScreenInit();
-	SetupCallbacks();
+    pspDebugScreenSetBackColor(0xFFFFFFFF);
+    pspDebugScreenSetTextColor(0);
+    pspDebugScreenInit();
+    SetupCallbacks();
 #endif
     
 #ifdef TARGET_WII
