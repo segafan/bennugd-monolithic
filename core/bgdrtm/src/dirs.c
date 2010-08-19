@@ -235,7 +235,7 @@ __DIR_ST * dir_open( const char * path )
     /* Convert *.* to * */
     if ( fptr > path_final + 2 && fptr[ -1 ] == '*' && fptr[ -2 ] == '.' && fptr[ -3 ] == '*' ) fptr[ -2 ] = 0;
 
-#if defined(TARGET_MAC) || defined(TARGET_WII)
+#if defined(TARGET_MAC) || defined(TARGET_WII) || defined(TARGET_PSP)
     glob( path_final, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
 #elif defined(TARGET_BEOS)
     glob( path_final, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );

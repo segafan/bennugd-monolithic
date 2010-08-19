@@ -37,7 +37,9 @@
 #else
 #include <unistd.h>
 #ifndef TARGET_WII
-#include <sys/utsname.h>
+	#ifndef TARGET_PSP
+		#include <sys/utsname.h>
+	#endif
 #endif
 /* BeOS INCLUDES */
 #ifdef TARGET_BEOS
