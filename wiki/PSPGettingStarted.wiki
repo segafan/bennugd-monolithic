@@ -22,7 +22,7 @@ These are the finest. Custom firmwares works really fine and they are the easier
 
 This environment is tested by the developer and it works fine.
 
-== PSP-2000 series with TA88v3 motherboard and firmware version older or equal than 5.03 ==
+== PSP-2000 series with TA88v3 motherboard or PSP-3000 series ==
 This needs some way to load unsigned code in the PSP. One possible alternative is to use the ChickHEN exploit. This is a software-only exploit and does not harm your PSP, altough it is somewhat instable and does not work correctly every time. Copy the EBOOT.PBP file and DCBs you want to run to /GAME/BENNUGD and load the exploit.
 
 One can check if the exploit worked by looking at System Settings -> Version to see if the word "ChickHEN" is in the version string.
@@ -36,7 +36,7 @@ The remaning models are:
   * PSP-3000 with firmware version newer than 5.03
   * PSP-Go
 
-At the time of this writing the only way to load homebrew application in these models is to use [http://http://www.wololo.net/wagic/hbl/ HalfByte Loader] by wololo and his team (nice job, guys). Please note that the developer does not have any of these models so they are not tested. Reports on this are welcome.
+At the time of this writing the only way to load homebrew application in these models is to use [http://www.wololo.net/wagic/hbl/ HalfByte Loader] by wololo and his team (nice job, guys). Please note that the developer does not have any of these models so they are not tested. Reports on this are welcome.
 
 
   
