@@ -24,7 +24,7 @@ Simply because even tough the PSPSDK is capable of producing a correct binary (e
 
 A custom firmware (CFW, for short) is a software which adds several capabilities to the PSP operating system (aka kernel). Among these capabilities is the one that allows one to run iso files directly from the memory stick, not using the UMD media to play games. Custom firmwares are not directly related to homebrew enablers but apart from Pandora's battery, one needs to load a HEN BEFORE loading a custom firmware. Custom firmware needs to install itself in memory and they are, in the sense of an ordinary application, not digitally signed. Also note that when one shuts down the PSP, the HEN, as well as the CFW gets unloaded (they go to RAM) so it is needed to reload these after turning on again to run your applications/games.
 
-Pandora's battery is a special case because people were able to create a so called IPL (Inital Program Loader) for use with it. The IPL is a piece of software that loads automatically everytime the PSP boots and loads the homebrew enabler/custom firmware capabilities. Unfortunately, few PSP models (mostly 1000/2000-no-TA88v3 series) supports being _pandorized_. For information about how to discover your PSP model, please goto [PSPModelChecker].
+Pandora's battery is a special case because people were able to create a so called IPL (Inital Program Loader) for use with it. The IPL is a piece of software that loads automatically everytime the PSP boots and loads the homebrew enabler/custom firmware capabilities. Unfortunately, few PSP models (mostly 1000/2000-no-TA88v3 series) supports being _pandorized_. For information about how to discover your PSP model, please goto [PSPModelInfo].
 
 == And what is a homebrew enabler anyway? ==
 
