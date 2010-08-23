@@ -38,6 +38,8 @@ extern CONDITIONALLY_STATIC int grproc_get_angle( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int grproc_get_dist( INSTANCE * a, int * params );
 extern CONDITIONALLY_STATIC int grproc_get_real_point( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int grproc_collision( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int grproc_collision_box( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int grproc_collision_circle( INSTANCE * my, int * params );
 #endif
 
 /* ----------------------------------------------------------------- */
@@ -53,12 +55,14 @@ char __bgdexport( mod_grproc, locals_def )[] =
 
 DLSYSFUNCS  __bgdexport( mod_grproc, functions_exports )[] =
 {
-    { "ADVANCE"         , "I"   , TYPE_INT  , SYSMACRO(grproc_advance)        },
-    { "XADVANCE"        , "II"  , TYPE_INT  , SYSMACRO(grproc_xadvance)       },
-    { "GET_ANGLE"       , "I"   , TYPE_INT  , SYSMACRO(grproc_get_angle)      },
-    { "GET_DIST"        , "I"   , TYPE_INT  , SYSMACRO(grproc_get_dist)       },
-    { "COLLISION"       , "I"   , TYPE_INT  , SYSMACRO(grproc_collision)      },
-    { "GET_REAL_POINT"  , "IPP" , TYPE_INT  , SYSMACRO(grproc_get_real_point) },
+    { "ADVANCE"         , "I"   , TYPE_INT  , SYSMACRO(grproc_advance)         },
+    { "XADVANCE"        , "II"  , TYPE_INT  , SYSMACRO(grproc_xadvance)        },
+    { "GET_ANGLE"       , "I"   , TYPE_INT  , SYSMACRO(grproc_get_angle)       },
+    { "GET_DIST"        , "I"   , TYPE_INT  , SYSMACRO(grproc_get_dist)        },
+    { "COLLISION"       , "I"   , TYPE_INT  , SYSMACRO(grproc_collision)       },
+    { "COLLISION_BOX"   , "I"   , TYPE_INT  , SYSMACRO(grproc_collision_box)   },
+    { "COLLISION_CIRCLE", "I"   , TYPE_INT  , SYSMACRO(grproc_collision_circle)},
+    { "GET_REAL_POINT"  , "IPP" , TYPE_INT  , SYSMACRO(grproc_get_real_point)  },
 
     { 0                 , 0     , 0         , 0                     }
 };

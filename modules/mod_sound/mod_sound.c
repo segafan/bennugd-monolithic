@@ -1454,6 +1454,13 @@ CONDITIONALLY_STATIC int modsound_reverse_stereo( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
+CONDITIONALLY_STATIC int modsound_set_music_position( INSTANCE * my, int * params )
+{
+    return ( Mix_SetMusicPosition( ( double ) *( float * ) & params[0] ) );
+}
+
+/* --------------------------------------------------------------------------- */
+
 CONDITIONALLY_STATIC int modsound_init( INSTANCE * my, int * params )
 {
     return( sound_init() );
