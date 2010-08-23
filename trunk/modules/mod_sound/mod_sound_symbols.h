@@ -52,6 +52,7 @@ extern CONDITIONALLY_STATIC int modsound_set_panning( INSTANCE * my, int * param
 extern CONDITIONALLY_STATIC int modsound_set_position( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modsound_set_distance( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modsound_reverse_stereo( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_music_position( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modsound_init( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modsound_close( INSTANCE * my, int * params );
 extern void __bgdexport( mod_sound, module_initialize )();
@@ -114,6 +115,7 @@ DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
     { "SET_DISTANCE"        , "II"   , TYPE_INT , SYSMACRO(modsound_set_distance)       },
     { "REVERSE_STEREO"      , "II"   , TYPE_INT , SYSMACRO(modsound_reverse_stereo)     },
     { "PLAY_WAV"            , "III"  , TYPE_INT , SYSMACRO(modsound_play_wav_channel)   },
+	{ "SET_MUSIC_POSITION"  , "F"    , TYPE_INT , SYSMACRO(modsound_set_music_position) },
     { 0                     , 0      , 0        , 0                           }
 };
 

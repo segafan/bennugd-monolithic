@@ -70,14 +70,18 @@ int waitvsync = 0 ;
 int scale_resolution = 0 ;
 int * scale_resolution_table_w = NULL;
 int * scale_resolution_table_h = NULL;
+int scale_resolution_aspectratio = 0;
+int scale_resolution_orientation = 0;
 
 
 /* --------------------------------------------------------------------------- */
 
-#define GRAPH_MODE          0
-#define SCALE_MODE          1
-#define FULL_SCREEN         2
-#define SCALE_RESOLUTION    3
+#define GRAPH_MODE                      0
+#define SCALE_MODE                      1
+#define FULL_SCREEN                     2
+#define SCALE_RESOLUTION                3
+#define SCALE_RESOLUTION_ASPECTRATIO    4
+#define SCALE_RESOLUTION_ORIENTATION    5
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -91,6 +95,11 @@ DLVARFIXUP __bgdexport( libvideo, globals_fixup )[] =
     { "scale_mode" , NULL, -1, -1 },
     { "full_screen" , NULL, -1, -1 },
     { "scale_resolution", NULL, -1, -1 },
+
+    /* new vars for use with scale_resolution */
+    { "scale_resolution_aspectratio", NULL, -1, -1 },
+    { "scale_resolution_orientation", NULL, -1, -1 },
+
     { NULL , NULL, -1, -1 }
 };
 
@@ -199,6 +208,7 @@ int gr_set_mode( int width, int height, int depth )
     int sdl_flags = 0;
     int surface_width = width;
     int surface_height = height;
+    char * e;
 
     enable_scale = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_2XSCALE ) ? 1 : 0 ;
     full_screen = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_FULLSCREEN ) ? 1 : 0 ;
@@ -209,7 +219,19 @@ int gr_set_mode( int width, int height, int depth )
     waitvsync = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_WAITVSYNC ) ? 1 : 0 ;
     scale_mode = GLODWORD( libvideo, SCALE_MODE );
     full_screen |= GLODWORD( libvideo, FULL_SCREEN );
+
     scale_resolution = GLODWORD( libvideo, SCALE_RESOLUTION );
+
+    if ( GLOEXISTS( libvideo, SCALE_RESOLUTION_ASPECTRATIO ) ) scale_resolution_aspectratio = GLODWORD( libvideo, SCALE_RESOLUTION_ASPECTRATIO );
+    if ( GLOEXISTS( libvideo, SCALE_RESOLUTION_ORIENTATION ) ) scale_resolution_orientation = GLODWORD( libvideo, SCALE_RESOLUTION_ORIENTATION );
+
+    /* Overwrite all params */
+
+    if ( ( e = getenv( "SCALE_RESOLUTION"             ) ) ) scale_resolution = atol( e );
+    if ( ( e = getenv( "SCALE_RESOLUTION_ASPECTRATIO" ) ) ) scale_resolution_aspectratio = atol( e );
+    if ( ( e = getenv( "SCALE_RESOLUTION_ORIENTATION" ) ) ) scale_resolution_orientation = atol( e );
+
+    if ( scale_resolution_orientation > 4 || scale_resolution_orientation < 0 ) scale_resolution_orientation = 0;
 
     if ( !depth )
     {
@@ -287,7 +309,20 @@ int gr_set_mode( int width, int height, int depth )
 
     if ( scale_resolution != 0 )
     {
+        switch ( scale_resolution_orientation )
+        {
+            case    1:
+            case    3:
+            {
+                    int aux =  surface_width;
+                    surface_width = surface_height;
+                    surface_height = aux;
+                    break;
+            }
+        }
+
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+
         if ( !scale_screen ) return -1;
         screen = SDL_CreateRGBSurface( sdl_flags,
                                        width,
@@ -300,26 +335,90 @@ int gr_set_mode( int width, int height, int depth )
                                      );
 
         /* scale tables */
+
+        int     lim_w = 0, lim_h = 0, pitch_w = 0, pitch_h = 0;
+        double  fw = 0, fh = 0, fx = 0.0, fy = 0.0;
+        int     h, w;
+        int     offx = 0, offy = 0;
+        int     start_w = 0, start_h = 0, fix = 1;
+
+        switch ( scale_resolution_orientation )
         {
-            double  fw = (double)screen->w / (double)scale_screen->w,
-                    fh = (double)screen->h / (double)scale_screen->h,
-                    fx, fy = 0.0 ;
-            int     h, w;
+            case    0:
+            case    2:
+                    lim_w = screen->w;
+                    lim_h = screen->h;
 
-            if ( !( scale_resolution_table_w = malloc( surface_width  * sizeof( int ) ) ) ) return -1;
-            if ( !( scale_resolution_table_h = malloc( surface_height * sizeof( int ) ) ) ) return -1;
+                    pitch_w = 1;
+                    pitch_h = screen->pitch;
 
-            fx = 0.0;
-            for ( w = 0; w < scale_screen->w; w++ )
+                    fw = (double)screen->w / (double)scale_screen->w;
+                    fh = (double)screen->h / (double)scale_screen->h;
+                    break;
+
+            case    1:
+            case    3:
+                    lim_w = screen->h;
+                    lim_h = screen->w;
+
+                    pitch_w = screen->pitch;
+                    pitch_h = 1;
+
+                    fh = (double)screen->w / (double)scale_screen->h;
+                    fw = (double)screen->h / (double)scale_screen->w;
+                    break;
+        }
+
+        switch ( scale_resolution_orientation )
+        {
+            case    0:
+            case    1:
+                    start_w = 0, start_h = 0, fix = -1;
+                    break;
+
+            case    2:
+            case    3:
+                    start_w = scale_screen->w - 1, start_h = scale_screen->h - 1, fix = 1;
+                    break;
+        }
+
+        if ( scale_resolution_aspectratio )
+        {
+            if ( scale_screen->w > scale_screen->h )
             {
-                scale_resolution_table_w[w] = ( int ) fx;
+                fw = fh;
+                offx = ( scale_screen->w - lim_w / fw ) / 2 ;
+                offy = 0;
+            }
+            else
+            {
+                fh = fw;
+                offx = 0;
+                offy = ( scale_screen->h - lim_h / fw ) / 2 ;
+            }
+        }
+
+        if ( !( scale_resolution_table_w = malloc( surface_width  * sizeof( int ) ) ) ) return -1;
+        if ( !( scale_resolution_table_h = malloc( surface_height * sizeof( int ) ) ) ) return -1;
+
+        for ( w = 0; w < scale_screen->w; w++ )
+        {
+            if ( w < offx )
+                scale_resolution_table_w[ start_w - w * fix ] = -1;
+            else
+            {
+                scale_resolution_table_w[ start_w - w * fix ] = ( fx < lim_w ) ? pitch_w * ( int ) fx : -1 ;
                 fx += fw;
             }
+        }
 
-            fy = 0.0;
-            for ( h = 0; h < scale_screen->h; h++ )
+        for ( h = 0; h < scale_screen->h; h++ )
+        {
+            if ( h < offy )
+                scale_resolution_table_h[ start_h - h * fix ] = -1;
+            else
             {
-                scale_resolution_table_h[h] = screen->pitch * ( int ) fy ;
+                scale_resolution_table_h[ start_h - h * fix ] = ( fy < lim_h ) ? pitch_h * ( int ) fy : -1 ;
                 fy += fh;
             }
         }
@@ -431,21 +530,12 @@ void __bgdexport( libvideo, module_initialize )()
 #endif
     apptitle = appname;
 
-    e = getenv("VIDEO_WIDTH");
-    if ( e ) scr_width = atoi(e);
-
-    e = getenv("VIDEO_HEIGHT");
-    if ( e ) scr_height = atoi(e);
-
-    e = getenv("VIDEO_DEPTH");
-    if ( e )
+    if ( ( e = getenv( "VIDEO_WIDTH"  ) ) ) scr_width = atoi(e);
+    if ( ( e = getenv( "VIDEO_HEIGHT" ) ) ) scr_height = atoi(e);
+    if ( ( e = getenv( "VIDEO_DEPTH"  ) ) )
         GLODWORD( libvideo, GRAPH_MODE ) = atoi(e);
     else
-/*#ifdef TARGET_GP2X_WIZ*/
         GLODWORD( libvideo, GRAPH_MODE ) = MODE_16BITS;
-/*#else
-        GLODWORD( libvideo, GRAPH_MODE ) = MODE_32BITS;
-#endif*/
 
     gr_init( scr_width, scr_height ) ;
 }
