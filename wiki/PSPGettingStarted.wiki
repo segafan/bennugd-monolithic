@@ -23,13 +23,13 @@ These are the finest. Custom firmwares works really fine and they are the easier
 This environment is tested by the developer and it works fine.
 
 == PSP-2000 series with TA88v3 motherboard or PSP-3000 series ==
-This needs some way to load unsigned code in the PSP. One possible alternative is to use the ChickHEN exploit. This is a software-only exploit and does not harm your PSP, altough it is somewhat instable and does not work correctly every time. Copy the EBOOT.PBP file and DCBs you want to run to /GAME/BENNUGD and load the exploit.
+For now, these only works if they have firmware version older or equal than 5.03. They need some way to load unsigned code in the PSP. One possible alternative is to use the ChickHEN exploit. This is a software-only exploit and does not harm your PSP, altough it is somewhat instable and does not work correctly every time. Copy the EBOOT.PBP file and DCBs you want to run to /GAME/BENNUGD and load the exploit.
 
 One can check if the exploit worked by looking at System Settings -> Version to see if the word "ChickHEN" is in the version string.
 
 When the exploit gets loaded, the homebrew icon shows in the XMB Game -> Memory Stick option and you can launch BennuGD from there.
 
-This approach also works for PSP-3000 and firmware version older or equal than 5.03.
+== Remaining models ==
 
 The remaning models are:
   * PSP-2000 with motherboard TA88v3 and firmware version newer than 5.03
