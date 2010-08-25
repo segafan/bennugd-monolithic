@@ -16,6 +16,8 @@ There are several combinations of PSP models, motherboard revisions and firmware
 For information on how to find your PSP model, check [PSPModelInfo].
 For information on how to find your PSP motherboard revision, check [PSPMotherboardRevision].
 For information on how to find your PSP firmware version, check [PSPFirmwareVersion].
+
+The following is model-specific information.
   
 == PSP-1000 or PSP-2000 without motherboard TA88v3 ==
 These are the finest. Custom firmwares works really fine and they are the easier to get BennuGD running. This needs to be 'pandorized' using a Pandora's battery. After that, custom firmware gets loaded every boot and there is nothing more to worry about. Copy the EBOOT.PBP file and the DCBs you want to run to /GAME/BENNUGD. Then go to Game -> Memory Stick and launch BennuGD.
@@ -36,7 +38,7 @@ The remaning models are:
   * PSP-3000 with firmware version newer than 5.03
   * PSP-Go
 
-At the time of this writing the only way to load homebrew application in these models is to use [http://www.wololo.net/wagic/hbl/ HalfByte Loader] by wololo and his team (nice job, guys). Please note that the developer does not have any of these models so they are not tested. Reports on this are welcome.
+At the time of this writing the only way to load homebrew application in these models is to use [http://www.wololo.net/wagic/hbl/ HalfByte Loader] by wololo and his team (nice job, guys). Please note that the developer does not have any of these models so they are not tested. Reports on this are welcome. For more information about running applications in the PSP, please check [PSPHomebrewEnabler].
 
 
   
