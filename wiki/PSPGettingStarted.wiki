@@ -7,7 +7,7 @@ This page describes how to get BennuGD-monolithic working on your PSP. This appr
 
 = Requirements =
 
-One must have a PSP capable of running homebrews, aka unsigned code. There are several so called loaders or [PSPHomeBrewEnablers] in the wild and people should look for information regarding the specific PSP they own.
+One must have a PSP capable of running homebrews, aka unsigned code. There are several so called loaders or [PSPHomebrewEnabler] in the wild and people should look for information regarding the specific PSP they own.
 
 = Running BennuGD in PSP =
 
