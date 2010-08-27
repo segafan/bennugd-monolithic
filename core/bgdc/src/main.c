@@ -72,6 +72,7 @@ static char _tmp[128];
 
 int main( int argc, char **argv )
 {
+    FILE *fd;
     time_t curtime;
     struct tm *loctime;
     int value, code;
@@ -344,11 +345,18 @@ int main( int argc, char **argv )
 
     if ( !sourcefile )
     {
-        printf( MSG_USING
+        if( (fd = fopen("boot.prg", "r")) != NULL )  // Check if boot.prg exists
+        {
+            fclose(fd);
+            sourcefile = "boot.prg";
+        } else {
+            printf( MSG_USING
                 MSG_OPTION_D
                 MSG_OPTIONS
                 MSG_LICENSE, argv[0] );
-        return 0;
+            
+            return 0;
+        }
     }
 /*
     add_simple_define( "COMPILER_VERSION", VERSION );
