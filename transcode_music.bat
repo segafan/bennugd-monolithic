@@ -13,14 +13,14 @@ REM vlc variant, cvlc is fine  if available,
 REM	"vlc -I dummy" is fine, too (needed for win32)
 SET VLCDIR=%ProgramFiles%\VideoLAN\VLC
 IF %PROCESSOR_ARCHITECTURE% == "AMD64" SET VLCDIR=%ProgramFiles(x86)%\VideoLAN\VLC
-SET VLC=vlc.exe -I dummy
+SET VLC=vlc.exe -I dummy --ignore-config
 SET PATH=%PATH%;%VLCDIR%
 REM kbps, 96 is enough
 SET RATE=96
 REM 1 for mono, 2 for stereo
 SET CHANNELS=2
-REM Leave this @ 32KHz for the Wii
-SET FREQ=32000
+REM Leave this @ 48KHz for the Wii
+SET FREQ=48000
 REM Output dirs for OGG & WAV MUSIC
 SET OUTOGG=converted_music
 SET OUTWAV=converted_wav

@@ -158,7 +158,7 @@ static int sound_init()
 #ifdef TARGET_WII
         /* WII uses a powerpc architecture, which is big-endian */
         audio_format = AUDIO_S16MSB;
-        audio_rate = 32000;
+        audio_rate = 48000;
 #else
         audio_format = AUDIO_S16;
 #endif

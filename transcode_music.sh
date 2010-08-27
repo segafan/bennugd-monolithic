@@ -8,11 +8,11 @@
 #                                                                      #
 ########################################################################
 
-VLC="vlc -I dummy";	# vlc variant, cvlc is fine  if available,
+VLC="cvlc --ignore-config";	# vlc variant, cvlc is fine  if available,
 			# "vlc -I dummy" is fine, too (needed for win32)
 RATE=96;		# kbps, 96 is enough
 CHANNELS=2;		# 1 for mono, 2 for stereo
-FREQ=32000;		# Leave this @ 32KHz
+FREQ=48000;		# Leave this @ 48KHz
 OUTOGG=converted_music;
 OUTWAV=converted_wav;
 
