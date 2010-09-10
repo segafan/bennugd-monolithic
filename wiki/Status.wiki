@@ -5,7 +5,7 @@
 
 Most of the official BennuGD modules have already been implemented, so the first milestone of the project has already been completed.
 
-Now, the code that needs to be tuned for each platform has to be tweaked and bugs need to be ironed out.
+There are a few known bugs that need to be ironed out (have a look at the "Issues" section above) but most things work just fine.
 
 = Details =
 
