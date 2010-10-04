@@ -172,7 +172,17 @@ int dcb_load( const char * filename )
     file * fp ;
 
     /* check for existence of the DCB FILE */
-    if ( !file_exists( filename ) ) return 0 ;
+    #ifdef TARGET_PSP	
+    fprintf( stderr, "dcb_load trying to load %s\n", filename );
+
+    if( !file_exists( filename ) )
+    {
+        fprintf(stderr, "file_exists from dcb_load failed!\n");
+        return 0;
+		}
+		#else
+		if ( !file_exists( filename ) ) return 0 ;
+		#endif
 
     fp = file_open( filename, "rb0" ) ;
     if ( !fp )

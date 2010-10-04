@@ -28,7 +28,7 @@
 #include <mod_string_symbols.h>
 #include <mod_math_symbols.h>
 #ifndef TARGET_PSP
-	#include <mod_mathi_symbols.h>
+    #include <mod_mathi_symbols.h>
 #endif
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
@@ -70,10 +70,10 @@
 //#include <mod_debug_symbols.h>
 /* Unofficial modules */
 #ifndef TARGET_PSP
-	#include <iconv_symbols.h>
+    #include <iconv_symbols.h>
 #endif
 #ifdef TARGET_WII
-#include <mod_wpad_symbols.h>
+    #include <mod_wpad_symbols.h>
 #endif
 //#include <image_symbols.h>
 //#include <mod_sqlite3_symbols.h>
@@ -107,6 +107,7 @@ typedef struct
 basic_symbols symbol_list[] =
 {
 	// Libs go first, modules later
+	// name				 , deps, constants, types, globals, locals, func_exp
 	{ "libsdlhandler.so", NULL, NULL, NULL, NULL, NULL, NULL },
 	{ "libjoy.so"       , libjoy_modules_dependency, libjoy_constants_def, NULL, NULL, NULL, NULL },
 	{ "libgrbase.so"    , NULL, NULL, NULL, libgrbase_globals_def, NULL, NULL },
