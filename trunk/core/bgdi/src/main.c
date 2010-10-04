@@ -37,7 +37,7 @@
 #endif
 
 #ifdef TARGET_PSP
-	#include "psp.h"
+    #include "psp.h"
 #endif
 
 #include <stdio.h>
@@ -56,6 +56,8 @@ static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
 static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 
+int running = 1;
+
 /* ---------------------------------------------------------------------- */
 /*
  *  FUNCTION : main
@@ -72,7 +74,10 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 #ifdef TARGET_PSP
 int main(void)
 {
-	int res; 
+	int res;
+	
+	PSP_HEAP_SIZE_KB(25000);
+	
 	SetupCallbacks();
 
 	static char *argv[] = { "bgdi", NULL };
@@ -84,6 +89,7 @@ int main(void)
 
 	return res;
 }
+
 int bgdi_main( int argc, char *argv[] )
 #else
 int main(int argc, char **argv)
@@ -100,10 +106,14 @@ int main(int argc, char **argv)
     dcb_signature dcb_signature;
 	
 #ifdef TARGET_PSP
-    pspDebugScreenSetBackColor(0xFFFFFFFF);
-    pspDebugScreenSetTextColor(0);
+    pspDebugScreenSetBackColor(0x00000000);
+    pspDebugScreenSetTextColor(0xFFFFFFFF);
     pspDebugScreenInit();
     SetupCallbacks();
+    // pspDebugScreenSetBackColor(0xFFFFFFFF);
+    // pspDebugScreenSetTextColor(0);
+    // pspDebugScreenInit();
+    // SetupCallbacks();
 #endif
     
 #ifdef TARGET_WII
@@ -196,7 +206,7 @@ int main(int argc, char **argv)
 
         if ( !filename )
         {
-            printf( BGDI_VERSION "\n"
+            fprintf( stderr, BGDI_VERSION "\n"
                     "Copyright (c) 2006-2010 SplinterGU (Fenix/BennuGD)\n"
                     "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
                     "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
@@ -222,6 +232,16 @@ int main(int argc, char **argv)
 
     /* Init application title for windowed modes */
 
+#ifdef TARGET_PSP
+    fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
+    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/01_core.dcb");
+    fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
+    if(! dcb_load( dcbname ) )
+    {
+        fprintf( stderr, "bgdi_main(): failed to load: %s\n", dcbname );
+        return (-1);
+    }
+#else
     strcpy( dcbname, filename ) ;
     appname = strdup( filename ) ;
 
@@ -249,9 +269,8 @@ int main(int argc, char **argv)
         }
     }
     else
-    {
         dcb_load_from( fp, dcb_signature.dcb_offset );
-    }
+#endif
 
     /* If the dcb is not in debug mode */
 

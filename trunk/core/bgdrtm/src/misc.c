@@ -179,10 +179,18 @@ void bgdrtm_entry( int argc, char * argv[] )
     int * args = (int *)&GLODWORD( ARGV_TABLE );
     char * os_id;
 
+    // PSP
+    fprintf( stderr, "entering bgdrtm_entry()...\n" );
+
     GLODWORD( ARGC ) = argc ;
+
+    // PSP
+    fprintf( stderr, "argc: %d\n", argc );
 
     for ( i = 0 ; i < argc && i < 32; i++ )
     {
+        // PSP
+        fprintf( stderr, "args[%d]: %s\n", i, argv[i] );
         args[i] = string_new( argv[i] ) ;
         string_use( args[i] ) ;
     }
@@ -198,6 +206,9 @@ void bgdrtm_entry( int argc, char * argv[] )
 
     bgdrtm_ptimer_init();
 #endif
+
+    // PSP
+    fprintf( stderr, "exiting bgdrtm_entry()...\n");
 }
 
 /* --------------------------------------------------------------------------- */
@@ -227,6 +238,8 @@ void bgdrtm_exit( int exit_value )
 
     __bgdrtm_memregl = munmap( 0, 0x20000 ); __bgdrtm_memregl = NULL;
     close( __bgdrtm_memdev ); __bgdrtm_memdev = -1;
+#elif defined(TARGET_PSP)
+    sceKernelExitGame();
 #endif
 
     exit( exit_value ) ;

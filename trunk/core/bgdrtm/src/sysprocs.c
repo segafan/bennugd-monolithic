@@ -406,10 +406,17 @@ void sysproc_init()
 #elif defined(TARGET_MAC)
 #define DLLEXT      ".dylib"
 #define SIZEDLLEXT  6
+#elif defined(TARGET_PSP)
+#define DLLEXT		".so"     //this will change later
+#define SIZEDLLEXT  4
 #else
 #define DLLEXT      ".so"
 #define SIZEDLLEXT  3
 #endif
+
+    // PSP
+    fprintf( stderr, "sysproc_init() running\n");
+    fprintf( stderr, "dcb.data.NImports: %d\n", dcb.data.NImports );
 
     for ( n = 0; n < dcb.data.NImports; n++ )
     {
@@ -428,6 +435,9 @@ void sysproc_init()
             printf( "%s\n", dliberror() ) ;
             exit( 0 );
         }
+        
+        // PSP
+        fprintf( stderr, "loading symbols...\n");
 
         globals_fixup     = ( DLVARFIXUP * ) _dlibaddr( library, "globals_fixup" ) ;
         locals_fixup      = ( DLVARFIXUP * ) _dlibaddr( library, "locals_fixup" ) ;
@@ -445,6 +455,9 @@ void sysproc_init()
         handler_hooks = ( HOOK * ) _dlibaddr( library, "handler_hooks" ) ;
 
         /* Fixups */
+
+        // PSP		
+        fprintf( stderr, "loading fixups...\n");
 
         if ( globals_fixup )
         {
@@ -465,6 +478,9 @@ void sysproc_init()
         }
 
         sysproc_add_tab( functions_exports ) ;
+
+        // PSP
+        fprintf( stderr, "hooking...\n");
 
         if ( module_initialize )
             hook_add( module_initialize, module_initialize_list, module_initialize_allocated, module_initialize_count ) ;
@@ -498,6 +514,9 @@ void sysproc_init()
 
     /* System Procs FixUp */
 
+    // PSP
+    fprintf( stderr, "sysprocs_fixup()...\n");	
+
     sysprocs_fixup();
 
     proc = sysprocs ;
@@ -517,13 +536,21 @@ void sysproc_init()
     }
 
     /* Sort handler_hooks */
+    // PSP
+    fprintf( stderr, "sorting handler hooks...\n" );
     if ( handler_hook_list )
         qsort( handler_hook_list, handler_hook_count, sizeof( handler_hook_list[0] ), ( int ( * )( const void *, const void * ) ) compare_priority ) ;
+    
+    // PSP
+    fprintf( stderr, "initializing modules...\n" );
 
     /* Initialize all modules */
     if ( module_initialize_count )
         for ( n = 0; n < module_initialize_count; n++ )
             module_initialize_list[n]();
+
+    // PSP
+    fprintf( stderr, "exiting sysproc_init()\n" );
 }
 
 /* ---------------------------------------------------------------------- */

@@ -23,27 +23,29 @@
 #define _LOADLIB_H
 
 #ifdef _WIN32
-#include <windows.h>
-#include <winbase.h>
+    #include <windows.h>
+    #include <winbase.h>
 #else
-#define _GNU_SOURCE
-#ifndef __MONOLITHIC__
-#include <dlfcn.h>
-#else
-#include <monolithic_includes.h>
-#endif
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+    #define _GNU_SOURCE
+	
+    #ifndef __MONOLITHIC__
+        #include <dlfcn.h>
+    #else
+        #include <monolithic_includes.h>
+    #endif
+	
+    #include <unistd.h>
+    #include <stdlib.h>
+    #include <stdio.h>
+    #include <string.h>
 
-#define __stdcall
-#define __dllexport
-#define __dllimport
+    #define __stdcall
+    #define __dllexport
+    #define __dllimport
 #endif
 
 #ifdef _WIN32
-#define dlclose(a)
+    #define dlclose(a)
 #endif
 
 // This first part handles systems where dynamic library opening is posible
@@ -217,82 +219,91 @@ static int dlibclose( dlibhandle * handle )
 
 static dlibhandle * dlibopen( const char * fname )
 {
-	int i=0;
+  int i=0;
 
     // Fake-load the library
     // What we're really doing is checking if the library name given to us is in the list
-	// of supported modules, and return its place in the symbols array.
-	while (symbol_list[i].module_name != NULL) {
-		if(strncmp(fname, symbol_list[i].module_name, strlen(symbol_list[i].module_name)) == 0) {
-			dlibhandle * dlib = (dlibhandle*) malloc( sizeof( dlibhandle ) );
-			if ( !dlib )
-			{
-				printf("Couldn't allocate resources for fake-loading the module %s :(\n", __dliberr);
-				return NULL;
-			}
+    // of supported modules, and return its place in the symbols array.
+
+    fprintf(stderr, "dlibopenning: %s\n", fname );
+
+    while (symbol_list[i].module_name != NULL) {
+        if(strncmp(fname, symbol_list[i].module_name,
+          strlen(symbol_list[i].module_name)) == 0) {
+            dlibhandle * dlib = (dlibhandle*) malloc( sizeof( dlibhandle ) );
+            if ( !dlib )
+            {
+                printf("Couldn't allocate resources for fake-loading the module %s :(\n",
+                       __dliberr);
+				        return NULL;
+			      }
 			
-			dlib->index = i;
-			
-			return ( dlib );
-		}
+      			dlib->index = i;
+      			
+            // PSP
+            fprintf( stderr, "dlibopen exiting...\n" );
+            return ( dlib );
+        }
 		
-		i++;
-	}
+		    i++;
+	  }
 
     return NULL;
 }
 
 static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 {
-	// Only for debugging purposes
-	//printf("Asked for symbol \"%s\" for library %s.\n", symbol, symbol_list[handle->index].module_name);
+    // Only for debugging purposes
+    fprintf(stderr, "Asked for symbol \"%s\" for library %s.\n", symbol,
+	        symbol_list[handle->index].module_name);
 	
-	// Return the symbol they asked us, or NULL
-	if(strncmp(symbol, "modules_dependency", strlen("modules_dependency")) == 0)
-		return symbol_list[handle->index].modules_dependency;
+    // Return the symbol they asked us for, or NULL
+    if(strncmp(symbol, "modules_dependency", strlen("modules_dependency")) == 0)
+        return symbol_list[handle->index].modules_dependency;
 	
-	if(strncmp(symbol, "constants_def", strlen("constants_def")) == 0)
-		return symbol_list[handle->index].constants_def;
+    if(strncmp(symbol, "constants_def", strlen("constants_def")) == 0)
+        return symbol_list[handle->index].constants_def;
 	
-	if(strncmp(symbol, "types_def", strlen("types_def")) == 0)
-		return &symbol_list[handle->index].types_def;
+    if(strncmp(symbol, "types_def", strlen("types_def")) == 0)
+        return &symbol_list[handle->index].types_def;
 	
-	if(strncmp(symbol, "globals_def", strlen("globals_def")) == 0)
-		return &symbol_list[handle->index].globals_def;
+    if(strncmp(symbol, "globals_def", strlen("globals_def")) == 0)
+        return &symbol_list[handle->index].globals_def;
 	
-	if(strncmp(symbol, "locals_def", strlen("locals_def")) == 0)
-		return &symbol_list[handle->index].locals_def;
+    if(strncmp(symbol, "locals_def", strlen("locals_def")) == 0)
+        return &symbol_list[handle->index].locals_def;
 	
-	if(strncmp(symbol, "functions_exports", strlen("functions_exports")) == 0)
-		return symbol_list[handle->index].functions_exports;
+    if(strncmp(symbol, "functions_exports", strlen("functions_exports")) == 0)
+        return symbol_list[handle->index].functions_exports;
 
 #ifndef __BGDC__
-	if(strncmp(symbol, "globals_fixup", strlen("globals_fixup")) == 0)
-		return symbol_list_runtime[handle->index].globals_fixup;
+    if(strncmp(symbol, "globals_fixup", strlen("globals_fixup")) == 0)
+        return symbol_list_runtime[handle->index].globals_fixup;
 	
-	if(strncmp(symbol, "locals_fixup", strlen("locals_fixup")) == 0)
-		return symbol_list_runtime[handle->index].locals_fixup;
+    if(strncmp(symbol, "locals_fixup", strlen("locals_fixup")) == 0)
+        return symbol_list_runtime[handle->index].locals_fixup;
 	
-	if(strncmp(symbol, "module_initialize", strlen("module_initialize")) == 0)
-		return symbol_list_runtime[handle->index].module_initialize;
+    if(strncmp(symbol, "module_initialize", strlen("module_initialize")) == 0)
+        return symbol_list_runtime[handle->index].module_initialize;
 	
-	if(strncmp(symbol, "module_finalize", strlen("module_finalize")) == 0)
-		return symbol_list_runtime[handle->index].module_finalize;
+    if(strncmp(symbol, "module_finalize", strlen("module_finalize")) == 0)
+        return symbol_list_runtime[handle->index].module_finalize;
 	
-	if(strncmp(symbol, "instance_create_hook", strlen("instance_create_hook")) == 0)
-		return symbol_list_runtime[handle->index].instance_create_hook;
+    if(strncmp(symbol, "instance_create_hook", strlen("instance_create_hook")) == 0)
+        return symbol_list_runtime[handle->index].instance_create_hook;
 	
-	if(strncmp(symbol, "instance_destroy_hook", strlen("instance_destroy_hook")) == 0)
-		return symbol_list_runtime[handle->index].instance_destroy_hook;
+    if(strncmp(symbol, "instance_destroy_hook", strlen("instance_destroy_hook")) == 0)
+        return symbol_list_runtime[handle->index].instance_destroy_hook;
 	
-	if(strncmp(symbol, "process_exec_hook", strlen("process_exec_hook")) == 0)
-		return symbol_list_runtime[handle->index].process_exec_hook;
+    if(strncmp(symbol, "process_exec_hook", strlen("process_exec_hook")) == 0)
+        return symbol_list_runtime[handle->index].process_exec_hook;
 	
-	if(strncmp(symbol, "handler_hooks", strlen("handler_hooks")) == 0)
-		return symbol_list_runtime[handle->index].handler_hooks;
+    if(strncmp(symbol, "handler_hooks", strlen("handler_hooks")) == 0)
+        return symbol_list_runtime[handle->index].handler_hooks;
 	
-	// Unknown symbol, much probably an error in this implementation or a change in the BennuGD ABI
-	// fprintf(stderr, "Symbol %s is unknown to me, this is most likely a bug\n contact the author.\n", symbol);
+    // Unknown symbol, much probably an error in this implementation or a
+    // change in the BennuGD ABI
+    fprintf(stderr, "Symbol %s is unknown, this is most likely a bug\n contact the author.\n", symbol);
 #endif
 
     return NULL;

@@ -10,8 +10,6 @@
 	#include <stdarg.h>
 	#include <pspdebug.h>
 
-//	#define printf pspDebugScreenPrintf
-
 /**
  * Define the module info section
  *
