@@ -228,7 +228,7 @@ OBJS += $(foreach obj, $(MOD_SAY_OBJS),  			$(MODULES_DIR)/mod_say/$(obj))
 OBJS += $(foreach obj, $(MOD_SCREEN_OBJS),  		$(MODULES_DIR)/mod_screen/$(obj))
 OBJS += $(foreach obj, $(MOD_SCROLL_OBJS),  		$(MODULES_DIR)/mod_scroll/$(obj))
 OBJS += $(foreach obj, $(MOD_SORT_OBJS),  		$(MODULES_DIR)/mod_sort/$(obj))
-OBJS += $(foreach obj, $(MOD_SOUND_OBJS),  		$(MODULES_DIR)/mod_sound/$(obj))
+#OBJS += $(foreach obj, $(MOD_SOUND_OBJS),  		$(MODULES_DIR)/mod_sound/$(obj))
 OBJS += $(foreach obj, $(MOD_STRING_OBJS),  		$(MODULES_DIR)/mod_string/$(obj))
 OBJS += $(foreach obj, $(MOD_SYS_OBJS),  			$(MODULES_DIR)/mod_sys/$(obj))
 OBJS += $(foreach obj, $(MOD_TEXT_OBJS),  		$(MODULES_DIR)/mod_text/$(obj))
@@ -237,13 +237,13 @@ OBJS += $(foreach obj, $(MOD_TIMERS_OBJS),  		$(MODULES_DIR)/mod_timers/$(obj))
 OBJS += $(foreach obj, $(MOD_VIDEO_OBJS),  		$(MODULES_DIR)/mod_video/$(obj))
 # OBJS += $(foreach obj, $(MOD_WIIUSE_OBJS),  	$(MODULES_DIR)/mod_wiiuse/$(obj))
 OBJS += $(foreach obj, $(MOD_WM_OBJS),  			$(MODULES_DIR)/mod_wm/$(obj))
-OBJS += $(foreach obj, $(MOD_SQLITE3_OBJS),  	$(MODULES_DIR)/mod_sqlite3/$(obj))
+# OBJS += $(foreach obj, $(MOD_SQLITE3_OBJS),  	$(MODULES_DIR)/mod_sqlite3/$(obj))
 
 #
 # OMFG, ordering is important for the linker (does anyone else fell this is stupid?)
 #
-LIBS  = -lz -lm -lSDL_mixer -lSDL_image -lSDL_gfx -lSDL -lpng -lpspgu -lpspaudio -lpspmath
-LIBS += -lGL -lpsphprm -lvorbis -lvorbisidec -lpspvfpu -lpsprtc
+LIBS  = -lz -lm -lSDL_image -lSDL_gfx -lSDL -lpng -lpspgu -lpspaudio -lpspirkeyb -lpspmath
+LIBS += -lGL -lpsphprm -lvorbis -lvorbisidec -lpspvfpu -lpsprtc -lpsppower
 LIBS += -ldietglob -lsqlite3
 
 BENNU_LIBS_INCLUDES = $(foreach lib, $(BENNU_LIBS),  -I$(MODULES_DIR)/$(lib)) 
