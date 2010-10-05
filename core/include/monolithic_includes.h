@@ -32,7 +32,9 @@
 #endif
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
-#include <mod_sound_symbols.h>
+#ifndef TARGET_PSP
+  #include <mod_sound_symbols.h>
+#endif
 #include <mod_joy_symbols.h>
 #include <mod_proc_symbols.h>
 #include <mod_sort_symbols.h>
@@ -131,7 +133,9 @@ basic_symbols symbol_list[] =
 
 	{ "mod_time.so"     , NULL, NULL, NULL, NULL, NULL, mod_time_functions_exports },
 	{ "mod_file.so"     , NULL, mod_file_constants_def, NULL, NULL, NULL, mod_file_functions_exports },
+#ifndef TARGET_PSP
 	{ "mod_sound.so"    , NULL, mod_sound_constants_def, NULL, mod_sound_globals_def, NULL, mod_sound_functions_exports },
+#endif
 	{ "mod_joy.so"      , mod_joy_modules_dependency, NULL, NULL, NULL, NULL, mod_joy_functions_exports },
 	{ "mod_proc.so"     , NULL, mod_proc_constants_def, NULL, NULL, mod_proc_locals_def, mod_proc_functions_exports },
 	{ "mod_sort.so"     , NULL, NULL, NULL, NULL, NULL, mod_sort_functions_exports },
@@ -159,7 +163,7 @@ basic_symbols symbol_list[] =
 //	{ "mod_debug.so"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
 
-	#ifndef TARGET_PSP
+#ifndef TARGET_PSP
 	{ "mod_iconv.so"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
 #endif
 
@@ -195,7 +199,9 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mathi
 	{ NULL, NULL, mod_time_module_initialize, mod_time_module_finalize, NULL, NULL, NULL, NULL }, //mod_time
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_file
+#ifndef TARGET_PSP
 	{ mod_sound_globals_fixup, NULL, mod_sound_module_initialize, mod_sound_module_finalize, NULL, NULL, NULL, NULL}, //mod_sound
+#endif
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_joy
 	{ NULL, mod_proc_locals_fixup, NULL, NULL, NULL, NULL, mod_proc_process_exec_hook, NULL}, //mod_proc
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sort
