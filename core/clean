@@ -7,5 +7,7 @@ for i in $(find -iname *.d); do rm $i; done
 for i in $(find -iname *.a); do rm $i; done
 for i in $(find -iname *.elf); do rm $i; done
 for i in $(find -iname *.dol); do rm $i; done
+for i in $(find -iname *.PBP); do rm $i; done
+for i in $(find -iname *.SFO); do rm $i; done
 
 cd -
