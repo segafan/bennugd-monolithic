@@ -49,7 +49,7 @@ DLCONSTANT __bgdexport( mod_path, constants_def )[] =
 
 DLSYSFUNCS __bgdexport( mod_path, functions_exports )[] =
 {
-    /* Búsqueda de caminos*/
+    /* Path finding */
     { "PATH_FIND"   , "IIIIIII", TYPE_INT   , SYSMACRO(modpathfind_path_find)     },
     { "PATH_GETXY"  , "PP"     , TYPE_INT   , SYSMACRO(modpathfind_path_getxy)    },
     { "PATH_WALL"   , "I"      , TYPE_INT   , SYSMACRO(modpathfind_path_wall)     },
