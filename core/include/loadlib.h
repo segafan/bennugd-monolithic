@@ -199,6 +199,12 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 // This second part handles systems with monolithic builds (ie: no dlopen)
 #else
 
+#ifdef TARGET_PSP
+#define __PSP_fprintf fprintf
+#else
+#define __PSP_fprintf
+#endif
+
 typedef struct
 {
     int index;
@@ -225,7 +231,8 @@ static dlibhandle * dlibopen( const char * fname )
     // What we're really doing is checking if the library name given to us is in the list
     // of supported modules, and return its place in the symbols array.
 
-    fprintf(stderr, "dlibopenning: %s\n", fname );
+    // PSP
+    __PSP_fprintf(stderr, "dlibopenning: %s\n", fname );
 
     while (symbol_list[i].module_name != NULL) {
         if(strncmp(fname, symbol_list[i].module_name,
@@ -241,7 +248,7 @@ static dlibhandle * dlibopen( const char * fname )
       			dlib->index = i;
       			
             // PSP
-            fprintf( stderr, "dlibopen exiting...\n" );
+            __PSP_fprintf( stderr, "dlibopen exiting...\n" );
             return ( dlib );
         }
 		
@@ -253,8 +260,8 @@ static dlibhandle * dlibopen( const char * fname )
 
 static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 {
-    // Only for debugging purposes
-    fprintf(stderr, "Asked for symbol \"%s\" for library %s.\n", symbol,
+    // PSP
+    __PSP_fprintf(stderr, "Asked for symbol \"%s\" for library %s.\n", symbol,
 	        symbol_list[handle->index].module_name);
 	
     // Return the symbol they asked us for, or NULL
@@ -303,7 +310,7 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 	
     // Unknown symbol, much probably an error in this implementation or a
     // change in the BennuGD ABI
-    fprintf(stderr, "Symbol %s is unknown, this is most likely a bug\n contact the author.\n", symbol);
+    __PSP_fprintf(stderr, "Symbol %s is unknown, this is most likely a bug\n contact the author.\n", symbol);
 #endif
 
     return NULL;

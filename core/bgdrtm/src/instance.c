@@ -433,16 +433,19 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 
     if ( ( pid = instance_getid() ) == -1 )
     {
-        fprintf( stderr, "pid = (-1)\n" );
+        // PSP
+        __PSP_fprintf( stderr, "pid = (-1)\n" );
         return NULL;
     }
     
-    fprintf( stderr, "allocating memory for one INSTANCE...\n" );
+    // PSP
+    __PSP_fprintf( stderr, "allocating memory for one INSTANCE...\n" );
 
     r = ( INSTANCE * ) calloc( 1, sizeof( INSTANCE ) ) ;
     assert( r ) ;
     
-    fprintf( stderr, "initializing INSTANCE...\n" );
+    // PSP
+    __PSP_fprintf( stderr, "initializing INSTANCE...\n" );
 
     r->pridata          = ( int * ) malloc( proc->private_size + 4 ) ;
     r->pubdata          = ( int * ) malloc( proc->public_size + 4 ) ;
@@ -464,7 +467,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     r->public_size      = proc->public_size ;
     r->first_run        = 1 ;
     
-    fprintf( stderr, "memcpy'ing data structures...\n" );
+    // PSP
+    __PSP_fprintf( stderr, "memcpy'ing data structures...\n" );
 
     if ( proc->private_size > 0 ) memcpy( r->pridata, proc->pridata, proc->private_size ) ;
     if ( proc->public_size > 0 ) memcpy( r->pubdata, proc->pubdata, proc->public_size ) ;
@@ -472,7 +476,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 
     /* Hierarchy data initialization */
     
-    fprintf( stderr, "initializing data...\n" );
+    // PSP
+    __PSP_fprintf( stderr, "initializing data...\n" );
 
     LOCDWORD( r, PROCESS_TYPE ) = proc->type ;
     LOCDWORD( r, PROCESS_ID )   = pid ;
@@ -502,7 +507,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 
     /* Cuenta los usos de las variables tipo cadena */
     
-    fprintf( stderr, "counting string vars...\n" );
+    // PSP
+    __PSP_fprintf( stderr, "counting string vars...\n" );
 
     for ( n = 0; n < proc->string_count; n++ ) string_use( PRIDWORD( r, proc->strings[n] ) ) ;  /* Strings privadas */
     for ( n = 0; n < proc->pubstring_count; n++ ) string_use( PUBDWORD( r, proc->pubstrings[n] ) ) ; /* Strings publicas */
@@ -513,7 +519,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     if ( first_instance ) first_instance->prev = r;
     first_instance = r ;
     
-    fprintf( stderr, "instance_new(): adding instances...\n"); 				
+    // PSP
+    __PSP_fprintf( stderr, "instance_new(): adding instances...\n"); 				
 
     instance_add_to_list_by_id( r, pid );
     instance_add_to_list_by_instance( r );
@@ -525,7 +532,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 
     r->called_by = NULL;
     
-    fprintf( stderr, "instance_new(): alocating memory for stack...\n"); 				
+    // PSP
+    __PSP_fprintf( stderr, "instance_new(): alocating memory for stack...\n"); 				
 
     r->stack = malloc( STACK_SIZE );
     assert(r->stack);
@@ -536,13 +544,15 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 
     LOCDWORD( r, STATUS ) = STATUS_RUNNING;
     
-    fprintf( stderr, "instance_new(): initializing list pointers...\n");
+    // PSP
+    __PSP_fprintf( stderr, "instance_new(): initializing list pointers...\n");
 
     if ( instance_create_hook_count )
         for ( n = 0; n < instance_create_hook_count; n++ )
             instance_create_hook_list[n]( r );
 
-    fprintf( stderr, "instance_new() exiting...\n"); 		
+    // PSP
+    __PSP_fprintf( stderr, "instance_new() exiting...\n"); 		
 
     return r ;
 }

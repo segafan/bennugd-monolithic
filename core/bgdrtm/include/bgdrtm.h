@@ -102,4 +102,14 @@ extern void bgdrtm_ptimer_cleanup(void);
 
 /* --------------------------------------------------------------------------- */
 
+// TODO: Remove this once PSP is working fine, it's for debugging purposes
+//       and produces a lot of junk in the Wii framebuffer.
+#ifdef TARGET_PSP
+#define __PSP_fprintf fprintf
+#else
+#define __PSP_fprintf 
+#endif
+
+/* --------------------------------------------------------------------------- */
+
 #endif
