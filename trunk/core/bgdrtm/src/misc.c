@@ -180,17 +180,17 @@ void bgdrtm_entry( int argc, char * argv[] )
     char * os_id;
 
     // PSP
-    fprintf( stderr, "entering bgdrtm_entry()...\n" );
+    __PSP_fprintf( stderr, "entering bgdrtm_entry()...\n" );
 
     GLODWORD( ARGC ) = argc ;
 
     // PSP
-    fprintf( stderr, "argc: %d\n", argc );
+    __PSP_fprintf( stderr, "argc: %d\n", argc );
 
     for ( i = 0 ; i < argc && i < 32; i++ )
     {
         // PSP
-        fprintf( stderr, "args[%d]: %s\n", i, argv[i] );
+        __PSP_fprintf( stderr, "args[%d]: %s\n", i, argv[i] );
         args[i] = string_new( argv[i] ) ;
         string_use( args[i] ) ;
     }
@@ -208,7 +208,7 @@ void bgdrtm_entry( int argc, char * argv[] )
 #endif
 
     // PSP
-    fprintf( stderr, "exiting bgdrtm_entry()...\n");
+    __PSP_fprintf( stderr, "exiting bgdrtm_entry()...\n");
 }
 
 /* --------------------------------------------------------------------------- */
