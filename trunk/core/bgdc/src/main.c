@@ -58,7 +58,7 @@ extern int dcb_options;
 
 char langinfo[64];
 
-int debug = 0;
+extern int debug;
 int autodeclare = 1;
 
 char * main_path = NULL;
@@ -124,7 +124,6 @@ int main( int argc, char **argv )
     VIDEO_WaitVSync();
     if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
 #endif
-
 
     printf( BGDC_VERSION "\n"
             "Copyright © 2006-2010 SplinterGU (Fenix/BennuGD)\n"
@@ -358,35 +357,35 @@ int main( int argc, char **argv )
             return 0;
         }
     }
+
+    char tmp_version[ 32 ];
+    sprintf( tmp_version, "\"%s\"", VERSION );
+    add_simple_define( "COMPILER_VERSION", tmp_version );
+    add_simple_define( "__VERSION__", tmp_version );
+
+    curtime = time( NULL ); /* Get the current time. */
+    loctime = localtime( &curtime ); /* Convert it to local time representation. */
+
+    strftime( timebuff, sizeof( timebuff ), "%Y/%m/%d", loctime );
+    value = string_new( timebuff );
+    code = identifier_search_or_add( "__DATE__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+
+    strftime( timebuff, sizeof( timebuff ), "%H:%M:%S", loctime );
+    value = string_new( timebuff );
+    code = identifier_search_or_add( "__TIME__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
 /*
-    add_simple_define( "COMPILER_VERSION", VERSION );
-    add_simple_define( "__VERSION__", VERSION );
+    value = string_new( VERSION );
+    code = identifier_search_or_add( "__VERSION__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+    code = identifier_search_or_add( "COMPILER_VERSION" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
 */
-    {
-        curtime = time( NULL ); /* Get the current time. */
-        loctime = localtime( &curtime ); /* Convert it to local time representation. */
-
-        strftime( timebuff, sizeof( timebuff ), "%Y/%m/%d", loctime );
-        value = string_new( timebuff );
-        code = identifier_search_or_add( "__DATE__" ) ;
-        constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-
-        strftime( timebuff, sizeof( timebuff ), "%H:%M:%S", loctime );
-        value = string_new( timebuff );
-        code = identifier_search_or_add( "__TIME__" ) ;
-        constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-
-        value = string_new( VERSION );
-        code = identifier_search_or_add( "__VERSION__" ) ;
-        constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-        code = identifier_search_or_add( "COMPILER_VERSION" ) ;
-        constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-		
-        strcpy( _tmp, VERSION );
-		d = strchr( _tmp, '.' ); *d = '\0'; add_simple_define( "__BGD__", _tmp );
-        d1 = d + 1; d = strchr(   d1, '.' ); *d = '\0'; add_simple_define( "__BGD_MINOR__", d1 );
-        d1 = d + 1;                                     add_simple_define( "__BGD_PATCHLEVEL__", d1 );
-    }
+    strcpy( _tmp, VERSION );
+                d = strchr( _tmp, '.' ); *d = '\0'; add_simple_define( "__BGD__", _tmp );
+    d1 = d + 1; d = strchr(   d1, '.' ); *d = '\0'; add_simple_define( "__BGD_MINOR__", d1 );
+    d1 = d + 1;                                     add_simple_define( "__BGD_PATCHLEVEL__", d1 );
 
     memset( &dcb, 0, sizeof( dcb ) );
 

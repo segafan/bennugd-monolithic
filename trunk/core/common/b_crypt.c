@@ -31,26 +31,26 @@
 
 crypt_handle * crypt_create( int method, char * key )
 {
-    // crypt_handle * ch = calloc( sizeof( crypt_handle ), 1 );
-    // if ( !ch ) return NULL;
+    crypt_handle * ch = calloc( sizeof( crypt_handle ), 1 );
+    if ( !ch ) return NULL;
 
-    // ch->method = method;
+    ch->method = method;
 
-    // switch ( method )
-    // {
-        // case    CRYPT_DES  :
-                // if ( !DES_key_sched( ( DES_cblock * ) key, &ch->ks[KEY0] ) ) return ch;
-                // break;
+    switch ( method )
+    {
+        case    CRYPT_DES  :
+                if ( !DES_key_sched( ( DES_cblock * ) key, &ch->ks[KEY0] ) ) return ch;
+                break;
 
-        // case    CRYPT_3DES :
-                // if (  DES_key_sched( ( DES_cblock * )          key, &ch->ks[KEY0] ) ) { free( ch ); return NULL; }
-                // if (  DES_key_sched( ( DES_cblock * ) ( 8  + key ), &ch->ks[KEY1] ) ) { free( ch ); return NULL; }
-                // if ( !DES_key_sched( ( DES_cblock * ) ( 16 + key ), &ch->ks[KEY2] ) ) return ch;
-                // break;
-    // }
+        case    CRYPT_3DES :
+                if (  DES_key_sched( ( DES_cblock * )          key, &ch->ks[KEY0] ) ) { free( ch ); return NULL; }
+                if (  DES_key_sched( ( DES_cblock * ) ( 8  + key ), &ch->ks[KEY1] ) ) { free( ch ); return NULL; }
+                if ( !DES_key_sched( ( DES_cblock * ) ( 16 + key ), &ch->ks[KEY2] ) ) return ch;
+                break;
+    }
 
-    // free( ch );
-    // return NULL;
+    free( ch );
+    return NULL;
 }
 
 /* ------------------------------------------------------------------------- */
@@ -64,38 +64,38 @@ void crypt_destroy( crypt_handle * ch )
 
 int crypt_data( crypt_handle * ch, char * in, char * out, int size, int enc )
 {
-    // DES_cblock aux;
+    DES_cblock aux;
 
-    // if ( !ch || ( size < 1 || size > 8 ) ) return -1;
+    if ( !ch || ( size < 1 || size > 8 ) ) return -1;
 
-    // if ( enc && size < 8 ) memset( &in[size], '\0', 8 - size );
+    if ( enc && size < 8 ) memset( &in[size], '\0', 8 - size );
 
-    // switch( ch->method )
-    // {
-        // case    CRYPT_DES   :
-                // if ( enc )
-                    // DES_ecb_encrypt( ( DES_cblock * ) in, ( DES_cblock * ) out, &ch->ks[KEY0], DES_ENCRYPT );
-                // else
-                    // DES_ecb_encrypt( ( DES_cblock * ) in, ( DES_cblock * ) out, &ch->ks[KEY0], DES_DECRYPT );
-                // break;
+    switch( ch->method )
+    {
+        case    CRYPT_DES   :
+                if ( enc )
+                    DES_ecb_encrypt( ( DES_cblock * ) in, ( DES_cblock * ) out, &ch->ks[KEY0], DES_ENCRYPT );
+                else
+                    DES_ecb_encrypt( ( DES_cblock * ) in, ( DES_cblock * ) out, &ch->ks[KEY0], DES_DECRYPT );
+                break;
 
-        // case    CRYPT_3DES  :
-                // if ( enc )
-                // {
-                    // DES_ecb_encrypt( ( DES_cblock * )   in, ( DES_cblock * )  out, &ch->ks[KEY0], DES_ENCRYPT );
-                    // DES_ecb_encrypt( ( DES_cblock * )  out, ( DES_cblock * ) &aux, &ch->ks[KEY1], DES_DECRYPT );
-                    // DES_ecb_encrypt( ( DES_cblock * ) &aux, ( DES_cblock * )  out, &ch->ks[KEY2], DES_ENCRYPT );
-                // }
-                // else
-                // {
-                    // DES_ecb_encrypt( ( DES_cblock * )   in, ( DES_cblock * )  out, &ch->ks[KEY2], DES_DECRYPT );
-                    // DES_ecb_encrypt( ( DES_cblock * )  out, ( DES_cblock * ) &aux, &ch->ks[KEY1], DES_ENCRYPT );
-                    // DES_ecb_encrypt( ( DES_cblock * ) &aux, ( DES_cblock * )  out, &ch->ks[KEY0], DES_DECRYPT );
-                // }
-                // break;
-    // }
+        case    CRYPT_3DES  :
+                if ( enc )
+                {
+                    DES_ecb_encrypt( ( DES_cblock * )   in, ( DES_cblock * )  out, &ch->ks[KEY0], DES_ENCRYPT );
+                    DES_ecb_encrypt( ( DES_cblock * )  out, ( DES_cblock * ) &aux, &ch->ks[KEY1], DES_DECRYPT );
+                    DES_ecb_encrypt( ( DES_cblock * ) &aux, ( DES_cblock * )  out, &ch->ks[KEY2], DES_ENCRYPT );
+                }
+                else
+                {
+                    DES_ecb_encrypt( ( DES_cblock * )   in, ( DES_cblock * )  out, &ch->ks[KEY2], DES_DECRYPT );
+                    DES_ecb_encrypt( ( DES_cblock * )  out, ( DES_cblock * ) &aux, &ch->ks[KEY1], DES_ENCRYPT );
+                    DES_ecb_encrypt( ( DES_cblock * ) &aux, ( DES_cblock * )  out, &ch->ks[KEY0], DES_DECRYPT );
+                }
+                break;
+    }
 
-    // return ( enc ? 8 : size );
+    return ( enc ? 8 : size );
 }
 
 /* ------------------------------------------------------------------------- */

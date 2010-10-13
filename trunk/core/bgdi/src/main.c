@@ -56,8 +56,6 @@ static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
 static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 
-int running = 1;
-
 /* ---------------------------------------------------------------------- */
 /*
  *  FUNCTION : main
