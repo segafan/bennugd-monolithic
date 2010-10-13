@@ -60,7 +60,7 @@ BGDI_C_FILES = main.c
 
 BGDRTM_C_FILES = copy.c dcbr.c dirs.c instance.c interpreter.c misc.c strings.c sysprocs.c varspace_file.c
 
-COMMON_C_FILES = b_crypt.c debug.c files.c xctype.c
+COMMON_C_FILES = debug.c files.c xctype.c
 
 # libs
 LIBBLIT_C_FILES 		= g_blit.c g_pixel.c libblit.c
