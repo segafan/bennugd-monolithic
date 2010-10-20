@@ -9,6 +9,7 @@ linux:
 	cd bgdi; $(MAKE) -f Makefile.linux
 
 psp:
+	cd ../3rdparty/dietlibc-glob/; $(MAKE) -f Makefile.psp
 	cd bgdi; $(MAKE) -f Makefile.psp
 
 clean:
