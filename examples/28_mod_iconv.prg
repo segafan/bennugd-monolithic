@@ -13,7 +13,7 @@ Private
 Begin
   set_mode(640, 480);
   say(cadena);
-  convertida = iconv("CP850", "UTF8", cadena);
+  convertida = iconv("CP850", "ISO-8859", cadena);
   say(convertida);
   write(0, 320, 220, 4, cadena);
   write(0, 320, 240, 4, convertida);
