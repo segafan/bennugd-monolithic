@@ -13,8 +13,3 @@ This document describes how to compile bennugd-monolithic for the Wii on your sy
   * Get the latest bennugd-monolithic code as described [http://code.google.com/p/bennugd-monolithic/source/checkout here].
   * Last, in your favorite console, and from the _bennugd-monolithic-read-only/core_ directory type make. That's it! After that, your binaries will be in _core/bgdc/bgdc.elf_ & _core/bgdi/bgdi.elf_.
   * Should you want to create a monolithic build for Linux (which should work just as fine as the normal BennuGD build, as you won't experience any endianess issues), type _make linux_ instead of _make_.
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
