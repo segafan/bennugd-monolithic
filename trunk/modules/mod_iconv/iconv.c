@@ -38,12 +38,11 @@ CONDITIONALLY_STATIC int bgd_iconv(INSTANCE * my, int * params) {
   //Conversion descriptor
 //  printf("fromcode: %s.\n", string_get(params[1]));
 //  printf("tocode  : %s.\n", string_get(params[0]));
-  cd = SDL_iconv_open( string_get(params[1]), string_get(params[0]) );
+  cd = SDL_iconv_open( string_get(params[0]), string_get(params[1]) );
   string_discard(params[0]);
   string_discard(params[1]);
   string_discard(params[2]);
   if(cd == (SDL_iconv_t)(-1)) {
-    printf("FATAL: couldn't start libiconv, errno: ");
     if(errno == EINVAL) printf("EINVAL (Translation not supported).\n");
     return errno;
   }
