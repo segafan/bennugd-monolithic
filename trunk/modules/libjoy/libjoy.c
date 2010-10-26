@@ -68,6 +68,26 @@ static int _max_joys = 0;
 static SDL_Joystick * _joysticks[MAX_JOYS];
 static int _selected_joystick = -1;
 
+#ifdef TARGET_WII
+inline int wii_convert_joy_num(int joy)
+{
+    int i=0, n=0;
+
+    // Find the joy'th available joystick
+    for(i=0; i<8; i++)
+    {
+        if(WPAD_Probe(i, NULL) == WPAD_ERR_NONE) n++;
+        if(n == joy)
+        {
+            joy = i;
+            break;
+        }
+    }
+    
+    return joy;
+}
+#endif
+
 /* --------------------------------------------------------------------------- */
 /**
  * libjoy_num ()
@@ -78,6 +98,15 @@ int libjoy_num( void )
 {
 #ifdef TARGET_CAANOO
     return _max_joys - 1 ;
+#elif defined(TARGET_WII)
+    int i=0, n=0;
+
+    for(i=0; i<8; i++)
+    {
+        if(WPAD_Probe(i, NULL) == WPAD_ERR_NONE) n++;
+    }
+    
+    return n;
 #else
     return _max_joys ;
 #endif
@@ -94,6 +123,8 @@ int libjoy_name( int joy )
     int result;
 #ifdef TARGET_CAANOO
     if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+    joy = wii_convert_joy_num(joy);
 #endif
     result = string_new( SDL_JoystickName( joy ) );
     string_use( result );
@@ -110,6 +141,8 @@ int libjoy_select( int joy )
 {
 #ifdef TARGET_CAANOO
     if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+    joy = wii_convert_joy_num(joy);
 #endif
     return ( _selected_joystick = joy );
 }
@@ -292,7 +325,7 @@ int libjoy_get_accel( int * x, int * y, int * z )
 	WPADData *wd;
 	
     // First, ensure Wiimote is available
-    if( WPAD_Probe(_selected_joystick, NULL) == 0 )
+    if( WPAD_Probe(_selected_joystick, NULL) == WPAD_ERR_NONE )
 	{
 		// Assign the values
 		wd = WPAD_Data( _selected_joystick );
@@ -320,6 +353,8 @@ int libjoy_buttons_specific( int joy )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         return SDL_JoystickNumButtons( _joysticks[ joy ] ) ;
     }
@@ -339,6 +374,8 @@ int libjoy_axes_specific( int joy )
 #ifdef TARGET_CAANOO
         if ( joy == 0 ) joy = 2;
         else joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         return SDL_JoystickNumAxes( _joysticks[ joy ] ) ;
     }
@@ -357,6 +394,8 @@ int libjoy_get_button_specific( int joy, int button )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         if ( button >= 0 && button <= SDL_JoystickNumButtons( _joysticks[ joy ] ) )
         {
@@ -411,6 +450,8 @@ int libjoy_get_position_specific( int joy, int axis )
 #ifdef TARGET_CAANOO
         if ( joy == 0 ) joy = 2;
         else joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         if ( axis >= 0 && axis <= SDL_JoystickNumAxes( _joysticks[ joy ] ) )
         {
@@ -434,6 +475,8 @@ int libjoy_hats_specific( int joy )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         return SDL_JoystickNumHats( _joysticks[ joy ] ) ;
     }
@@ -452,6 +495,8 @@ int libjoy_balls_specific( int joy )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         return SDL_JoystickNumBalls( _joysticks[ joy ] ) ;
     }
@@ -470,6 +515,8 @@ int libjoy_get_hat_specific( int joy, int hat )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         if ( hat >= 0 && hat <= SDL_JoystickNumHats( _joysticks[ joy ] ) )
         {
@@ -491,6 +538,8 @@ int libjoy_get_ball_specific( int joy, int ball, int * dx, int * dy )
     {
 #ifdef TARGET_CAANOO
         if ( joy > 0 ) joy++;
+#elif defined(TARGET_WII)
+        joy = wii_convert_joy_num(joy);
 #endif
         if ( ball >= 0 && ball <= SDL_JoystickNumBalls( _joysticks[ joy ] ) )
         {
@@ -511,6 +560,8 @@ int libjoy_get_accel_specific( int joy, int * x, int * y, int * z )
 	    return 0;
     }
 #elif defined(TARGET_WII)
+
+    joy = wii_convert_joy_num(joy);
 	WPADData *wd;
 	
     // First, ensure Wiimote is available
