@@ -69,6 +69,9 @@ static SDL_Joystick * _joysticks[MAX_JOYS];
 static int _selected_joystick = -1;
 
 #ifdef TARGET_WII
+// As Wii joystick numbers needn't be secuential (1-4 are Wiimotes, 4-8 are
+// classic controllers) this function converts a sequential joystick number
+// to its corresponding Wii controller.
 inline int wii_convert_joy_num(int joy)
 {
     int i=0, n=0;
@@ -78,13 +81,10 @@ inline int wii_convert_joy_num(int joy)
     {
         if(WPAD_Probe(i, NULL) == WPAD_ERR_NONE) n++;
         if(n == joy)
-        {
-            joy = i;
-            break;
-        }
+            return i;
     }
     
-    return joy;
+    return -1;
 }
 #endif
 
@@ -125,6 +125,12 @@ int libjoy_name( int joy )
     if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
     joy = wii_convert_joy_num(joy);
+    if( joy == -1 )
+    {
+        result = string_new("Invalid");
+        string_use( result );
+        return result;
+    }
 #endif
     result = string_new( SDL_JoystickName( joy ) );
     string_use( result );
@@ -143,6 +149,8 @@ int libjoy_select( int joy )
     if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
     joy = wii_convert_joy_num(joy);
+    if( joy == -1 )
+        return 0;
 #endif
     return ( _selected_joystick = joy );
 }
@@ -355,6 +363,8 @@ int libjoy_buttons_specific( int joy )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         return SDL_JoystickNumButtons( _joysticks[ joy ] ) ;
     }
@@ -376,6 +386,8 @@ int libjoy_axes_specific( int joy )
         else joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         return SDL_JoystickNumAxes( _joysticks[ joy ] ) ;
     }
@@ -396,6 +408,8 @@ int libjoy_get_button_specific( int joy, int button )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         if ( button >= 0 && button <= SDL_JoystickNumButtons( _joysticks[ joy ] ) )
         {
@@ -452,6 +466,8 @@ int libjoy_get_position_specific( int joy, int axis )
         else joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0 ;
 #endif
         if ( axis >= 0 && axis <= SDL_JoystickNumAxes( _joysticks[ joy ] ) )
         {
@@ -477,6 +493,8 @@ int libjoy_hats_specific( int joy )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         return SDL_JoystickNumHats( _joysticks[ joy ] ) ;
     }
@@ -497,6 +515,8 @@ int libjoy_balls_specific( int joy )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         return SDL_JoystickNumBalls( _joysticks[ joy ] ) ;
     }
@@ -517,6 +537,8 @@ int libjoy_get_hat_specific( int joy, int hat )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return 0;
 #endif
         if ( hat >= 0 && hat <= SDL_JoystickNumHats( _joysticks[ joy ] ) )
         {
@@ -540,6 +562,8 @@ int libjoy_get_ball_specific( int joy, int ball, int * dx, int * dy )
         if ( joy > 0 ) joy++;
 #elif defined(TARGET_WII)
         joy = wii_convert_joy_num(joy);
+        if( joy == -1 )
+            return -1;
 #endif
         if ( ball >= 0 && ball <= SDL_JoystickNumBalls( _joysticks[ joy ] ) )
         {
@@ -562,16 +586,22 @@ int libjoy_get_accel_specific( int joy, int * x, int * y, int * z )
 #elif defined(TARGET_WII)
 
     joy = wii_convert_joy_num(joy);
-	WPADData *wd;
-	
-    // First, ensure Wiimote is available
-    if( WPAD_Probe( joy, NULL ) == 0 )
-	{
-		// Assign the values
-		wd = WPAD_Data( joy );
-		*x = wd->accel.x;
-		*y = wd->accel.y;
-		*z = wd->accel.z;
+    if( joy == -1 )
+        *x = *y = *z = 0;
+    else
+    {
+	    WPADData *wd;
+        // First, ensure Wiimote is available
+        if( WPAD_Probe( joy, NULL ) == 0 )
+	    {
+		    // Assign the values
+		    wd = WPAD_Data( joy );
+		    *x = wd->accel.x;
+		    *y = wd->accel.y;
+		    *z = wd->accel.z;
+	    }
+
+	    return 0;
 	}
 #endif
     return -1;
