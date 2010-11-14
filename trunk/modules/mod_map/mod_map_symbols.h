@@ -63,6 +63,10 @@ extern CONDITIONALLY_STATIC int modmap_get_rgb( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_get_rgba( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_rgb( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_rgba( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_get_rgb_depth( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_get_rgba_depth( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_rgb_depth( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_rgba_depth( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_fade( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_fade_on( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_fade_off( INSTANCE * my, int * params );
@@ -175,6 +179,11 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
 
     { "COLOR_FIND"          , "BBB"         , TYPE_INT      , SYSMACRO(modmap_find_color)         },
 
+    { "RGB"                 , "BBBI"        , TYPE_INT      , SYSMACRO(modmap_rgb_depth)          },
+    { "RGBA"                , "BBBBI"       , TYPE_INT      , SYSMACRO(modmap_rgba_depth)         },
+    { "RGB_GET"             , "IPPPI"       , TYPE_INT      , SYSMACRO(modmap_get_rgb_depth)      },
+    { "RGBA_GET"            , "IPPPPI"      , TYPE_INT      , SYSMACRO(modmap_get_rgba_depth)     },
+
     { "RGB"                 , "BBB"         , TYPE_INT      , SYSMACRO(modmap_rgb)                },
     { "RGBA"                , "BBBB"        , TYPE_INT      , SYSMACRO(modmap_rgba)               },
     { "RGB_GET"             , "IPPP"        , TYPE_INT      , SYSMACRO(modmap_get_rgb)            },
@@ -237,6 +246,8 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "ROLL_PALETTE"        , "III"         , TYPE_INT      , SYSMACRO(modmap_roll_palette)       },
     { "CONVERT_PALETTE"     , "IIP"         , TYPE_INT      , SYSMACRO(modmap_convert_palette)    },
     { "FIND_COLOR"          , "BBB"         , TYPE_INT      , SYSMACRO(modmap_find_color)         },
+    { "GET_RGB"             , "IPPPI"       , TYPE_INT      , SYSMACRO(modmap_get_rgb_depth)      },
+    { "GET_RGBA"            , "IPPPPI"      , TYPE_INT      , SYSMACRO(modmap_get_rgba_depth)     },
     { "GET_RGB"             , "IPPP"        , TYPE_INT      , SYSMACRO(modmap_get_rgb)            },
     { "GET_RGBA"            , "IPPPP"       , TYPE_INT      , SYSMACRO(modmap_get_rgba)           },
 
