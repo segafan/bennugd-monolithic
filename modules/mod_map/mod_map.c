@@ -532,6 +532,40 @@ CONDITIONALLY_STATIC int modmap_rgba( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
+CONDITIONALLY_STATIC int modmap_get_rgb_depth( INSTANCE * my, int * params )
+{
+    gr_get_rgb_depth( params[4], params[0], ( int * )params[1], ( int * )params[2], ( int * )params[3] ) ;
+    return 1 ;
+}
+
+/* --------------------------------------------------------------------------- */
+
+CONDITIONALLY_STATIC int modmap_get_rgba_depth( INSTANCE * my, int * params )
+{
+    gr_get_rgba_depth( params[5], params[0], ( int * )params[1], ( int * )params[2], ( int * )params[3], ( int * )params[4] ) ;
+    return 1 ;
+}
+
+/* --------------------------------------------------------------------------- */
+
+CONDITIONALLY_STATIC int modmap_rgb_depth( INSTANCE * my, int * params )
+{
+    return params[3] > 8 ?
+            gr_rgb_depth( params[3], params[0], params[1], params[2] ) :
+            gr_find_nearest_color( params[0], params[1], params[2] ) ;
+}
+
+/* --------------------------------------------------------------------------- */
+
+CONDITIONALLY_STATIC int modmap_rgba_depth( INSTANCE * my, int * params )
+{
+    return params[4] > 8 ?
+            gr_rgba_depth( params[4], params[0], params[1], params[2], params[3] ) :
+            gr_find_nearest_color( params[0], params[1], params[2] ) ;
+}
+
+/* --------------------------------------------------------------------------- */
+
 CONDITIONALLY_STATIC int modmap_fade( INSTANCE * my, int * params )
 {
     gr_fade_init( params[0], params[1], params[2], params[3] );

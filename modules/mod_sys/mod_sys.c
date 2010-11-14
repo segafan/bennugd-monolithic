@@ -37,6 +37,10 @@
 #include <process.h>
 #endif
 
+#ifdef TARGET_WII
+#include <ogc/wiilaunch.h>
+#endif
+
 #ifndef __MONOLITHIC__
 #include "mod_sys_symbols.h"
 #endif
@@ -45,9 +49,13 @@
 
 CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
 {
-#if defined TARGET_WII || defined TARGET_PSP
-	#warning NOT IMPLEMENTED FOR PSP or WII!
+#if defined TARGET_PSP
+	#warning NOT IMPLEMENTED FOR PSP!
 	return 0;
+#elif defined TARGET_WII
+    WII_OpenURL(string_get(params[1]));
+    string_discard(params[1]);
+    return 0;
 #else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );

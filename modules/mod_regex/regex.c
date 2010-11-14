@@ -72,11 +72,7 @@
 #define bzero(s, n) memset ((s), 0, (n))
 #endif
 #else
-#if defined(TARGET_WII) || defined(TARGET_PSP)
-    #include <string.h>
-#else
-    #include <strings.h>
-#endif
+#include <strings.h>
 #endif
 
 #ifdef STDC_HEADERS

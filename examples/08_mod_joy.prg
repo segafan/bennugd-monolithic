@@ -4,7 +4,7 @@ import "mod_video"
 import "mod_text"
 
 GLOBAL
-scr_width = 640, scr_height=480;
+scr_width = 320, scr_height=240;
 End;
 
 // Wiimote example code

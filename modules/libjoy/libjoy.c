@@ -72,7 +72,7 @@ static int _selected_joystick = -1;
 // As Wii joystick numbers needn't be secuential (1-4 are Wiimotes, 4-8 are
 // classic controllers) this function converts a sequential joystick number
 // to its corresponding Wii controller.
-inline int wii_convert_joy_num(int joy)
+int wii_convert_joy_num(int joy)
 {
     int i=0, n=0;
 
@@ -80,7 +80,7 @@ inline int wii_convert_joy_num(int joy)
     for(i=0; i<8; i++)
     {
         if(WPAD_Probe(i, NULL) == WPAD_ERR_NONE) n++;
-        if(n == joy)
+        if(n == (joy+1))
             return i;
     }
     
