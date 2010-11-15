@@ -247,6 +247,18 @@ GRAPH * gr_read_png( const char * filename )
             {
                 ARRANGE_DWORD( orig );
                 *ptr32 = *orig ;
+
+                /* DCelso */
+                if (( color == PNG_COLOR_TYPE_RGB ) && ( info_ptr->pixel_depth == 24 ) && ( info_ptr->valid & PNG_INFO_tRNS ))
+                {
+                	uint8_t * ptr8 = (uint8_t *)orig;
+        			if (
+        			    ( ptr8[0] == info_ptr->trans_color.red   ) &&
+        				( ptr8[1] == info_ptr->trans_color.green ) &&
+        				( ptr8[2] == info_ptr->trans_color.blue  )
+        			   )
+        				*ptr32 = 0;
+                }
                 ptr32++, orig++ ;
             }
         }
@@ -279,6 +291,18 @@ GRAPH * gr_read_png( const char * filename )
                 }
                 else
                     *ptr = 0 ;
+
+                /* DCelso */
+                if (( color == PNG_COLOR_TYPE_RGB ) && ( info_ptr->pixel_depth == 24 ) && ( info_ptr->valid & PNG_INFO_tRNS ))
+                {
+                	uint8_t * ptr8 = (uint8_t *)orig;
+        			if (
+        			    ( ptr8[0] == info_ptr->trans_color.red   ) &&
+        				( ptr8[1] == info_ptr->trans_color.green ) &&
+        				( ptr8[2] == info_ptr->trans_color.blue  )
+        			   )
+        				*ptr = 0;
+                }
                 ptr++, orig++ ;
             }
         }
@@ -374,6 +398,17 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE ) ;
 
+        /* DCelso */
+        uint8_t trans = 1;
+
+        if (!( gr->info_flags & GI_NOCOLORKEY ))
+        {
+			info_ptr->num_trans = 1;
+			info_ptr->trans_alpha = &trans;
+			info_ptr->valid = info_ptr->valid | PNG_INFO_tRNS;
+        }
+        /* DCelso */
+
         pal = ( png_colorp ) png_malloc( png_ptr, 256 * sizeof( png_color ) ) ;
         if ( !pal )
         {
@@ -415,6 +450,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 gr->height, 8, PNG_COLOR_TYPE_RGB_ALPHA,
                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE ) ;
+
         png_write_info( png_ptr, info_ptr ) ;
 
         data = malloc( gr->width * gr->height * 4 ) ;
@@ -461,22 +497,11 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 rowpointers[k] = ( uint8_t * )ptr ;
                 for ( i = 0 ; i < ( unsigned )gr->width ; i++ )
                 {
-/*
-                    if ( !*orig32 && !( gr->info_flags & GI_NOCOLORKEY ) )
-                        *ptr = 0 ;
-                    else if ( !( *orig32 & 0xff000000 ) )
-                        *ptr =
-                            0xff000000 |
-                            (( *orig32 & 0x00ff0000 ) >> 16 ) |
-                            (( *orig32 & 0x0000ff00 ) ) |
-                            (( *orig32 & 0x000000ff ) << 16 ) ;
-                    else
-*/
-                        *ptr =
-                            (( *orig32 & 0xff000000 ) ) |
-                            (( *orig32 & 0x00ff0000 ) >> 16 ) |
-                            (( *orig32 & 0x0000ff00 ) ) |
-                            (( *orig32 & 0x000000ff ) << 16 ) ;
+                    *ptr =
+                        (( *orig32 & 0xff000000 ) ) |
+                        (( *orig32 & 0x00ff0000 ) >> 16 ) |
+                        (( *orig32 & 0x0000ff00 ) ) |
+                        (( *orig32 & 0x000000ff ) << 16 ) ;
 
                     /* Rearrange data */
                     ARRANGE_DWORD( ptr ) ;
