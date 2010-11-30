@@ -198,8 +198,11 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 #---------------------------------------------------------------------------------
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
-					-I$(CURDIR)/$(BUILD) -I/usr/include \
-					-I/opt/local/include/SDL -I/opt/local/include
+					-I$(CURDIR)/$(BUILD) \
+					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include \
+					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include/SDL \
+					-I/opt/local/include \
+					-I/usr/include
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

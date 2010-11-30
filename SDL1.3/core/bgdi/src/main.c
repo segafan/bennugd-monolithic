@@ -39,6 +39,8 @@
 #include "bgdrtm.h"
 #include "xstrings.h"
 
+#include "SDL.h"
+
 /* ---------------------------------------------------------------------- */
 
 static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
