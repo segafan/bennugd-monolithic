@@ -75,7 +75,7 @@ CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params )
     if ( full_screen ) return 0;
 
 #if SDL_VERSION_ATLEAST(1,3,0)
-    SDL_SetWindowPosition(SDL_GetWindowFromID(0), params[0], params[1]);
+    SDL_SetWindowPosition(SDL_GetWindowFromID(1), params[0], params[1]);
 #else
 
 #   if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
@@ -130,7 +130,7 @@ CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params )
 #if SDL_VERSION_ATLEAST(1,3,0)
     int x,y;
 
-    SDL_GetWindowPosition(SDL_GetWindowFromID(0), &x, &y );
+    SDL_GetWindowPosition(SDL_GetWindowFromID(1), &x, &y );
     if ( params[0] ) *(( int * )( params[0] ) ) = x;
     if ( params[1] ) *(( int * )( params[1] ) ) = y;
 #else
@@ -188,7 +188,7 @@ CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
 #if SDL_VERSION_ATLEAST(1,3,0)
     int w,h;
 
-    SDL_GetWindowSize(SDL_GetWindowFromID(0), &w, &h );
+    SDL_GetWindowSize(SDL_GetWindowFromID(1), &w, &h );
     if ( params[0] ) *(( int * )( params[0] ) ) = w;
     if ( params[1] ) *(( int * )( params[1] ) ) = h;
     //FIXME: Get this working
@@ -262,12 +262,12 @@ CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
 CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(1,3,0)
-    SDL_DisplayMode * mode;
+    SDL_DisplayMode mode;
     
-    if(SDL_GetDesktopDisplayMode(mode) == -1 ) return -1;
+    if(SDL_GetDesktopDisplayMode(&mode) == -1 ) return -1;
 
-    if ( params[0] ) *(( int * )( params[0] ) ) = mode->w;
-    if ( params[1] ) *(( int * )( params[1] ) ) = mode->h;
+    if ( params[0] ) *(( int * )( params[0] ) ) = mode.w;
+    if ( params[1] ) *(( int * )( params[1] ) ) = mode.h;
 #else
 #   ifdef WIN32
     RECT Rect;
