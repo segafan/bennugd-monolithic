@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ -x $(which gfind) ]; then
+if [ -x "`which gfind`" ]; then
 	FIND=gfind;
 	echo "Using GNU find"
 else

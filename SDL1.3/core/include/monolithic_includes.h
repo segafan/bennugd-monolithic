@@ -57,8 +57,8 @@
 #include <libscroll_symbols.h>
 #include <mod_scroll_symbols.h>
 #ifndef NO_LIBKEY
-#include <libkey_symbols.h>
-#include <mod_key_symbols.h>
+#   include <libkey_symbols.h>
+#   include <mod_key_symbols.h>
 #endif
 #include <mod_draw_symbols.h>
 #include <mod_screen_symbols.h>
@@ -74,12 +74,14 @@
 //#include <mod_debug_symbols.h>
 /* Unofficial modules */
 #ifndef NO_MODICONV
-    #include <iconv_symbols.h>
+#   include <iconv_symbols.h>
 #endif
 #ifdef TARGET_WII
-    #include <mod_wpad_symbols.h>
+#   include <mod_wpad_symbols.h>
 #endif
-//#include <image_symbols.h>
+#ifndef NO_MODIMAGE
+#   include <image_symbols.h>
+#endif
 //#include <mod_sqlite3_symbols.h>
 
 typedef struct
@@ -176,7 +178,9 @@ basic_symbols symbol_list[] =
 #ifdef TARGET_WII
 	{ "mod_wpad.fakelib"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif
-	//{ "image.fakelib"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
+#ifndef NO_MODIMAGE
+	{ "image.fakelib"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
+#endif
 	//{ "mod_sqlite3.fakelib"        , NULL, mod_sqlite3_constants_def, mod_sqlite3_types_def, NULL, NULL, mod_sqlite3_functions_exports },
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
@@ -244,7 +248,9 @@ extra_symbols symbol_list_runtime[] =
 #ifdef TARGET_WII
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wpad
 #endif
-	//{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
+#ifndef NO_MODIMAGE
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
+#endif
 	//{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
 };
 #endif

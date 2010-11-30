@@ -74,14 +74,19 @@ CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params )
     int res = 0;
     if ( full_screen ) return 0;
 
-#if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_SetWindowPosition(SDL_GetWindowFromID(0), params[0], params[1]);
+#else
+
+#   if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
     SDL_SysWMinfo wminfo ;
 
     SDL_VERSION( &wminfo.version );
     if ( SDL_GetWMInfo( &wminfo ) != 1 ) return 0 ;
-#endif
+#   endif
 
-#ifdef WIN32
+
+#   ifdef WIN32
     /* Set the new window position */
     res = SetWindowPos(
                 wminfo.window,     // handle to window
@@ -92,8 +97,8 @@ CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params )
                 0,                  // keep the old window height
                 SWP_SHOWWINDOW | SWP_NOSIZE // Make it visible and retain size
             ) ;
-#elif __linux
-#ifdef SDL_VIDEO_DRIVER_X11
+#   elif __linux
+#       ifdef SDL_VIDEO_DRIVER_X11
     Window root, parent, *children = NULL;
     unsigned int children_count;
 
@@ -108,7 +113,8 @@ CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params )
             if ( children ) XFree( children );
         }
     }
-#endif
+#       endif
+#   endif
 #endif
 
     // Missing BeOS & MAC support
@@ -121,14 +127,22 @@ CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params )
 {
     if ( full_screen ) return -1;
 
-#if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
+#if SDL_VERSION_ATLEAST(1,3,0)
+    int x,y;
+
+    SDL_GetWindowPosition(SDL_GetWindowFromID(0), &x, &y );
+    if ( params[0] ) *(( int * )( params[0] ) ) = x;
+    if ( params[1] ) *(( int * )( params[1] ) ) = y;
+#else
+
+#   if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
     SDL_SysWMinfo wminfo ;
 
     SDL_VERSION( &wminfo.version );
     if ( SDL_GetWMInfo( &wminfo ) != 1 ) return -1 ;
-#endif
+#   endif
 
-#ifdef WIN32
+#   ifdef WIN32
     RECT Rect;
 
     if ( GetWindowRect( wminfo.window, &Rect ) )
@@ -136,8 +150,8 @@ CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params )
         if ( params[0] ) *(( int * )( params[0] ) ) = Rect.left;
         if ( params[1] ) *(( int * )( params[1] ) ) = Rect.top;
     }
-#elif __linux
-#ifdef SDL_VIDEO_DRIVER_X11
+#   elif __linux
+#       ifdef SDL_VIDEO_DRIVER_X11
     Window root, parent, *children = NULL;
     unsigned int children_count;
     XWindowAttributes wattr;
@@ -161,9 +175,9 @@ CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params )
         }
     }
     wminfo.info.x11.unlock_func();
+#       endif
+#   endif
 #endif
-#endif
-
     return 1 ;
 }
 
@@ -171,14 +185,25 @@ CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params )
 
 CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
 {
-#if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
+#if SDL_VERSION_ATLEAST(1,3,0)
+    int w,h;
+
+    SDL_GetWindowSize(SDL_GetWindowFromID(0), &w, &h );
+    if ( params[0] ) *(( int * )( params[0] ) ) = w;
+    if ( params[1] ) *(( int * )( params[1] ) ) = h;
+    //FIXME: Get this working
+    if ( params[2] ) *(( int * )( params[2] ) ) = w;
+    if ( params[3] ) *(( int * )( params[3] ) ) = h;    
+#else
+
+#   if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
     SDL_SysWMinfo wminfo ;
 
     SDL_VERSION( &wminfo.version );
     if ( SDL_GetWMInfo( &wminfo ) != 1 ) return -1 ;
-#endif
+#   endif
 
-#ifdef WIN32
+#   ifdef WIN32
     RECT Rect;
 
     if ( GetWindowRect( wminfo.window, &Rect ) )
@@ -192,8 +217,8 @@ CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
             if ( params[3] ) *(( int * )( params[3] ) ) = Rect.bottom - Rect.top;
         }
     }
-#elif __linux
-#ifdef SDL_VIDEO_DRIVER_X11
+#   elif __linux
+#       ifdef SDL_VIDEO_DRIVER_X11
     int res ;
     XWindowAttributes wattr;
 
@@ -225,7 +250,8 @@ CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
         }
     }
     wminfo.info.x11.unlock_func();
-#endif
+#       endif
+#   endif
 #endif
 
     return 1 ;
@@ -235,7 +261,15 @@ CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params )
 
 CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
-#ifdef WIN32
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_DisplayMode * mode;
+    
+    if(SDL_GetDesktopDisplayMode(mode) == -1 ) return -1;
+
+    if ( params[0] ) *(( int * )( params[0] ) ) = mode->w;
+    if ( params[1] ) *(( int * )( params[1] ) ) = mode->h;
+#else
+#   ifdef WIN32
     RECT Rect;
 
     if ( GetClientRect( GetDesktopWindow(), &Rect ) )
@@ -243,8 +277,8 @@ CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params )
         *(( int * )( params[0] ) ) = Rect.right - Rect.left;
         *(( int * )( params[1] ) ) = Rect.bottom - Rect.top;
     }
-#elif __linux
-#ifdef SDL_VIDEO_DRIVER_X11
+#   elif __linux
+#       ifdef SDL_VIDEO_DRIVER_X11
     int res ;
     Window root, parent, *children = NULL;
     XWindowAttributes wattr;
@@ -268,17 +302,18 @@ CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params )
         }
     }
     wminfo.info.x11.unlock_func();
-#endif
-#elif defined(TARGET_WII)
+#       endif
+#   elif defined(TARGET_WII)
     // Not really returning desktop size, but at least a mode the user
     // can set_mode
     SDL_Surface* screen = NULL;
     
     screen = SDL_GetVideoSurface();
-    *(( int * )( params[0] ) ) = screen->w;
-    *(( int * )( params[1] ) ) = screen->h;
-#endif
+    if ( params[0] ) *(( int * )( params[0] ) ) = screen->w;
+    if ( params[1] ) *(( int * )( params[1] ) ) = screen->h;
+#   endif
 
+#endif
     return 1 ;
 }
 
