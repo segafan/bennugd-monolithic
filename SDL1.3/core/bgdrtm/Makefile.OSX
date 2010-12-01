@@ -85,7 +85,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -m32 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DNO_LIBKEY -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-O2 -m32 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DNO_LIBKEY -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-O2 -m32 -Wl,-Map,$(notdir $@).map
 
@@ -124,6 +124,7 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/mod_mathi/mod_mathi.c \
               ../../../modules/mod_time/mod_time.c \
               ../../../modules/mod_file/mod_file.c \
+              ../../../modules/mod_sound/mod_sound.c \
               ../../../modules/libsdlhandler/libsdlhandler.c \
               ../../../modules/libjoy/libjoy.c \
               ../../../modules/mod_joy/mod_joy.c \

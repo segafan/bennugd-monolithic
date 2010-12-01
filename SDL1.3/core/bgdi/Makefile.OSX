@@ -76,7 +76,7 @@ LDFLAGS		=	-O2 -m32
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lSDL -lpng -lz -lc
+LIBS := ../../bgdrtm/bgdrtm.a -lSDL -lSDL_mixer -lpng -lz -lc
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
@@ -140,7 +140,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile.OSX
-	#strip $(TARGET).elf
+	strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:

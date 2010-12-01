@@ -52,7 +52,11 @@ SDL_Surface * scale_screen = NULL ;
 char * apptitle = NULL ;
 
 int scr_width = 320 ;
+#ifdef TARGET_IOS
+int scr_height = 480 ;
+#else
 int scr_height = 240 ;
+#endif
 
 int scr_initialized = 0 ;
 

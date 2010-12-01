@@ -230,6 +230,9 @@ int main( int argc, char **argv )
 #endif
 
     argv[0] = filename;
+
+    atexit(SDL_Quit);
+
     bgdrtm_entry( argc, argv );
 
     if ( mainproc )

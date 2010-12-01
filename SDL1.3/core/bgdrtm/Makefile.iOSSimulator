@@ -19,7 +19,7 @@
 #---------------------------------------------------------------------------------
 %.o: %.c
 	@echo $(notdir $<)
-	@$(CC) $(CFLAGS) -c $< -o $@ $(ERROR_FILTER)
+	@/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 $(CFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 #---------------------------------------------------------------------------------
 %.o: %.m
@@ -85,7 +85,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -m32 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DNO_LIBKEY -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-O2 -m32 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_LIBKEY -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-O2 -m32 -Wl,-Map,$(notdir $@).map
 
@@ -201,7 +201,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include \
 					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include/SDL \
-					-I$(CURDIR)/../../3rdparty/libpng/include \
+					-I$(CURDIR)/../../3rdparty/libpng/iOSSimulator/include \
 					-I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include
 
 #---------------------------------------------------------------------------------
