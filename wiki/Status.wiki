@@ -3,7 +3,7 @@
 
 = Introduction =
 
-Most of the official BennuGD modules have already been implemented, so the first milestone of the project has already been completed.
+Most of the official BennuGD modules have already been implemented and are already working nicely (at least in the Wii) so the first milestone of the project has already been completed.
 
 There are a few known bugs that need to be ironed out (have a look at the "Issues" section above) but most things work just fine.
 
