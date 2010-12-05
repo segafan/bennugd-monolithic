@@ -1,0 +1,38 @@
+#
+# monolithic Makefile for compiling the PSP port of BennuGD
+#
+
+# this should be the root of the source tree (where /core, /examples and /modules live)
+ROOT_DIR = ../..
+
+# 3rd party modules
+3RDPARTY_DIR = $(ROOT_DIR)/3rdparty
+
+# dietlibc glob
+DIETGLOB_DIR = $(3RDPARTY_DIR)/dietlibc-glob
+DIETGLOB_C_FILES = diet-glob.c diet-fnmatch.c 
+
+DIETGLOB_OBJS = $(DIETGLOB_C_FILES:.c=.o)
+
+# PSPSDK relies on $(OBJS) to compile things
+
+# source files
+OBJS  = $(foreach obj, $(DIETGLOB_OBJS), $(DIETGLOB_DIR)/$(obj))
+
+CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' 
+
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti 
+ASFLAGS = $(CFLAGS)
+
+# main targets
+TARGET_LIB = libdietglob.a
+
+# PSPSDK specific stuff
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSP_FW_VERSION = 500
+BUILD_PRX = 0
+USE_USER_LIBS = 1
+
+# this is the last thing we put in the makefile
+include $(PSPSDK)/lib/build.mak
+
