@@ -307,7 +307,11 @@ static void process_key_events()
         GLODWORD( libkey,  SCANCODE )  = 0 ;
     }
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_KEYDOWN, SDL_KEYUP ) > 0 )
+#else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_KEYUP) ) > 0 )
+#endif
     {
         switch ( e.type )
         {
@@ -435,7 +439,11 @@ void __bgdexport( libkey, module_initialize )()
         ptr += 2 ;
     }
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
+#else
     if ( !keystate ) keystate = SDL_GetKeyState( NULL );
+#endif
 
     SDL_EnableUNICODE( 1 );
 }

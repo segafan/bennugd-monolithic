@@ -65,7 +65,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -arch armv7 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_LIBKEY -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-O2 -arch armv7 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-O2 -arch armv7 -Wl,-Map,$(notdir $@).map
 
@@ -152,6 +152,8 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_grproc/mod_grproc.c \
               ../../../modules/libscroll/libscroll.c \
               ../../../modules/mod_scroll/mod_scroll.c \
+              ../../../modules/libkey/libkey.c \
+              ../../../modules/mod_key/mod_key.c \
               ../../../modules/libdraw/libdraw.c \
               ../../../modules/mod_draw/mod_draw.c \
               ../../../modules/mod_screen/mod_screen.c \

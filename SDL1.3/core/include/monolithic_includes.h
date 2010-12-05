@@ -28,12 +28,12 @@
 #include <mod_string_symbols.h>
 #include <mod_math_symbols.h>
 #ifndef TARGET_PSP
-    #include <mod_mathi_symbols.h>
+#  include <mod_mathi_symbols.h>
 #endif
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
 #ifndef NO_MODSOUND
-  #include <mod_sound_symbols.h>
+#  include <mod_sound_symbols.h>
 #endif
 #include <mod_joy_symbols.h>
 #include <mod_proc_symbols.h>
