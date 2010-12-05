@@ -75,7 +75,7 @@ LDFLAGS		=	-O2 $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lpng -lSDL -lz -lc
+LIBS := ../../bgdrtm/bgdrtm.a -lpng -lSDL_mixer -lSDL -lz -lc
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
@@ -138,7 +138,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile.linux
-	#strip $(TARGET).elf
+	strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:
