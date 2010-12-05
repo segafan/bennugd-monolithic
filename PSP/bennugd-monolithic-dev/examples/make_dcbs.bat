@@ -1,0 +1,6 @@
+@echo off
+echo rebuilding dcbs...
+for /R . %%i in (*.prg) do bgdc %%i
+echo copying...
+copy *.dcb "c:\Users\danielt3\code\bennugd_monolithic_svn\core\bgdi\examples"
+

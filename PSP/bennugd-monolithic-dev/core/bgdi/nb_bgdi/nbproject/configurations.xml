@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="69">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <df name="bgdi" root="..">
+      <df name="include" kind="SOURCE_LOGICAL_FOLDER">
+        <in>bgdi.h</in>
+      </df>
+      <df name="nb_bgdi" kind="SOURCE_LOGICAL_FOLDER">
+      </df>
+      <df name="src" kind="SOURCE_LOGICAL_FOLDER">
+        <in>main.c</in>
+        <in>psp.h</in>
+        <in>resource.h</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Arquivos importantes"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>../Makefile.psp</itemPath>
+      <itemPath>nb_bgdi-Makefile.mk</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>..</Elem>
+  </sourceRootList>
+  <projectmakefile>nb_bgdi-Makefile.mk</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>PSP-SDK|MinGW</compilerSet>
+        <platform>3</platform>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>..</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile.psp</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile.psp clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../include</pElem>
+              <pElem>../src</pElem>
+              <pElem>..</pElem>
+              <pElem>../../bgdrtm/include</pElem>
+              <pElem>../../include</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>TARGET_PSP</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
