@@ -65,9 +65,9 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -arch armv7 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_MODSOUND -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-O2 -arch armv6 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O2 -arch armv7 -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-O2 -arch armv6 -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -104,6 +104,7 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
 			  ../../../modules/mod_mathi/mod_mathi.c \
               ../../../modules/mod_time/mod_time.c \
               ../../../modules/mod_file/mod_file.c \
+              ../../../modules/mod_sound/mod_sound.c \
               ../../../modules/libsdlhandler/libsdlhandler.c \
               ../../../modules/libjoy/libjoy.c \
               ../../../modules/mod_joy/mod_joy.c \
@@ -181,16 +182,16 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
-					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include \
-					-I$(CURDIR)/../../3rdparty/SDL-1.3/osx/include/SDL \
+					-I$(CURDIR)/../../3rdparty/SDL-1.3/iOS/include \
+					-I$(CURDIR)/../../3rdparty/SDL-1.3/iOS/include/SDL \
 					-I$(CURDIR)/../../3rdparty/libpng/iOS/include \
-					-I/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.2.sdk/usr/include
+					-I/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
 #---------------------------------------------------------------------------------
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
-					-L/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.2.sdk/usr/include
+					-L/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 .PHONY: $(BUILD) clean
