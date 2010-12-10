@@ -87,25 +87,25 @@
 typedef struct
 {
 	char       * module_name;
-	char       * modules_dependency;
-	DLCONSTANT * constants_def;
-	char       * types_def;
-	char       * globals_def;
-	char       * locals_def;
-	DLSYSFUNCS * functions_exports;
+	void       * modules_dependency;
+	void       * constants_def;
+	void       * types_def;
+	void       * globals_def;
+	void       * locals_def;
+	void       * functions_exports;
 } basic_symbols ;
 
 #ifndef __BGDC__
 typedef struct
 {
-	DLVARFIXUP    * globals_fixup;
-	DLVARFIXUP    * locals_fixup;
+	void          * globals_fixup;
+	void          * locals_fixup;
 	FN_HOOK         module_initialize;
 	FN_HOOK         module_finalize;
 	INSTANCE_HOOK   instance_create_hook;
 	INSTANCE_HOOK   instance_destroy_hook;
 	INSTANCE_HOOK   process_exec_hook;
-	FN_HOOK       * handler_hooks;
+	void          * handler_hooks;
 } extra_symbols;
 #endif
 
@@ -170,11 +170,9 @@ basic_symbols symbol_list[] =
 	{ "mod_flic.fakelib"     , NULL, NULL, NULL, NULL, NULL, mod_flic_functions_exports },
 //	{ "mod_debug.fakelib"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
-
 #ifndef NO_MODICONV
 	{ "mod_iconv.fakelib"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
 #endif
-
 #ifdef TARGET_WII
 	{ "mod_wpad.fakelib"     , mod_wpad_modules_dependency, mod_wpad_constants_def, NULL, NULL, NULL, mod_wpad_functions_exports },
 #endif

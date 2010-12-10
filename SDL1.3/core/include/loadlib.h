@@ -211,12 +211,6 @@ static char * dliberror( void )
     return __dliberr;
 }
 
-static int dlibclose( dlibhandle * handle )
-{
-    handle->index=0;
-    return 0;
-}
-
 static dlibhandle * dlibopen( const char * fname )
 {
   int i=0;

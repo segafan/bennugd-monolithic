@@ -219,18 +219,18 @@ int dcb_load_from( file * fp, int offset )
 {
     unsigned int n ;
     char *path, *ptr ;
-    uint32_t size;
+    uint32_t size ;
 
 #ifdef WIN32
     int base_drive ;
 #endif
 
-    /* Cambia al directorio del DCB con chdir */
+    /* Change dir to the one in which the DCB is located */
     path = dir_path_convert( fp->name ) ;
     for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
         if ( *ptr == '/' || *ptr == '\\' ) break ;
     ptr[1] = 0 ;
-    chdir( path ) ;
+    chdir(path);
 
     /* En WIN32, cambia a la unidad del DCB */
 
