@@ -69,10 +69,9 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -arch i386 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_MAC -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) 
+CFLAGS		=	-g -arch i386 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_MAC -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) 
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -Xlinker -objc_abi_version -Xlinker 2 -framework AudioToolbox -framework QuartzCore -framework OpenGLES -framework CoreGraphics -framework UIKit -framework Foundation -framework CoreAudio
-
+LDFLAGS		=	-g -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -mmacosx-version-min=10.6 -framework Foundation -framework UIKit -Xlinker -objc_abi_version -Xlinker 2 -framework CoreAudio -framework AudioToolbox -framework CoreGraphics -framework OpenGLES -framework QuartzCore
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -143,7 +142,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile.iOSSimulator
-	strip $(TARGET).elf
+	#strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:

@@ -40,7 +40,9 @@ static void  dump_new_events()
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
+#ifndef TARGET_IOS
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
+#endif
 
     /* Get new events */
     SDL_PumpEvents();
