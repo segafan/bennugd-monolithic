@@ -84,7 +84,11 @@ static void wm_events()
 
     GLODWORD( libwm, EXIT_STATUS ) = 0 ;
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUIT, SDL_QUIT ) )
+#else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUITMASK | SDL_ACTIVEEVENTMASK ) )
+#endif
     {
         switch ( e.type )
         {

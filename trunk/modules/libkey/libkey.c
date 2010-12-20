@@ -69,10 +69,131 @@ unsigned char * keystate = NULL;        /* Pointer to key states */
 
 /* ----------------------------------------------------------------- */
 
-static int sdl_equiv[SDLK_LAST+1] ;
+static int sdl_equiv[SDL_NUM_SCANCODES+1] ;
 
 static int equivs[] =
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_SCANCODE_ESCAPE,        1,
+    SDL_SCANCODE_1,             2,
+    SDL_SCANCODE_KP_1,          2,
+    SDL_SCANCODE_2,             3,
+    SDL_SCANCODE_KP_2,          3,
+    SDL_SCANCODE_3,             4,
+    SDL_SCANCODE_KP_3,          4,
+    SDL_SCANCODE_4,             5,
+    SDL_SCANCODE_KP_4,          5,
+    SDL_SCANCODE_5,             6,
+    SDL_SCANCODE_KP_5,          6,
+    SDL_SCANCODE_6,             7,
+    SDL_SCANCODE_KP_6,          7,
+    SDL_SCANCODE_7,             8,
+    SDL_SCANCODE_KP_7,          8,
+    SDL_SCANCODE_8,             9,
+    SDL_SCANCODE_KP_8,          9,
+    SDL_SCANCODE_9,             10,
+    SDL_SCANCODE_KP_9,          10,
+    SDL_SCANCODE_0,             11,
+    SDL_SCANCODE_KP_0,          11,
+    SDL_SCANCODE_MINUS,         12,
+    SDL_SCANCODE_EQUALS,        13,
+    SDL_SCANCODE_BACKSPACE,     14,
+    SDL_SCANCODE_TAB,           15,
+    SDL_SCANCODE_Q,             16,
+    SDL_SCANCODE_W,             17,
+    SDL_SCANCODE_E,             18,
+    SDL_SCANCODE_R,             19,
+    SDL_SCANCODE_T,             20,
+    SDL_SCANCODE_Y,             21,
+    SDL_SCANCODE_U,             22,
+    SDL_SCANCODE_I,             23,
+    SDL_SCANCODE_O,             24,
+    SDL_SCANCODE_P,             25,
+    SDL_SCANCODE_LEFTBRACKET,   26,
+    SDL_SCANCODE_RIGHTBRACKET,  27,
+    SDL_SCANCODE_RETURN,        28,
+    SDL_SCANCODE_KP_ENTER,      28,
+    SDL_SCANCODE_LCTRL,         29,
+    SDL_SCANCODE_RCTRL,         29,
+    SDL_SCANCODE_LCTRL,         96,
+    SDL_SCANCODE_RCTRL,         94,
+    SDL_SCANCODE_A,             30,
+    SDL_SCANCODE_S,             31,
+    SDL_SCANCODE_D,             32,
+    SDL_SCANCODE_F,             33,
+    SDL_SCANCODE_G,             34,
+    SDL_SCANCODE_H,             35,
+    SDL_SCANCODE_J,             36,
+    SDL_SCANCODE_K,             37,
+    SDL_SCANCODE_L,             38,
+    SDL_SCANCODE_SEMICOLON,     39,
+    SDL_SCANCODE_APOSTROPHE,    40,
+    SDL_SCANCODE_GRAVE,         41,
+    SDL_SCANCODE_LSHIFT,        42,
+    SDL_SCANCODE_BACKSLASH,     43,
+    SDL_SCANCODE_Z,             44,
+    SDL_SCANCODE_X,             45,
+    SDL_SCANCODE_C,             46,
+    SDL_SCANCODE_V,             47,
+    SDL_SCANCODE_B,             48,
+    SDL_SCANCODE_N,             49,
+    SDL_SCANCODE_M,             50,
+    SDL_SCANCODE_COMMA,         51,
+    SDL_SCANCODE_PERIOD,        52,
+    SDL_SCANCODE_KP_PERIOD,     52,
+    SDL_SCANCODE_SLASH,         53,
+    SDL_SCANCODE_KP_DIVIDE,     53,
+    SDL_SCANCODE_RSHIFT,        54,
+    /*  SDL_SCANCODE_PRINT,         55,*/
+    SDL_SCANCODE_KP_MULTIPLY,   55,
+    SDL_SCANCODE_LALT,          56,
+    SDL_SCANCODE_RALT,          56,
+    SDL_SCANCODE_LALT,          95,
+    SDL_SCANCODE_RALT,          93,
+    SDL_SCANCODE_MODE,          93,
+    SDL_SCANCODE_MODE,          56,
+    SDL_SCANCODE_RGUI,          56,
+    SDL_SCANCODE_LGUI,          56,
+    SDL_SCANCODE_SPACE,         57,
+    SDL_SCANCODE_CAPSLOCK,      58,
+    SDL_SCANCODE_F1,            59,
+    SDL_SCANCODE_F2,            60,
+    SDL_SCANCODE_F3,            61,
+    SDL_SCANCODE_F4,            62,
+    SDL_SCANCODE_F5,            63,
+    SDL_SCANCODE_F6,            64,
+    SDL_SCANCODE_F7,            65,
+    SDL_SCANCODE_F8,            66,
+    SDL_SCANCODE_F9,            67,
+    SDL_SCANCODE_F10,           68,
+    SDL_SCANCODE_NUMLOCKCLEAR,  69,
+    SDL_SCANCODE_SCROLLLOCK,    70,
+    SDL_SCANCODE_HOME,          71,
+    SDL_SCANCODE_UP,            72,
+    SDL_SCANCODE_PAGEUP,        73,
+    SDL_SCANCODE_KP_MINUS,      74,
+    SDL_SCANCODE_LEFT,          75,
+    SDL_SCANCODE_RIGHT,         77,
+    SDL_SCANCODE_KP_PLUS,       78,
+    SDL_SCANCODE_END,           79,
+    SDL_SCANCODE_DOWN,          80,
+    SDL_SCANCODE_PAGEDOWN,      81,
+    SDL_SCANCODE_INSERT,        82,
+    SDL_SCANCODE_DELETE,        83,
+    SDL_SCANCODE_F11,           87,
+    SDL_SCANCODE_F12,           88,
+    SDL_SCANCODE_KP_LESS,       89,
+    SDL_SCANCODE_KP_PLUS,       90,
+    SDL_SCANCODE_KP_GREATER,    91,
+    //SDL_SCANCODE_QUESTION,      92,
+    SDL_SCANCODE_GRAVE,         93,
+    SDL_SCANCODE_SYSREQ,        55,
+    SDL_SCANCODE_PAUSE,         95,
+    SDL_SCANCODE_MENU,          97,
+    SDL_SCANCODE_LGUI,          98,
+    SDL_SCANCODE_RGUI,          99,
+    //SDL_SCANCODE_COMPOSE,       99,
+#else
     SDLK_ESCAPE,        1,
     SDLK_1,             2,
     SDLK_KP1,           2,
@@ -192,6 +313,7 @@ static int equivs[] =
     SDLK_LSUPER,        98,
     SDLK_RSUPER,        99,
     SDLK_COMPOSE,       99,
+#endif
     -1, -1
 } ;
 
@@ -307,7 +429,11 @@ static void process_key_events()
         GLODWORD( libkey,  SCANCODE )  = 0 ;
     }
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_KEYDOWN, SDL_KEYUP ) > 0 )
+#else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_KEYUP) ) > 0 )
+#endif
     {
         switch ( e.type )
         {
@@ -435,7 +561,11 @@ void __bgdexport( libkey, module_initialize )()
         ptr += 2 ;
     }
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
+#else
     if ( !keystate ) keystate = SDL_GetKeyState( NULL );
+#endif
 
     SDL_EnableUNICODE( 1 );
 }

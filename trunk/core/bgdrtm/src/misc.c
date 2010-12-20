@@ -109,7 +109,7 @@ int debug     = 0;  /* 1 if running in debug mode      */
 #endif
 
 #ifdef TARGET_PSP
-#define _OS_ID			 OS_PSP
+#define _OS_ID          OS_PSP
 #endif
 
 /* --------------------------------------------------------------------------- */
@@ -184,17 +184,17 @@ void bgdrtm_entry( int argc, char * argv[] )
     char * os_id;
 
     // PSP
-    __PSP_fprintf( stderr, "entering bgdrtm_entry()...\n" );
+    __PSP_fprintf( stderr, "entering bgdrtm_entry()...\n" )
 
     GLODWORD( ARGC ) = argc ;
 
     // PSP
-    __PSP_fprintf( stderr, "argc: %d\n", argc );
+    __PSP_fprintf( stderr, "argc: %d\n", argc )
 
     for ( i = 0 ; i < argc && i < 32; i++ )
     {
         // PSP
-        __PSP_fprintf( stderr, "args[%d]: %s\n", i, argv[i] );
+        __PSP_fprintf( stderr, "args[%d]: %s\n", i, argv[i] )
         args[i] = string_new( argv[i] ) ;
         string_use( args[i] ) ;
     }
@@ -212,7 +212,7 @@ void bgdrtm_entry( int argc, char * argv[] )
 #endif
 
     // PSP
-    __PSP_fprintf( stderr, "exiting bgdrtm_entry()...\n");
+    __PSP_fprintf( stderr, "exiting bgdrtm_entry()...\n")
 }
 
 /* --------------------------------------------------------------------------- */

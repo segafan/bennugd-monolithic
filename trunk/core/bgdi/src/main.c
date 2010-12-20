@@ -30,16 +30,6 @@
 #include <windows.h>
 #endif
 
-
-#ifdef TARGET_WII
-#include <fat.h>
-#include <SDL.h>
-#endif
-
-#ifdef TARGET_PSP
-    #include "psp.h"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,6 +39,10 @@
 #include "bgdrtm.h"
 #include "xstrings.h"
 
+#ifdef TARGET_IOS
+#include "SDL.h"
+#endif
+
 /* ---------------------------------------------------------------------- */
 
 static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
@@ -57,10 +51,11 @@ static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 
 /* ---------------------------------------------------------------------- */
+
 /*
  *  FUNCTION : main
  *
- *  BennuGD PSP port main function (based on ScummVM PSP Port) 
+ *  Main function
  *
  *  PARAMS:
  *      INT n: ERROR LEVEL to return to OS
@@ -69,29 +64,8 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  *      No value
  *
  */
-#ifdef TARGET_PSP
-int main(void)
-{
-	int res;
-	
-	PSP_HEAP_SIZE_KB(25000);
-	
-	SetupCallbacks();
 
-	static char *argv[] = { "bgdi", NULL };
-	static int argc = ( sizeof(argv) / (sizeof(char *)-1) );
-
-	res = bgdi_main(argc, argv);
-
-	sceKernelSleepThread();
-
-	return res;
-}
-
-int bgdi_main( int argc, char *argv[] )
-#else
-int main(int argc, char **argv)
-#endif
+int main( int argc, char **argv )
 {
     char * filename = 0 ;
     char dcbname[__MAX_PATH] ;
@@ -102,25 +76,6 @@ int main(int argc, char **argv)
     int ret = -1;
 
     dcb_signature dcb_signature;
-	
-#ifdef TARGET_PSP
-    pspDebugScreenSetBackColor(0x00000000);
-    pspDebugScreenSetTextColor(0xFFFFFFFF);
-    pspDebugScreenInit();
-    SetupCallbacks();
-    // pspDebugScreenSetBackColor(0xFFFFFFFF);
-    // pspDebugScreenSetTextColor(0);
-    // pspDebugScreenInit();
-    // SetupCallbacks();
-#endif
-    
-#ifdef TARGET_WII
-    // Initialize the Wii FAT filesystem, check stuff
-    if (!fatInitDefault()) {
-        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
-		exit(1);
-    }
-#endif
 
     /* Find out if we are calling bgdi.exe or whatever.exe */
 
@@ -204,7 +159,7 @@ int main(int argc, char **argv)
 
         if ( !filename )
         {
-            fprintf( stderr, BGDI_VERSION "\n"
+            printf( BGDI_VERSION "\n"
                     "Copyright (c) 2006-2010 SplinterGU (Fenix/BennuGD)\n"
                     "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
                     "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
@@ -230,16 +185,6 @@ int main(int argc, char **argv)
 
     /* Init application title for windowed modes */
 
-#ifdef TARGET_PSP
-    fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
-    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/01_core.dcb");
-    fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
-    if(! dcb_load( dcbname ) )
-    {
-        fprintf( stderr, "bgdi_main(): failed to load: %s\n", dcbname );
-        return (-1);
-    }
-#else
     strcpy( dcbname, filename ) ;
     appname = strdup( filename ) ;
 
@@ -267,8 +212,9 @@ int main(int argc, char **argv)
         }
     }
     else
+    {
         dcb_load_from( fp, dcb_signature.dcb_offset );
-#endif
+    }
 
     /* If the dcb is not in debug mode */
 
@@ -285,17 +231,8 @@ int main(int argc, char **argv)
     if ( dwProcessId == GetCurrentProcessId() ) ShowWindow( hWnd, SW_HIDE );
 #endif
 
-#ifdef TARGET_WII
-    // Delete stdout.txt if it exists (we'll overwrite it)
-    FILE *fd;
-
-    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
-        fclose(fd);
-        unlink("stdout.txt");
-    }
-#endif
-
     argv[0] = filename;
+
     bgdrtm_entry( argc, argv );
 
     if ( mainproc )

@@ -21,7 +21,9 @@
  *
  */
 
+#ifdef _MSC_VER
 #pragma comment (lib, "SDL_mixer")
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
