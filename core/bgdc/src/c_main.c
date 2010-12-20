@@ -337,18 +337,20 @@ void compile_error( const char *fmt, ... )
 {
     char text[4000] ;
     char * fname = ( import_filename ) ? import_filename : (( current_file != -1 && files[current_file] && *files[current_file] ) ? files[current_file] : NULL );
-
+	
     va_list ap;
     va_start( ap, fmt );
     vsprintf( text, fmt, ap );
     va_end( ap );
-
+	
     fprintf( stdout, MSG_COMPILE_ERROR,
             ( fname && ( fname[0] != '/' && fname[0] != '\\' && fname[1] != ':' ) ) ?  main_path : "",
             fname ? fname : "N/A",
             ( import_filename ) ? import_line : line_count,
             text ) ;
+    fprintf( stdout, ", found " );
     token_dump() ;
+    fprintf( stdout, "\n" );
     exit( 2 ) ;
 }
 
@@ -358,18 +360,20 @@ void compile_warning( const char *fmt, ... )
 {
     char text[4000] ;
     char * fname = ( import_filename ) ? import_filename : (( current_file != -1 && files[current_file] && *files[current_file] ) ? files[current_file] : NULL );
-
+	
     va_list ap;
     va_start( ap, fmt );
     vsprintf( text, fmt, ap );
     va_end( ap );
-
+	
     fprintf( stdout, MSG_COMPILE_WARNING,
             ( fname && ( fname[0] != '/' && fname[0] != '\\' && fname[1] != ':' ) ) ?  main_path : "",
             fname ? fname : "N/A",
             ( import_filename ) ? import_line : line_count,
             text ) ;
+    fprintf( stdout, ", found " );
     token_dump() ;
+    fprintf( stdout, "\n" );
 }
 
 /* ---------------------------------------------------------------------- */
@@ -433,6 +437,7 @@ void compile_type()
 
 static char * modules_exts[] =
 {
+	".fakelib",
     ".dll",
     ".dylib",
     ".so",
@@ -455,7 +460,10 @@ static void import_module( const char * filename )
     char        * ptr;
     char        ** pex;
 
-#if defined( WIN32 )
+#if defined( __MONOLITHIC__ )
+#define DLLEXT      ".fakelib"
+#define SIZEDLLEXT  8
+#elif defined( WIN32 )
 #define DLLEXT      ".dll"
 #define SIZEDLLEXT  4
 #elif defined(TARGET_MAC)

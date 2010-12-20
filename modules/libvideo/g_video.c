@@ -52,7 +52,11 @@ SDL_Surface * scale_screen = NULL ;
 char * apptitle = NULL ;
 
 int scr_width = 320 ;
+#ifdef TARGET_IOS
+int scr_height = 480 ;
+#else
 int scr_height = 240 ;
+#endif
 
 int scr_initialized = 0 ;
 
@@ -305,7 +309,7 @@ int gr_set_mode( int width, int height, int depth )
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
 
     if ( scale_screen ) SDL_FreeSurface( scale_screen ) ;
-    if ( screen ) SDL_FreeSurface( screen ) ;
+    //if ( screen ) SDL_FreeSurface( screen ) ;
 
     if ( scale_resolution != 0 )
     {

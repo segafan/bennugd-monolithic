@@ -145,7 +145,7 @@ CONDITIONALLY_STATIC int modproc_exit_0( INSTANCE * my, int * params )
 
 CONDITIONALLY_STATIC int modproc_exit_1( INSTANCE * my, int * params )
 {
-    printf( string_get( params[0] ) );
+    printf( "%s\n", string_get( params[0] ) );
     printf( "\n" );
     fflush( stdout );
     string_discard( params[0] );
@@ -162,7 +162,7 @@ CONDITIONALLY_STATIC int modproc_exit( INSTANCE * my, int * params )
 {
     _modproc_kill_all();
 
-    printf( string_get( params[0] ) );
+    printf( "%s\n", string_get( params[0] ) );
     printf( "\n" );
     fflush( stdout );
     string_discard( params[0] );

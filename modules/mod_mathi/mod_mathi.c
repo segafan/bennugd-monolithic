@@ -38,7 +38,7 @@
 /* Funciones matemáticas */
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_abs( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_abs( INSTANCE * my, int * params )
 {
     float num = *( float * ) &params[0] ;
     float res = ( num < 0 ) ? -num : num ;
@@ -47,7 +47,7 @@ CONDITIONALLY_STATIC int math_abs( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_pow( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_pow( INSTANCE * my, int * params )
 {
     float res = ( float )pow( *( float * ) & params[0], *( float * ) & params[1] ) ;
     return *(( int * )&res ) ;
@@ -55,7 +55,7 @@ CONDITIONALLY_STATIC int math_pow( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_sqrt( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_sqrt( INSTANCE * my, int * params )
 {
     float res = ( float )sqrt( *( float * ) & params[0] ) ;
     return *(( int * )&res ) ;
@@ -63,56 +63,56 @@ CONDITIONALLY_STATIC int math_sqrt( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_cos( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_cos( INSTANCE * my, int * params )
 {
     return cos(( double )( params[0] * M_PI / 180000.0 )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_sin( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_sin( INSTANCE * my, int * params )
 {
     return sin(( double )( params[0] * M_PI / 180000.0 )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_tan( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_tan( INSTANCE * my, int * params )
 {
     return tan(( double )( params[0] * M_PI / 180000.0 )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_acos( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_acos( INSTANCE * my, int * params )
 {
     return acos(( double )( params[0] * 180000.0 / M_PI )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_asin( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_asin( INSTANCE * my, int * params )
 {
     return asin(( double )( params[0] * 180000.0 / M_PI )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_atan( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_atan( INSTANCE * my, int * params )
 {
     return atan(( double )( params[0] * 180000.0 / M_PI )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_atan2( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_atan2( INSTANCE * my, int * params )
 {
     return atan2(( double )( params[0] * 180000.0 / M_PI ), ( double )( params[1] * 180000.0 / M_PI )) * 1000 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_isinf( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_isinf( INSTANCE * my, int * params )
 {
     double param = ( double ) *( float * ) & params[0] ;
     return isinf( param );
@@ -120,7 +120,7 @@ CONDITIONALLY_STATIC int math_isinf( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_isnan( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_isnan( INSTANCE * my, int * params )
 {
     double param = ( double ) *( float * ) & params[0] ;
     return isnan( param );
@@ -128,15 +128,19 @@ CONDITIONALLY_STATIC int math_isnan( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_finite( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_finite( INSTANCE * my, int * params )
 {
     double param = ( double ) *( float * ) & params[0] ;
+#ifdef TARGET_IOS
+	return ( !isnan(param) && !isinf(param) );
+#else
     return finite ( param );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_get_disty( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_get_disty( INSTANCE * my, int * params )
 {
     double angle = params[0] * M_PI / 180000.0 ;
     return ( int )( params[1] * -sin( angle ) ) ;
@@ -144,7 +148,7 @@ CONDITIONALLY_STATIC int math_get_disty( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_fget_angle( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_fget_angle( INSTANCE * my, int * params )
 {
     double dx = params[2] - params[0] ;
     double dy = params[3] - params[1] ;
@@ -159,7 +163,7 @@ CONDITIONALLY_STATIC int math_fget_angle( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_fget_dist( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_fget_dist( INSTANCE * my, int * params )
 {
     double dx = params[2] - params[0] ;
     double dy = params[3] - params[1] ;
@@ -169,7 +173,7 @@ CONDITIONALLY_STATIC int math_fget_dist( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_near_angle( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_near_angle( INSTANCE * my, int * params )
 {
     int angle = params[0] ;
     int dest  = params[1] ;
@@ -199,7 +203,7 @@ CONDITIONALLY_STATIC int math_near_angle( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int math_get_distx( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int mathi_get_distx( INSTANCE * my, int * params )
 {
     double angle = params[0] * M_PI / 180000.0 ;
     return ( int )( params[1] * cos( angle ) ) ;

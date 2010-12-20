@@ -39,6 +39,7 @@
 /* Debe existir un header bgdrtm.h */
 extern int bgd_copy_struct( INSTANCE * my, int * params ) ;
 extern int bgd_internal_memcopy( INSTANCE * my, int * params ) ;
+extern int bgd_internal_copy_string_array( INSTANCE * my, int * params ) ;
 
 #include "sysprocs.h"
 #include "sysprocs_p.h"
@@ -400,20 +401,20 @@ void sysproc_init()
 
     char soname[__MAX_PATH] ;
 
-#if defined( WIN32 )
+#if defined( __MONOLITHIC__ )
+#define DLLEXT      ".fakelib"
+#define SIZEDLLEXT  8
+#elif defined( WIN32 )
 #define DLLEXT      ".dll"
 #define SIZEDLLEXT  4
 #elif defined(TARGET_MAC)
 #define DLLEXT      ".dylib"
 #define SIZEDLLEXT  6
-#elif defined(TARGET_PSP)
-#define DLLEXT		".so"     //this will change later
-#define SIZEDLLEXT  4
 #else
 #define DLLEXT      ".so"
 #define SIZEDLLEXT  3
 #endif
-
+	
     // PSP
     __PSP_fprintf( stderr, "sysproc_init() running\n");
     __PSP_fprintf( stderr, "dcb.data.NImports: %d\n", dcb.data.NImports );

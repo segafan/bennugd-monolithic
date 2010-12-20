@@ -23,29 +23,27 @@
 #define _LOADLIB_H
 
 #ifdef _WIN32
-    #include <windows.h>
-    #include <winbase.h>
+#include <windows.h>
+#include <winbase.h>
 #else
-    #define _GNU_SOURCE
-	
-    #ifndef __MONOLITHIC__
-        #include <dlfcn.h>
-    #else
-        #include <monolithic_includes.h>
-    #endif
-	
-    #include <unistd.h>
-    #include <stdlib.h>
-    #include <stdio.h>
-    #include <string.h>
+#define _GNU_SOURCE
+#ifndef __MONOLITHIC__
+#include <dlfcn.h>
+#else
+#include <monolithic_includes.h>
+#endif
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
-    #define __stdcall
-    #define __dllexport
-    #define __dllimport
+#define __stdcall
+#define __dllexport
+#define __dllimport
 #endif
 
 #ifdef _WIN32
-    #define dlclose(a)
+#define dlclose(a)
 #endif
 
 // This first part handles systems where dynamic library opening is posible
@@ -199,12 +197,6 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 // This second part handles systems with monolithic builds (ie: no dlopen)
 #else
 
-#ifdef TARGET_PSP
-#define __PSP_fprintf fprintf
-#else
-#define __PSP_fprintf
-#endif
-
 typedef struct
 {
     int index;
@@ -217,12 +209,6 @@ static char * dliberror( void )
     return __dliberr;
 }
 
-static int dlibclose( dlibhandle * handle )
-{
-    handle->index=0;
-    return 0;
-}
-
 static dlibhandle * dlibopen( const char * fname )
 {
   int i=0;
@@ -230,9 +216,6 @@ static dlibhandle * dlibopen( const char * fname )
     // Fake-load the library
     // What we're really doing is checking if the library name given to us is in the list
     // of supported modules, and return its place in the symbols array.
-
-    // PSP
-    __PSP_fprintf(stderr, "dlibopenning: %s\n", fname );
 
     while (symbol_list[i].module_name != NULL) {
         if(strncmp(fname, symbol_list[i].module_name,
@@ -247,8 +230,6 @@ static dlibhandle * dlibopen( const char * fname )
 			
       			dlib->index = i;
       			
-            // PSP
-            __PSP_fprintf( stderr, "dlibopen exiting...\n" );
             return ( dlib );
         }
 		
@@ -260,10 +241,6 @@ static dlibhandle * dlibopen( const char * fname )
 
 static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 {
-    // PSP
-    __PSP_fprintf(stderr, "Asked for symbol \"%s\" for library %s.\n", symbol,
-	        symbol_list[handle->index].module_name);
-	
     // Return the symbol they asked us for, or NULL
     if(strncmp(symbol, "modules_dependency", strlen("modules_dependency")) == 0)
         return symbol_list[handle->index].modules_dependency;
@@ -310,7 +287,6 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 	
     // Unknown symbol, much probably an error in this implementation or a
     // change in the BennuGD ABI
-    __PSP_fprintf(stderr, "Symbol %s is unknown, this is most likely a bug\n contact the author.\n", symbol);
 #endif
 
     return NULL;
