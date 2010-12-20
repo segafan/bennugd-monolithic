@@ -172,7 +172,7 @@ int dcb_load( const char * filename )
     file * fp ;
 
     /* check for existence of the DCB FILE */
-    #ifdef TARGET_PSP	
+#ifdef TARGET_PSP	
     fprintf( stderr, "dcb_load trying to load %s\n", filename );
 
     if( !file_exists( filename ) )
@@ -180,9 +180,9 @@ int dcb_load( const char * filename )
         fprintf(stderr, "file_exists from dcb_load failed!\n");
         return 0;
 		}
-		#else
+#else
 		if ( !file_exists( filename ) ) return 0 ;
-		#endif
+#endif
 
     fp = file_open( filename, "rb0" ) ;
     if ( !fp )
@@ -219,7 +219,7 @@ int dcb_load_from( file * fp, int offset )
 {
     unsigned int n ;
     char *path, *ptr ;
-    uint32_t size ;
+    uint32_t size;
 
 #ifdef WIN32
     int base_drive ;
@@ -230,7 +230,7 @@ int dcb_load_from( file * fp, int offset )
     for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
         if ( *ptr == '/' || *ptr == '\\' ) break ;
     ptr[1] = 0 ;
-    chdir(path);
+    chdir( path );
 
     /* En WIN32, cambia a la unidad del DCB */
 

@@ -109,7 +109,7 @@ int debug     = 0;  /* 1 if running in debug mode      */
 #endif
 
 #ifdef TARGET_PSP
-#define _OS_ID			 OS_PSP
+#define _OS_ID          OS_PSP
 #endif
 
 /* --------------------------------------------------------------------------- */
