@@ -1,20 +1,13 @@
 #!/bin/sh
 
-if [ -x "`which gfind`" ]; then
-	FIND=gfind;
-	echo "Using GNU find"
-else
-	FIND=find;
-fi
+cd $(dirname 0)/..
 
-cd ..
-
-for i in $($FIND -iname *.o); do rm $i; done
-for i in $($FIND -iname *.d); do rm $i; done
-for i in $($FIND -iname bgdrtm.a); do rm $i; done
-for i in $($FIND -iname *.elf); do rm $i; done
-for i in $($FIND -iname *.dol); do rm $i; done
-for i in $($FIND -iname *.PBP); do rm $i; done
-for i in $($FIND -iname *.SFO); do rm $i; done
+for i in $(find . -name "*.o" -print); do rm $i; done
+for i in $(find . -name "*.d" -print); do rm $i; done
+for i in $(find . -name "bgdrtm.a" -print); do rm $i; done
+for i in $(find . -name "*.elf" -print); do rm $i; done
+for i in $(find . -name "*.dol" -print); do rm $i; done
+for i in $(find . -name "*.FBP" -print); do rm $i; done
+for i in $(find . -name "*.SFO" -print); do rm $i; done
 
 cd -
