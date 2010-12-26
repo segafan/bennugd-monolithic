@@ -109,7 +109,7 @@ int debug     = 0;  /* 1 if running in debug mode      */
 #endif
 
 #ifdef TARGET_PSP
-#define _OS_ID			 OS_PSP
+#define _OS_ID          OS_PSP
 #endif
 
 /* --------------------------------------------------------------------------- */
@@ -228,6 +228,9 @@ void bgdrtm_entry( int argc, char * argv[] )
 void bgdrtm_exit( int exit_value )
 {
     int n;
+
+    fprintf( stderr, "entering bgdrtm_exit() with exit_value = %d...\n", exit_value );
+
     /* Finalize all modules */
     if ( module_finalize_count )
         for ( n = 0; n < module_finalize_count; n++ )
@@ -241,7 +244,9 @@ void bgdrtm_exit( int exit_value )
 #endif
 
 #ifdef TARGET_PSP
-	sceKernelExitGame();
+        fprintf( stderr, "exiting...\n");
+        sceKernelExitGame();
+        return (0);
 #else
     exit( exit_value ) ;
 #endif

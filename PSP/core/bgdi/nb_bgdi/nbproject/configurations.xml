@@ -13,6 +13,54 @@
         <in>resource.h</in>
       </df>
     </df>
+    <df name="common" root="../../common">
+      <in>b_crypt.c</in>
+      <in>debug.c</in>
+      <in>files.c</in>
+      <in>xctype.c</in>
+    </df>
+    <df name="include" root="../../include">
+      <in>arrange.h</in>
+      <in>b_crypt.h</in>
+      <in>bgdcore.h</in>
+      <in>bgddl.h</in>
+      <in>bgdrtm.h</in>
+      <in>commons_defs.h</in>
+      <in>dcb.h</in>
+      <in>dirs.h</in>
+      <in>dlvaracc.h</in>
+      <in>files.h</in>
+      <in>files_st.h</in>
+      <in>fmath.h</in>
+      <in>i_procdef.h</in>
+      <in>i_procdef_st.h</in>
+      <in>instance.h</in>
+      <in>instance_st.h</in>
+      <in>loadlib.h</in>
+      <in>monolithic_includes.h</in>
+      <in>offsets.h</in>
+      <in>pslang.h</in>
+      <in>sysprocs.h</in>
+      <in>sysprocs_p.h</in>
+      <in>sysprocs_st.h</in>
+      <in>typedef.h</in>
+      <in>typedef_st.h</in>
+      <in>varspace_file.h</in>
+      <in>xctype.h</in>
+      <in>xctype_st.h</in>
+      <in>xstrings.h</in>
+    </df>
+    <df name="src" root="../../bgdrtm/src">
+      <in>copy.c</in>
+      <in>dcbr.c</in>
+      <in>dirs.c</in>
+      <in>instance.c</in>
+      <in>interpreter.c</in>
+      <in>misc.c</in>
+      <in>strings.c</in>
+      <in>sysprocs.c</in>
+      <in>varspace_file.c</in>
+    </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Arquivos importantes"
                    projectFiles="false"
@@ -23,6 +71,10 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>..</Elem>
+    <Elem>../../bgdrtm/include</Elem>
+    <Elem>../../bgdrtm/src</Elem>
+    <Elem>../../common</Elem>
+    <Elem>../../include</Elem>
   </sourceRootList>
   <projectmakefile>nb_bgdi-Makefile.mk</projectmakefile>
   <confs>
@@ -51,6 +103,18 @@
             </preprocessorList>
           </cTool>
         </makeTool>
+        <requiredProjects>
+          <makeArtifact PL="../../../3rdparty/dietlibc-glob/nb_dietlibc-glob"
+                        CT="0"
+                        CN="Default"
+                        AC="true"
+                        BL="false"
+                        WD="../../../3rdparty/dietlibc-glob/nb_dietlibc-glob"
+                        BC="${MAKE}  -f nb_dietlibc-glob-Makefile.mk CONF=Default"
+                        CC="${MAKE}  -f nb_dietlibc-glob-Makefile.mk CONF=Default clean"
+                        OP="">
+          </makeArtifact>
+        </requiredProjects>
       </makefileType>
     </conf>
   </confs>

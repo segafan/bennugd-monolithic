@@ -56,7 +56,7 @@ BGDC_C_FILES  = c_code.c c_data.c c_debug.c c_main.c codeblock.c constants.c dcb
 BGDC_C_FILES += error.c identifier.c main.c main_core.c procedure.c segment.c strings.c
 BGDC_C_FILES += sysstub.c token.c typedef.c varspace.c
 
-BGDI_C_FILES = main.c
+BGDI_C_FILES = main.c psp.c
 
 BGDRTM_C_FILES = copy.c dcbr.c dirs.c instance.c interpreter.c misc.c strings.c sysprocs.c varspace_file.c
 

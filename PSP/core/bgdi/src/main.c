@@ -36,10 +36,6 @@
 #include <SDL.h>
 #endif
 
-#ifdef TARGET_PSP
-    #include "psp.h"
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,12 +45,19 @@
 #include "bgdrtm.h"
 #include "xstrings.h"
 
+#ifdef TARGET_PSP
+    #include "psp.h"
+#endif
+
 /* ---------------------------------------------------------------------- */
 
 static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
 
 static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
+
+int running = 1;
+int global_ret = 0;
 
 /* ---------------------------------------------------------------------- */
 /*
@@ -109,10 +112,6 @@ int main(int argc, char **argv)
     pspDebugScreenSetTextColor(0xFFFFFFFF);
     pspDebugScreenInit();
     SetupCallbacks();
-    // pspDebugScreenSetBackColor(0xFFFFFFFF);
-    // pspDebugScreenSetTextColor(0);
-    // pspDebugScreenInit();
-    // SetupCallbacks();
 #endif
     
 #ifdef TARGET_WII
@@ -235,7 +234,7 @@ int main(int argc, char **argv)
 
 #ifdef TARGET_PSP
     fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
-    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/01_core.dcb");
+    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/06_mod_file_3.dcb");
     fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
     if(! dcb_load( dcbname ) )
     {
@@ -305,6 +304,8 @@ int main(int argc, char **argv)
     {
         mainproc_running = instance_new( mainproc, 0 ) ;
         ret = instance_go_all() ;
+        global_ret = ret;
+        fprintf( stderr, "execution ended! waiting for user to terminate...\n");
         while(running); // fprintf( stderr, "running: %d\n", running );
     }
 

@@ -3,21 +3,15 @@
     <type>org.netbeans.modules.cnd.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>nb_bgdi</name>
+            <name>nb_dietlibc-glob</name>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>
             <header-extensions>h</header-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
-            <make-dep-projects>
-                <make-dep-project>../../../3rdparty/dietlibc-glob/nb_dietlibc-glob</make-dep-project>
-            </make-dep-projects>
+            <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>..</sourceRootElem>
-                <sourceRootElem>../../bgdrtm/include</sourceRootElem>
-                <sourceRootElem>../../bgdrtm/src</sourceRootElem>
-                <sourceRootElem>../../common</sourceRootElem>
-                <sourceRootElem>../../include</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>Default</confElem>

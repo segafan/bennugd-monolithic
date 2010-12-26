@@ -1,7 +1,7 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -247,8 +247,13 @@ int dcb_load_from( file * fp, int offset )
     int base_drive ;
 #endif
 
+    fprintf( stderr, "running dcb_load_from()...\n" );
+
     /* Cambia al directorio del DCB con chdir */
     path = dir_path_convert( fp->name ) ;
+
+    fprintf( stderr, "dcb_load_from(): path: %s\n", path);
+
     for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
         if ( *ptr == '/' || *ptr == '\\' ) break ;
     ptr[1] = 0 ;
@@ -381,7 +386,7 @@ int dcb_load_from( file * fp, int offset )
 
     string_load( fp, dcb.data.OStrings, dcb.data.OText, dcb.data.NStrings, dcb.data.SText );
 
-    /* Recupera los ficheros incluídos */
+    /* Recupera los ficheros incluï¿½dos */
 
     if ( dcb.data.NFiles )
     {
