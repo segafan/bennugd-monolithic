@@ -69,7 +69,11 @@ unsigned char * keystate = NULL;        /* Pointer to key states */
 
 /* ----------------------------------------------------------------- */
 
+#if SDL_VERSION_ATLEAST(1,3,0)
 static int sdl_equiv[SDL_NUM_SCANCODES+1] ;
+#else
+static int sdl_equiv[SDLK_LAST+1] ;
+#endif
 
 static int equivs[] =
 {
