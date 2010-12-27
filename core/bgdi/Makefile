@@ -93,7 +93,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile
-	#powerpc-eabi-strip $(TARGET).elf
+	powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:
