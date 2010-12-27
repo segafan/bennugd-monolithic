@@ -39,8 +39,13 @@
 #include "bgdrtm.h"
 #include "xstrings.h"
 
-#ifdef TARGET_IOS
-#include "SDL.h"
+#if defined(TARGET_IOS)
+#include <SDL.h>
+#elif defined(TARGET_WII)
+#include <SDL.h>
+#include <fat.h>
+#elif defined(TARGET_PSP)
+#include "psp.h"
 #endif
 
 /* ---------------------------------------------------------------------- */

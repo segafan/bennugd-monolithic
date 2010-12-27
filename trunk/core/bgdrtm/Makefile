@@ -40,7 +40,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -O3 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-g -O3 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
