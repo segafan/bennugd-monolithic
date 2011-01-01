@@ -858,10 +858,31 @@ CONDITIONALLY_STATIC int modmap_unload_fnt( INSTANCE * my, int * params )
 
 CONDITIONALLY_STATIC int modmap_fnt_new( INSTANCE * my, int * params )
 {
-    int result = gr_font_new();
-    FONT * font = gr_font_get( result );
-    if ( font ) font->bpp = params[0];
-    return result;
+    return gr_font_new( CHARSET_CP850, params[0] );
+}
+
+/* --------------------------------------------------------------------------- */
+
+/** FNT_NEW (CHARSET, DEPTH)
+ *  Create a new font in memory (returns the font ID)
+ */
+
+CONDITIONALLY_STATIC int modmap_fnt_new_charset( INSTANCE * my, int * params )
+{
+    return gr_font_new( params[0], params[1] );
+}
+
+/* --------------------------------------------------------------------------- */
+
+/** FNT_NEW (FILE, GRAPH, CHARSET, WITDH, HEIGHT, FIRST, LAST, FLAGS)
+ *  Create a new font in memory (returns the font ID)
+ */
+
+CONDITIONALLY_STATIC int modmap_fnt_new_from_bitmap( INSTANCE * my, int * params )
+{
+    GRAPH * bmp = bitmap_get( params[0], params[1] ) ;
+    if ( !bmp ) return -1;
+    return gr_font_newfrombitmap( bmp, params[2], params[3], params[4], params[5], params[6], params[7] );
 }
 
 /* --------------------------------------------------------------------------- */
@@ -908,26 +929,29 @@ CONDITIONALLY_STATIC int modmap_set_glyph( INSTANCE * my, int * params )
 
     if ( font && map )
     {
-        if ( font->glyph[c].bitmap ) bitmap_destroy( font->glyph[c].bitmap );
+        if ( font->glyph[c].bitmap ) grlib_unload_map( 0, font->glyph[c].bitmap->code );
         font->glyph[c].bitmap = bitmap_clone( map );
-        if ( font->glyph[c].bitmap ) font->glyph[c].bitmap->code = bitmap_next_code();
+        if ( font->glyph[c].bitmap )
+        {
+            font->glyph[c].bitmap->code = bitmap_next_code();
 
-        if ( map->ncpoints >= 3 && map->cpoints )
-        {
-            font->glyph[c].xoffset = map->cpoints[1].x;
-            font->glyph[c].yoffset = map->cpoints[1].y;
-            font->glyph[c].xadvance = map->cpoints[2].x;
-            font->glyph[c].yadvance = map->cpoints[2].y;
+            if ( map->ncpoints >= 3 && map->cpoints )
+            {
+                font->glyph[c].xoffset = map->cpoints[1].x;
+                font->glyph[c].yoffset = map->cpoints[1].y;
+                font->glyph[c].xadvance = map->cpoints[2].x;
+                font->glyph[c].yadvance = map->cpoints[2].y;
+            }
+            else
+            {
+                font->glyph[c].xoffset = 0;
+                font->glyph[c].yoffset = 0;
+                font->glyph[c].xadvance = map->width + map->width / 5 ;
+                font->glyph[c].yadvance = map->height + map->height / 5 ;
+                bitmap_add_cpoint( font->glyph[c].bitmap, 0, 0 ) ;
+            }
+            grlib_add_map( 0, font->glyph[c].bitmap );
         }
-        else
-        {
-            font->glyph[c].xoffset = 0;
-            font->glyph[c].yoffset = 0;
-            font->glyph[c].xadvance = map->width + map->width / 5 ;
-            font->glyph[c].yadvance = map->height + map->height / 5 ;
-            bitmap_add_cpoint( font->glyph[c].bitmap, 0, 0 ) ;
-        }
-        grlib_add_map( 0, font->glyph[c].bitmap );
     }
     return 0;
 }

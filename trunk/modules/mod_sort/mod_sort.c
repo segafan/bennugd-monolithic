@@ -32,7 +32,7 @@
 #include "dcb.h"
 
 #ifndef __MONOLITHIC__
-#include "mod_timers_symbols.h"
+#include "mod_sort_symbols.h"
 #endif
 
 static int keyoffset = 0;
