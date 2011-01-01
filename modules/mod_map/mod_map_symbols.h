@@ -93,6 +93,8 @@ extern CONDITIONALLY_STATIC int modmap_load_fnt( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_load_bdf( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_unload_fnt( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_fnt_new( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_fnt_new_charset( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modmap_fnt_new_from_bitmap( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_get_glyph( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_set_glyph( INSTANCE * my, int * params );
 extern CONDITIONALLY_STATIC int modmap_save_fnt( INSTANCE * my, int * params );
@@ -212,6 +214,8 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "FNT_UNLOAD"          , "I"           , TYPE_INT      , SYSMACRO(modmap_unload_fnt)         },
     { "FNT_SAVE"            , "IS"          , TYPE_INT      , SYSMACRO(modmap_save_fnt)           },
     { "FNT_NEW"             , "I"           , TYPE_INT      , SYSMACRO(modmap_fnt_new)            },
+    { "FNT_NEW"             , "II"          , TYPE_INT      , SYSMACRO(modmap_fnt_new_charset)    },
+    { "FNT_NEW"             , "IIIIIIII"    , TYPE_INT      , SYSMACRO(modmap_fnt_new_from_bitmap)},
 
     { "BDF_LOAD"            , "S"           , TYPE_INT      , SYSMACRO(modmap_load_bdf)           },
 
