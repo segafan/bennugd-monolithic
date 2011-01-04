@@ -337,7 +337,7 @@ void compile_error( const char *fmt, ... )
 {
     char text[4000] ;
     char * fname = ( import_filename ) ? import_filename : (( current_file != -1 && files[current_file] && *files[current_file] ) ? files[current_file] : NULL );
-	
+
     va_list ap;
     va_start( ap, fmt );
     vsprintf( text, fmt, ap );
