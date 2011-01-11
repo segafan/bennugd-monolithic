@@ -22,6 +22,10 @@
 #ifndef _LOADLIB_H
 #define _LOADLIB_H
 
+#ifdef TARGET_PSP
+    #define __MONOLITHIC__
+#endif
+
 #ifdef _WIN32
 
 	#include <windows.h>
@@ -202,12 +206,6 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 
 // This second part handles systems with monolithic builds (ie: no dlopen)
 #else
-
-#ifdef TARGET_PSP
-#define __PSP_fprintf fprintf
-#else
-#define __PSP_fprintf
-#endif
 
 typedef struct
 {

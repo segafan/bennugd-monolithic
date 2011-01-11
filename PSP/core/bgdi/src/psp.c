@@ -18,6 +18,8 @@
             PSP_MODULE_INFO("BGDI-PSP", 0x1000, 1, 1);
     #else
             PSP_MODULE_INFO("BGDI-PSP", 0, 1, 1);
+            PSP_HEAP_SIZE_KB(-128);
+            PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER);
     #endif
 
     /**

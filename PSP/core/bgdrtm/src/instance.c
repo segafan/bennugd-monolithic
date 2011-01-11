@@ -1,7 +1,7 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -52,8 +52,8 @@
 #define INSTANCE_NORMALIZE_PRIORITY 32768
 
 /* ---------------------------------------------------------------------- */
-/* Módulo de gestión de instancias, con las funciones de incialización y  */
-/* destrucción, duplicado, etc.                                           */
+/* Mï¿½dulo de gestiï¿½n de instancias, con las funciones de incializaciï¿½n y  */
+/* destrucciï¿½n, duplicado, etc.                                           */
 /* ---------------------------------------------------------------------- */
 
 #define HASH(id)            (unsigned int)((id)&0x0000ffff)
@@ -61,9 +61,9 @@
 #define HASH_INSTANCE(id)   (unsigned int)(((( uint32_t )(id)) >> 2 ) & 0x0000ffff)
 
 #ifdef TARGET_PSP
-	#define HASH_SIZE	          128 // for PSP this the maximum we can allocate (not sure why)
+	#define HASH_SIZE	        128 // for PSP this the maximum we can allocate (not sure why)
 #else
-	#define HASH_SIZE				65536
+	#define HASH_SIZE		65536
 #endif
 
 
@@ -114,7 +114,7 @@ void instance_add_to_list_by_instance( INSTANCE * r )
 	
     r->prev_by_instance = NULL ;
 	
-	fprintf( stderr, "hash: %d\n", hash );
+    fprintf( stderr, "hash: %d\n", hash );
     r->next_by_instance = hashed_by_instance[hash];
 	
     if ( r->next_by_instance ) r->next_by_instance->prev_by_instance = r ;
@@ -366,7 +366,7 @@ INSTANCE * instance_duplicate( INSTANCE * father )
 
     /* Inicializa datos de jerarquia */
 
-    /* Crea el proceso clónico como si lo hubiera llamado el padre */
+    /* Crea el proceso clï¿½nico como si lo hubiera llamado el padre */
 
     type = LOCDWORD( father, PROCESS_TYPE ) ;
     LOCDWORD( r, PROCESS_ID )   = pid ;
@@ -451,13 +451,13 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
 		return NULL;
 	}
 	
-	fprintf( stderr, "allocating memory for one INSTANCE...\n" );
+    fprintf( stderr, "allocating memory for one INSTANCE...\n" );
 
 
     r = ( INSTANCE * ) calloc( 1, sizeof( INSTANCE ) ) ;
     assert( r ) ;
 	
-	fprintf( stderr, "initializing INSTANCE...\n" );
+    fprintf( stderr, "initializing INSTANCE...\n" );
 
 
     r->pridata          = ( int * ) malloc( proc->private_size + 4 ) ;
@@ -654,7 +654,7 @@ void instance_destroy( INSTANCE * r )
     for ( n = 0 ; n < r->proc->pubstring_count ; n++ ) string_discard( PUBDWORD( r, r->proc->pubstrings[n] ) ) ; /* Strings publicas */
     for ( n = 0 ; n < local_strings ; n++ ) string_discard( LOCDWORD( r, localstr[n] ) ) ; /* Strings locales */
 
-    /* Actualiza árbol de jerarquias */
+    /* Actualiza ï¿½rbol de jerarquias */
 
     bigbro = instance_get( LOCDWORD( r, BIGBRO ) ) ; /* Tengo hermano mayor? */
     if ( bigbro ) LOCDWORD( bigbro, SMALLBRO ) = LOCDWORD( r, SMALLBRO ) ; /* El hermano menor de mi hermano mayor es mi hermano menor */

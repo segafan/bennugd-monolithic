@@ -41,8 +41,6 @@
               <pElem>..</pElem>
             </incDir>
             <preprocessorList>
-              <Elem>_PSP_FW_VERSION=500</Elem>
-              <Elem>VERSION='"1.0-psp"'</Elem>
               <Elem>TARGET_PSP</Elem>
             </preprocessorList>
           </cTool>

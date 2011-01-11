@@ -62,11 +62,11 @@ makeDirectory "${NBTMPDIR}/nbbgdi/bin"
 copyFileToTmpDir "${OUTPUT_PATH}" "${NBTMPDIR}/${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}" 0755
 
 
-# Generate tar file
+# Generate zip file
 cd "${TOP}"
-rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/nbbgdi.tar
+rm -f ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/nbbgdi.zip
 cd ${NBTMPDIR}
-tar -vcf ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/nbbgdi.tar *
+zip -r  ../../../../${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/package/nbbgdi.zip *
 checkReturnCode
 
 # Cleanup

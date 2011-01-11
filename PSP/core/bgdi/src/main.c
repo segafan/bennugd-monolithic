@@ -76,9 +76,7 @@ int global_ret = 0;
 int main(void)
 {
 	int res;
-	
-	PSP_HEAP_SIZE_KB(25000);
-	
+        
 	SetupCallbacks();
 
 	static char *argv[] = { "bgdi", NULL };
@@ -239,7 +237,8 @@ int main(int argc, char **argv)
     if(! dcb_load( dcbname ) )
     {
         fprintf( stderr, "bgdi_main(): failed to load: %s\n", dcbname );
-        return (-1);
+        while(running);
+        goto finish;
     }
 #else
     strcpy( dcbname, filename ) ;
@@ -309,6 +308,7 @@ int main(int argc, char **argv)
         while(running); // fprintf( stderr, "running: %d\n", running );
     }
 
+finish:
     bgdrtm_exit( ret );
     return ret;
 }

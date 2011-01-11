@@ -14,6 +14,12 @@
 
     #include "bgdrtm.h"
 
+    #ifdef TARGET_PSP
+        #define __PSP_fprintf fprintf
+    #else
+        #define __PSP_fprintf
+    #endif
+
     extern int running;
     extern int global_ret;
 #endif // __PSP_H__

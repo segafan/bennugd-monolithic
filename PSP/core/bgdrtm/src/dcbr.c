@@ -25,9 +25,9 @@
 #include <stdlib.h>
 #include <string.h>
 #ifndef WIN32
-#include <unistd.h>
+    #include <unistd.h>
 #else
-#include <direct.h>
+    #include <direct.h>
 #endif
 #include "bgdrtm.h"
 #include "dcb.h"
@@ -257,6 +257,7 @@ int dcb_load_from( file * fp, int offset )
     for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
         if ( *ptr == '/' || *ptr == '\\' ) break ;
     ptr[1] = 0 ;
+    fprintf( stderr, "path: %s\n", path );
     chdir( path ) ;
 
     /* En WIN32, cambia a la unidad del DCB */
@@ -276,6 +277,7 @@ int dcb_load_from( file * fp, int offset )
 
     /* Lee el contenido del fichero */
 
+    fprintf ( stderr, "loading DCB headers...\n" );
     file_seek( fp, offset, SEEK_SET );
     file_read( fp, &dcb, sizeof( DCB_HEADER_DATA ) ) ;
 
@@ -314,7 +316,11 @@ int dcb_load_from( file * fp, int offset )
     ARRANGE_DWORD( &dcb.data.OSourceFiles );
     ARRANGE_DWORD( &dcb.data.OSysProcsCodes );
 
+    fprintf ( stderr, "validating header...\n" );
+
     if ( memcmp( dcb.data.Header, DCB_MAGIC, sizeof( DCB_MAGIC ) ) != 0 || ( dcb.data.Version & 0xFF00 ) != ( DCB_VERSION & 0xFF00 ) ) return 0 ;
+
+    fprintf ( stderr, "allocating memory for data...\n" );
 
     globaldata = calloc( dcb.data.SGlobal + 4, 1 ) ;
     localdata  = calloc( dcb.data.SLocal + 4, 1 ) ;
@@ -323,11 +329,15 @@ int dcb_load_from( file * fp, int offset )
     procs      = ( PROCDEF * ) calloc(( 1 + dcb.data.NProcs ), sizeof( PROCDEF ) ) ;
     mainproc   = procs ;
 
+    fprintf ( stderr, "initializing variables...\n" );
+
     procdef_count = dcb.data.NProcs ;
     local_size    = dcb.data.SLocal ;
     local_strings = dcb.data.NLocStrings ;
 
     /* Recupera las zonas de datos globales */
+
+    fprintf ( stderr, "loading global DATA...\n" );
 
     file_seek( fp, offset + dcb.data.OGlobal, SEEK_SET ) ;
     file_read( fp, globaldata, dcb.data.SGlobal ) ;         /* **** */
@@ -418,10 +428,18 @@ int dcb_load_from( file * fp, int offset )
     }
 
     /* Recupera los datos de depurado */
-
+    fprintf ( stderr, "loading debug info...\n" );
     if ( dcb.data.NID )
     {
+        fprintf ( stderr, "allocating memory for DCB_IDs...\n" );
         dcb.id = ( DCB_ID * ) calloc( dcb.data.NID, sizeof( DCB_ID ) ) ;
+        if( dcb.id == NULL )
+        {
+            fprintf ( stderr, "error allocating memory for DCB_IDs...\n" );
+            fprintf ( stderr, "exiting dcb_load_from()...\n" );
+            return 0;
+        }
+
         file_seek( fp, offset + dcb.data.OID, SEEK_SET ) ;
 
         for ( n = 0; n < dcb.data.NID; n++ )
@@ -430,6 +448,8 @@ int dcb_load_from( file * fp, int offset )
             ARRANGE_DWORD( &dcb.id[n].Code );
         }
     }
+
+    fprintf ( stderr, "loading global vars...\n" );
 
     if ( dcb.data.NGloVars )
     {
@@ -465,6 +485,7 @@ int dcb_load_from( file * fp, int offset )
         }
     }
 
+    fprintf ( stderr, "loading sourcefiles...\n" );
     if ( dcb.data.NSourceFiles )
     {
         char filename[__MAX_PATH] ;
@@ -484,7 +505,7 @@ int dcb_load_from( file * fp, int offset )
     /* ZZZZZZZZZZZZZZZZZZZZZZZZZZ */
 
     /* Recupera los procesos */
-
+    fprintf ( stderr, "loading processes...\n" );
     for ( n = 0 ; n < dcb.data.NProcs ; n++ )
     {
         procs[n].params             = dcb.proc[n].data.NParams ;
@@ -558,6 +579,8 @@ int dcb_load_from( file * fp, int offset )
     }
 
     /* Recupero tabla de fixup de sysprocs */
+
+    fprintf ( stderr, "loading sysproc table...\n" );
 
     sysproc_code_ref = calloc( dcb.data.NSysProcsCodes, sizeof( DCB_SYSPROC_CODE2 ) ) ;
     file_seek( fp, offset + dcb.data.OSysProcsCodes, SEEK_SET ) ;
