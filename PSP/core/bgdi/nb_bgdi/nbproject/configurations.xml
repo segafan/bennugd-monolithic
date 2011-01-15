@@ -67,6 +67,7 @@
       <itemPath>../Makefile.psp</itemPath>
       <itemPath>nb_bgdi-Makefile.mk</itemPath>
     </logicalFolder>
+    <itemPath>../build/build-pbp.bat</itemPath>
   </logicalFolder>
   <sourceRootList>
     <Elem>..</Elem>

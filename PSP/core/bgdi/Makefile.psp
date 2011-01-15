@@ -269,7 +269,7 @@ TARGET = bgdi
 # PSPSDK specific stuff
 PSPSDK = $(shell psp-config --pspsdk-path)
 PSP_FW_VERSION = 500
-BUILD_PRX = 1
+BUILD_PRX = 0
 USE_USER_LIBS = 1
 
 PSP_EBOOT_ICON = logo.png
