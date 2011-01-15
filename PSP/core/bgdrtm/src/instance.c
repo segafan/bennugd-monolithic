@@ -40,7 +40,7 @@
 #undef STACK_SIZE
 
 #ifdef TARGET_PSP
-	#define STACK_SIZE 1024
+	#define STACK_SIZE 8192
 #else
 	#define STACK_SIZE 16384
 #endif
@@ -61,7 +61,7 @@
 #define HASH_INSTANCE(id)   (unsigned int)(((( uint32_t )(id)) >> 2 ) & 0x0000ffff)
 
 #ifdef TARGET_PSP
-	#define HASH_SIZE	        128 // for PSP this the maximum we can allocate (not sure why)
+	#define HASH_SIZE	        32768 
 #else
 	#define HASH_SIZE		65536
 #endif
@@ -558,7 +558,7 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
         for ( n = 0; n < instance_create_hook_count; n++ )
             instance_create_hook_list[n]( r );
 
-	fprintf( stderr, "instance_new() exiting...\n"); 		
+	fprintf( stderr, "instance_new(): exiting...\n");
 
     return r ;
 }

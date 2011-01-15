@@ -227,30 +227,30 @@ static int dlibclose( dlibhandle * handle )
 
 static dlibhandle * dlibopen( const char * fname )
 {
-  int i=0;
+    int i = 0;
 
     // Fake-load the library
     // What we're really doing is checking if the library name given to us is in the list
-	// of supported modules, and return its place in the symbols array.
-	fprintf(stderr, "dlibopenning: %s\n", fname );
-	while (symbol_list[i].module_name != NULL) {
-		//fprintf( stderr, "comparing %s to %s\n", fname, symbol_list[i].module_name );
-		if(strncmp(fname, symbol_list[i].module_name, strlen(symbol_list[i].module_name)) == 0) {
-			dlibhandle * dlib = (dlibhandle*) malloc( sizeof( dlibhandle ) );
-			if ( !dlib )
-			{
-				printf("Couldn't allocate resources for fake-loading the module %s :(\n", __dliberr);
-				return NULL;
-			}
-			
-			dlib->index = i;
-			
-			fprintf( stderr, "dlibopen exiting...\n" );
-			return ( dlib );
-		}
-		
-		    i++;
-	  }
+    // of supported modules, and return its place in the symbols array.
+    fprintf(stderr, "dlibopenning: %s\n", fname );
+    while (symbol_list[i].module_name != NULL)
+    {
+        //fprintf( stderr, "comparing %s to %s\n", fname, symbol_list[i].module_name );
+        if(strncmp(fname, symbol_list[i].module_name, strlen(symbol_list[i].module_name)) == 0)
+        {
+            dlibhandle * dlib = (dlibhandle*) malloc( sizeof( dlibhandle ) );
+            if ( !dlib )
+            {
+                printf("Couldn't allocate resources for fake-loading the module %s :(\n", __dliberr);
+                return NULL;
+            }
+
+            dlib->index = i;
+            fprintf( stderr, "dlibopen exiting...\n" );
+            return ( dlib );
+        }
+        i++;
+    }
     return NULL;
 }
 

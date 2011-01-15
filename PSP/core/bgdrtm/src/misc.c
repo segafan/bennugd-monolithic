@@ -246,7 +246,7 @@ void bgdrtm_exit( int exit_value )
 #ifdef TARGET_PSP
         fprintf( stderr, "exiting...\n");
         sceKernelExitGame();
-        return (0);
+        exit( exit_value ); //it seems that this exit call makes some difference but still needs testing
 #else
     exit( exit_value ) ;
 #endif

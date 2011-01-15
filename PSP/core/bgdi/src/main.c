@@ -84,9 +84,7 @@ int main(void)
         //static int argc = 1; //we don't parse any cmdline in here
 
 	res = bgdi_main(argc, argv);
-
 	sceKernelSleepThread();
-
 	return res;
 }
 
@@ -109,7 +107,6 @@ int main(int argc, char **argv)
     pspDebugScreenSetBackColor(0x00000000);
     pspDebugScreenSetTextColor(0xFFFFFFFF);
     pspDebugScreenInit();
-    SetupCallbacks();
 #endif
     
 #ifdef TARGET_WII
@@ -232,7 +229,7 @@ int main(int argc, char **argv)
 
 #ifdef TARGET_PSP
     fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
-    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/06_mod_file_3.dcb");
+    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/30_mod_dir.dcb");
     fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
     if(! dcb_load( dcbname ) )
     {

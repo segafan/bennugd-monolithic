@@ -1,7 +1,7 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -32,10 +32,10 @@
 #ifdef TARGET_MAC
 #include <SDL/SDL.h>
 #else
-#include <SDL.h>
+#include <SDL/SDL.h>
 #endif
 
-#include "SDL_mixer.h"
+#include <SDL/SDL_mixer.h>
 
 #include "files.h"
 #include "xstrings.h"
@@ -63,7 +63,7 @@ static int audio_initialized = 0 ;
 
 DLVARFIXUP  __bgdexport( mod_sound, globals_fixup )[] =
 {
-    /* Nombre de variable global, puntero al dato, tamaño del elemento, cantidad de elementos */
+    /* Nombre de variable global, puntero al dato, tamaï¿½o del elemento, cantidad de elementos */
     { "sound_freq", NULL, -1, -1 },
     { "sound_mode", NULL, -1, -1 },
     { "sound_channels", NULL, -1, -1 },
@@ -209,7 +209,7 @@ static void sound_close()
 {
     if ( !audio_initialized ) return;
 
-    //falta por comprobar que todo esté descargado
+    //falta por comprobar que todo estï¿½ descargado
 
     Mix_CloseAudio();
 

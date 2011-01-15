@@ -407,7 +407,7 @@ void sysproc_init()
 #define DLLEXT      ".dylib"
 #define SIZEDLLEXT  6
 #elif defined(TARGET_PSP) //this will change later
-#define DLLEXT		".prx"
+#define DLLEXT		".so"
 #define SIZEDLLEXT  3
 #else
 #define DLLEXT      ".so"
