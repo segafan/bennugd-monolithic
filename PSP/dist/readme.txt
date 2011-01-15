@@ -1,9 +1,11 @@
  BennuGD PSP port - 2nd beta release (15/01/2011)
  ----------------
-  
+ 
  by danielt3 and josebita
  
  THIS IS A BETA SOFTWARE. IT IS NOT GUARANTED TO WORK IN YOUR SYSTEM.
+ 
+ IMPORTANT: the source code for this release refers to rev195 on the SVN repository. 
  
  0. Introduction
  
