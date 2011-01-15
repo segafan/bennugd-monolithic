@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 
 #ifdef TARGET_PSP
     fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
-    strcpy(dcbname, "ms0:/PSP/GAME/BENNUGD/30_mod_dir.dcb");
+    strcpy(dcbname, "game.dcb");
     fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
     if(! dcb_load( dcbname ) )
     {
