@@ -59,6 +59,7 @@
 
 #define SIZEOF_VOIDP 4
 #define SDL_HAS_64BIT_TYPE 1
+#define HAVE_GCC_ATOMICS 1
 
 /* Comment this if you want to build without any C library requirements */
 #define HAVE_LIBC 1
@@ -159,6 +160,7 @@
 /* #undef HAVE_CLOCK_GETTIME */
 /* #undef HAVE_GETPAGESIZE */
 #define HAVE_MPROTECT 1
+#define HAVE_ICONV 1
 
 #else
 /* We may need some replacement for stdarg.h here */
@@ -260,13 +262,10 @@
 /* #undef SDL_VIDEO_DRIVER_DIRECTFB */
 /* #undef SDL_VIDEO_DRIVER_DIRECTFB_DYNAMIC */
 #define SDL_VIDEO_DRIVER_DUMMY 1
-/* #undef SDL_VIDEO_DRIVER_FBCON */
 /* #undef SDL_VIDEO_DRIVER_NDS */
 /* #undef SDL_VIDEO_DRIVER_PHOTON */
 /* #undef SDL_VIDEO_DRIVER_QNXGF */
-/* #undef SDL_VIDEO_DRIVER_PS3 */
 /* #undef SDL_VIDEO_DRIVER_RISCOS */
-/* #undef SDL_VIDEO_DRIVER_SVGALIB */
 /* #undef SDL_VIDEO_DRIVER_WIN32 */
 #define SDL_VIDEO_DRIVER_X11 1
 #define SDL_VIDEO_DRIVER_X11_DYNAMIC "libX11.so.6"
