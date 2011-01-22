@@ -60,6 +60,7 @@
 #define SIZEOF_VOIDP 4
 #define SDL_HAS_64BIT_TYPE 1
 #define HAVE_GCC_ATOMICS 1
+/* #undef HAVE_GCC_SYNC_LOCK_TEST_AND_SET */
 
 /* Comment this if you want to build without any C library requirements */
 #define HAVE_LIBC 1
@@ -90,7 +91,7 @@
 #define HAVE_REALLOC 1
 #define HAVE_FREE 1
 #define HAVE_ALLOCA 1
-#ifndef _WIN32 /* Don't use C runtime versions of these on Windows */
+#ifndef __WINDOWS__ /* Don't use C runtime versions of these on Windows */
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
@@ -236,7 +237,7 @@
 #define SDL_LOADSO_DLOPEN 1
 /* #undef SDL_LOADSO_DUMMY */
 /* #undef SDL_LOADSO_LDG */
-/* #undef SDL_LOADSO_WIN32 */
+/* #undef SDL_LOADSO_WINDOWS */
 
 /* Enable various threading systems */
 /* #undef SDL_THREAD_BEOS */
@@ -245,7 +246,7 @@
 #define SDL_THREAD_PTHREAD_RECURSIVE_MUTEX 1
 /* #undef SDL_THREAD_PTHREAD_RECURSIVE_MUTEX_NP */
 /* #undef SDL_THREAD_SPROC */
-/* #undef SDL_THREAD_WIN32 */
+/* #undef SDL_THREAD_WINDOWS */
 
 /* Enable various timer systems */
 /* #undef SDL_TIMER_BEOS */
@@ -253,7 +254,7 @@
 /* #undef SDL_TIMER_NDS */
 /* #undef SDL_TIMER_RISCOS */
 #define SDL_TIMER_UNIX 1
-/* #undef SDL_TIMER_WIN32 */
+/* #undef SDL_TIMER_WINDOWS */
 /* #undef SDL_TIMER_WINCE */
 
 /* Enable various video drivers */
@@ -266,7 +267,7 @@
 /* #undef SDL_VIDEO_DRIVER_PHOTON */
 /* #undef SDL_VIDEO_DRIVER_QNXGF */
 /* #undef SDL_VIDEO_DRIVER_RISCOS */
-/* #undef SDL_VIDEO_DRIVER_WIN32 */
+/* #undef SDL_VIDEO_DRIVER_WINDOWS */
 #define SDL_VIDEO_DRIVER_X11 1
 #define SDL_VIDEO_DRIVER_X11_DYNAMIC "libX11.so.6"
 #define SDL_VIDEO_DRIVER_X11_DYNAMIC_XEXT "libXext.so.6"
