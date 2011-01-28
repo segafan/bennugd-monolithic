@@ -91,7 +91,7 @@
 #define HAVE_REALLOC 1
 #define HAVE_FREE 1
 #define HAVE_ALLOCA 1
-#ifndef __WINDOWS__ /* Don't use C runtime versions of these on Windows */
+#ifndef __WIN32__ /* Don't use C runtime versions of these on Windows */
 #define HAVE_GETENV 1
 #define HAVE_SETENV 1
 #define HAVE_PUTENV 1
@@ -222,7 +222,6 @@
 /* #undef SDL_JOYSTICK_IOKIT */
 #define SDL_JOYSTICK_LINUX 1
 /* #undef SDL_JOYSTICK_NDS */
-/* #undef SDL_JOYSTICK_RISCOS */
 /* #undef SDL_JOYSTICK_WINMM */
 /* #undef SDL_JOYSTICK_USBHID */
 /* #undef SDL_JOYSTICK_USBHID_MACHINE_JOYSTICK_H */
@@ -252,7 +251,6 @@
 /* #undef SDL_TIMER_BEOS */
 /* #undef SDL_TIMER_DUMMY */
 /* #undef SDL_TIMER_NDS */
-/* #undef SDL_TIMER_RISCOS */
 #define SDL_TIMER_UNIX 1
 /* #undef SDL_TIMER_WINDOWS */
 /* #undef SDL_TIMER_WINCE */
@@ -266,7 +264,6 @@
 /* #undef SDL_VIDEO_DRIVER_NDS */
 /* #undef SDL_VIDEO_DRIVER_PHOTON */
 /* #undef SDL_VIDEO_DRIVER_QNXGF */
-/* #undef SDL_VIDEO_DRIVER_RISCOS */
 /* #undef SDL_VIDEO_DRIVER_WINDOWS */
 #define SDL_VIDEO_DRIVER_X11 1
 #define SDL_VIDEO_DRIVER_X11_DYNAMIC "libX11.so.6"
