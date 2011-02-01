@@ -1,7 +1,7 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright Â© 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright Â© 2002-2006 Fenix Team (Fenix)
+ *  Copyright Â© 1999-2002 JosÃ© Luis CebriÃ¡n PagÃ¼e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -21,16 +21,14 @@
  *
  */
 
-#include <xctype_st.h>
+#include <fat.h>
 
-extern int dos_chars ;		/* 1 = Código fuente en caracteres MS-DOS */
-extern char c_type[256] ;
-extern unsigned char c_upper[256] ;
-extern unsigned char c_lower[256] ;
-
-extern unsigned char convert (unsigned char c) ;
-extern void init_c_type () ;
-
-extern unsigned char dos_to_win[256] ;
-extern unsigned char win_to_dos[256] ;
-
+// Platform specific initialization routines
+void platform_init()
+{
+    // Initialize the Wii FAT filesystem, check stuff
+    if (!fatInitDefault()) {
+        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
+        exit(1);
+    }
+}

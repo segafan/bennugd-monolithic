@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -943,6 +943,7 @@ int instance_go( INSTANCE * r )
             case MN_NOT:
             case MN_NOT | MN_UNSIGNED:
                 r->stack_ptr[-1] = !( r->stack_ptr[-1] ) ;
+
                 ptr++ ;
                 break ;
 
@@ -1833,6 +1834,7 @@ int instance_go( INSTANCE * r )
                 ptr++ ;
                 break ;
 
+
             case MN_BYTE | MN_VAROR:
             case MN_BYTE | MN_VAROR | MN_UNSIGNED:
                 *( uint8_t * )( r->stack_ptr[-2] ) |= r->stack_ptr[-1] ;
@@ -2129,17 +2131,6 @@ int instance_go( INSTANCE * r )
             case MN_SENTENCE:
                 trace_sentence     = ptr[1];
                 trace_instance     = r;
-                /*
-                    if (debug)
-                    {
-                        printf ("%d: ", trace_sentence & 0xFFFFFF);
-                        if (dcb.sourcecount[trace_sentence >> 24]) {
-                            printf (" %s", dcb.sourcelines[trace_sentence >> 24] [(trace_sentence & 0xFFFFFF)-1]) ;
-                        }
-                        printf ("\n");
-                        fflush(stdout) ;
-                    }
-                */
                 ptr += 2 ;
                 break ;
 

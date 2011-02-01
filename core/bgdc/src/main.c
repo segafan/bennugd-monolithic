@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -54,12 +54,15 @@ extern void import_files( char * filename );
 extern void add_simple_define( char * macro, char *text );
 extern int dcb_options;
 
+extern int dcb_load_lib( const char * filename );
+
 /* --------------------------------------------------------------------------- */
 
 char langinfo[64];
 
 extern int debug;
 int autodeclare = 1;
+int libmode = 0;
 
 char * main_path = NULL;
 
@@ -70,7 +73,7 @@ static char _tmp[128];
 
 /* --------------------------------------------------------------------------- */
 
-int main( int argc, char **argv )
+int main( int argc, char *argv[] )
 {
     FILE *fd;
     time_t curtime;
@@ -126,7 +129,7 @@ int main( int argc, char **argv )
 #endif
 
     printf( BGDC_VERSION "\n"
-            "Copyright © 2006-2010 SplinterGU (Fenix/BennuGD)\n"
+            "Copyright © 2006-2011 SplinterGU (Fenix/BennuGD)\n"
             "Copyright © 2002-2006 Fenix Team (Fenix)\n"
             "Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
             "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
@@ -162,6 +165,8 @@ int main( int argc, char **argv )
     constants_init();
     string_init();
     compile_init();
+
+    mainproc = procdef_new( procdef_getid(), identifier_search_or_add( "MAIN" ) ) ;
 
     /* Init vars */
 
@@ -208,6 +213,12 @@ int main( int argc, char **argv )
             if ( !strcmp( argv[i], "--pedantic" ) )
             {
                 autodeclare = 0 ;
+                continue;
+            }
+
+            if ( !strcmp( argv[i], "--libmode" ) )
+            {
+                libmode = 1 ;
                 continue;
             }
 
@@ -344,6 +355,31 @@ int main( int argc, char **argv )
                     break;
                 }
 
+                if ( argv[i][j] == 'L' )
+                {
+                    int r = 1;
+                    char * f;
+                    if ( argv[i][j + 1] )
+                        r = dcb_load_lib( ( f = argv[i + j] + 1 ) );
+                    else if ( argv[i + 1] && argv[i + 1][0] != '-' )
+                    {
+                        r = dcb_load_lib( ( f = argv[i + 1] ) );
+                        i++;
+                    }
+
+                    switch ( r )
+                    {
+                        case    0:
+                                printf( "ERROR: %s doesn't exist or isn't version DCB compatible\n", f ) ;
+                                exit( -1 );
+
+                        case    -1:
+                                printf( "ERROR: %s isn't 7.10 DCB version, you need a 7.10 version or greater for use this feature\n", f ) ;
+                                exit( -1 );
+                    }
+                    break;
+                }
+
                 j++;
             }
         }
@@ -404,7 +440,7 @@ int main( int argc, char **argv )
 
             if ( !dcbname[0] )
             {
-                strcpy( dcbname, basepathname ); strcat( dcbname, ".dcb" );
+                strcpy( dcbname, basepathname ); strcat( dcbname, !libmode ? ".dcb" : ".dcl" );
             }
         }
     }

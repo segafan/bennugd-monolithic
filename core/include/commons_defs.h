@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -47,8 +47,9 @@
 #define OS_GP2X                 7
 #define OS_GP2X_WIZ             8
 #define OS_CAANOO               9
+#define OS_DINGUX_A320          10
 #define OS_WII                  1000
-#define OS_PSP						1001
+#define OS_PSP                  1001
 
 #endif
 

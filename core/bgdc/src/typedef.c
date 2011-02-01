@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -219,7 +219,16 @@ int typedef_is_equal( TYPEDEF a, TYPEDEF b )
 
     for ( n = 0; n < a.depth; n++ )
     {
-        if ( a.chunk[n].type == TYPE_STRUCT && b.chunk[n].type == TYPE_STRUCT && a.varspace != b.varspace ) return 0;
+        if ( a.chunk[n].type == TYPE_STRUCT && b.chunk[n].type == TYPE_STRUCT && a.varspace != b.varspace )
+        {
+            int m;
+            if ( a.varspace->count != b.varspace->count ) return 0;
+            for ( m = 0; m < a.varspace->count; m++ )
+            {
+                if ( !typedef_is_equal( a.varspace->vars[m].type, b.varspace->vars[m].type ) ) return 0;
+            }
+            return 1;
+        }
         if ( a.chunk[n].type != b.chunk[n].type ) return 0;
         if ( a.chunk[n].type == TYPE_ARRAY && a.chunk[n].count != b.chunk[n].count ) return 0;
     }

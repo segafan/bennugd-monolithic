@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -38,5 +38,7 @@ extern PROCDEF  * procdef_get_by_name (char * name) ;
 extern SYSPROC  * sysproc_get (int code) ;
 extern int        sysproc_add (char * name, char * paramtypes, int type, void * func) ;
 extern void       sysproc_init() ;
+
+extern PROCDEF  * procdef_get( int n );
 
 #endif

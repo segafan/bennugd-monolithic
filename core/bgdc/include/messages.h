@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -43,6 +43,8 @@
     "   -c              File uses the MS-DOS character set\n" \
     "   -D macro=text   Set a macro\n" \
     "   -p|--pedantic   Don't use automatic declare\n" \
+    "   --libmode       Build a library\n" \
+    "   -L library      Include a library\n" \
     "   -C options      Specify compiler options\n" \
     "                   Where options are:\n" \
     "                   a    Enable automatic declare functions\n" \

@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -79,6 +79,9 @@ extern void program_postprocess () ;
 
 extern CODEBLOCK_POS codeblock_pos(CODEBLOCK * c);
 extern void          codeblock_setpos(CODEBLOCK * c, CODEBLOCK_POS p);
+
+extern void codeblock_alloc (CODEBLOCK * c, int count);
+
 
 #endif
 
