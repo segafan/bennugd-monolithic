@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -31,8 +31,20 @@
 
 #include "libblit.h"
 
-#ifndef __MONOLITHIC__
-#include "libblit_symbols.h"
-#endif
+/* --------------------------------------------------------------------------- */
+
+DLCONSTANT __bgdexport( libblit, constants_def )[] =
+{
+    /* Flags para gr_blit */
+    { "B_HMIRROR"           , TYPE_DWORD, B_HMIRROR     },
+    { "B_VMIRROR"           , TYPE_DWORD, B_VMIRROR     },
+    { "B_TRANSLUCENT"       , TYPE_DWORD, B_TRANSLUCENT },
+    { "B_ALPHA"             , TYPE_DWORD, B_ALPHA       },
+    { "B_ABLEND"            , TYPE_DWORD, B_ABLEND      },
+    { "B_SBLEND"            , TYPE_DWORD, B_SBLEND      },
+    { "B_NOCOLORKEY"        , TYPE_DWORD, B_NOCOLORKEY  },
+
+    { NULL                  , 0         ,  0            }
+} ;
 
 /* --------------------------------------------------------------------------- */
