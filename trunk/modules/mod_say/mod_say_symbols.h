@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -26,20 +26,15 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern void __bgdexport( mod_say, module_initialize )();
-extern CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params );
-#endif
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_say, functions_exports )[] =
 {
-    { "SAY"     , "S", TYPE_UNDEFINED, SYSMACRO(modsay_say)     },
-    { "SAY_FAST", "S", TYPE_UNDEFINED, SYSMACRO(modsay_say_fast)},
+    { "SAY"     , "S", TYPE_UNDEFINED, 0              },
+    { "SAY_FAST", "S", TYPE_UNDEFINED, 0              },
     { 0         , 0  , 0             , 0              }
 };
+#else
+extern DLSYSFUNCS __bgdexport( mod_say, functions_exports )[];
+#endif
 
 #endif

@@ -203,7 +203,7 @@ extra_symbols symbol_list_runtime[] =
 #endif
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //libdraw
 	{ libwm_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, libwm_handler_hooks }, //libwm
-	{ NULL, NULL, mod_say_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_say
+	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_say
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_string
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_math
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mathi

@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -24,63 +24,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 
 #include "bgddl.h"
 #include "xstrings.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_say_symbols.h"
-#endif
-
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params )
+static int modsay_say( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
-	FILE *fd = fopen("stdout.txt", "a");
-
-	fprintf(fd, "%s\n", string_get( params[0] ));
-	fflush( fd );
-	string_discard( params[0] ) ;
-	fclose( fd );
-#else
     /* Show debugging info also in stdout */
     printf( "%s\n", string_get( params[0] ) );
     fflush( stdout );
     string_discard( params[0] ) ;
-#endif
     return 1 ;
 }
 
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params )
+static int modsay_say_fast( INSTANCE * my, int * params )
 {
-#ifdef TARGET_WII
-	FILE *fd = fopen("stdout.txt", "a");
-
-	fprintf(fd, "%s\n", string_get( params[0] ));
-	string_discard( params[0] ) ;
-	fclose( fd );
-#else
     /* Show debugging info also in stdout */
     printf( "%s\n", string_get( params[0] ) );
     string_discard( params[0] ) ;
-#endif
     return 1 ;
 }
 
 /* ----------------------------------------------------------------- */
-void  __bgdexport( mod_say, module_initialize )()
-{
-#ifdef TARGET_WII
-    // Delete stdout.txt if it exists (we'll overwrite it)
-    FILE *fd;
+/* Declaracion de funciones                                          */
 
-    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
-        fclose(fd);
-        unlink("stdout.txt");
-    }
-#endif
-}
+DLSYSFUNCS  __bgdexport( mod_say, functions_exports )[] =
+{
+    { "SAY"     , "S", TYPE_UNDEFINED, modsay_say     },
+    { "SAY_FAST", "S", TYPE_UNDEFINED, modsay_say_fast},
+    { 0         , 0  , 0             , 0              }
+};
+
+/* ----------------------------------------------------------------- */
