@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -622,7 +622,7 @@ int compile_varspace( VARSPACE * n, segment * data, int additive, int copies, in
                 int skip_all_until_semicolon = 0;
                 int skip_equal = 0;
 
-                compile_warning( MSG_VARIABLE_REDECLARE ) ;
+                if ( debug ) compile_warning( MSG_VARIABLE_REDECLARE ) ;
 
                 for ( ;; )
                 {

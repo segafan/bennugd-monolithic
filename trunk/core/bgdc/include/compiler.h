@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -55,6 +55,8 @@ extern void compile_init ();
 extern void compile_program ();
 extern void compile_sentence (PROCDEF * p) ;
 extern void compile_block(PROCDEF *) ;
+
+extern void import_mod( char * libname );
 
 /* Compilado de secciones especiales (definición de datos, etc) */
 extern int  compile_array_data (VARSPACE * n, segment * data, int size, int subsize, BASETYPE *t) ;

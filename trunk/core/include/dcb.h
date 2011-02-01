@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -51,9 +51,11 @@
 /* Estructura del fichero .dcb */
 
 /* Please update the version's high-number between versions */
-#define DCB_VERSION 0x0700
+#define DCB_VERSION 0x0710
 
+#define DCL_MAGIC       "dcl\x0d\x0a\x1f\x00\x00"
 #define DCB_MAGIC       "dcb\x0d\x0a\x1f\x00\x00"
+
 #define DCB_STUB_MAGIC  "DCB Stub\x1a\x0d\x0a"
 
 typedef struct

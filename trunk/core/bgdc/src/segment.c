@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -31,7 +31,7 @@ static int max_id = 0 ;
 static int free_id[1024] ;
 static int free_count = 0 ;
 
-static segment * * segments = 0 ;
+static segment ** segments = 0 ;
 static int segments_reserved = 0 ;
 
 segment * globaldata, * localdata ;

@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -415,10 +415,6 @@ void sysproc_init()
 #define SIZEDLLEXT  3
 #endif
 	
-    // PSP
-    __PSP_fprintf( stderr, "sysproc_init() running\n");
-    __PSP_fprintf( stderr, "dcb.data.NImports: %d\n", dcb.data.NImports );
-
     for ( n = 0; n < dcb.data.NImports; n++ )
     {
         filename = string_get( dcb.imports[n] ) ;
@@ -433,12 +429,9 @@ void sysproc_init()
         library  = dlibopen( filename ) ;
         if ( !library )
         {
-            printf( "%s\n", dliberror() ) ;
+            printf( dliberror() ) ;
             exit( 0 );
         }
-        
-        // PSP
-        __PSP_fprintf( stderr, "loading symbols...\n");
 
         globals_fixup     = ( DLVARFIXUP * ) _dlibaddr( library, "globals_fixup" ) ;
         locals_fixup      = ( DLVARFIXUP * ) _dlibaddr( library, "locals_fixup" ) ;
@@ -456,9 +449,6 @@ void sysproc_init()
         handler_hooks = ( HOOK * ) _dlibaddr( library, "handler_hooks" ) ;
 
         /* Fixups */
-
-        // PSP		
-        __PSP_fprintf( stderr, "loading fixups...\n");
 
         if ( globals_fixup )
         {
@@ -480,9 +470,6 @@ void sysproc_init()
 
         sysproc_add_tab( functions_exports ) ;
 
-        // PSP
-        __PSP_fprintf( stderr, "hooking...\n");
-
         if ( module_initialize )
             hook_add( module_initialize, module_initialize_list, module_initialize_allocated, module_initialize_count ) ;
 
@@ -503,7 +490,7 @@ void sysproc_init()
 
         if ( process_exec_hook )
             hook_add( process_exec_hook, process_exec_hook_list, process_exec_hook_allocated, process_exec_hook_count ) ;
-		
+
         while ( handler_hooks && handler_hooks->hook )
         {
             hook_add( *handler_hooks, handler_hook_list, handler_hook_allocated, handler_hook_count ) ;
@@ -514,9 +501,6 @@ void sysproc_init()
     if ( debug ) printf ("\n");
 
     /* System Procs FixUp */
-
-    // PSP
-    __PSP_fprintf( stderr, "sysprocs_fixup()...\n");	
 
     sysprocs_fixup();
 
@@ -537,21 +521,13 @@ void sysproc_init()
     }
 
     /* Sort handler_hooks */
-    // PSP
-    __PSP_fprintf( stderr, "sorting handler hooks...\n" );
     if ( handler_hook_list )
         qsort( handler_hook_list, handler_hook_count, sizeof( handler_hook_list[0] ), ( int ( * )( const void *, const void * ) ) compare_priority ) ;
-    
-    // PSP
-    __PSP_fprintf( stderr, "initializing modules...\n" );
 
     /* Initialize all modules */
     if ( module_initialize_count )
         for ( n = 0; n < module_initialize_count; n++ )
             module_initialize_list[n]();
-
-    // PSP
-    __PSP_fprintf( stderr, "exiting sysproc_init()\n" );
 }
 
 /* ---------------------------------------------------------------------- */

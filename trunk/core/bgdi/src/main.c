@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -70,7 +70,7 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  *
  */
 
-int main( int argc, char **argv )
+int main( int argc, char *argv[] )
 {
     char * filename = 0 ;
     char dcbname[__MAX_PATH] ;
@@ -87,6 +87,14 @@ int main( int argc, char **argv )
     ptr = argv[0] + strlen( argv[0] ) ;
     while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
     standalone = ( strncmpi( ptr, "bgdi", 4 ) == 0 ) ;
+
+#ifdef TARGET_WII
+    // Initialize the Wii FAT filesystem, check stuff
+    if (!fatInitDefault()) {
+        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
+        exit(1);
+    }
+#endif
 
     if ( !standalone )
     {
@@ -165,7 +173,7 @@ int main( int argc, char **argv )
         if ( !filename )
         {
             printf( BGDI_VERSION "\n"
-                    "Copyright (c) 2006-2010 SplinterGU (Fenix/BennuGD)\n"
+                    "Copyright (c) 2006-2011 SplinterGU (Fenix/BennuGD)\n"
                     "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
                     "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
                     "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
@@ -242,7 +250,7 @@ int main( int argc, char **argv )
 
     if ( mainproc )
     {
-        mainproc_running = instance_new( mainproc, 0 ) ;
+        mainproc_running = instance_new( mainproc, NULL ) ;
         ret = instance_go_all() ;
     }
 

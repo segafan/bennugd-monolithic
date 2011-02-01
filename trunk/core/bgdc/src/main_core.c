@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -64,7 +64,8 @@ constants_def[] =
     { "OS_GP2X_WIZ"     , TYPE_DWORD, OS_GP2X_WIZ         },
     { "OS_CAANOO"       , TYPE_DWORD, OS_CAANOO           },
     { "OS_WII"          , TYPE_DWORD, OS_WII              },
-	{ "OS_PSP"          , TYPE_DWORD, OS_PSP         	},
+    { "OS_DINGUX_A320"  , TYPE_DWORD, OS_DINGUX_A320      },
+    { "OS_PSP"          , TYPE_DWORD, OS_PSP              },
 
     { "MIN_INT"         , TYPE_INT  , -2147483647L - 1    },
     { "MAX_INT"         , TYPE_INT  , 2147483647L         },

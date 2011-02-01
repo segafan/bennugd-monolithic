@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -172,17 +172,7 @@ int dcb_load( const char * filename )
     file * fp ;
 
     /* check for existence of the DCB FILE */
-#ifdef TARGET_PSP	
-    fprintf( stderr, "dcb_load trying to load %s\n", filename );
-
-    if( !file_exists( filename ) )
-    {
-        fprintf(stderr, "file_exists from dcb_load failed!\n");
-        return 0;
-		}
-#else
-		if ( !file_exists( filename ) ) return 0 ;
-#endif
+    if ( !file_exists( filename ) ) return 0 ;
 
     fp = file_open( filename, "rb0" ) ;
     if ( !fp )
@@ -225,12 +215,12 @@ int dcb_load_from( file * fp, int offset )
     int base_drive ;
 #endif
 
-    /* Change dir to the one in which the DCB is located */
+    /* Cambia al directorio del DCB con chdir */
     path = dir_path_convert( fp->name ) ;
     for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
         if ( *ptr == '/' || *ptr == '\\' ) break ;
     ptr[1] = 0 ;
-    chdir( path );
+    chdir( path ) ;
 
     /* En WIN32, cambia a la unidad del DCB */
 
@@ -287,14 +277,13 @@ int dcb_load_from( file * fp, int offset )
     ARRANGE_DWORD( &dcb.data.OSourceFiles );
     ARRANGE_DWORD( &dcb.data.OSysProcsCodes );
 
-    if ( memcmp( dcb.data.Header, DCB_MAGIC, sizeof( DCB_MAGIC ) ) != 0 || ( dcb.data.Version & 0xFF00 ) != ( DCB_VERSION & 0xFF00 ) ) return 0 ;
+    if ( memcmp( dcb.data.Header, DCB_MAGIC, sizeof( DCB_MAGIC ) - 1 ) != 0 || dcb.data.Version < 0x0700 ) return 0 ;
 
     globaldata = calloc( dcb.data.SGlobal + 4, 1 ) ;
     localdata  = calloc( dcb.data.SLocal + 4, 1 ) ;
     localstr   = ( int * ) calloc( dcb.data.NLocStrings + 4, sizeof( int ) ) ;
     dcb.proc   = ( DCB_PROC * ) calloc(( 1 + dcb.data.NProcs ), sizeof( DCB_PROC ) ) ;
     procs      = ( PROCDEF * ) calloc(( 1 + dcb.data.NProcs ), sizeof( PROCDEF ) ) ;
-    mainproc   = procs ;
 
     procdef_count = dcb.data.NProcs ;
     local_size    = dcb.data.SLocal ;
@@ -553,6 +542,8 @@ int dcb_load_from( file * fp, int offset )
     }
 
     sysprocs_fixup();
+
+    mainproc = procdef_get_by_name( "MAIN" );
 
     return 1 ;
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This crypt is part of Bennu - Game Development
  *
@@ -24,7 +24,15 @@
 
 /* ------------------------------------------------------------------------- */
 
-//#include <openssl/des.h>
+#ifdef USE_LIBDES
+#include <des.h>
+#define DES_key_schedule    des_key_schedule
+#define DES_key_sched       key_sched
+#define DES_ecb_encrypt     des_ecb_encrypt
+#define DES_cblock          des_cblock
+#else
+#include <openssl/des.h>
+#endif
 
 /* ------------------------------------------------------------------------- */
 
@@ -46,7 +54,7 @@ enum {
 typedef struct
 {
     int method;
-//    DES_key_schedule ks[MAX_KEYS];
+    DES_key_schedule ks[MAX_KEYS];
 } crypt_handle;
 
 /* ------------------------------------------------------------------------- */

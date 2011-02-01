@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -38,11 +38,7 @@
 #include "xstrings.h"
 
 #undef STACK_SIZE
-#ifdef TARGET_PSP
-	#define STACK_SIZE 1024
-#else
-	#define STACK_SIZE 16384
-#endif
+#define STACK_SIZE 16384
 
 /* ---------------------------------------------------------------------- */
 
@@ -58,11 +54,7 @@
 #define HASH(id)            (unsigned int)((id)&0x0000ffff)
 #define HASH_PRIORITY(id)   (unsigned int)(((id) + INSTANCE_NORMALIZE_PRIORITY) & 0x0000ffff)
 #define HASH_INSTANCE(id)   (unsigned int)(((( uint32_t )(id)) >> 2 ) & 0x0000ffff)
-#ifdef TARGET_PSP
-	#define HASH_SIZE	          128 // for PSP this the maximum we can allocate (not sure why)
-#else
-	#define HASH_SIZE				65536
-#endif
+#define HASH_SIZE           65536
 
 INSTANCE ** hashed_by_id = NULL;
 INSTANCE ** hashed_by_instance = NULL;
@@ -431,21 +423,10 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     INSTANCE * r, * brother;
     int n, pid;
 
-    if ( ( pid = instance_getid() ) == -1 )
-    {
-        // PSP
-        __PSP_fprintf( stderr, "pid = (-1)\n" )
-        return NULL;
-    }
-    
-    // PSP
-    __PSP_fprintf( stderr, "allocating memory for one INSTANCE...\n" )
+    if ( ( pid = instance_getid() ) == -1 ) return NULL;
 
     r = ( INSTANCE * ) calloc( 1, sizeof( INSTANCE ) ) ;
     assert( r ) ;
-    
-    // PSP
-    __PSP_fprintf( stderr, "initializing INSTANCE...\n" )
 
     r->pridata          = ( int * ) malloc( proc->private_size + 4 ) ;
     r->pubdata          = ( int * ) malloc( proc->public_size + 4 ) ;
@@ -466,18 +447,12 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     r->private_size     = proc->private_size ;
     r->public_size      = proc->public_size ;
     r->first_run        = 1 ;
-    
-    // PSP
-    __PSP_fprintf( stderr, "memcpy'ing data structures...\n" )
 
     if ( proc->private_size > 0 ) memcpy( r->pridata, proc->pridata, proc->private_size ) ;
     if ( proc->public_size > 0 ) memcpy( r->pubdata, proc->pubdata, proc->public_size ) ;
     if ( local_size > 0 ) memcpy( r->locdata, localdata, local_size ) ;
 
-    /* Hierarchy data initialization */
-    
-    // PSP
-    __PSP_fprintf( stderr, "initializing data...\n" )
+    /* Inicializa datos de jerarquia */
 
     LOCDWORD( r, PROCESS_TYPE ) = proc->type ;
     LOCDWORD( r, PROCESS_ID )   = pid ;
@@ -506,9 +481,6 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     }
 
     /* Cuenta los usos de las variables tipo cadena */
-    
-    // PSP
-    __PSP_fprintf( stderr, "counting string vars...\n" )
 
     for ( n = 0; n < proc->string_count; n++ ) string_use( PRIDWORD( r, proc->strings[n] ) ) ;  /* Strings privadas */
     for ( n = 0; n < proc->pubstring_count; n++ ) string_use( PUBDWORD( r, proc->pubstrings[n] ) ) ; /* Strings publicas */
@@ -518,9 +490,6 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     r->next = first_instance ;
     if ( first_instance ) first_instance->prev = r;
     first_instance = r ;
-    
-    // PSP
-    __PSP_fprintf( stderr, "instance_new(): adding instances...\n")
 
     instance_add_to_list_by_id( r, pid );
     instance_add_to_list_by_instance( r );
@@ -531,28 +500,18 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
      * is waiting for this process to return */
 
     r->called_by = NULL;
-    
-    // PSP
-    __PSP_fprintf( stderr, "instance_new(): alocating memory for stack...\n")
 
     r->stack = malloc( STACK_SIZE );
-    assert(r->stack);
     r->stack_ptr = &r->stack[1];
     r->stack[0] = STACK_SIZE;
 
     /* Initialize list pointers */
 
     LOCDWORD( r, STATUS ) = STATUS_RUNNING;
-    
-    // PSP
-    __PSP_fprintf( stderr, "instance_new(): initializing list pointers...\n")
 
     if ( instance_create_hook_count )
         for ( n = 0; n < instance_create_hook_count; n++ )
             instance_create_hook_list[n]( r );
-
-    // PSP
-    __PSP_fprintf( stderr, "instance_new() exiting...\n")
 
     return r ;
 }

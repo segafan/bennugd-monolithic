@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -29,10 +29,10 @@
 
 #ifndef __BGDRTM__
 #include "bgdc.h"
-#endif
-
-#ifdef __BGDRTM__
+#include "identifiers.h"
+#else
 #include "sysprocs_p.h"
+#include "i_procdef.h"
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -171,7 +171,6 @@ mnemonics[] =
 } ;
 
 /* ---------------------------------------------------------------------- */
-
 static int mnemonics_inited = 0;
 
 struct
@@ -240,13 +239,29 @@ void mnemonic_dump( int i, int param )
         {
             printf( "%-8s (%d)", sysproc_name( param ), param ) ;
         }
+        else if ( i == MN_CALL || i == MN_PROC || i == MN_TYPE )
+        {
+#ifndef __BGDRTM__
+            if ( libmode )
+                printf( "%-8s (%d)", identifier_name( (procdef_search(param))->identifier ), param ) ;
+            else
+                printf( "%-8s (%d)", identifier_name( (procdef_get(param))->identifier ), param ) ;
+#else
+            printf( "%-8s (%d)", procdef_get(param)->name, param ) ;
+#endif
+        }
         else if ( i == MN_SENTENCE )
         {
 #ifdef __BGDRTM__
             if ( dcb.sourcecount[param >> 24] )
-                printf( "%s:%d -> %s", dcb.sourcefiles[param >> 24], param & 0xFFFFFF, dcb.sourcelines[param >> 24] [( param & 0xFFFFFF )-1] ) ;
+            {
+                if ( dcb.data.Version == 0x0700 )
+                    printf( "%s:%d -> %s", dcb.sourcefiles[param >> 24], param & 0xFFFFFF, dcb.sourcelines[param >> 24] [( param & 0xFFFFFF )-1] ) ;
+                else
+                    printf( "%s:%d -> %s", dcb.sourcefiles[param >> 20], param & 0xFFFFF , dcb.sourcelines[param >> 20] [( param & 0xFFFFF  )-1] ) ;
+            }
 #else
-            printf( "%s:%d", files[param>>24], param&(( 1 << 24 ) - 1 ) ) ;
+            printf( "%s:%d", files[param>>20], param&(( 1 << 20 ) - 1 ) ) ;
 #endif
         }
         else if ( i == ( MN_PUSH | MN_FLOAT ) )
