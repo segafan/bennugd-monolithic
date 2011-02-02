@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -303,14 +303,18 @@ void gr_draw_frame()
 
 void __bgdexport( librender, module_initialize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( !SDL_WasInit( SDL_INIT_TIMER ) ) SDL_InitSubSystem( SDL_INIT_TIMER );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 void __bgdexport( librender, module_finalize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( SDL_WasInit( SDL_INIT_TIMER ) ) SDL_QuitSubSystem( SDL_INIT_TIMER );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */

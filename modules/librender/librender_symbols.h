@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -27,16 +27,7 @@
 #include <bgddl.h>
 #include "librender.h"
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( librender, globals_fixup )[];
-extern DLVARFIXUP __bgdexport( librender, locals_fixup )[];
-extern HOOK __bgdexport( librender, handler_hooks )[];
-extern void __bgdexport( librender, module_initialize )();
-extern void __bgdexport( librender, module_finalize )();
-extern void __bgdexport( librender, instance_create_hook )( INSTANCE * r );
-extern void __bgdexport( librender, instance_destroy_hook )( INSTANCE * r );
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 
 char * __bgdexport( librender, modules_dependency )[] =
@@ -143,5 +134,18 @@ char __bgdexport( librender, locals_def )[] =
     "END\n"
     "END\n"
     ;
+#else
+extern char __bgdexport( librender, modules_dependency )[];
+extern DLCONSTANT __bgdexport( librender, constants_def )[];
+extern DLVARFIXUP __bgdexport( librender, globals_fixup )[];
+extern DLVARFIXUP __bgdexport( librender, locals_fixup )[];
+extern char __bgdexport( librender, globals_def )[];
+extern char __bgdexport( librender, locals_def )[];
+extern HOOK __bgdexport( librender, handler_hooks )[];
+extern void __bgdexport( librender, module_initialize )();
+extern void __bgdexport( librender, module_finalize )();
+extern void __bgdexport( librender, instance_create_hook )( INSTANCE * r );
+extern void __bgdexport( librender, instance_destroy_hook )( INSTANCE * r );
+#endif
 
 #endif
