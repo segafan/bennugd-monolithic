@@ -26,10 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern void __bgdexport( libfont, module_initialize )();
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 
 char * __bgdexport( libfont, modules_dependency )[] =
@@ -37,5 +34,8 @@ char * __bgdexport( libfont, modules_dependency )[] =
     "libgrbase",
     NULL
 };
-
+#else
+extern void __bgdexport( libfont, module_initialize )();
+extern char __bgdexport( libfont, modules_dependency )[];
+#endif
 #endif
