@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -26,13 +26,8 @@
 
 #include <bgddl.h>
 #include <SDL/SDL_joystick.h>
-#include <unistd.h>
 
-#ifndef __BGDC__
-extern void __bgdexport( libjoy, module_initialize )();
-extern void __bgdexport( libjoy, module_finalize )();
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 /* Funciones de inicializacion del modulo/plugin                               */
 
@@ -57,5 +52,11 @@ char *__bgdexport( libjoy, modules_dependency )[] =
     "libsdlhandler",
     NULL
 };
+#else
+extern DLCONSTANT __bgdexport( libjoy, constants_def )[];
+extern void __bgdexport( libjoy, module_initialize )();
+extern void __bgdexport( libjoy, module_finalize )();
+extern char __bgdexport( libjoy, modules_dependency )[];
+#endif
 
 #endif
