@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -317,6 +317,7 @@ void blend_translucency( int16_t * blend, float amount )
 
     amount = 1.0f - amount;
     amount2 = 1.0f - amount;
+
     for ( i = 0; i < 65536; i++ )
     {
         r = ( int )( GETR( *blend ) * amount );

@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -29,10 +29,6 @@
 #include "bgddl.h"
 #include "dlvaracc.h"
 
-#ifndef __MONOLITHIC__
-#include "libgrbase_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 /* Conversion tables - used by 16 bits conversions - 256K */
@@ -51,6 +47,13 @@ static int alpha8_tables_ok = 0 ;
 /* --------------------------------------------------------------------------- */
 
 #define ALPHA_STEPS     0
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( libgrbase, globals_def ) =
+    "alpha_steps = 16;\n"
+    ;
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -264,9 +267,7 @@ static void init_conversion_tables()
     /* Create a fast lookup array */
 
     for ( n = 0; n < 65536; n++ )
-
     {
-
         /* Calculate conversion from 565 to screen format */
 
         r = (( n >> 8 ) & 0xF8 ) >> sys_pixel_format->Rloss ;

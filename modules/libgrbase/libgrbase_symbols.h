@@ -26,16 +26,17 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( libgrbase, globals_fixup )[];
-extern void __bgdexport( libgrbase, module_initialize )();
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 /* Definicion de variables globales (usada en tiempo de compilacion) */
 
 char __bgdexport( libgrbase, globals_def )[] =
     "alpha_steps = 16;\n"
     ;
+#else
+extern DLVARFIXUP __bgdexport( libgrbase, globals_fixup )[];
+extern char __bgdexport( libgrbase, globals_def )[];
+extern void __bgdexport( libgrbase, module_initialize )();
+#endif
 
 #endif
