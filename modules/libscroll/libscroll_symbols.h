@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -27,11 +27,7 @@
 #include <bgddl.h>
 #include "libscroll.h"
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( libscroll, locals_fixup )[];
-extern DLVARFIXUP __bgdexport( libscroll, globals_fixup )[];
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 
 DLCONSTANT __bgdexport( libscroll, constants_def )[] =
@@ -86,5 +82,13 @@ char * __bgdexport( libscroll, modules_dependency )[] =
     "libvideo",
     NULL
 };
+#else
+extern DLCONSTANT __bgdexport( libscroll, constants_def )[];
+extern char __bgdexport( libscroll, locals_def )[];
+extern char __bgdexport( libscroll, globals_def )[];
+extern DLVARFIXUP __bgdexport( libscroll, locals_fixup )[];
+extern DLVARFIXUP __bgdexport( libscroll, globals_fixup )[];
+extern char __bgdexport( libscroll, modules_dependency )[];
+#endif
 
 #endif
