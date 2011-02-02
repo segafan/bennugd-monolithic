@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -94,8 +94,8 @@ int grlib_newid()
     libs_bmp = ( uint32_t * ) realloc( libs_bmp, sizeof( uint32_t ) * ( libs_allocated >> 5 ) );
     memset( &libs_bmp[( libs_last >> 5 )], 0, 32 );  /* 256 >> 5 = 8 * sizeof ( uint32_t ) = 8 * 4 = 32 */
 
-    libs = ( GRAPH ** ) realloc( libs, sizeof( GRAPH * ) * libs_allocated );
-    memset( &libs[ libs_last ], 0, sizeof( GRAPH * ) * 256 );
+    libs = ( GRLIB ** ) realloc( libs, sizeof( GRLIB * ) * libs_allocated );
+    memset( &libs[ libs_last ], 0, sizeof( GRLIB * ) * 256 );
 
     /* Devuelvo libs_last e incremento en 1, ya que ahora tengo BLOCK_INCR mas que antes */
     bit_set( libs_bmp, libs_last );
