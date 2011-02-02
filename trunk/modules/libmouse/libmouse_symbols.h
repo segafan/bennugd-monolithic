@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -26,12 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( libmouse, globals_fixup )[];
-extern HOOK __bgdexport( libmouse, handler_hooks )[];
-extern void __bgdexport( libmouse, module_initialize )();
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 
 char __bgdexport( libmouse, globals_def )[] =
@@ -59,5 +54,12 @@ char * __bgdexport( libmouse, modules_dependency )[] =
     "librender", // Add by Sandman
     NULL
 };
+#else
+extern DLVARFIXUP __bgdexport( libmouse, globals_fixup )[];
+extern HOOK __bgdexport( libmouse, handler_hooks )[];
+extern void __bgdexport( libmouse, module_initialize )();
+extern char __bgdexport( libmouse, globals_def )[];
+extern char __bgdexport( libmouse, modules_dependency )[];
+#endif
 
 #endif
