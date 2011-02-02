@@ -26,23 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP  __bgdexport( mod_cd, globals_fixup )[];
-extern void  __bgdexport( mod_cd, module_initialize )();
-extern void  __bgdexport( mod_cd, module_finalize )();
-
-extern CONDITIONALLY_STATIC int modcd_drives( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_status( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_name( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_getinfo( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_play( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_playtracks( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_eject( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_pause( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_resume( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modcd_stop( INSTANCE * my, int * params );
-#endif
-
+#ifdef __BGDC__
 /* ----------------------------------------------------------------- */
 /* Definicion de constantes (usada en tiempo de compilacion)         */
 DLCONSTANT  __bgdexport( mod_cd, constants_def )[] =
@@ -93,5 +77,13 @@ DLSYSFUNCS  __bgdexport( mod_cd, functions_exports )[] =
     { "CD_EJECT"    , "I"     , TYPE_INT    , SYSMACRO(modcd_eject)      },
     { 0             , 0       , 0           , 0                }
 };
+#else
+extern DLCONSTANT  __bgdexport( mod_cd, constants_def )[];
+extern DLVARFIXUP  __bgdexport( mod_cd, globals_fixup )[];
+extern DLSYSFUNCS  __bgdexport( mod_cd, functions_exports )[];
+extern char  __bgdexport( mod_cd, globals_def )[];
+extern void  __bgdexport( mod_cd, module_initialize )();
+extern void  __bgdexport( mod_cd, module_finalize )();
+#endif
 
 #endif
