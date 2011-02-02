@@ -36,7 +36,9 @@ static void  dump_new_events()
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
+#ifndef TARGET_IOS
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
+#endif
 
     /* Get new events */
     SDL_PumpEvents();
@@ -47,14 +49,22 @@ static void  dump_new_events()
 
 void __bgdexport( libsdlhandler, module_initialize )()
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    // This is different in SDL 1.3
+#else
     if ( !SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_InitSubSystem( SDL_INIT_EVENTTHREAD );
+#endif
 }
 
 /* ----------------------------------------------------------------- */
 
 void __bgdexport( libsdlhandler, module_finalize )()
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    // This is different in SDL 1.3
+#else
     if ( SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_QuitSubSystem( SDL_INIT_EVENTTHREAD );
+#endif
 }
 
 /* ----------------------------------------------------------------- */

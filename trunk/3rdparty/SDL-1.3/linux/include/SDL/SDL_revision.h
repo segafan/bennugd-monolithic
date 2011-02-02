@@ -1,1 +1,1 @@
-#define SDL_REVISION "hg-5125:b6c7a6b07ebf"
+#define SDL_REVISION "hg-5136:1a47d41912ff"
