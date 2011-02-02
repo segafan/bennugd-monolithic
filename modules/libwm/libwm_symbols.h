@@ -26,11 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP  __bgdexport( libwm, globals_fixup )[];
-extern HOOK __bgdexport( libwm, handler_hooks )[];
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 /* Definicion de variables globales (usada en tiempo de compilacion) */
 
@@ -47,5 +43,11 @@ char * __bgdexport( libwm, modules_dependency )[] =
     "libsdlhandler",
     NULL
 };
+#else
+extern char __bgdexport( libwm, globals_def )[];
+extern char __bgdexport( libwm, modules_dependency )[];
+extern DLVARFIXUP  __bgdexport( libwm, globals_fixup )[];
+extern HOOK __bgdexport( libwm, handler_hooks )[];
+#endif
 
 #endif

@@ -26,34 +26,22 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modblendop_create_blendop( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_apply( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_assign( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_free( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_identity( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_grayscale( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_translucency( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_intensity( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_swap( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modblendop_tint( INSTANCE * my, int * params );
-#endif
-
+#ifdef __BGDC__
 /* ---------------------------------------------------------------------- */
 
 DLSYSFUNCS __bgdexport( mod_blendop, functions_exports)[] =
 {
     /* Blendops */
-    { "BLENDOP_NEW"          , ""      , TYPE_INT   , SYSMACRO(modblendop_create_blendop) },
-    { "BLENDOP_IDENTITY"     , "I"     , TYPE_INT   , SYSMACRO(modblendop_identity)       },
-    { "BLENDOP_TINT"         , "IFIII" , TYPE_INT   , SYSMACRO(modblendop_tint)           },
-    { "BLENDOP_TRANSLUCENCY" , "IF"    , TYPE_INT   , SYSMACRO(modblendop_translucency)   },
-    { "BLENDOP_INTENSITY"    , "IF"    , TYPE_INT   , SYSMACRO(modblendop_intensity)      },
-    { "BLENDOP_SWAP"         , "I"     , TYPE_INT   , SYSMACRO(modblendop_swap)           },
-    { "BLENDOP_ASSIGN"       , "III"   , TYPE_INT   , SYSMACRO(modblendop_assign)         },
-    { "BLENDOP_APPLY"        , "III"   , TYPE_INT   , SYSMACRO(modblendop_apply)          },
-    { "BLENDOP_FREE"         , "I"     , TYPE_INT   , SYSMACRO(modblendop_free)           },
-    { "BLENDOP_GRAYSCALE"    , "II"    , TYPE_INT   , SYSMACRO(modblendop_grayscale)      },
+    { "BLENDOP_NEW"          , ""      , TYPE_INT   , 0 },
+    { "BLENDOP_IDENTITY"     , "I"     , TYPE_INT   , 0 },
+    { "BLENDOP_TINT"         , "IFIII" , TYPE_INT   , 0 },
+    { "BLENDOP_TRANSLUCENCY" , "IF"    , TYPE_INT   , 0 },
+    { "BLENDOP_INTENSITY"    , "IF"    , TYPE_INT   , 0 },
+    { "BLENDOP_SWAP"         , "I"     , TYPE_INT   , 0 },
+    { "BLENDOP_ASSIGN"       , "III"   , TYPE_INT   , 0 },
+    { "BLENDOP_APPLY"        , "III"   , TYPE_INT   , 0 },
+    { "BLENDOP_FREE"         , "I"     , TYPE_INT   , 0 },
+    { "BLENDOP_GRAYSCALE"    , "II"    , TYPE_INT   , 0 },
 
     { 0                      , 0       , 0          , 0                                 }
 };
@@ -65,5 +53,9 @@ char * __bgdexport( mod_blendop, modules_dependency )[] =
     "libgrbase",
     NULL
 };
+#else
+extern DLSYSFUNCS __bgdexport( mod_blendop, functions_exports)[];
+extern char __bgdexport( mod_blendop, modules_dependency )[];
+#endif
 
 #endif

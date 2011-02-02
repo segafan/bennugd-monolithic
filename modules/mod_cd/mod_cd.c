@@ -57,6 +57,39 @@ static int      sdl_cdnum = -1;
 #define CD_TRACKINFO    9     /* 400 INTs */
 
 /* ----------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)         */
+DLCONSTANT  __bgdexport( mod_cd, constants_def )[] =
+{
+    { "CD_TRAYEMPTY", TYPE_INT, 0  },
+    { "CD_STOPPED"  , TYPE_INT, 1  },
+    { "CD_PLAYING"  , TYPE_INT, 2  },
+    { "CD_PAUSED"   , TYPE_INT, 3  },
+    { "CD_ERROR"    , TYPE_INT, -1 },
+    { NULL          , 0       , 0  }
+} ;
+
+/* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+char * __bgdexport( mod_cd, globals_def ) =
+    "STRUCT cdinfo\n"
+    " current_track;\n"
+    " current_frame;\n"
+    " tracks;\n"
+    " minute;\n"
+    " second;\n"
+    " subframe;\n"
+    " minutes;\n"
+    " seconds;\n"
+    " subframes;\n"
+    " STRUCT track[99]\n"
+    "  audio;\n"
+    "  minutes;\n"
+    "  seconds;\n"
+    "  subframes;\n"
+    " END;\n"
+    "END;\n" ;
+
+/* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -82,7 +115,7 @@ DLVARFIXUP  __bgdexport( mod_cd, globals_fixup )[] =
    Returns the number of CD drives in the system
  **/
 
-CONDITIONALLY_STATIC int modcd_drives( INSTANCE * my, int * params )
+static int modcd_drives( INSTANCE * my, int * params )
 {
     return SDL_CDNumDrives();
 }
@@ -93,7 +126,7 @@ CONDITIONALLY_STATIC int modcd_drives( INSTANCE * my, int * params )
    Returns the status of a CD (using SDL constants)
  **/
 
-CONDITIONALLY_STATIC int modcd_status( INSTANCE * my, int * params )
+static int modcd_status( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -114,7 +147,7 @@ CONDITIONALLY_STATIC int modcd_status( INSTANCE * my, int * params )
    Returns a human-readable string with the name of a CD drive
  **/
 
-CONDITIONALLY_STATIC int modcd_name( INSTANCE * my, int * params )
+static int modcd_name( INSTANCE * my, int * params )
 {
     int result;
 
@@ -132,7 +165,7 @@ CONDITIONALLY_STATIC int modcd_name( INSTANCE * my, int * params )
    Returns 1 if there is a valid CD in the drive or 0 otherwise
  **/
 
-CONDITIONALLY_STATIC int modcd_getinfo( INSTANCE * my, int * params )
+static int modcd_getinfo( INSTANCE * my, int * params )
 {
     int i, total = 0;
     char * trackinfo;
@@ -169,7 +202,7 @@ CONDITIONALLY_STATIC int modcd_getinfo( INSTANCE * my, int * params )
    Starts playing a track of the given CD
  **/
 
-CONDITIONALLY_STATIC int modcd_play( INSTANCE * my, int * params )
+static int modcd_play( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -193,7 +226,7 @@ CONDITIONALLY_STATIC int modcd_play( INSTANCE * my, int * params )
    Plays a series of tracks of the CD
  **/
 
-CONDITIONALLY_STATIC int modcd_playtracks( INSTANCE * my, int * params )
+static int modcd_playtracks( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -217,7 +250,7 @@ CONDITIONALLY_STATIC int modcd_playtracks( INSTANCE * my, int * params )
    Ejects a CD
  **/
 
-CONDITIONALLY_STATIC int modcd_eject( INSTANCE * my, int * params )
+static int modcd_eject( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -238,7 +271,7 @@ CONDITIONALLY_STATIC int modcd_eject( INSTANCE * my, int * params )
    Pauses the CD playing
  **/
 
-CONDITIONALLY_STATIC int modcd_pause( INSTANCE * my, int * params )
+static int modcd_pause( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -259,7 +292,7 @@ CONDITIONALLY_STATIC int modcd_pause( INSTANCE * my, int * params )
    Resumes a CD in pause
  **/
 
-CONDITIONALLY_STATIC int modcd_resume( INSTANCE * my, int * params )
+static int modcd_resume( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -280,7 +313,7 @@ CONDITIONALLY_STATIC int modcd_resume( INSTANCE * my, int * params )
    Stops the CD
  **/
 
-CONDITIONALLY_STATIC int modcd_stop( INSTANCE * my, int * params )
+static int modcd_stop( INSTANCE * my, int * params )
 {
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
@@ -294,6 +327,24 @@ CONDITIONALLY_STATIC int modcd_stop( INSTANCE * my, int * params )
 
     return !SDL_CDStop( sdl_cd );
 }
+
+/* --------------------------------------------------------------------------- */
+
+DLSYSFUNCS  __bgdexport( mod_cd, functions_exports )[] =
+{
+    /* Funciones de manejo de CD */
+    { "CD_DRIVES"   , ""      , TYPE_INT    , modcd_drives     },
+    { "CD_STATUS"   , "I"     , TYPE_INT    , modcd_status     },
+    { "CD_NAME"     , "I"     , TYPE_STRING , modcd_name       },
+    { "CD_GETINFO"  , "I"     , TYPE_INT    , modcd_getinfo    },
+    { "CD_PLAY"     , "II"    , TYPE_INT    , modcd_play       },
+    { "CD_PLAY"     , "III"   , TYPE_INT    , modcd_playtracks },
+    { "CD_STOP"     , "I"     , TYPE_INT    , modcd_stop       },
+    { "CD_PAUSE"    , "I"     , TYPE_INT    , modcd_pause      },
+    { "CD_RESUME"   , "I"     , TYPE_INT    , modcd_resume     },
+    { "CD_EJECT"    , "I"     , TYPE_INT    , modcd_eject      },
+    { 0             , 0       , 0           , 0                }
+};
 
 /* --------------------------------------------------------------------------- */
 /* Funciones de inicializacion del modulo/plugin                               */
