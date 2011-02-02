@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -26,7 +26,8 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
+#ifdef __BGDC__
+#else
 extern void __bgdexport( libsdlhandler, module_initialize )();
 extern void __bgdexport( libsdlhandler, module_finalize )();
 extern HOOK __bgdexport( libsdlhandler, handler_hooks )[];
