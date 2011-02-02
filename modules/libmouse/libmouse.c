@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -39,10 +39,6 @@
 
 #include "sysprocs_st.h"
 
-#ifndef __MONOLITHIC__
-#include "libmouse_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 static int last_mousex = 0;
@@ -75,6 +71,22 @@ static GRAPH * mouse_map = NULL;
 #define MOUSERIGHT          11
 #define MOUSEWHEELUP        12
 #define MOUSEWHEELDOWN      13
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libmouse, globals_def ) =
+    "STRUCT mouse\n"
+    "x = 99999, y = 99999;\n"
+    "z = -512;\n"
+    "file;\n"
+    "graph;\n"
+    "angle;\n"
+    "size = 100;\n"
+    "flags;\n"
+    "region;\n"
+    "left, middle, right;\n"
+    "wheelup, wheeldown;\n"
+    "END\n";
 
 /* --------------------------------------------------------------------------- */
 
@@ -147,12 +159,8 @@ static void do_mouse_events()
 
     GLODWORD( libmouse, MOUSEWHEELUP )   = 0 ;
     GLODWORD( libmouse, MOUSEWHEELDOWN ) = 0 ;
-	
-#if SDL_VERSION_ATLEAST(1,3,0)
-	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEWHEEL ) > 0 )
-#else
+
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEEVENTMASK ) > 0 )
-#endif
     {
         switch ( e.type )
         {
@@ -363,6 +371,18 @@ HOOK __bgdexport( libmouse, handler_hooks )[] =
     { 4800, do_mouse_events },
     { 0, NULL }
 } ;
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libmouse, modules_dependency )[] =
+{
+    "libsdlhandler",
+    "libgrbase",
+    "libvideo",
+    "libblit",
+    "librender", // Add by Sandman
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */
 
