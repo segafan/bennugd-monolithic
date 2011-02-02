@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -29,10 +29,6 @@
 #include "bgdrtm.h"
 
 #include "bgddl.h"
-
-#ifndef __MONOLITHIC__
-#include "libfont_symbols.h"
-#endif
 
 #define __LIB_FONT
 #include "libfont.h"
@@ -580,7 +576,7 @@ static int get_bitmap_char_width( unsigned char *data, int width, int height, in
                         if ( x*8 + d > max ) max = x * 8 + d ;
                     }
                 }
-                return ( max + 1 < 4 ) ? 4 : max + 1;
+                return ( max < 4 ) ? 4 : max;
 
         case    8:
                 {
@@ -595,7 +591,7 @@ static int get_bitmap_char_width( unsigned char *data, int width, int height, in
                         }
                         if ( max < w ) max = w;
                     }
-                    return ( !max ) ? width * 65 / 100 : max + 1;
+                    return ( !max ) ? width * 65 / 100 : max;
                 }
 
         case    16:
@@ -611,7 +607,7 @@ static int get_bitmap_char_width( unsigned char *data, int width, int height, in
                     }
                     if ( max < w ) max = w;
                 }
-                return ( !max ) ? width * 65 / 100 : max + 1;
+                return ( !max ) ? width * 65 / 100 : max;
             }
 
         case    32:
@@ -627,11 +623,11 @@ static int get_bitmap_char_width( unsigned char *data, int width, int height, in
                     }
                     if ( max < w ) max = w;
                 }
-                return ( !max ) ? width * 65 / 100 : max + 1;
+                return ( !max ) ? width * 65 / 100 : max;
             }
     }
 
-    return width + 1;
+    return width;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -723,5 +719,13 @@ void __bgdexport( libfont, module_initialize )()
 {
     gr_font_systemfont( ( char * ) default_font );
 }
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libfont, modules_dependency )[] =
+{
+    "libgrbase",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */
