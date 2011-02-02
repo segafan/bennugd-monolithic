@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -34,16 +34,21 @@
 #include "bgddl.h"
 #include "dlvaracc.h"
 
-#ifndef __MONOLITHIC__
-#include "libwm_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 #define EXIT_STATUS         0
 #define WINDOW_STATUS       1
 #define FOCUS_STATUS        2
 #define MOUSE_STATUS        3
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( libwm, globals_def ) =
+    "exit_status = 0;\n"                /* SDL_QUIT status */
+    "window_status = 1;\n"              /* MINIMIZED:0 VISIBLE:1 */
+    "focus_status = 1;\n"               /* FOCUS status */
+    "mouse_status = 1;\n";              /* MOUSE status (INSIDE WINDOW:1) */
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -118,5 +123,13 @@ HOOK __bgdexport( libwm, handler_hooks )[] =
     { 4700, wm_events   },
     {    0, NULL        }
 } ;
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libwm, modules_dependency )[] =
+{
+    "libsdlhandler",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */
