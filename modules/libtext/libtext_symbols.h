@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -26,10 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( libtext, globals_fixup )[];
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 /* Definicion de variables globales (usada en tiempo de compilacion) */
 
@@ -48,5 +45,10 @@ char * __bgdexport( libtext, modules_dependency )[] =
     "libfont",
     NULL
 };
+#else
+extern char __bgdexport( libtext, globals_def )[];
+extern char __bgdexport( libtext, modules_dependency )[];
+extern DLVARFIXUP __bgdexport( libtext, globals_fixup )[];
+#endif
 
 #endif

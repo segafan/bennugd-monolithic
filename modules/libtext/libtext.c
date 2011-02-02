@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -83,6 +83,14 @@ int gr_text_widthn( int fontid, const unsigned char * text, int n );
 
 #define TEXTZ           0
 #define TEXT_FLAGS      1
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( libtext, globals_def ) =
+    "text_z = -256;\n"
+    "text_flags;\n"
+    ;
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -273,7 +281,6 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
     }
 
     /* Fill the bounding box */
-
 
     bbox->x = text->_x;
     bbox->y = text->_y;
@@ -790,5 +797,16 @@ int gr_text_getcolor()
 
     return 0;
 }
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libtext, modules_dependency )[] =
+{
+    "libgrbase",
+    "libblit",
+    "librender",
+    "libfont",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */
