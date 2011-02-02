@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -27,15 +27,7 @@
 #include <bgddl.h>
 #include "g_video.h"
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modsay_say( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsay_say_fast( INSTANCE * my, int * params );
-
-extern DLVARFIXUP __bgdexport( libvideo, globals_fixup )[];
-extern void __bgdexport( libvideo, module_initialize )();
-extern void __bgdexport( libvideo, module_finalize )();
-#endif
-
+#ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
 /* Definicion de variables globales (usada en tiempo de compilacion) */
 
@@ -100,7 +92,13 @@ DLCONSTANT  __bgdexport( libvideo, constants_def )[] =
 
     { NULL          , 0         ,  0  }
 } ;
-
-
+#else
+extern char __bgdexport( libvideo, globals_def )[];
+extern char __bgdexport( libvideo, modules_dependency )[];
+extern DLCONSTANT  __bgdexport( libvideo, constants_def )[];
+extern DLVARFIXUP __bgdexport( libvideo, globals_fixup )[];
+extern void __bgdexport( libvideo, module_initialize )();
+extern void __bgdexport( libvideo, module_finalize )();
+#endif
 
 #endif
