@@ -1,4 +1,4 @@
-#summary This page explains what is a homebrew enabler.
+#summary This page explains what a homebrew enabler is.
 
 = Homebrew enabler =
 
