@@ -33,13 +33,27 @@
 #include "dcb.h"
 #include "varspace_file.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_file_symbols.h"
-#endif
+/* ----------------------------------------------------------------- */
+
+DLCONSTANT  __bgdexport( mod_file, constants_def)[] =
+{
+    { "O_READ"      , TYPE_INT, 0  },
+    { "O_READWRITE" , TYPE_INT, 1  },
+    { "O_RDWR"      , TYPE_INT, 1  },
+    { "O_WRITE"     , TYPE_INT, 2  },
+    { "O_ZREAD"     , TYPE_INT, 3  },
+    { "O_ZWRITE"    , TYPE_INT, 4  },
+
+    { "SEEK_SET"    , TYPE_INT, 0  },
+    { "SEEK_CUR"    , TYPE_INT, 1  },
+    { "SEEK_END"    , TYPE_INT, 2  },
+
+    { NULL          , 0       , 0  }
+} ;
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modfile_save( INSTANCE * my, int * params )
+static int modfile_save( INSTANCE * my, int * params )
 {
     file * fp ;
     const char * filename ;
@@ -58,7 +72,7 @@ CONDITIONALLY_STATIC int modfile_save( INSTANCE * my, int * params )
     return result ;
 }
 
-CONDITIONALLY_STATIC int modfile_load( INSTANCE * my, int * params )
+static int modfile_load( INSTANCE * my, int * params )
 {
     file * fp ;
     const char * filename ;
@@ -77,7 +91,7 @@ CONDITIONALLY_STATIC int modfile_load( INSTANCE * my, int * params )
     return result ;
 }
 
-CONDITIONALLY_STATIC int modfile_fopen( INSTANCE * my, int * params )
+static int modfile_fopen( INSTANCE * my, int * params )
 {
     static char * ops[] = { "rb0", "r+b0", "wb0", "rb", "wb6" } ;
     int r ;
@@ -90,54 +104,54 @@ CONDITIONALLY_STATIC int modfile_fopen( INSTANCE * my, int * params )
     return r ;
 }
 
-CONDITIONALLY_STATIC int modfile_fclose( INSTANCE * my, int * params )
+static int modfile_fclose( INSTANCE * my, int * params )
 {
     file_close(( file * )params[0] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modfile_fread( INSTANCE * my, int * params )
+static int modfile_fread( INSTANCE * my, int * params )
 {
     return loadtypes(( file * )params[0], ( void * )params[1], ( void * )params[2], params[3], 0 );
 }
 
-CONDITIONALLY_STATIC int modfile_fwrite( INSTANCE * my, int * params )
+static int modfile_fwrite( INSTANCE * my, int * params )
 {
     return savetypes(( file * )params[0], ( void * )params[1], ( void * )params[2], params[3], 0 );
 }
 
-CONDITIONALLY_STATIC int modfile_freadC( INSTANCE * my, int * params )
+static int modfile_freadC( INSTANCE * my, int * params )
 {
     return file_read(( file * )params[2], ( void * )params[0], params[1] );
 }
 
-CONDITIONALLY_STATIC int modfile_fwriteC( INSTANCE * my, int * params )
+static int modfile_fwriteC( INSTANCE * my, int * params )
 {
     return file_write(( file * )params[2], ( void * )params[0], params[1] );
 }
 
-CONDITIONALLY_STATIC int modfile_fseek( INSTANCE * my, int * params )
+static int modfile_fseek( INSTANCE * my, int * params )
 {
     return file_seek(( file * )params[0], params[1], params[2] ) ;
 }
 
-CONDITIONALLY_STATIC int modfile_frewind( INSTANCE * my, int * params )
+static int modfile_frewind( INSTANCE * my, int * params )
 {
     file_rewind(( file * )params[0] ) ;
     return 1;
 }
 
-CONDITIONALLY_STATIC int modfile_ftell( INSTANCE * my, int * params )
+static int modfile_ftell( INSTANCE * my, int * params )
 {
     return file_pos(( file * )params[0] ) ;
 }
 
-CONDITIONALLY_STATIC int modfile_filelength( INSTANCE * my, int * params )
+static int modfile_filelength( INSTANCE * my, int * params )
 {
     return file_size(( file * )params[0] ) ;
 }
 
-CONDITIONALLY_STATIC int modfile_fputs( INSTANCE * my, int * params )
+static int modfile_fputs( INSTANCE * my, int * params )
 {
     char * str = ( char * ) string_get( params[1] );
     int r = file_puts(( file * )params[0], str ) ;
@@ -147,7 +161,7 @@ CONDITIONALLY_STATIC int modfile_fputs( INSTANCE * my, int * params )
     return r ;
 }
 
-CONDITIONALLY_STATIC int modfile_fgets( INSTANCE * my, int * params )
+static int modfile_fgets( INSTANCE * my, int * params )
 {
     char buffer[1025] ;
     int len, done = 0 ;
@@ -171,7 +185,7 @@ CONDITIONALLY_STATIC int modfile_fgets( INSTANCE * my, int * params )
     return str ;
 }
 
-CONDITIONALLY_STATIC int modfile_file( INSTANCE * my, int * params )
+static int modfile_file( INSTANCE * my, int * params )
 {
     char buffer[1025] ;
     int str = string_new( "" ) ;
@@ -203,26 +217,26 @@ CONDITIONALLY_STATIC int modfile_file( INSTANCE * my, int * params )
     return str ;
 }
 
-CONDITIONALLY_STATIC int modfile_feof( INSTANCE * my, int * params )
+static int modfile_feof( INSTANCE * my, int * params )
 {
     return file_eof(( file * )params[0] ) ;
 }
 
-CONDITIONALLY_STATIC int modfile_exists( INSTANCE * my, int * params )
+static int modfile_exists( INSTANCE * my, int * params )
 {
     int r = file_exists( string_get( params[0] ) ) ;
     string_discard( params[0] ) ;
     return r ;
 }
 
-CONDITIONALLY_STATIC int modfile_remove( INSTANCE * my, int * params )
+static int modfile_remove( INSTANCE * my, int * params )
 {
     int r = file_remove( string_get( params[0] ) ) ;
     string_discard( params[0] ) ;
     return r ;
 }
 
-CONDITIONALLY_STATIC int modfile_move( INSTANCE * my, int * params )
+static int modfile_move( INSTANCE * my, int * params )
 {
     int r = file_move( string_get( params[0] ), string_get( params[1] ) ) ;
     string_discard( params[1] ) ;
@@ -230,3 +244,31 @@ CONDITIONALLY_STATIC int modfile_move( INSTANCE * my, int * params )
     return r ;
 }
 
+/* ----------------------------------------------------------------- */
+/* Declaracion de funciones                                          */
+
+DLSYSFUNCS  __bgdexport( mod_file, functions_exports)[] =
+{
+    /* Ficheros */
+    { "SAVE"        , "SV++" , TYPE_INT         , modfile_save        },
+    { "LOAD"        , "SV++" , TYPE_INT         , modfile_load        },
+    { "FOPEN"       , "SI"   , TYPE_INT         , modfile_fopen       },
+    { "FCLOSE"      , "I"    , TYPE_INT         , modfile_fclose      },
+    { "FREAD"       , "IV++" , TYPE_INT         , modfile_fread       },
+    { "FREAD"       , "PII"  , TYPE_INT         , modfile_freadC      },
+    { "FWRITE"      , "IV++" , TYPE_INT         , modfile_fwrite      },
+    { "FWRITE"      , "PII"  , TYPE_INT         , modfile_fwriteC     },
+    { "FSEEK"       , "III"  , TYPE_INT         , modfile_fseek       },
+    { "FREWIND"     , "I"    , TYPE_UNDEFINED   , modfile_frewind     },
+    { "FTELL"       , "I"    , TYPE_INT         , modfile_ftell       },
+    { "FLENGTH"     , "I"    , TYPE_INT         , modfile_filelength  },
+    { "FPUTS"       , "IS"   , TYPE_INT         , modfile_fputs       },
+    { "FGETS"       , "I"    , TYPE_STRING      , modfile_fgets       },
+    { "FEOF"        , "I"    , TYPE_INT         , modfile_feof        },
+    { "FILE"        , "S"    , TYPE_STRING      , modfile_file        },
+    { "FEXISTS"     , "S"    , TYPE_INT         , modfile_exists      } ,
+    { "FILE_EXISTS" , "S"    , TYPE_INT         , modfile_exists      } ,
+    { "FREMOVE"     , "S"    , TYPE_INT         , modfile_remove      } ,
+    { "FMOVE"       , "SS"   , TYPE_INT         , modfile_move        } ,
+    { 0             , 0      , 0                , 0                   }
+};
