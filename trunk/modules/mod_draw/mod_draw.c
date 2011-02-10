@@ -36,10 +36,6 @@
 #include "librender.h"
 #include "libdraw.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_draw_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 /* Dibujo de primitivas */
@@ -343,7 +339,7 @@ static void _moddraw_object_move( int id, int x, int y )
 /* --------------------------------------------------------------------------- */
 /* Exportable functions                                                        */
 
-CONDITIONALLY_STATIC int moddraw_drawing_map( INSTANCE * my, int * params )
+static int moddraw_drawing_map( INSTANCE * my, int * params )
 {
     drawing_graph = bitmap_get( params[ 0 ], params[ 1 ] ) ;
     return 1 ;
@@ -351,7 +347,7 @@ CONDITIONALLY_STATIC int moddraw_drawing_map( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_drawing_at( INSTANCE * my, int * params )
+static int moddraw_drawing_at( INSTANCE * my, int * params )
 {
     drawing_graph = NULL;
     drawing_z = params[ 0 ];
@@ -360,7 +356,7 @@ CONDITIONALLY_STATIC int moddraw_drawing_at( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_drawing_stipple( INSTANCE * my, int * params )
+static int moddraw_drawing_stipple( INSTANCE * my, int * params )
 {
     drawing_stipple = params[ 0 ];
     return 1;
@@ -368,7 +364,7 @@ CONDITIONALLY_STATIC int moddraw_drawing_stipple( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_delete_drawing( INSTANCE * my, int * params )
+static int moddraw_delete_drawing( INSTANCE * my, int * params )
 {
     _moddraw_object_destroy( params[ 0 ] );
     return 1;
@@ -376,7 +372,7 @@ CONDITIONALLY_STATIC int moddraw_delete_drawing( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_move_drawing( INSTANCE * my, int * params )
+static int moddraw_move_drawing( INSTANCE * my, int * params )
 {
     _moddraw_object_move( params[ 0 ], params[ 1 ], params[ 2 ] );
     return 1;
@@ -384,7 +380,7 @@ CONDITIONALLY_STATIC int moddraw_move_drawing( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_drawing_color( INSTANCE * my, int * params )
+static int moddraw_drawing_color( INSTANCE * my, int * params )
 {
     gr_setcolor( params[ 0 ] );
     return 1 ;
@@ -392,7 +388,7 @@ CONDITIONALLY_STATIC int moddraw_drawing_color( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_drawing_alpha( INSTANCE * my, int * params )
+static int moddraw_drawing_alpha( INSTANCE * my, int * params )
 {
     gr_setalpha( params[ 0 ] );
     return 1;
@@ -400,7 +396,7 @@ CONDITIONALLY_STATIC int moddraw_drawing_alpha( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_box( INSTANCE * my, int * params )
+static int moddraw_box( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -420,7 +416,7 @@ CONDITIONALLY_STATIC int moddraw_box( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_rect( INSTANCE * my, int * params )
+static int moddraw_rect( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -440,7 +436,7 @@ CONDITIONALLY_STATIC int moddraw_rect( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_line( INSTANCE * my, int * params )
+static int moddraw_line( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -460,7 +456,7 @@ CONDITIONALLY_STATIC int moddraw_line( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_circle( INSTANCE * my, int * params )
+static int moddraw_circle( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -479,7 +475,7 @@ CONDITIONALLY_STATIC int moddraw_circle( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_fcircle( INSTANCE * my, int * params )
+static int moddraw_fcircle( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -498,7 +494,7 @@ CONDITIONALLY_STATIC int moddraw_fcircle( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_bezier( INSTANCE * my, int * params )
+static int moddraw_bezier( INSTANCE * my, int * params )
 {
     if ( !drawing_graph )
     {
@@ -523,14 +519,14 @@ CONDITIONALLY_STATIC int moddraw_bezier( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_get_pixel( INSTANCE * my, int * params )
+static int moddraw_get_pixel( INSTANCE * my, int * params )
 {
     return gr_get_pixel( background, params[ 0 ], params[ 1 ] ) ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_put_pixel( INSTANCE * my, int * params )
+static int moddraw_put_pixel( INSTANCE * my, int * params )
 {
     gr_put_pixel( background, params[ 0 ], params[ 1 ], params[ 2 ] ) ;
     return 1 ;
@@ -538,7 +534,7 @@ CONDITIONALLY_STATIC int moddraw_put_pixel( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_map_get_pixel( INSTANCE * my, int * params )
+static int moddraw_map_get_pixel( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_get( params[ 0 ], params[ 1 ] ) ;
     if ( !map ) return -1;
@@ -547,12 +543,48 @@ CONDITIONALLY_STATIC int moddraw_map_get_pixel( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int moddraw_map_put_pixel( INSTANCE * my, int * params )
+static int moddraw_map_put_pixel( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_get( params[ 0 ], params[ 1 ] ) ;
     if ( !map ) return 0 ;
     gr_put_pixel( map, params[ 2 ], params[ 3 ], params[ 4 ] ) ;
     return 1 ;
 }
+
+/* --------------------------------------------------------------------------- */
+/* Declaracion de funciones                                                    */
+
+DLSYSFUNCS __bgdexport( mod_draw, functions_exports )[] =
+{
+    /* Funciones de primitivas */
+    { "DRAWING_MAP"     , "II"          , TYPE_INT  , moddraw_drawing_map       },
+    { "DRAWING_COLOR"   , "I"           , TYPE_INT  , moddraw_drawing_color     },
+    { "DRAW_LINE"       , "IIII"        , TYPE_INT  , moddraw_line              },
+    { "DRAW_RECT"       , "IIII"        , TYPE_INT  , moddraw_rect              },
+    { "DRAW_BOX"        , "IIII"        , TYPE_INT  , moddraw_box               },
+    { "DRAW_CIRCLE"     , "III"         , TYPE_INT  , moddraw_circle            },
+    { "DRAW_FCIRCLE"    , "III"         , TYPE_INT  , moddraw_fcircle           },
+    { "DRAW_CURVE"      , "IIIIIIIII"   , TYPE_INT  , moddraw_bezier            },
+    { "DRAWING_Z"       , "I"           , TYPE_INT  , moddraw_drawing_at        },
+    { "DELETE_DRAW"     , "I"           , TYPE_INT  , moddraw_delete_drawing    },
+    { "MOVE_DRAW"       , "III"         , TYPE_INT  , moddraw_move_drawing      },
+    { "DRAWING_ALPHA"   , "I"           , TYPE_INT  , moddraw_drawing_alpha     },
+    { "DRAWING_STIPPLE" , "I"           , TYPE_INT  , moddraw_drawing_stipple   },
+    { "PUT_PIXEL"       , "III"         , TYPE_INT  , moddraw_put_pixel         },
+    { "GET_PIXEL"       , "II"          , TYPE_INT  , moddraw_get_pixel         },
+    { "MAP_GET_PIXEL"   , "IIII"        , TYPE_INT  , moddraw_map_get_pixel     },
+    { "MAP_PUT_PIXEL"   , "IIIII"       , TYPE_INT  , moddraw_map_put_pixel     },
+    { NULL              , NULL          , 0         , NULL                      }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_draw, modules_dependency )[] =
+{
+    "libgrbase",
+    "librender",
+    "libdraw",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

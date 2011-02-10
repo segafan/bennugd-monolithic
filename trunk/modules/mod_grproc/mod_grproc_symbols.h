@@ -26,24 +26,7 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( mod_grproc, locals_fixup )[];
-extern DLVARFIXUP __bgdexport( mod_grproc, globals_fixup )[];
-extern void __bgdexport( mod_grproc, module_initialize )();
-extern void __bgdexport( mod_grproc, process_exec_hook )( INSTANCE * r );
-
-extern CONDITIONALLY_STATIC int grproc_advance( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_xadvance( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_get_angle( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_get_dist( INSTANCE * a, int * params );
-extern CONDITIONALLY_STATIC int grproc_get_real_point( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_collision( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_collision_box( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int grproc_collision_circle( INSTANCE * my, int * params );
-#endif
-
-/* ----------------------------------------------------------------- */
-
+#ifdef __BGDC__
 char __bgdexport( mod_grproc, locals_def )[] =
     "STRUCT _mod_grproc_reserved\n"
     "int type_scan;\n"
@@ -51,20 +34,20 @@ char __bgdexport( mod_grproc, locals_def )[] =
     "int context;\n"
     "END\n";
 
-/* ---------------------------------------------------------------------- */
-
 DLSYSFUNCS  __bgdexport( mod_grproc, functions_exports )[] =
 {
-    { "ADVANCE"         , "I"   , TYPE_INT  , SYSMACRO(grproc_advance)         },
-    { "XADVANCE"        , "II"  , TYPE_INT  , SYSMACRO(grproc_xadvance)        },
-    { "GET_ANGLE"       , "I"   , TYPE_INT  , SYSMACRO(grproc_get_angle)       },
-    { "GET_DIST"        , "I"   , TYPE_INT  , SYSMACRO(grproc_get_dist)        },
-    { "COLLISION"       , "I"   , TYPE_INT  , SYSMACRO(grproc_collision)       },
-    { "COLLISION_BOX"   , "I"   , TYPE_INT  , SYSMACRO(grproc_collision_box)   },
-    { "COLLISION_CIRCLE", "I"   , TYPE_INT  , SYSMACRO(grproc_collision_circle)},
-    { "GET_REAL_POINT"  , "IPP" , TYPE_INT  , SYSMACRO(grproc_get_real_point)  },
+    { "ADVANCE"             , "I"   , TYPE_INT  , 0 },
+    { "XADVANCE"            , "II"  , TYPE_INT  , 0 },
 
-    { 0                 , 0     , 0         , 0                     }
+    { "GET_ANGLE"           , "I"   , TYPE_INT  , 0 },
+    { "GET_DIST"            , "I"   , TYPE_INT  , 0 },
+    { "COLLISION"           , "I"   , TYPE_INT  , 0 },
+    { "COLLISION_BOX"       , "I"   , TYPE_INT  , 0 },
+    { "COLLISION_CIRCLE"    , "I"   , TYPE_INT  , 0 },
+
+    { "GET_REAL_POINT"      , "IPP" , TYPE_INT  , 0 },
+
+    { 0                     , 0     , 0         , 0 }
 };
 
 /* --------------------------------------------------------------------------- */
@@ -78,5 +61,14 @@ char * __bgdexport( mod_grproc, modules_dependency )[] =
     "libblit",
     NULL
 };
+#else
+extern char __bgdexport( mod_grproc, locals_def )[];
+extern DLVARFIXUP __bgdexport( mod_grproc, locals_fixup )[];
+extern DLVARFIXUP __bgdexport( mod_grproc, globals_fixup )[];
+extern void __bgdexport( mod_grproc, module_initialize )();
+extern void __bgdexport( mod_grproc, process_exec_hook )( INSTANCE * r );
+extern DLSYSFUNCS  __bgdexport( mod_grproc, functions_exports )[];
+extern char * __bgdexport( mod_grproc, modules_dependency )[];
+#endif
 
 #endif

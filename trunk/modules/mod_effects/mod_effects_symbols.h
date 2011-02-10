@@ -25,16 +25,20 @@
 #define __MODEFFECTS_SYMBOLS_H
 
 #include <bgddl.h>
-#include "mod_effects_defines.h"
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modeffects_filter( INSTANCE *my, int *params );
-extern CONDITIONALLY_STATIC int modeffects_blur( INSTANCE *my, int *params );
-extern CONDITIONALLY_STATIC int modeffects_grayscale( INSTANCE *my, int *params );
-extern CONDITIONALLY_STATIC int modeffects_rgbscale( INSTANCE *my, int *params );
-#endif
-
-/* --------------------------------------------------------------------------- */
+#ifdef __BGDC__
+#define BLUR_NORMAL     0
+#define BLUR_3x3        1
+#define BLUR_5x5        2
+#define BLUR_5x5_MAP    3
+#define GSCALE_RGB      0
+#define GSCALE_R        1
+#define GSCALE_G        2
+#define GSCALE_B        3
+#define GSCALE_RG       4
+#define GSCALE_RB       5
+#define GSCALE_GB       6
+#define GSCALE_OFF     -1
 
 DLCONSTANT __bgdexport( mod_effects, constants_def )[] =
 {
@@ -55,24 +59,24 @@ DLCONSTANT __bgdexport( mod_effects, constants_def )[] =
     { NULL          , 0       , 0               }
 } ;
 
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
 DLSYSFUNCS  __bgdexport( mod_effects, functions_exports )[] =
 {
-    { "GRAYSCALE"   , "IIB"   , TYPE_INT    , SYSMACRO(modeffects_grayscale) },
-    { "RGBSCALE"    , "IIFFF" , TYPE_INT    , SYSMACRO(modeffects_rgbscale)  },
-    { "BLUR"        , "IIB"   , TYPE_INT    , SYSMACRO(modeffects_blur)      },
-    { "FILTER"      , "IIP"   , TYPE_INT    , SYSMACRO(modeffects_filter)    },
-    { NULL          , NULL    , 0           , NULL                 }
+    { "GRAYSCALE"   , "IIB"   , TYPE_INT    , 0 },
+    { "RGBSCALE"    , "IIFFF" , TYPE_INT    , 0 },
+    { "BLUR"        , "IIB"   , TYPE_INT    , 0 },
+    { "FILTER"      , "IIP"   , TYPE_INT    , 0 },
+    { NULL          , NULL    , 0           , NULL }
 };
-
-/* ----------------------------------------------------------------- */
 
 char * __bgdexport( mod_effects, modules_dependency )[] =
 {
     "libgrbase",
     NULL
 };
+#else
+extern DLCONSTANT __bgdexport( mod_effects, constants_def )[];
+extern DLSYSFUNCS  __bgdexport( mod_effects, functions_exports )[];
+extern char __bgdexport( mod_effects, modules_dependency )[];
+#endif
 
 #endif

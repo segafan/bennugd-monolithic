@@ -26,24 +26,8 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int moddir_cd( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_chdir( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_mkdir( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_rmdir( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_rm( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_glob( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_open( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_close( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int moddir_read( INSTANCE * my, int * params );
-
-extern DLVARFIXUP __bgdexport( mod_dir, globals_fixup)[];
-#endif
-
-/* ----------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-
-char __bgdexport( mod_dir, globals_def )[] =
+#ifdef __BGDC__
+char  __bgdexport( mod_dir, globals_def )[] =
     "STRUCT fileinfo\n"
     "    STRING path;\n"
     "    STRING name;\n"
@@ -55,24 +39,25 @@ char __bgdexport( mod_dir, globals_def )[] =
     "    STRING modified;\n"
     "END\n";
 
-/* ---------------------------------------------------------------------- */
-
 DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[] =
     {
         /* Archivos y directorios */
-        { "CD"      , ""  , TYPE_STRING , SYSMACRO(moddir_cd)     },
-        { "CHDIR"   , "S" , TYPE_INT    , SYSMACRO(moddir_chdir)  },
-        { "MKDIR"   , "S" , TYPE_INT    , SYSMACRO(moddir_mkdir)  },
-        { "RMDIR"   , "S" , TYPE_INT    , SYSMACRO(moddir_rmdir)  },
-        { "GLOB"    , "S" , TYPE_STRING , SYSMACRO(moddir_glob)   },
-        { "CD"      , "S" , TYPE_STRING , SYSMACRO(moddir_chdir)  },
-        { "RM"      , "S" , TYPE_INT    , SYSMACRO(moddir_rm)     },
-
-        { "DIROPEN" , "S" , TYPE_INT    , SYSMACRO(moddir_open)   },
-        { "DIRCLOSE", "I" , TYPE_INT    , SYSMACRO(moddir_close)  },
-        { "DIRREAD" , "I" , TYPE_STRING , SYSMACRO(moddir_read)   },
-
-        { 0         , 0   , 0           , 0             }
+        { "CD"      , ""  , TYPE_STRING , 0 },
+        { "CHDIR"   , "S" , TYPE_INT    , 0 },
+        { "MKDIR"   , "S" , TYPE_INT    , 0 },
+        { "RMDIR"   , "S" , TYPE_INT    , 0 },
+        { "GLOB"    , "S" , TYPE_STRING , 0 },
+        { "CD"      , "S" , TYPE_STRING , 0 },
+        { "RM"      , "S" , TYPE_INT    , 0 },
+        { "DIROPEN" , "S" , TYPE_INT    , 0 },
+        { "DIRCLOSE", "I" , TYPE_INT    , 0 },
+        { "DIRREAD" , "I" , TYPE_STRING , 0 },
+        { 0         , 0   , 0           , 0 }
     };
+#else
+extern char  __bgdexport( mod_dir, globals_def )[];
+extern DLVARFIXUP __bgdexport( mod_dir, globals_fixup)[];
+extern DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[];
+#endif
 
 #endif

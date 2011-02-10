@@ -206,7 +206,7 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	make -C $(BUILD) -f $(CURDIR)/Makefile.linux
+	make -C $(BUILD) -f $(CURDIR)/Makefile.SDL12.linux
 
 #---------------------------------------------------------------------------------
 clean:

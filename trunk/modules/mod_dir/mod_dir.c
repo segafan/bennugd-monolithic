@@ -36,11 +36,7 @@
 #include <windef.h>
 #else
 #include <unistd.h>
-#ifndef TARGET_WII
-	#ifndef TARGET_PSP
-		#include <sys/utsname.h>
-	#endif
-#endif
+#include <sys/utsname.h>
 /* BeOS INCLUDES */
 #ifdef TARGET_BEOS
 #include <sys/types.h>
@@ -53,10 +49,6 @@
 #include "dlvaracc.h"
 #include "files.h"
 #include "xstrings.h"
-
-#ifndef __MONOLITHIC__
-#include "mod_dir_symbols.h"
-#endif
 
 /* ----------------------------------------------------------------- */
 
@@ -71,6 +63,21 @@ enum
     FILE_CREATED,
     FILE_MODIFIED
 } ;
+
+/* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( mod_dir, globals_def )=
+    "STRUCT fileinfo\n"
+    "    STRING path;\n"
+    "    STRING name;\n"
+    "    directory;\n"
+    "    hidden;\n"
+    "    readonly;\n"
+    "    size;\n"
+    "    STRING created;\n"
+    "    STRING modified;\n"
+    "END\n";
 
 /* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -94,7 +101,7 @@ DLVARFIXUP __bgdexport( mod_dir, globals_fixup)[] =
 /* ----------------------------------------------------------------- */
 /* DIRECTORY FUNCTIONS */
 
-CONDITIONALLY_STATIC int moddir_cd( INSTANCE * my, int * params )
+static int moddir_cd( INSTANCE * my, int * params )
 {
     char * d = dir_current() ;
     int r = string_new( d ) ;
@@ -103,7 +110,7 @@ CONDITIONALLY_STATIC int moddir_cd( INSTANCE * my, int * params )
     return r ;
 }
 
-CONDITIONALLY_STATIC int moddir_chdir( INSTANCE * my, int * params )
+static int moddir_chdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_change( d ) ;
@@ -111,7 +118,7 @@ CONDITIONALLY_STATIC int moddir_chdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-CONDITIONALLY_STATIC int moddir_mkdir( INSTANCE * my, int * params )
+static int moddir_mkdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_create( d ) ;
@@ -119,7 +126,7 @@ CONDITIONALLY_STATIC int moddir_mkdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-CONDITIONALLY_STATIC int moddir_rmdir( INSTANCE * my, int * params )
+static int moddir_rmdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_delete( d );
@@ -127,7 +134,7 @@ CONDITIONALLY_STATIC int moddir_rmdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-CONDITIONALLY_STATIC int moddir_rm( INSTANCE * my, int * params )
+static int moddir_rm( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_deletefile( d );
@@ -183,7 +190,7 @@ static int __moddir_read(__DIR_ST * dh )
  *  until no more files exists. It then returns NIL.
  */
 
-CONDITIONALLY_STATIC int moddir_glob( INSTANCE * my, int * params )
+static int moddir_glob( INSTANCE * my, int * params )
 {
     const char * path = string_get( params[ 0 ] );
     static __DIR_ST * dh = NULL;
@@ -215,7 +222,7 @@ CONDITIONALLY_STATIC int moddir_glob( INSTANCE * my, int * params )
  *  return 0 if fail.
  */
 
-CONDITIONALLY_STATIC int moddir_open( INSTANCE * my, int * params )
+static int moddir_open( INSTANCE * my, int * params )
 {
     int result = ( int ) dir_open( string_get( params[ 0 ] ) );
     string_discard( params[ 0 ] );
@@ -225,7 +232,7 @@ CONDITIONALLY_STATIC int moddir_open( INSTANCE * my, int * params )
 /*  int DIRCLOSE (INT handle)
  */
 
-CONDITIONALLY_STATIC int moddir_close( INSTANCE * my, int * params )
+static int moddir_close( INSTANCE * my, int * params )
 {
     if ( params[ 0 ] ) dir_close ( ( __DIR_ST * ) params[ 0 ] ) ;
     return 1;
@@ -238,9 +245,29 @@ CONDITIONALLY_STATIC int moddir_close( INSTANCE * my, int * params )
  *  until no more files exists. It then returns NIL.
  */
 
-CONDITIONALLY_STATIC int moddir_read( INSTANCE * my, int * params )
+static int moddir_read( INSTANCE * my, int * params )
 {
     return ( __moddir_read((__DIR_ST *) params[ 0 ] ) ) ;
 }
+
+/* ---------------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[] =
+    {
+        /* Archivos y directorios */
+        { "CD"      , ""  , TYPE_STRING , moddir_cd     },
+        { "CHDIR"   , "S" , TYPE_INT    , moddir_chdir  },
+        { "MKDIR"   , "S" , TYPE_INT    , moddir_mkdir  },
+        { "RMDIR"   , "S" , TYPE_INT    , moddir_rmdir  },
+        { "GLOB"    , "S" , TYPE_STRING , moddir_glob   },
+        { "CD"      , "S" , TYPE_STRING , moddir_chdir  },
+        { "RM"      , "S" , TYPE_INT    , moddir_rm     },
+
+        { "DIROPEN" , "S" , TYPE_INT    , moddir_open   },
+        { "DIRCLOSE", "I" , TYPE_INT    , moddir_close  },
+        { "DIRREAD" , "I" , TYPE_STRING , moddir_read   },
+
+        { 0         , 0   , 0           , 0             }
+    };
 
 /* ---------------------------------------------------------------------- */

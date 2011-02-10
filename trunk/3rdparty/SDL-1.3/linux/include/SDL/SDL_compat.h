@@ -215,8 +215,12 @@ struct SDL_SysWMinfo;
  */
 /*@{*/
 
-#define SDL_keysym		SDL_KeySym
-#define SDL_scancode	SDL_ScanCode
+#define SDL_keysym		SDL_Keysym
+#define SDL_KeySym		SDL_Keysym
+#define SDL_scancode	SDL_Scancode
+#define SDL_ScanCode	SDL_Scancode
+#define SDLKey          SDL_Keycode
+#define SDLMod          SDL_Keymod
 
 /** 
  *  \name Renamed keys
@@ -273,8 +277,8 @@ struct SDL_SysWMinfo;
 #define SDL_AllocSurface    SDL_CreateRGBSurface
 
 extern DECLSPEC const SDL_version *SDLCALL SDL_Linked_Version(void);
-extern DECLSPEC char *SDLCALL SDL_AudioDriverName(char *namebuf, int maxlen);
-extern DECLSPEC char *SDLCALL SDL_VideoDriverName(char *namebuf, int maxlen);
+extern DECLSPEC const char *SDLCALL SDL_AudioDriverName(char *namebuf, int maxlen);
+extern DECLSPEC const char *SDLCALL SDL_VideoDriverName(char *namebuf, int maxlen);
 extern DECLSPEC const SDL_VideoInfo *SDLCALL SDL_GetVideoInfo(void);
 extern DECLSPEC int SDLCALL SDL_VideoModeOK(int width,
                                             int height,
@@ -330,9 +334,6 @@ extern DECLSPEC int SDLCALL SDL_EnableUNICODE(int enable);
 
 typedef SDL_Window* SDL_WindowID;
 
-#define SDL_RenderPoint SDL_RenderDrawPoint
-#define SDL_RenderLine SDL_RenderDrawLine
-#define SDL_RenderFill(X)  (X) ? SDL_RenderFillRect(X) : SDL_RenderClear()
 #define SDL_KillThread(X)
 
 /* The timeslice and timer resolution are no longer relevant */
