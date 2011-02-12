@@ -39,16 +39,16 @@
 
 #include "resolution.h"
 
-#include "mod_m7_defines.h"
-
-#ifndef __MONOLITHIC__
-#include "mod_m7_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 extern uint8_t trans_table[256][256] ;
 extern int trans_table_updated ;
+
+/* --------------------------------------------------------------------------- */
+
+// #define FOCAL_DIST  128
+
+#define C_M7        2
 
 /* --------------------------------------------------------------------------- */
 
@@ -140,6 +140,39 @@ static MODE7 mode7_inf[10] = { { 0 } } ;
 #define RESOLUTION  9
 
 /* --------------------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)         */
+
+DLCONSTANT __bgdexport( mod_m7, constants_def )[] =
+{
+    { "C_M7", TYPE_INT, C_M7 },
+    { NULL  , 0       , 0 }
+} ;
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+char * __bgdexport( mod_m7, globals_def ) =
+    "STRUCT m7[9]\n"
+    "camera;\n"
+    "height = 32;\n"
+    "distance = 64;\n"
+    "horizon = 0;\n"
+    "focus = 256;\n"
+    "z = 256;\n"
+    "color = 0;\n"
+    "flags = 0;\n"
+    "END\n" ;
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables locales (usada en tiempo de compilacion)  */
+char * __bgdexport( mod_m7, locals_def ) =
+    "ctype;\n"
+    "cnumber;\n"
+    "height;\n"
+    "STRUCT _m7_reserved\n"
+    "  distance1;\n"
+    "END;\n";
+
+/* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -154,7 +187,7 @@ DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[] =
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
-DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[] =
+DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[]  =
 {
     /* Nombre de variable local, offset al dato, tamaño del elemento, cantidad de elementos */
     { "angle"                   , NULL, -1, -1 },
@@ -525,7 +558,7 @@ static int info_mode7( int n, REGION * clip, int * z, int * drawme )
 /* --------------------------------------------------------------------------- */
 /* Mode 7                                                            */
 
-CONDITIONALLY_STATIC int modm7_start( INSTANCE * my, int * params )
+static int modm7_start( INSTANCE * my, int * params )
 {
     MODE7_INFO * dat ;
 
@@ -560,7 +593,7 @@ CONDITIONALLY_STATIC int modm7_start( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modm7_stop( INSTANCE * my, int * params )
+static int modm7_stop( INSTANCE * my, int * params )
 {
     int n = params[0];
 
@@ -583,5 +616,28 @@ void __bgdexport( mod_m7, module_initialize )()
 {
     init_cos_tables() ;
 }
+
+/* --------------------------------------------------------------------------- */
+
+DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
+{
+    { "MODE7_START" , "IIIIII", TYPE_INT , modm7_start  },
+    { "MODE7_STOP"  , "I"     , TYPE_INT , modm7_stop   },
+
+    { "START_MODE7" , "IIIIII", TYPE_INT , modm7_start  },
+    { "STOP_MODE7"  , "I"     , TYPE_INT , modm7_stop   },
+
+    { NULL          , NULL    , 0        , NULL         }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_m7, modules_dependency )[] =
+{
+    "libgrbase",
+    "libvideo",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

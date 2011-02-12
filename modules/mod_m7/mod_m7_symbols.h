@@ -25,19 +25,9 @@
 #define __MODM7_SYMBOLS_H
 
 #include <bgddl.h>
-#include "mod_m7_defines.h"
 
-#ifndef __BGDC__
-extern DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[];
-extern DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[];
-extern void __bgdexport( mod_m7, module_initialize )();
-
-extern CONDITIONALLY_STATIC int modm7_start( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modm7_stop( INSTANCE * my, int * params );
-#endif
-
-/* --------------------------------------------------------------------------- */
-/* Definicion de constantes (usada en tiempo de compilacion)         */
+#ifdef __BGDC__
+#define C_M7        2
 
 DLCONSTANT __bgdexport( mod_m7, constants_def )[] =
 {
@@ -69,16 +59,13 @@ char __bgdexport( mod_m7, locals_def )[] =
     "  distance1;\n"
     "END;\n";
 
-/* --------------------------------------------------------------------------- */
-
 DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
 {
-    { "MODE7_START" , "IIIIII", TYPE_INT , SYSMACRO(modm7_start)  },
-    { "MODE7_STOP"  , "I"     , TYPE_INT , SYSMACRO(modm7_stop)   },
-    { "START_MODE7" , "IIIIII", TYPE_INT , SYSMACRO(modm7_start)  },
-    { "STOP_MODE7"  , "I"     , TYPE_INT , SYSMACRO(modm7_stop)   },
-
-    { NULL          , NULL    , 0        , NULL         }
+    { "MODE7_START" , "IIIIII", TYPE_INT , 0 },
+    { "MODE7_STOP"  , "I"     , TYPE_INT , 0 },
+    { "START_MODE7" , "IIIIII", TYPE_INT , 0 },
+    { "STOP_MODE7"  , "I"     , TYPE_INT , 0 },
+    { NULL          , NULL    , 0        , 0 }
 };
 
 /* --------------------------------------------------------------------------- */
@@ -90,5 +77,16 @@ char * __bgdexport( mod_m7, modules_dependency )[] =
     "librender",
     NULL
 };
+#else
+extern DLCONSTANT __bgdexport( mod_m7, constants_def )[];
+extern char       __bgdexport( mod_m7, globals_def )[];
+extern char       __bgdexport( mod_m7, locals_def )[];
+extern DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[];
+extern DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[];
+extern void __bgdexport( mod_m7, module_initialize )();
+extern DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[];
+extern char * __bgdexport( mod_m7, modules_dependency )[];
+#endif
+
 
 #endif
