@@ -54,20 +54,6 @@
 #define F16_MAGIC "f16\x1A\x0D\x0A\x00"
 #define F01_MAGIC "f01\x1A\x0D\x0A\x00"
 
-/* --------------------------------------------------------------------------- */
-
-#define G_WIDE          0
-#define G_WIDTH         0
-#define G_HEIGHT        1
-#define G_CENTER_X      2
-#define G_X_CENTER      2
-#define G_CENTER_Y      3
-#define G_Y_CENTER      3
-#define G_PITCH         4
-#define G_DEPTH         5
-
-#define B_CLEAR         0x00000001
-
 #ifdef _MSC_VER
 #pragma pack(push, 1)
 #endif

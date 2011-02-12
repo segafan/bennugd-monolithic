@@ -26,16 +26,13 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modkey_key( INSTANCE * my, int * params );
-#endif
-
+#ifdef __BGDC__
 /* ----------------------------------------------------------------- */
 
 DLSYSFUNCS  __bgdexport( mod_key, functions_exports )[] =
 {
-    { "KEY" , "I"   , TYPE_INT  , SYSMACRO(modkey_key)   },
-    { 0     , 0     , 0         , 0            }
+    { "KEY" , "I"   , TYPE_INT  , 0 },
+    { 0     , 0     , 0         , 0 }
 };
 
 /* ----------------------------------------------------------------- */
@@ -45,5 +42,9 @@ char * __bgdexport( mod_key, modules_dependency )[] =
     "libkey",
     NULL
 };
+#else
+extern DLSYSFUNCS  __bgdexport( mod_key, functions_exports )[];
+extern char * __bgdexport( mod_key, modules_dependency )[];
+#endif
 
 #endif
