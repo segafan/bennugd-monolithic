@@ -1,7 +1,7 @@
 /* include/SDL_config.h.  Generated from SDL_config.h.in by configure.  */
 /*
     SDL - Simple DirectMedia Layer
-    Copyright (C) 1997-2009 Sam Lantinga
+    Copyright (C) 1997-2011 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -83,7 +83,6 @@
 #define HAVE_MATH_H 1
 #define HAVE_ICONV_H 1
 #define HAVE_SIGNAL_H 1
-/* #undef HAVE_ALTIVEC_H */
 
 /* C library functions */
 #define HAVE_MALLOC 1
@@ -304,6 +303,5 @@
 
 /* Enable assembly routines */
 #define SDL_ASSEMBLY_ROUTINES 1
-/* #undef SDL_ALTIVEC_BLITTERS */
 
 #endif /* _SDL_config_h */

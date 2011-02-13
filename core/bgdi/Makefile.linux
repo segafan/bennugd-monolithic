@@ -75,7 +75,7 @@ LDFLAGS		=	-O2 $(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lpng -lSDL_mixer -lSDL -ldl -lpthread -lz -lm -lc
+LIBS := ../../bgdrtm/bgdrtm.a -lpng -lSDL_mixer -lSDL -lmikmod -lmodplug -lvorbisfile -ldl -lpthread -lz -lm -lc
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
