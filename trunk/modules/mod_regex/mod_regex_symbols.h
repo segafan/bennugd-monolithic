@@ -26,29 +26,20 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modregex_regex (INSTANCE * my, int * params);
-extern CONDITIONALLY_STATIC int modregex_regex_replace (INSTANCE * my, int * params);
-extern CONDITIONALLY_STATIC int modregex_split (INSTANCE * my, int * params);
-extern CONDITIONALLY_STATIC int modregex_join (INSTANCE * my, int * params);
-
-extern DLVARFIXUP __bgdexport( mod_regex, globals_fixup) [];
-#endif
-
-/* ----------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-
+#ifdef __BGDC__
 char __bgdexport( mod_regex, globals_def )[] = "STRING regex_reg[15];\n";
-
-/* ---------------------------------------------------------------------- */
-
 DLSYSFUNCS __bgdexport( mod_regex, functions_exports) [] = {
     /* Regex */
-    { "REGEX"                , "SS"    , TYPE_INT    , SYSMACRO(modregex_regex)           },
-    { "REGEX_REPLACE"        , "SSS"   , TYPE_STRING , SYSMACRO(modregex_regex_replace)   },
-    { "SPLIT"                , "SSPI"  , TYPE_INT    , SYSMACRO(modregex_split)           },
-    { "JOIN"                 , "SPI"   , TYPE_STRING , SYSMACRO(modregex_join)            },
-    { 0                      , 0       , 0           , 0                        }
+    { "REGEX"                , "SS"    , TYPE_INT    , 0 },
+    { "REGEX_REPLACE"        , "SSS"   , TYPE_STRING , 0 },
+    { "SPLIT"                , "SSPI"  , TYPE_INT    , 0 },
+    { "JOIN"                 , "SPI"   , TYPE_STRING , 0 },
+    { 0                      , 0       , 0           , 0 }
 };
+#else
+extern char __bgdexport( mod_regex, globals_def )[];
+extern DLVARFIXUP __bgdexport( mod_regex, globals_fixup) [];
+extern DLSYSFUNCS __bgdexport( mod_regex, functions_exports) [];
+#endif
 
 #endif

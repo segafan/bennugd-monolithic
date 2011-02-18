@@ -26,46 +26,23 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modscreen_define_region( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_out_region( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_put( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_xput( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_put_screen( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_clear_screen( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modscreen_get_screen( INSTANCE * my, int * params );
-
-extern DLVARFIXUP __bgdexport( mod_screen, globals_fixup )[];
-extern DLVARFIXUP __bgdexport( mod_screen, locals_fixup )[];
-#endif
-
-/* --------------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_screen, functions_exports )[] =
 {
-    /* Regiones */
-    { "REGION_DEFINE"        , "IIIII"  , TYPE_INT      , SYSMACRO(modscreen_define_region)   },
-    { "REGION_OUT"           , "II"     , TYPE_INT      , SYSMACRO(modscreen_out_region)      },
-    /* Fondo de pantalla */
-    { "PUT"                  , "IIII"   , TYPE_INT      , SYSMACRO(modscreen_put)             },
-    { "XPUT"                 ,"IIIIIIII", TYPE_INT      , SYSMACRO(modscreen_xput)            },
-    { "SCREEN_PUT"           , "II"     , TYPE_INT      , SYSMACRO(modscreen_put_screen)      },
-    { "SCREEN_CLEAR"         , ""       , TYPE_INT      , SYSMACRO(modscreen_clear_screen)    },
-    /* Video */
-    { "SCREEN_GET"           , ""       , TYPE_INT      , SYSMACRO(modscreen_get_screen)      },
-    /* ------------ Compatibility ------------ */
-    /* Regiones */
-    { "DEFINE_REGION"        , "IIIII"  , TYPE_INT      , SYSMACRO(modscreen_define_region)   },
-    { "OUT_REGION"           , "II"     , TYPE_INT      , SYSMACRO(modscreen_out_region)      },
-    /* Fondo de pantalla */
-    { "PUT_SCREEN"           , "II"     , TYPE_INT      , SYSMACRO(modscreen_put_screen)      },
-    { "CLEAR_SCREEN"         , ""       , TYPE_INT      , SYSMACRO(modscreen_clear_screen)    },
-    /* Video */
-    { "GET_SCREEN"           , ""       , TYPE_INT      , SYSMACRO(modscreen_get_screen)      },
-    { 0                     , 0         , 0             , 0                         }
+    { "REGION_DEFINE"        , "IIIII"      , TYPE_INT      , 0 },
+    { "REGION_OUT"           , "II"         , TYPE_INT      , 0 },
+    { "PUT"                  , "IIII"       , TYPE_INT      , 0 },
+    { "XPUT"                 , "IIIIIIII"   , TYPE_INT      , 0 },
+    { "SCREEN_PUT"           , "II"         , TYPE_INT      , 0 },
+    { "SCREEN_CLEAR"         , ""           , TYPE_INT      , 0 },
+    { "SCREEN_GET"           , ""           , TYPE_INT      , 0 },
+    { "DEFINE_REGION"        , "IIIII"      , TYPE_INT      , 0 },
+    { "OUT_REGION"           , "II"         , TYPE_INT      , 0 },
+    { "PUT_SCREEN"           , "II"         , TYPE_INT      , 0 },
+    { "CLEAR_SCREEN"         , ""           , TYPE_INT      , 0 },
+    { "GET_SCREEN"           , ""           , TYPE_INT      , 0 },
+    { 0                     , 0             , 0             , 0 }
 };
-
-/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_screen, modules_dependency )[] =
 {
@@ -75,5 +52,11 @@ char * __bgdexport( mod_screen, modules_dependency )[] =
     "librender",
     NULL
 };
+#else
+extern DLVARFIXUP __bgdexport( mod_screen, locals_fixup )[];
+extern DLVARFIXUP __bgdexport( mod_screen, globals_fixup )[];
+extern DLSYSFUNCS  __bgdexport( mod_screen, functions_exports )[];
+extern char * __bgdexport( mod_screen, modules_dependency )[];
+#endif
 
 #endif

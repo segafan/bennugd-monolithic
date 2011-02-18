@@ -27,7 +27,7 @@
 #include <mod_say_symbols.h>
 #include <mod_string_symbols.h>
 #include <mod_math_symbols.h>
-#ifndef TARGET_PSP
+#ifndef NO_MODMATHI
 #  include <mod_mathi_symbols.h>
 #endif
 #include <mod_time_symbols.h>
@@ -132,11 +132,9 @@ basic_symbols symbol_list[] =
 	{ "mod_say.fakelib"      , NULL, NULL, NULL, NULL, NULL, mod_say_functions_exports },
 	{ "mod_string.fakelib"   , NULL, NULL, NULL, NULL, NULL, mod_string_functions_exports },
 	{ "mod_math.fakelib"     , NULL, mod_math_constants_def, NULL, NULL, NULL, mod_math_functions_exports },
-
-#ifndef TARGET_PSP
+#ifndef NO_MODMATHI
 	{ "mod_mathi.fakelib"    , NULL, mod_mathi_constants_def, NULL, NULL, NULL, mod_mathi_functions_exports },
 #endif
-
 	{ "mod_time.fakelib"     , NULL, NULL, NULL, NULL, NULL, mod_time_functions_exports },
 	{ "mod_file.fakelib"     , NULL, mod_file_constants_def, NULL, NULL, NULL, mod_file_functions_exports },
 #ifndef NO_MODSOUND

@@ -35,13 +35,14 @@
 #include "dlvaracc.h"
 #include "regex.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_regex_symbols.h"
-#endif
-
 /* ----------------------------------------------------------------- */
 
 #define REGEX_REG   0
+
+/* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( mod_regex, globals_def ) = "STRING regex_reg[15];\n";
 
 /* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -62,7 +63,7 @@ DLVARFIXUP __bgdexport( mod_regex, globals_fixup) [] =   {
  *  of the match or -1 if none found.
  */
 
-CONDITIONALLY_STATIC int modregex_regex (INSTANCE * my, int * params)
+static int modregex_regex (INSTANCE * my, int * params)
 {
     const char * reg = string_get(params[0]);
     const char * str = string_get(params[1]);
@@ -125,7 +126,7 @@ CONDITIONALLY_STATIC int modregex_regex (INSTANCE * my, int * params)
  *  filled with information about the first match.
  */
 
-CONDITIONALLY_STATIC int modregex_regex_replace (INSTANCE * my, int * params)
+static int modregex_regex_replace (INSTANCE * my, int * params)
 {
     const char * reg = string_get(params[0]);
     const char * rep = string_get(params[1]);
@@ -301,7 +302,7 @@ CONDITIONALLY_STATIC int modregex_regex_replace (INSTANCE * my, int * params)
  *
  */
 
-CONDITIONALLY_STATIC int modregex_split (INSTANCE * my, int * params)
+static int modregex_split (INSTANCE * my, int * params)
 {
     const char * reg = string_get(params[0]);
     const char * str = string_get(params[1]);
@@ -369,7 +370,7 @@ CONDITIONALLY_STATIC int modregex_split (INSTANCE * my, int * params)
  *  resulting string.
  */
 
-CONDITIONALLY_STATIC int modregex_join (INSTANCE * my, int * params)
+static int modregex_join (INSTANCE * my, int * params)
 {
     const char * sep = string_get(params[0]);
     int * string_array = (int *)params[1];
@@ -406,3 +407,14 @@ CONDITIONALLY_STATIC int modregex_join (INSTANCE * my, int * params)
     string_use(result);
     return result;
 }
+
+/* ---------------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_regex, functions_exports) [] = {
+    /* Regex */
+    { "REGEX"                , "SS"    , TYPE_INT    , modregex_regex           },
+    { "REGEX_REPLACE"        , "SSS"   , TYPE_STRING , modregex_regex_replace   },
+    { "SPLIT"                , "SSPI"  , TYPE_INT    , modregex_split           },
+    { "JOIN"                 , "SPI"   , TYPE_STRING , modregex_join            },
+    { 0                      , 0       , 0           , 0                        }
+};

@@ -26,13 +26,9 @@
 #include "bgddl.h"
 #include "fmath.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_rand_symbols.h"
-#endif
-
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int rand_seed( INSTANCE * my, int * params )
+static int rand_seed( INSTANCE * my, int * params )
 {
     srand( params[0] ) ;
     return 1 ;
@@ -40,7 +36,7 @@ CONDITIONALLY_STATIC int rand_seed( INSTANCE * my, int * params )
 
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int rand_std( INSTANCE * my, int * params )
+static int rand_std( INSTANCE * my, int * params )
 {
     int num1 = MIN( params[0], params[1] ) ;
     int num2 = MAX( params[0], params[1] ) ;
@@ -51,5 +47,15 @@ CONDITIONALLY_STATIC int rand_std( INSTANCE * my, int * params )
     else
         return num1 + rand() % var;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Declaracion de funciones                                               */
+
+DLSYSFUNCS  __bgdexport( mod_rand, functions_exports )[] =
+{
+    { "RAND_SEED"   , "I"   , TYPE_INT  , rand_seed     },
+    { "RAND"        , "II"  , TYPE_INT  , rand_std      },
+    { 0             , 0     , 0         , 0             }
+};
 
 /* ---------------------------------------------------------------------- */

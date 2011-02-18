@@ -26,19 +26,15 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int rand_seed( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int rand_std( INSTANCE * my, int * params );
-#endif
-
-/* ---------------------------------------------------------------------- */
-/* Declaracion de funciones                                               */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_rand, functions_exports )[] =
 {
-    { "RAND_SEED"   , "I"   , TYPE_INT  , SYSMACRO(rand_seed)     },
-    { "RAND"        , "II"  , TYPE_INT  , SYSMACRO(rand_std)      },
-    { 0             , 0     , 0         , 0             }
+    { "RAND_SEED"   , "I"   , TYPE_INT  , 0 },
+    { "RAND"        , "II"  , TYPE_INT  , 0 },
+    { 0             , 0     , 0         , 0 }
 };
+#else
+extern DLSYSFUNCS  __bgdexport( mod_rand, functions_exports )[];
+#endif
 
 #endif

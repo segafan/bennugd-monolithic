@@ -37,10 +37,6 @@
 
 #include "libscroll.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_screen_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 #define CTYPE           0
@@ -69,7 +65,7 @@ DLVARFIXUP __bgdexport( mod_screen, globals_fixup )[] =
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_define_region( INSTANCE * my, int * params )
+static int modscreen_define_region( INSTANCE * my, int * params )
 {
     REGION * orig = region_get( params[0] );
 
@@ -81,7 +77,7 @@ CONDITIONALLY_STATIC int modscreen_define_region( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_out_region( INSTANCE * my, int * params )
+static int modscreen_out_region( INSTANCE * my, int * params )
 {
     INSTANCE * proc = instance_get( params[0] ) ;
     int region = params[1] ;
@@ -129,7 +125,7 @@ CONDITIONALLY_STATIC int modscreen_out_region( INSTANCE * my, int * params )
 /* --------------------------------------------------------------------------- */
 /* Funciones gráficas */
 
-CONDITIONALLY_STATIC int modscreen_put( INSTANCE * my, int * params )
+static int modscreen_put( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
 
@@ -142,7 +138,7 @@ CONDITIONALLY_STATIC int modscreen_put( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_xput( INSTANCE * my, int * params )
+static int modscreen_xput( INSTANCE * my, int * params )
 {
     int r ;
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
@@ -161,7 +157,7 @@ CONDITIONALLY_STATIC int modscreen_xput( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_put_screen( INSTANCE * my, int * params )
+static int modscreen_put_screen( INSTANCE * my, int * params )
 {
     int     x, y ;
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
@@ -185,7 +181,7 @@ CONDITIONALLY_STATIC int modscreen_put_screen( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_clear_screen( INSTANCE * my, int * params )
+static int modscreen_clear_screen( INSTANCE * my, int * params )
 {
     gr_clear( background ) ;
     return 1 ;
@@ -193,7 +189,7 @@ CONDITIONALLY_STATIC int modscreen_clear_screen( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modscreen_get_screen( INSTANCE * my, int * params )
+static int modscreen_get_screen( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_clone( bitmap_get( 0, -1 ) );
 
@@ -206,5 +202,49 @@ CONDITIONALLY_STATIC int modscreen_get_screen( INSTANCE * my, int * params )
 
     return map->code ;
 }
+
+/* --------------------------------------------------------------------------- */
+
+DLSYSFUNCS  __bgdexport( mod_screen, functions_exports )[] =
+{
+    /* Regiones */
+    { "REGION_DEFINE"        , "IIIII"      , TYPE_INT      , modscreen_define_region   },
+    { "REGION_OUT"           , "II"         , TYPE_INT      , modscreen_out_region      },
+
+    /* Fondo de pantalla */
+    { "PUT"                  , "IIII"       , TYPE_INT      , modscreen_put             },
+    { "XPUT"                 , "IIIIIIII"   , TYPE_INT      , modscreen_xput            },
+    { "SCREEN_PUT"           , "II"         , TYPE_INT      , modscreen_put_screen      },
+    { "SCREEN_CLEAR"         , ""           , TYPE_INT      , modscreen_clear_screen    },
+
+    /* Video */
+    { "SCREEN_GET"           , ""           , TYPE_INT      , modscreen_get_screen      },
+
+    /* ------------ Compatibility ------------ */
+
+    /* Regiones */
+    { "DEFINE_REGION"        , "IIIII"      , TYPE_INT      , modscreen_define_region   },
+    { "OUT_REGION"           , "II"         , TYPE_INT      , modscreen_out_region      },
+
+    /* Fondo de pantalla */
+    { "PUT_SCREEN"           , "II"         , TYPE_INT      , modscreen_put_screen      },
+    { "CLEAR_SCREEN"         , ""           , TYPE_INT      , modscreen_clear_screen    },
+
+    /* Video */
+    { "GET_SCREEN"           , ""           , TYPE_INT      , modscreen_get_screen      },
+
+    { 0                     , 0             , 0             , 0                         }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_screen, modules_dependency )[] =
+{
+    "libgrbase",
+    "libvideo",
+    "libblit",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

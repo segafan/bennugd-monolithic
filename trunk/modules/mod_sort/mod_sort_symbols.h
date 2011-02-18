@@ -26,25 +26,19 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modsort_sort( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsort_ksort( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsort_sort_n( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsort_ksort_n( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsort_quicksort( INSTANCE *my, int *params );
-#endif
-
-/* ---------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_sort, functions_exports )[] =
 {
     /* Funciones sort */
-    { "QUICKSORT"   , "PIIIBB", TYPE_INT    , SYSMACRO(modsort_quicksort) },
-    { "KSORT"       , "V++V++", TYPE_INT    , SYSMACRO(modsort_ksort)     },
-    { "KSORT"       , "V++V++I", TYPE_INT   , SYSMACRO(modsort_ksort_n)   },
-    { "SORT"        , "V++I"  , TYPE_INT    , SYSMACRO(modsort_sort_n)    },
-    { "SORT"        , "V++"   , TYPE_INT    , SYSMACRO(modsort_sort)      },
-    { 0             , 0       , 0           , 0                 }
+    { "QUICKSORT"   , "PIIIBB", TYPE_INT    , 0 },
+    { "KSORT"       , "V++V++", TYPE_INT    , 0 },
+    { "KSORT"       , "V++V++I", TYPE_INT   , 0 },
+    { "SORT"        , "V++I"  , TYPE_INT    , 0 },
+    { "SORT"        , "V++"   , TYPE_INT    , 0 },
+    { 0             , 0       , 0           , 0 }
 };
+#else
+extern DLSYSFUNCS  __bgdexport( mod_sort, functions_exports )[];
+#endif
 
 #endif

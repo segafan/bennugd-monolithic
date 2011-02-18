@@ -32,10 +32,6 @@
 
 #include "xstrings.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_proc_symbols.h"
-#endif
-
 /* ----------------------------------------------------------------- */
 
 #define ALL_PROCESS         0
@@ -88,6 +84,51 @@ enum
 } ;
 
 /* ----------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)         */
+
+DLCONSTANT __bgdexport( mod_proc, constants_def )[] =
+{
+    { "S_KILL"              , TYPE_INT, S_KILL              },
+    { "S_WAKEUP"            , TYPE_INT, S_WAKEUP            },
+    { "S_SLEEP"             , TYPE_INT, S_SLEEP             },
+    { "S_FREEZE"            , TYPE_INT, S_FREEZE            },
+
+    { "S_FORCE"             , TYPE_INT, S_FORCE             },
+    { "S_TREE"              , TYPE_INT, S_TREE              },
+
+    { "S_KILL_TREE"         , TYPE_INT, S_KILL_TREE         },
+    { "S_WAKEUP_TREE"       , TYPE_INT, S_WAKEUP_TREE       },
+    { "S_SLEEP_TREE"        , TYPE_INT, S_SLEEP_TREE        },
+    { "S_FREEZE_TREE"       , TYPE_INT, S_FREEZE_TREE       },
+
+    { "S_KILL_FORCE"        , TYPE_INT, S_KILL_FORCE        },
+    { "S_WAKEUP_FORCE"      , TYPE_INT, S_WAKEUP_FORCE      },
+    { "S_SLEEP_FORCE"       , TYPE_INT, S_SLEEP_FORCE       },
+    { "S_FREEZE_FORCE"      , TYPE_INT, S_FREEZE_FORCE      },
+    { "S_KILL_TREE_FORCE"   , TYPE_INT, S_KILL_TREE_FORCE   },
+    { "S_WAKEUP_TREE_FORCE" , TYPE_INT, S_WAKEUP_TREE_FORCE },
+    { "S_SLEEP_TREE_FORCE"  , TYPE_INT, S_SLEEP_TREE_FORCE  },
+    { "S_FREEZE_TREE_FORCE" , TYPE_INT, S_FREEZE_TREE_FORCE },
+
+    { "S_DFL"               , TYPE_INT, S_DFL               },
+    { "S_IGN"               , TYPE_INT, S_IGN               },
+
+    { "ALL_PROCESS"         , TYPE_INT, ALL_PROCESS         },
+
+    { NULL                  , 0       , 0                   }
+} ;
+
+/* ----------------------------------------------------------------- */
+
+char * __bgdexport( mod_proc, locals_def ) =
+    "STRUCT mod_proc_reserved\n"
+    "   int type_scan;\n"
+    "   int id_scan;\n"
+    "   int context;\n"
+    "   dword signal_action;\n"
+    "END\n";
+
+/* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -133,7 +174,7 @@ static void _modproc_kill_all()
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_exit_0( INSTANCE * my, int * params )
+static int modproc_exit_0( INSTANCE * my, int * params )
 {
     exit_value = 0;
     must_exit = 1 ;
@@ -143,9 +184,9 @@ CONDITIONALLY_STATIC int modproc_exit_0( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_exit_1( INSTANCE * my, int * params )
+static int modproc_exit_1( INSTANCE * my, int * params )
 {
-    printf( "%s\n", string_get( params[0] ) );
+    printf( string_get( params[0] ) );
     printf( "\n" );
     fflush( stdout );
     string_discard( params[0] );
@@ -158,11 +199,11 @@ CONDITIONALLY_STATIC int modproc_exit_1( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_exit( INSTANCE * my, int * params )
+static int modproc_exit( INSTANCE * my, int * params )
 {
     _modproc_kill_all();
 
-    printf( "%s\n", string_get( params[0] ) );
+    printf( string_get( params[0] ) );
     printf( "\n" );
     fflush( stdout );
     string_discard( params[0] );
@@ -175,7 +216,7 @@ CONDITIONALLY_STATIC int modproc_exit( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_running( INSTANCE * my, int * params )
+static int modproc_running( INSTANCE * my, int * params )
 {
     INSTANCE * i, * ctx;
 
@@ -199,7 +240,7 @@ CONDITIONALLY_STATIC int modproc_running( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_signal( INSTANCE * my, int * params )
+static int modproc_signal( INSTANCE * my, int * params )
 {
     INSTANCE * i, * ctx;
     int fake_params[2] ;
@@ -311,7 +352,7 @@ CONDITIONALLY_STATIC int modproc_signal( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_signal_action( INSTANCE * my, int * params )
+static int modproc_signal_action( INSTANCE * my, int * params )
 {
     int action = params[1];
 
@@ -429,7 +470,7 @@ CONDITIONALLY_STATIC int modproc_signal_action( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_signal_action3( INSTANCE * my, int * params )
+static int modproc_signal_action3( INSTANCE * my, int * params )
 {
     INSTANCE * i, * ctx ;
 
@@ -461,7 +502,7 @@ CONDITIONALLY_STATIC int modproc_signal_action3( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_let_me_alone( INSTANCE * my, int * params )
+static int modproc_let_me_alone( INSTANCE * my, int * params )
 {
     INSTANCE * i = first_instance ;
 
@@ -477,7 +518,7 @@ CONDITIONALLY_STATIC int modproc_let_me_alone( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_get_id( INSTANCE * my, int * params )
+static int modproc_get_id( INSTANCE * my, int * params )
 {
     INSTANCE * ptr = first_instance, ** ctx ;
 
@@ -532,11 +573,29 @@ CONDITIONALLY_STATIC int modproc_get_id( INSTANCE * my, int * params )
 
 /* ----------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modproc_get_status( INSTANCE * my, int * params )
+static int modproc_get_status( INSTANCE * my, int * params )
 {
     INSTANCE * i ;
     if ( !params[0] || !( i = instance_get( params[0] ) ) ) return 0;
     return LOCDWORD( mod_proc, i, STATUS ) ;
 }
+
+/* ---------------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_proc, functions_exports )[] =
+{
+    /* Interacción entre procesos */
+    { "GET_ID"          , "I"   , TYPE_INT , modproc_get_id          },
+    { "GET_STATUS"      , "I"   , TYPE_INT , modproc_get_status      },
+    { "SIGNAL"          , "II"  , TYPE_INT , modproc_signal          },
+    { "SIGNAL_ACTION"   , "II"  , TYPE_INT , modproc_signal_action   },
+    { "SIGNAL_ACTION"   , "III" , TYPE_INT , modproc_signal_action3  },
+    { "LET_ME_ALONE"    , ""    , TYPE_INT , modproc_let_me_alone    },
+    { "EXIT"            , "SI"  , TYPE_INT , modproc_exit            },
+    { "EXIT"            , "S"   , TYPE_INT , modproc_exit_1          },
+    { "EXIT"            , ""    , TYPE_INT , modproc_exit_0          },
+    { "EXISTS"          , "I"   , TYPE_INT , modproc_running         },
+    { 0                 , 0     , 0        , 0                       }
+};
 
 /* ----------------------------------------------------------------- */
