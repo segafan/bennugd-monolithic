@@ -36,13 +36,14 @@
 
 #include "dlvaracc.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_timers_symbols.h"
-#endif
-
 /* ----------------------------------------------------------------- */
 
 #define    TIMER   0
+
+/* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( mod_timers, globals_def ) = "timer[9];\n";
 
 /* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -69,7 +70,7 @@ DLVARFIXUP __bgdexport( mod_timers, globals_fixup )[] =
  *      None
  */
 
-CONDITIONALLY_STATIC void _advance_timers( void )
+static void _advance_timers( void )
 {
     int * timer, i ;
     int curr_ticktimer = SDL_GetTicks() ;

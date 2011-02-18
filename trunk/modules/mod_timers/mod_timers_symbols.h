@@ -26,12 +26,12 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
+#ifdef __BGDC__
+char __bgdexport( mod_timers, globals_def )[] = "timer[9];\n";
+#else
+extern char __bgdexport( mod_timers, globals_def )[];
 extern DLVARFIXUP __bgdexport( mod_timers, globals_fixup )[];
 extern HOOK __bgdexport( mod_timers, handler_hooks )[];
 #endif
-
-char __bgdexport( mod_timers, globals_def )[] =
-	"timer[9];\n";
 
 #endif

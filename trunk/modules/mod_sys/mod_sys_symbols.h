@@ -24,15 +24,9 @@
 #ifndef __MODSYS_SYMBOLS_H
 #define __MODSYS_SYMBOLS_H
 
-#include <bgddl.h>
-#include "mod_sys_defines.h"
-
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modsys_getenv( INSTANCE * my, int * params );
-#endif
-
-/* ---------------------------------------------------------------------- */
+#ifdef __BGDC__
+#define _P_WAIT     0
+#define _P_NOWAIT   1
 
 DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
 {
@@ -41,14 +35,15 @@ DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
     { NULL          , 0         ,  0         }
 } ;
 
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
 DLSYSFUNCS __bgdexport( mod_sys, functions_exports )[] =
 {
-    { "GETENV"  , "S"    , TYPE_STRING, SYSMACRO(modsys_getenv) },
-    { "EXEC"    , "ISIP" , TYPE_INT   , SYSMACRO(modsys_exec)   },
-    { 0         , 0      , 0          , 0             }
+    { "GETENV"  , "S"    , TYPE_STRING, 0 },
+    { "EXEC"    , "ISIP" , TYPE_INT   , 0 },
+    { 0         , 0      , 0          , 0 }
 };
+#else
+extern DLCONSTANT __bgdexport( mod_sys, constants_def )[];
+extern DLSYSFUNCS __bgdexport( mod_sys, functions_exports )[];
+#endif
 
 #endif

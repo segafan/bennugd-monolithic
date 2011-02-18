@@ -40,10 +40,6 @@
 #include "bgddl.h"
 #include "dlvaracc.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_video_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 #define GRAPH_MODE  0
@@ -61,7 +57,7 @@ DLVARFIXUP __bgdexport( mod_video, globals_fixup )[] =
 
 /* Funciones de inicialización y carga */
 
-CONDITIONALLY_STATIC int modvideo_set_mode( INSTANCE * my, int * params )
+static int modvideo_set_mode( INSTANCE * my, int * params )
 {
     gr_set_mode( params[0] / 10000, params[0] % 10000, 0 ) ;
     return 1 ;
@@ -69,7 +65,7 @@ CONDITIONALLY_STATIC int modvideo_set_mode( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modvideo_set_mode_2( INSTANCE * my, int * params )
+static int modvideo_set_mode_2( INSTANCE * my, int * params )
 {
     gr_set_mode( params[0], params[1], 0 ) ;
     return 1 ;
@@ -77,7 +73,7 @@ CONDITIONALLY_STATIC int modvideo_set_mode_2( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modvideo_set_mode_3( INSTANCE * my, int * params )
+static int modvideo_set_mode_3( INSTANCE * my, int * params )
 {
     GLODWORD( mod_video, GRAPH_MODE ) = (( GLODWORD( mod_video, GRAPH_MODE ) & 0xFF00 ) | params[2] );
     gr_set_mode( params[0], params[1], 0 ) ;
@@ -86,7 +82,7 @@ CONDITIONALLY_STATIC int modvideo_set_mode_3( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modvideo_set_mode_4( INSTANCE * my, int * params )
+static int modvideo_set_mode_4( INSTANCE * my, int * params )
 {
     GLODWORD( mod_video, GRAPH_MODE ) = ( params[2] | params[3] );
     gr_set_mode( params[0], params[1], 0 ) ;
@@ -95,7 +91,7 @@ CONDITIONALLY_STATIC int modvideo_set_mode_4( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modvideo_set_fps( INSTANCE * my, int * params )
+static int modvideo_set_fps( INSTANCE * my, int * params )
 {
     gr_set_fps( params[0], params[1] ) ;
     return params[0];
@@ -124,7 +120,7 @@ Returns NULL if there are no dimensions available for a particular format,
 or -1 if any dimension is okay for the given format.
 */
 
-CONDITIONALLY_STATIC int modvideo_list_modes( INSTANCE * my, int * params )
+static int modvideo_list_modes( INSTANCE * my, int * params )
 {
     SDL_Rect **modes;
     SDL_PixelFormat vfmt;
@@ -172,7 +168,7 @@ CONDITIONALLY_STATIC int modvideo_list_modes( INSTANCE * my, int * params )
 
 */
 
-CONDITIONALLY_STATIC int modvideo_mode_is_ok( INSTANCE * my, int * params )
+static int modvideo_mode_is_ok( INSTANCE * my, int * params )
 {
     int sdl_flags = get_sdl_flags( params[3] );
     int depth = params[2];
@@ -181,5 +177,33 @@ CONDITIONALLY_STATIC int modvideo_mode_is_ok( INSTANCE * my, int * params )
 
     return ( SDL_VideoModeOK( params[0], params[1], depth, sdl_flags ) );
 }
+
+/* --------------------------------------------------------------------------- */
+
+DLSYSFUNCS  __bgdexport( mod_video, functions_exports )[] =
+{
+
+    /* Video */
+    { "SET_MODE"        , "I"     , TYPE_INT        , modvideo_set_mode         },
+    { "SET_MODE"        , "II"    , TYPE_INT        , modvideo_set_mode_2       },
+    { "SET_MODE"        , "III"   , TYPE_INT        , modvideo_set_mode_3       },
+    { "SET_MODE"        , "IIII"  , TYPE_INT        , modvideo_set_mode_4       },
+    { "SET_FPS"         , "II"    , TYPE_INT        , modvideo_set_fps          },
+
+    { "GET_MODES"       , "II"    , TYPE_POINTER    , modvideo_list_modes       },
+    { "MODE_IS_OK"      , "IIII"  , TYPE_INT        , modvideo_mode_is_ok       },
+
+    { 0                 , 0       , 0               , 0                         }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_video, modules_dependency )[] =
+{
+    "libgrbase",
+    "libvideo",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

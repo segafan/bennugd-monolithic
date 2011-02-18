@@ -26,58 +26,35 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modstring_strlen( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strupper( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strlower( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strcasecmp( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_substr( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_substr2( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strfind( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strfindSSI( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_lpad( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_rpad( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_itos( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_ftos( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_stoi( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_stof( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_asc( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_chr( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_trim( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_strrev( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_formatI( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_formatF( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modstring_formatFI( INSTANCE * my, int * params );
-#endif
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_string, functions_exports )[] =
 {
-    { "STRLEN"     , "S"   , TYPE_INT   , SYSMACRO(modstring_strlen)     },
-    { "LEN"        , "S"   , TYPE_INT   , SYSMACRO(modstring_strlen)     },
-    { "UCASE"      , "S"   , TYPE_STRING, SYSMACRO(modstring_strupper)   },
-    { "LCASE"      , "S"   , TYPE_STRING, SYSMACRO(modstring_strlower)   },
-    { "STRCASECMP" , "SS"  , TYPE_INT   , SYSMACRO(modstring_strcasecmp) },
-    { "SUBSTR"     , "SII" , TYPE_STRING, SYSMACRO(modstring_substr)     },
-    { "SUBSTR"     , "SI"  , TYPE_STRING, SYSMACRO(modstring_substr2)    },
-    { "FIND"       , "SS"  , TYPE_INT   , SYSMACRO(modstring_strfind)    },
-    { "FIND"       , "SSI" , TYPE_INT   , SYSMACRO(modstring_strfindSSI) },
-    { "LPAD"       , "SI"  , TYPE_STRING, SYSMACRO(modstring_lpad)       },
-    { "RPAD"       , "SI"  , TYPE_STRING, SYSMACRO(modstring_rpad)       },
-    { "ITOA"       , "I"   , TYPE_STRING, SYSMACRO(modstring_itos)       },
-    { "FTOA"       , "F"   , TYPE_STRING, SYSMACRO(modstring_ftos)       },
-    { "ATOI"       , "S"   , TYPE_INT   , SYSMACRO(modstring_stoi)       },
-    { "ATOF"       , "S"   , TYPE_FLOAT , SYSMACRO(modstring_stof)       },
-    { "ASC"        , "S"   , TYPE_BYTE  , SYSMACRO(modstring_asc)        },
-    { "CHR"        , "I"   , TYPE_STRING, SYSMACRO(modstring_chr)        },
-    { "TRIM"       , "S"   , TYPE_STRING, SYSMACRO(modstring_trim)       },
-    { "STRREV"     , "S"   , TYPE_STRING, SYSMACRO(modstring_strrev)     },
-    { "FORMAT"     , "I"   , TYPE_STRING, SYSMACRO(modstring_formatI)    },
-    { "FORMAT"     , "F"   , TYPE_STRING, SYSMACRO(modstring_formatF)    },
-    { "FORMAT"     , "FI"  , TYPE_STRING, SYSMACRO(modstring_formatFI)   },
-    { 0            , 0     , 0          , 0                    }
+    { "STRLEN"     , "S"   , TYPE_INT   , 0 },
+    { "LEN"        , "S"   , TYPE_INT   , 0 },
+    { "UCASE"      , "S"   , TYPE_STRING, 0 },
+    { "LCASE"      , "S"   , TYPE_STRING, 0 },
+    { "STRCASECMP" , "SS"  , TYPE_INT   , 0 },
+    { "SUBSTR"     , "SII" , TYPE_STRING, 0 },
+    { "SUBSTR"     , "SI"  , TYPE_STRING, 0 },
+    { "FIND"       , "SS"  , TYPE_INT   , 0 },
+    { "FIND"       , "SSI" , TYPE_INT   , 0 },
+    { "LPAD"       , "SI"  , TYPE_STRING, 0 },
+    { "RPAD"       , "SI"  , TYPE_STRING, 0 },
+    { "ITOA"       , "I"   , TYPE_STRING, 0 },
+    { "FTOA"       , "F"   , TYPE_STRING, 0 },
+    { "ATOI"       , "S"   , TYPE_INT   , 0 },
+    { "ATOF"       , "S"   , TYPE_FLOAT , 0 },
+    { "ASC"        , "S"   , TYPE_BYTE  , 0 },
+    { "CHR"        , "I"   , TYPE_STRING, 0 },
+    { "TRIM"       , "S"   , TYPE_STRING, 0 },
+    { "STRREV"     , "S"   , TYPE_STRING, 0 },
+    { "FORMAT"     , "I"   , TYPE_STRING, 0 },
+    { "FORMAT"     , "F"   , TYPE_STRING, 0 },
+    { "FORMAT"     , "FI"  , TYPE_STRING, 0 },
+    { 0            , 0     , 0          , 0 }
 };
+#else
+extern DLSYSFUNCS  __bgdexport( mod_string, functions_exports )[];
+#endif
 
 #endif
