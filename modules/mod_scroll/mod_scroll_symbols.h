@@ -26,31 +26,26 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int mod_scroll_start( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int mod_scroll_stop( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int mod_scroll_move( INSTANCE * my, int * params );
-#endif
-
-/* ---------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLSYSFUNCS __bgdexport( mod_scroll, functions_exports )[] =
 {
-    { "SCROLL_START"    , "IIIIII", TYPE_INT   , SYSMACRO(mod_scroll_start)   },
-    { "SCROLL_STOP"     , "I"     , TYPE_INT   , SYSMACRO(mod_scroll_stop)    },
-    { "SCROLL_MOVE"     , "I"     , TYPE_INT   , SYSMACRO(mod_scroll_move)    },
-    { "START_SCROLL"    , "IIIIII", TYPE_INT   , SYSMACRO(mod_scroll_start)   },
-    { "STOP_SCROLL"     , "I"     , TYPE_INT   , SYSMACRO(mod_scroll_stop)    },
-    { "MOVE_SCROLL"     , "I"     , TYPE_INT   , SYSMACRO(mod_scroll_move)    },
-    { 0                 , 0       , 0          , 0                  }
+    { "SCROLL_START"    , "IIIIII", TYPE_INT   , 0 },
+    { "SCROLL_STOP"     , "I"     , TYPE_INT   , 0 },
+    { "SCROLL_MOVE"     , "I"     , TYPE_INT   , 0 },
+    { "START_SCROLL"    , "IIIIII", TYPE_INT   , 0 },
+    { "STOP_SCROLL"     , "I"     , TYPE_INT   , 0 },
+    { "MOVE_SCROLL"     , "I"     , TYPE_INT   , 0 },
+    { 0                 , 0       , 0          , 0 }
 };
-
-/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_scroll, modules_dependency )[] =
 {
     "libscroll",
     0
 };
+#else
+extern DLSYSFUNCS __bgdexport( mod_scroll, functions_exports )[];
+extern char * __bgdexport( mod_scroll, modules_dependency )[];
+#endif
 
 #endif

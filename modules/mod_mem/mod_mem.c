@@ -70,10 +70,6 @@
 
 #include "bgddl.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_mem_symbols.h"
-#endif
-
 /*
  * Dynamic memory
  */
@@ -120,7 +116,7 @@ static int kernel_version_type( void )
  *  and may or may not be an approximation.
  */
 
-CONDITIONALLY_STATIC int modmem_memory_free( INSTANCE * my, int * params )
+static int modmem_memory_free( INSTANCE * my, int * params )
 {
 #ifdef WIN32
     MEMORYSTATUS mem ;
@@ -132,7 +128,7 @@ CONDITIONALLY_STATIC int modmem_memory_free( INSTANCE * my, int * params )
     get_system_info( &info );
     return B_PAGE_SIZE * ( info.max_pages - info.used_pages );
 
-#elif defined(TARGET_LINUX)
+#elif !defined(TARGET_MAC)
     /* Linux and other Unix (?) */
     struct sysinfo meminf;
     int fv;
@@ -158,7 +154,7 @@ CONDITIONALLY_STATIC int modmem_memory_free( INSTANCE * my, int * params )
  *  Return total number of bytes of physical memory
  */
 
-CONDITIONALLY_STATIC int modmem_memory_total( INSTANCE * my, int * params )
+static int modmem_memory_total( INSTANCE * my, int * params )
 {
 #ifdef WIN32
     MEMORYSTATUS mem ;
@@ -170,7 +166,7 @@ CONDITIONALLY_STATIC int modmem_memory_total( INSTANCE * my, int * params )
     get_system_info( &info );
     return  B_PAGE_SIZE * ( info.max_pages );
 
-#elif defined(TARGET_LINUX)
+#elif !defined(TARGET_MAC)
     /* Linux and other Unix (?) */
     struct sysinfo meminf;
     int fv;
@@ -192,30 +188,30 @@ CONDITIONALLY_STATIC int modmem_memory_total( INSTANCE * my, int * params )
 #endif
 }
 
-CONDITIONALLY_STATIC int modmem_memcmp( INSTANCE * my, int * params )
+static int modmem_memcmp( INSTANCE * my, int * params )
 {
     return ( memcmp(( void * )params[0], ( void * )params[1], params[2] ) ) ;
 }
 
-CONDITIONALLY_STATIC int modmem_memmove( INSTANCE * my, int * params )
+static int modmem_memmove( INSTANCE * my, int * params )
 {
     memmove(( void * )params[0], ( void * )params[1], params[2] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modmem_memcopy( INSTANCE * my, int * params )
+static int modmem_memcopy( INSTANCE * my, int * params )
 {
     memcpy(( void * )params[0], ( void * )params[1], params[2] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modmem_memset( INSTANCE * my, int * params )
+static int modmem_memset( INSTANCE * my, int * params )
 {
     memset(( void * )params[0], params[1], params[2] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modmem_memsetw( INSTANCE * my, int * params )
+static int modmem_memsetw( INSTANCE * my, int * params )
 {
     uint16_t * ptr = ( uint16_t * )params[0] ;
     const uint16_t b = params[1] ;
@@ -225,7 +221,7 @@ CONDITIONALLY_STATIC int modmem_memsetw( INSTANCE * my, int * params )
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modmem_memseti( INSTANCE * my, int * params )
+static int modmem_memseti( INSTANCE * my, int * params )
 {
     uint32_t * ptr = ( uint32_t * )params[0] ;
     const uint32_t b = params[1] ;
@@ -235,23 +231,56 @@ CONDITIONALLY_STATIC int modmem_memseti( INSTANCE * my, int * params )
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int modmem_calloc( INSTANCE * my, int * params )
+static int modmem_calloc( INSTANCE * my, int * params )
 {
     return (( int ) calloc( params[0], params[1] ) ) ;
 }
 
-CONDITIONALLY_STATIC int modmem_alloc( INSTANCE * my, int * params )
+static int modmem_alloc( INSTANCE * my, int * params )
 {
     return (( int ) malloc( params[0] ) ) ;
 }
 
-CONDITIONALLY_STATIC int modmem_realloc( INSTANCE * my, int * params )
+static int modmem_realloc( INSTANCE * my, int * params )
 {
     return (( int )realloc(( void * )params[0], params[1] ) ) ;
 }
 
-CONDITIONALLY_STATIC int modmem_free( INSTANCE * my, int * params )
+static int modmem_free( INSTANCE * my, int * params )
 {
     free(( void * )params[0] ) ;
     return 1 ;
 }
+
+/* ---------------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_mem, functions_exports )[] =
+{
+    /* Manipulacion de Memoria */
+    { "MEM_CALLOC"      , "II"    , TYPE_POINTER, modmem_calloc         },
+    { "MEM_ALLOC"       , "I"     , TYPE_POINTER, modmem_alloc          },
+    { "MEM_FREE"        , "P"     , TYPE_INT    , modmem_free           },
+    { "MEM_REALLOC"     , "PI"    , TYPE_POINTER, modmem_realloc        },
+    { "MEM_CMP"         , "PPI"   , TYPE_INT    , modmem_memcmp         },
+    { "MEM_SET"         , "PBI"   , TYPE_INT    , modmem_memset         },
+    { "MEM_SETW"        , "PWI"   , TYPE_INT    , modmem_memsetw        },
+    { "MEM_SETI"        , "PII"   , TYPE_INT    , modmem_memseti        },
+    { "MEM_COPY"        , "PPI"   , TYPE_INT    , modmem_memcopy        },
+    { "MEM_MOVE"        , "PPI"   , TYPE_INT    , modmem_memmove        },
+    { "MEM_AVAILABLE"   , ""      , TYPE_INT    , modmem_memory_free    },
+    { "MEM_TOTAL"       , ""      , TYPE_INT    , modmem_memory_total   },
+
+    { "CALLOC"          , "II"    , TYPE_POINTER, modmem_calloc         },
+    { "ALLOC"           , "I"     , TYPE_POINTER, modmem_alloc          },
+    { "FREE"            , "P"     , TYPE_INT    , modmem_free           },
+    { "REALLOC"         , "PI"    , TYPE_POINTER, modmem_realloc        },
+    { "MEMCMP"          , "PPI"   , TYPE_INT    , modmem_memcmp         },
+    { "MEMSET"          , "PBI"   , TYPE_INT    , modmem_memset         },
+    { "MEMSETW"         , "PWI"   , TYPE_INT    , modmem_memsetw        },
+    { "MEMSETI"         , "PII"   , TYPE_INT    , modmem_memseti        },
+    { "MEMCOPY"         , "PPI"   , TYPE_INT    , modmem_memcopy        },
+    { "MEMMOVE"         , "PPI"   , TYPE_INT    , modmem_memmove        },
+    { "MEMORY_FREE"     , ""      , TYPE_INT    , modmem_memory_free    },
+    { "MEMORY_TOTAL"    , ""      , TYPE_INT    , modmem_memory_total   },
+    { 0                 , 0       , 0           , 0                     }
+};

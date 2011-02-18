@@ -31,10 +31,6 @@
 #include "xstrings.h"
 #include "dcb.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_sort_symbols.h"
-#endif
-
 static int keyoffset = 0;
 
 /*
@@ -294,7 +290,7 @@ static int sort_variables( void * data, int key_offset, int key_type, int elemen
  *  variable as a key for sorting order.
  **/
 
-CONDITIONALLY_STATIC int modsort_sort( INSTANCE * my, int * params )
+static int modsort_sort( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -349,7 +345,7 @@ CONDITIONALLY_STATIC int modsort_sort( INSTANCE * my, int * params )
  *  Sorts an array of structs, using the given variable as a key
  **/
 
-CONDITIONALLY_STATIC int modsort_ksort( INSTANCE * my, int * params )
+static int modsort_ksort( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -417,7 +413,7 @@ CONDITIONALLY_STATIC int modsort_ksort( INSTANCE * my, int * params )
  *  or a pointer to an array, unlike the simple SORT version.
  **/
 
-CONDITIONALLY_STATIC int modsort_sort_n( INSTANCE * my, int * params )
+static int modsort_sort_n( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -475,7 +471,7 @@ CONDITIONALLY_STATIC int modsort_sort_n( INSTANCE * my, int * params )
  *  single elements, unlike the previous version of KSORT above.
  **/
 
-CONDITIONALLY_STATIC int modsort_ksort_n( INSTANCE * my, int * params )
+static int modsort_ksort_n( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -592,7 +588,7 @@ static void QuickSort( uint8_t *Data, int inf, int sup, int *params )
  *      datatype (int=0, float=1)
  */
 
-CONDITIONALLY_STATIC int modsort_quicksort( INSTANCE *my, int *params )
+static int modsort_quicksort( INSTANCE *my, int *params )
 {
 
     uint8_t *Data = ( uint8_t * )params[0];
@@ -600,4 +596,15 @@ CONDITIONALLY_STATIC int modsort_quicksort( INSTANCE *my, int *params )
     return 1 ;
 }
 
+/* ---------------------------------------------------------------------- */
 
+DLSYSFUNCS  __bgdexport( mod_sort, functions_exports )[] =
+{
+    /* Funciones sort */
+    { "QUICKSORT"   , "PIIIBB", TYPE_INT    , modsort_quicksort },
+    { "KSORT"       , "V++V++", TYPE_INT    , modsort_ksort     },
+    { "KSORT"       , "V++V++I", TYPE_INT    , modsort_ksort_n   },
+    { "SORT"        , "V++I"  , TYPE_INT    , modsort_sort_n    },
+    { "SORT"        , "V++"   , TYPE_INT    , modsort_sort      },
+    { 0             , 0       , 0           , 0                 }
+};

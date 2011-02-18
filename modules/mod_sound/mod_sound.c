@@ -44,10 +44,6 @@
 
 #include "dlvaracc.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_sound_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 static int audio_initialized = 0 ;
@@ -57,6 +53,25 @@ static int audio_initialized = 0 ;
 #define SOUND_FREQ              0
 #define SOUND_MODE              1
 #define SOUND_CHANNELS          2
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)                   */
+
+DLCONSTANT  __bgdexport( mod_sound, constants_def )[] =
+{
+    { "MODE_MONO"   , TYPE_INT, 0  },
+    { "MODE_STEREO" , TYPE_INT, 1  },
+    { "ALL_SOUND"   , TYPE_INT, -1 },
+    { NULL          , 0       , 0  }
+} ;
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion)           */
+
+char * __bgdexport( mod_sound, globals_def ) =
+    "   sound_freq = 22050 ;\n"
+    "   sound_mode = MODE_STEREO ;\n"
+    "   sound_channels = 8 ;\n";
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                                     */
@@ -157,19 +172,9 @@ static int sound_init()
         else
             audio_rate = 11025;
 
-#ifdef TARGET_WII
-        /* WII uses a powerpc architecture, which is big-endian */
-        audio_format = AUDIO_S16MSB;
-        audio_rate = 48000;
-#else
         audio_format = AUDIO_S16;
-#endif
         audio_channels = GLODWORD( mod_sound, SOUND_MODE ) + 1;
-#ifdef TARGET_WII
-        audio_buffers = 1024;
-#else
         audio_buffers = 1024 * audio_rate / 22050;
-#endif
 
         /* Open the audio device */
         if ( Mix_OpenAudio( audio_rate, audio_format, audio_channels, audio_buffers ) >= 0 )
@@ -853,7 +858,7 @@ static int reverse_stereo( int canal, int flip )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_load_song( INSTANCE * my, int * params )
+static int modsound_load_song( INSTANCE * my, int * params )
 {
     int var;
     const char * filename ;
@@ -883,7 +888,7 @@ CONDITIONALLY_STATIC int modsound_load_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_play_song( INSTANCE * my, int * params )
+static int modsound_play_song( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return -1;
     return( play_song( params[0], params[1] ) );
@@ -905,7 +910,7 @@ CONDITIONALLY_STATIC int modsound_play_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_unload_song( INSTANCE * my, int * params )
+static int modsound_unload_song( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return ( -1 );
     return( unload_song( params[0] ) );
@@ -927,7 +932,7 @@ CONDITIONALLY_STATIC int modsound_unload_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_unload_song2( INSTANCE * my, int * params )
+static int modsound_unload_song2( INSTANCE * my, int * params )
 {
     int *s = params[0], r;
     if ( !s || *s == -1 ) return ( -1 );
@@ -953,7 +958,7 @@ CONDITIONALLY_STATIC int modsound_unload_song2( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_stop_song( INSTANCE * my, int * params )
+static int modsound_stop_song( INSTANCE * my, int * params )
 {
     return( stop_song() );
 }
@@ -975,7 +980,7 @@ CONDITIONALLY_STATIC int modsound_stop_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_pause_song( INSTANCE * my, int * params )
+static int modsound_pause_song( INSTANCE * my, int * params )
 {
     return( pause_song() );
 }
@@ -997,7 +1002,7 @@ CONDITIONALLY_STATIC int modsound_pause_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_resume_song( INSTANCE * my, int * params )
+static int modsound_resume_song( INSTANCE * my, int * params )
 {
     return( resume_song() );
 }
@@ -1019,7 +1024,7 @@ CONDITIONALLY_STATIC int modsound_resume_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_is_playing_song( INSTANCE * my, int * params )
+static int modsound_is_playing_song( INSTANCE * my, int * params )
 {
     return ( is_playing_song() );
 }
@@ -1041,7 +1046,7 @@ CONDITIONALLY_STATIC int modsound_is_playing_song( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_song_volume( INSTANCE * my, int * params )
+static int modsound_set_song_volume( INSTANCE * my, int * params )
 {
     return ( set_song_volume( params[0] ) );
 }
@@ -1063,7 +1068,7 @@ CONDITIONALLY_STATIC int modsound_set_song_volume( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_fade_music_in( INSTANCE * my, int * params )
+static int modsound_fade_music_in( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return -1;
     return ( fade_music_in( params[0], params[1], params[2] ) );
@@ -1085,7 +1090,7 @@ CONDITIONALLY_STATIC int modsound_fade_music_in( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_fade_music_off( INSTANCE * my, int * params )
+static int modsound_fade_music_off( INSTANCE * my, int * params )
 {
     return ( fade_music_off( params[0] ) );
 }
@@ -1105,7 +1110,7 @@ CONDITIONALLY_STATIC int modsound_fade_music_off( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_load_wav( INSTANCE * my, int * params )
+static int modsound_load_wav( INSTANCE * my, int * params )
 {
     int var;
     const char * filename ;
@@ -1135,7 +1140,7 @@ CONDITIONALLY_STATIC int modsound_load_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_play_wav( INSTANCE * my, int * params )
+static int modsound_play_wav( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return -1;
     return( play_wav( params[0], params[1], -1 ) );
@@ -1159,7 +1164,7 @@ CONDITIONALLY_STATIC int modsound_play_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_play_wav_channel( INSTANCE * my, int * params )
+static int modsound_play_wav_channel( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return -1;
     return( play_wav( params[0], params[1], params[2] ) );
@@ -1182,7 +1187,7 @@ CONDITIONALLY_STATIC int modsound_play_wav_channel( INSTANCE * my, int * params 
  *
  */
 
-CONDITIONALLY_STATIC int modsound_unload_wav( INSTANCE * my, int * params )
+static int modsound_unload_wav( INSTANCE * my, int * params )
 {
     if ( params[0] == -1 ) return -1;
     return( unload_wav( params[0] ) );
@@ -1205,7 +1210,7 @@ CONDITIONALLY_STATIC int modsound_unload_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_unload_wav2( INSTANCE * my, int * params )
+static int modsound_unload_wav2( INSTANCE * my, int * params )
 {
     int *s = params[0], r;
     if ( !s || *s == -1 ) return ( -1 );
@@ -1231,7 +1236,7 @@ CONDITIONALLY_STATIC int modsound_unload_wav2( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_stop_wav( INSTANCE * my, int * params )
+static int modsound_stop_wav( INSTANCE * my, int * params )
 {
     return( stop_wav( params[0] ) );
 }
@@ -1253,7 +1258,7 @@ CONDITIONALLY_STATIC int modsound_stop_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_pause_wav( INSTANCE * my, int * params )
+static int modsound_pause_wav( INSTANCE * my, int * params )
 {
     return ( pause_wav( params[0] ) );
 }
@@ -1275,7 +1280,7 @@ CONDITIONALLY_STATIC int modsound_pause_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_resume_wav( INSTANCE * my, int * params )
+static int modsound_resume_wav( INSTANCE * my, int * params )
 {
     return ( resume_wav( params[0] ) );
 }
@@ -1298,7 +1303,7 @@ CONDITIONALLY_STATIC int modsound_resume_wav( INSTANCE * my, int * params )
  */
 
 
-CONDITIONALLY_STATIC int modsound_is_playing_wav( INSTANCE * my, int * params )
+static int modsound_is_playing_wav( INSTANCE * my, int * params )
 {
     return ( is_playing_wav( params[0] ) );
 }
@@ -1321,7 +1326,7 @@ CONDITIONALLY_STATIC int modsound_is_playing_wav( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_channel_volume( INSTANCE * my, int * params )
+static int modsound_set_channel_volume( INSTANCE * my, int * params )
 {
     return( set_channel_volume( params[0], params[1] ) );
 }
@@ -1342,7 +1347,7 @@ CONDITIONALLY_STATIC int modsound_set_channel_volume( INSTANCE * my, int * param
  *
  */
 
-CONDITIONALLY_STATIC int modsound_reserve_channels( INSTANCE * my, int * params )
+static int modsound_reserve_channels( INSTANCE * my, int * params )
 {
     return ( reserve_channels( params[0] ) );
 }
@@ -1365,7 +1370,7 @@ CONDITIONALLY_STATIC int modsound_reserve_channels( INSTANCE * my, int * params 
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_wav_volume( INSTANCE * my, int * params )
+static int modsound_set_wav_volume( INSTANCE * my, int * params )
 {
     return( set_wav_volume( params[0], params[1] ) );
 }
@@ -1384,7 +1389,7 @@ CONDITIONALLY_STATIC int modsound_set_wav_volume( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_panning( INSTANCE * my, int * params )
+static int modsound_set_panning( INSTANCE * my, int * params )
 {
     return( set_panning( params[0], params[1], params[2] ) );
 }
@@ -1403,7 +1408,7 @@ CONDITIONALLY_STATIC int modsound_set_panning( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_position( INSTANCE * my, int * params )
+static int modsound_set_position( INSTANCE * my, int * params )
 {
     return( set_position( params[0], params[1], params[2] ) );
 }
@@ -1423,7 +1428,7 @@ CONDITIONALLY_STATIC int modsound_set_position( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_set_distance( INSTANCE * my, int * params )
+static int modsound_set_distance( INSTANCE * my, int * params )
 {
     return( set_distance( params[0], params[1] ) );
 }
@@ -1442,32 +1447,69 @@ CONDITIONALLY_STATIC int modsound_set_distance( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modsound_reverse_stereo( INSTANCE * my, int * params )
+static int modsound_reverse_stereo( INSTANCE * my, int * params )
 {
     return( reverse_stereo( params[0], params[1] ) );
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsound_set_music_position( INSTANCE * my, int * params )
+static int modsound_set_music_position( INSTANCE * my, int * params )
 {
     return ( Mix_SetMusicPosition( ( double ) *( float * ) &params[0] ) );
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsound_init( INSTANCE * my, int * params )
+static int modsound_init( INSTANCE * my, int * params )
 {
     return( sound_init() );
 }
 
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsound_close( INSTANCE * my, int * params )
+static int modsound_close( INSTANCE * my, int * params )
 {
     sound_close();
     return( 0 );
 }
+
+/* --------------------------------------------------------------------------- */
+
+DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
+{
+    { "SOUND_INIT"          , ""     , TYPE_INT , modsound_init               },
+    { "SOUND_CLOSE"         , ""     , TYPE_INT , modsound_close              },
+    { "LOAD_SONG"           , "S"    , TYPE_INT , modsound_load_song          },
+    { "PLAY_SONG"           , "II"   , TYPE_INT , modsound_play_song          },
+    { "UNLOAD_SONG"         , "I"    , TYPE_INT , modsound_unload_song        },
+    { "STOP_SONG"           , ""     , TYPE_INT , modsound_stop_song          },
+    { "PAUSE_SONG"          , ""     , TYPE_INT , modsound_pause_song         },
+    { "RESUME_SONG"         , ""     , TYPE_INT , modsound_resume_song        },
+    { "SET_SONG_VOLUME"     , "I"    , TYPE_INT , modsound_set_song_volume    },
+    { "IS_PLAYING_SONG"     , ""     , TYPE_INT , modsound_is_playing_song    },
+    { "LOAD_WAV"            , "S"    , TYPE_INT , modsound_load_wav           },
+    { "PLAY_WAV"            , "II"   , TYPE_INT , modsound_play_wav           },
+    { "UNLOAD_WAV"          , "I"    , TYPE_INT , modsound_unload_wav         },
+    { "STOP_WAV"            , "I"    , TYPE_INT , modsound_stop_wav           },
+    { "PAUSE_WAV"           , "I"    , TYPE_INT , modsound_pause_wav          },
+    { "RESUME_WAV"          , "I"    , TYPE_INT , modsound_resume_wav         },
+    { "IS_PLAYING_WAV"      , "I"    , TYPE_INT , modsound_is_playing_wav     },
+    { "SET_WAV_VOLUME"      , "II"   , TYPE_INT , modsound_set_wav_volume     },
+    { "FADE_MUSIC_IN"       , "III"  , TYPE_INT , modsound_fade_music_in      },
+    { "FADE_MUSIC_OFF"      , "I"    , TYPE_INT , modsound_fade_music_off     },
+    { "SET_CHANNEL_VOLUME"  , "II"   , TYPE_INT , modsound_set_channel_volume },
+    { "RESERVE_CHANNELS"    , "I"    , TYPE_INT , modsound_reserve_channels   },
+    { "SET_PANNING"         , "III"  , TYPE_INT , modsound_set_panning        },
+    { "SET_POSITION"        , "III"  , TYPE_INT , modsound_set_position       },
+    { "SET_DISTANCE"        , "II"   , TYPE_INT , modsound_set_distance       },
+    { "REVERSE_STEREO"      , "II"   , TYPE_INT , modsound_reverse_stereo     },
+    { "PLAY_WAV"            , "III"  , TYPE_INT , modsound_play_wav_channel   },
+    { "SET_MUSIC_POSITION"  , "F"    , TYPE_INT , modsound_set_music_position },
+    { "UNLOAD_SONG"         , "P"    , TYPE_INT , modsound_unload_song2       },
+    { "UNLOAD_WAV"          , "P"    , TYPE_INT , modsound_unload_wav2        },
+    { 0                     , 0      , 0        , 0                           }
+};
 
 /* --------------------------------------------------------------------------- */
 /* Funciones de inicializacion del modulo/plugin                               */

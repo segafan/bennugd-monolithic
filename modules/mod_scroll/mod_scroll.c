@@ -29,28 +29,47 @@
 
 #include "libscroll.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_scroll_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int mod_scroll_start( INSTANCE * my, int * params )
+static int mod_scroll_start( INSTANCE * my, int * params )
 {
     scroll_start( params[0], params[1], params[2], params[3], params[4], params[5] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int mod_scroll_stop( INSTANCE * my, int * params )
+static int mod_scroll_stop( INSTANCE * my, int * params )
 {
     scroll_stop( params[0] ) ;
     return 1 ;
 }
 
-CONDITIONALLY_STATIC int mod_scroll_move( INSTANCE * my, int * params )
+static int mod_scroll_move( INSTANCE * my, int * params )
 {
     scroll_update (params[0]) ;
     return 1 ;
 }
+
+/* ---------------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_scroll, functions_exports )[] =
+{
+    { "SCROLL_START"    , "IIIIII", TYPE_INT   , mod_scroll_start   },
+    { "SCROLL_STOP"     , "I"     , TYPE_INT   , mod_scroll_stop    },
+    { "SCROLL_MOVE"     , "I"     , TYPE_INT   , mod_scroll_move    },
+
+    { "START_SCROLL"    , "IIIIII", TYPE_INT   , mod_scroll_start   },
+    { "STOP_SCROLL"     , "I"     , TYPE_INT   , mod_scroll_stop    },
+    { "MOVE_SCROLL"     , "I"     , TYPE_INT   , mod_scroll_move    },
+
+    { 0                 , 0       , 0          , 0                  }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_scroll, modules_dependency )[] =
+{
+    "libscroll",
+    0
+};
 
 /* --------------------------------------------------------------------------- */

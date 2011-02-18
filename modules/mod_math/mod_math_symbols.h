@@ -25,66 +25,39 @@
 #define __MODMATH_H
 
 #include <bgddl.h>
-#include <unistd.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int math_abs( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_pow( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_sqrt( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_cos( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_sin( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_tan( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_acos( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_asin( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_atan( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_atan2( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_isinf( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_isnan( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_finite( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_get_disty( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_fget_angle( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_fget_dist( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_near_angle( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int math_get_distx( INSTANCE * my, int * params );
-#endif
-
-
-/* --------------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLCONSTANT __bgdexport( mod_math, constants_def )[] =
 {
     { "PI"  , TYPE_INT  , 180000    },
     { NULL  , 0         , 0         }
 } ;
 
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
-DLSYSFUNCS  __bgdexport( mod_math, functions_exports )[] =
+DLSYSFUNCS __bgdexport( mod_math, functions_exports )[] =
 {
-    { "ABS"         , "F"       , TYPE_FLOAT    , SYSMACRO(math_abs)          },
-    { "POW"         , "FF"      , TYPE_FLOAT    , SYSMACRO(math_pow)          },
-    { "SQRT"        , "F"       , TYPE_FLOAT    , SYSMACRO(math_sqrt)         },
-	
-    { "COS"         , "F"       , TYPE_FLOAT    , SYSMACRO(math_cos)          },
-    { "SIN"         , "F"       , TYPE_FLOAT    , SYSMACRO(math_sin)          },
-    { "TAN"         , "F"       , TYPE_FLOAT    , SYSMACRO(math_tan)          },
-    { "ACOS"        , "F"       , TYPE_FLOAT    , SYSMACRO(math_acos)         },
-    { "ASIN"        , "F"       , TYPE_FLOAT    , SYSMACRO(math_asin)         },
-    { "ATAN"        , "F"       , TYPE_FLOAT    , SYSMACRO(math_atan)         },
-    { "ATAN2"       , "FF"      , TYPE_FLOAT    , SYSMACRO(math_atan2)        },
-	
-    { "ISINF"       , "F"       , TYPE_INT      , SYSMACRO(math_isinf)        },
-    { "ISNAN"       , "F"       , TYPE_INT      , SYSMACRO(math_isnan)        },
-    { "FINITE"      , "F"       , TYPE_INT      , SYSMACRO(math_finite)       },
-	
-    { "FGET_ANGLE"  , "IIII"    , TYPE_INT      , SYSMACRO(math_fget_angle)   },
-    { "FGET_DIST"   , "IIII"    , TYPE_INT      , SYSMACRO(math_fget_dist)    },
-    { "NEAR_ANGLE"  , "III"     , TYPE_INT      , SYSMACRO(math_near_angle)   },
-    { "GET_DISTX"   , "II"      , TYPE_INT      , SYSMACRO(math_get_distx)    },
-    { "GET_DISTY"   , "II"      , TYPE_INT      , SYSMACRO(math_get_disty)    },
-	
-    { 0             , 0         , 0             , 0                 }
+    { "ABS"         , "F"       , TYPE_FLOAT    , 0 },
+    { "POW"         , "FF"      , TYPE_FLOAT    , 0 },
+    { "SQRT"        , "F"       , TYPE_FLOAT    , 0 },
+    { "COS"         , "F"       , TYPE_FLOAT    , 0 },
+    { "SIN"         , "F"       , TYPE_FLOAT    , 0 },
+    { "TAN"         , "F"       , TYPE_FLOAT    , 0 },
+    { "ACOS"        , "F"       , TYPE_FLOAT    , 0 },
+    { "ASIN"        , "F"       , TYPE_FLOAT    , 0 },
+    { "ATAN"        , "F"       , TYPE_FLOAT    , 0 },
+    { "ATAN2"       , "FF"      , TYPE_FLOAT    , 0 },
+    { "ISINF"       , "F"       , TYPE_INT      , 0 },
+    { "ISNAN"       , "F"       , TYPE_INT      , 0 },
+    { "FINITE"      , "F"       , TYPE_INT      , 0 },
+    { "FGET_ANGLE"  , "IIII"    , TYPE_INT      , 0 },
+    { "FGET_DIST"   , "IIII"    , TYPE_INT      , 0 },
+    { "NEAR_ANGLE"  , "III"     , TYPE_INT      , 0 },
+    { "GET_DISTX"   , "II"      , TYPE_INT      , 0 },
+    { "GET_DISTY"   , "II"      , TYPE_INT      , 0 },
+    { 0             , 0         , 0             , 0 }
 };
+#else
+extern DLCONSTANT __bgdexport( mod_math, constants_def )[];
+extern DLSYSFUNCS __bgdexport( mod_math, functions_exports )[];
+#endif
 
 #endif

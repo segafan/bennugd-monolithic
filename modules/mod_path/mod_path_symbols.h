@@ -29,40 +29,32 @@
 #define PF_NODIAG       1
 #define PF_REVERSE      2
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modpathfind_path_find( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modpathfind_path_getxy( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modpathfind_path_wall( INSTANCE * my, int * params );
-#endif
-
-/* --------------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLCONSTANT __bgdexport( mod_path, constants_def )[] =
 {
-    { "PF_NODIAG"   , TYPE_INT, PF_NODIAG   }, /* Prohibit the pathfinding from using diagonal paths. */
-    { "PF_REVERSE"  , TYPE_INT, PF_REVERSE  }, /* Return the path found in reverse order.             */
-
+    { "PF_NODIAG"   , TYPE_INT, PF_NODIAG   },
+    { "PF_REVERSE"  , TYPE_INT, PF_REVERSE  },
     { NULL          , 0       , 0           }
 } ;
-
-/* --------------------------------------------------------------------------- */
 
 DLSYSFUNCS __bgdexport( mod_path, functions_exports )[] =
 {
     /* Path finding */
-    { "PATH_FIND"   , "IIIIIII", TYPE_INT   , SYSMACRO(modpathfind_path_find)     },
-    { "PATH_GETXY"  , "PP"     , TYPE_INT   , SYSMACRO(modpathfind_path_getxy)    },
-    { "PATH_WALL"   , "I"      , TYPE_INT   , SYSMACRO(modpathfind_path_wall)     },
-
-    { 0             , 0        , 0          , 0                         }
+    { "PATH_FIND"   , "IIIIIII", TYPE_INT   , 0 },
+    { "PATH_GETXY"  , "PP"     , TYPE_INT   , 0 },
+    { "PATH_WALL"   , "I"      , TYPE_INT   , 0 },
+    { 0             , 0        , 0          , 0 }
 };
-
-/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_path, modules_dependency )[] =
 {
     "libgrbase",
     NULL
 };
+#else
+extern DLCONSTANT __bgdexport( mod_path, constants_def )[];
+extern DLSYSFUNCS __bgdexport( mod_path, functions_exports )[];
+extern char * __bgdexport( mod_path, modules_dependency )[];
+#endif
 
 #endif
