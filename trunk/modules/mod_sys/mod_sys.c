@@ -36,6 +36,10 @@
 #include <process.h>
 #endif
 
+#ifdef TARGET_WII
+#include <ogc/wiilaunch.h>
+#endif
+
 /* ---------------------------------------------------------------------- */
 
 #ifndef _P_WAIT
@@ -64,6 +68,13 @@ DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
 
 static int modsys_exec( INSTANCE * my, int * params )
 {
+#if defined TARGET_PSP
+    return 0;
+#elif defined TARGET_WII
+    WII_OpenURL(string_get(params[1]));
+    string_discard(params[1]);
+    return 0;
+#else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
     int argc = params[2];
@@ -118,6 +129,7 @@ static int modsys_exec( INSTANCE * my, int * params )
     if ( argv ) free( argv );
 
     return ( status ) ;
+#endif
 }
 
 /* ---------------------------------------------------------------------- */
