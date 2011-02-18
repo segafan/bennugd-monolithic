@@ -25,11 +25,22 @@
 #include "mod_wpad.h"
 
 #ifdef __BGDC__
-    #define SYSMACRO(a) 0
+DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[] =
+{
+    { "WPAD_IS_READY"          , "I" , TYPE_INT      , 0 },
+    { "WPAD_INFO"              , "II", TYPE_INT      , 0 },
+    { "WPAD_INFO_NUNCHUK"      , "II", TYPE_INT      , 0 },
+    { "WPAD_INFO_CLASSIC"      , "II", TYPE_INT      , 0 },
+    { "WPAD_INFO_GUITAR"       , "II", TYPE_INT      , 0 },
+    { "WPAD_INFO_BB"           , "II", TYPE_INT      , 0 },
+    { "WPAD_RUMBLE"            , "II", TYPE_INT      , 0 },
+    { 0                        , 0   , 0             , 0 }
+};
 #else
-    #define SYSMACRO(a) a
+extern DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[];
 #endif
 
+#ifndef __BGDC__
 /* Function declaration */
 extern int modwpad_is_ready( INSTANCE * my, int * params );
 extern int modwpad_info( INSTANCE * my, int * params );
@@ -38,6 +49,7 @@ extern int modwpad_info_classic( INSTANCE * my, int * params );
 extern int modwpad_info_guitar( INSTANCE * my, int * params );
 extern int modwpad_info_bb( INSTANCE * my, int * params );
 extern int modwpad_rumble( INSTANCE * my, int * params);
+#endif
 
 
 DLCONSTANT __bgdexport( mod_wpad, constants_def )[] =
@@ -66,20 +78,6 @@ DLCONSTANT __bgdexport( mod_wpad, constants_def )[] =
 	
     { NULL              , 0       , 0           }
 } ;
-
-/* ----------------------------------------------------------------- */
-/* Function declarations                                             */
-DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[] =
-{
-    { "WPAD_IS_READY"          , "I" , TYPE_INT      , SYSMACRO(modwpad_is_ready)     },
-    { "WPAD_INFO"              , "II", TYPE_INT      , SYSMACRO(modwpad_info)         },
-    { "WPAD_INFO_NUNCHUK"      , "II", TYPE_INT      , SYSMACRO(modwpad_info_nunchuk) },
-    { "WPAD_INFO_CLASSIC"      , "II", TYPE_INT      , SYSMACRO(modwpad_info_classic) },
-    { "WPAD_INFO_GUITAR"       , "II", TYPE_INT      , SYSMACRO(modwpad_info_guitar)  },
-    { "WPAD_INFO_BB"           , "II", TYPE_INT      , SYSMACRO(modwpad_info_bb)      },
-    { "WPAD_RUMBLE"            , "II", TYPE_INT      , SYSMACRO(modwpad_rumble)       },
-    { 0                        , 0   , 0             , 0                              }
-};
 
 /* ----------------------------------------------------------------- */
 

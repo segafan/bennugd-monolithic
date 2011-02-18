@@ -36,7 +36,9 @@
 #include <windef.h>
 #else
 #include <unistd.h>
+#if !defined(TARGET_WII) && !defined(TARGET_PSP)
 #include <sys/utsname.h>
+#endif
 /* BeOS INCLUDES */
 #ifdef TARGET_BEOS
 #include <sys/types.h>
