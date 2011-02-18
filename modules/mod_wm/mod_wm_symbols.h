@@ -26,33 +26,20 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int bgd_set_title( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_set_icon( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_minimize( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params );
-#endif
-
-/* --------------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLSYSFUNCS __bgdexport( mod_wm, functions_exports )[] =
 {
     /* Funciones de ventana */
-    { "SET_TITLE"           , "S"   , TYPE_INT , SYSMACRO(bgd_set_title)          },
-    { "SET_ICON"            , "II"  , TYPE_INT , SYSMACRO(bgd_set_icon)           },
-    { "MINIMIZE"            , ""    , TYPE_INT , SYSMACRO(bgd_minimize)           },
-    { "MOVE_WINDOW"         , "II"  , TYPE_INT , SYSMACRO(bgd_move_window)        },
-    { "SET_WINDOW_POS"      , "II"  , TYPE_INT , SYSMACRO(bgd_move_window)        },
-    { "GET_WINDOW_POS"      , "PP"  , TYPE_INT , SYSMACRO(bgd_get_window_pos)     },
-    { "GET_WINDOW_SIZE"     , "PPPP", TYPE_INT , SYSMACRO(bgd_get_window_size)    },
-    { "GET_DESKTOP_SIZE"    , "PP"  , TYPE_INT , SYSMACRO(bgd_get_desktop_size)   },
-    { 0                     , 0     , 0        , 0                      }
+    { "SET_TITLE"           , "S"   , TYPE_INT , 0 },
+    { "SET_ICON"            , "II"  , TYPE_INT , 0 },
+    { "MINIMIZE"            , ""    , TYPE_INT , 0 },
+    { "MOVE_WINDOW"         , "II"  , TYPE_INT , 0 },
+    { "SET_WINDOW_POS"      , "II"  , TYPE_INT , 0 },
+    { "GET_WINDOW_POS"      , "PP"  , TYPE_INT , 0 },
+    { "GET_WINDOW_SIZE"     , "PPPP", TYPE_INT , 0 },
+    { "GET_DESKTOP_SIZE"    , "PP"  , TYPE_INT , 0 },
+    { 0                     , 0     , 0        , 0 }
 };
-
-/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_wm, modules_dependency )[] =
 {
@@ -61,5 +48,9 @@ char * __bgdexport( mod_wm, modules_dependency )[] =
     "libwm",
     NULL
 };
+#else
+extern DLSYSFUNCS __bgdexport( mod_wm, functions_exports )[];
+extern char * __bgdexport( mod_wm, modules_dependency )[];
+#endif
 
 #endif

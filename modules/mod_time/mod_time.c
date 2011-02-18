@@ -40,14 +40,10 @@
 
 #include <time.h>
 
-#ifndef __MONOLITHIC__
-#include "mod_time_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 /* Timer                                                                       */
 
-CONDITIONALLY_STATIC int modtime_get_timer( INSTANCE * my, int * params )
+static int modtime_get_timer( INSTANCE * my, int * params )
 {
     return SDL_GetTicks() ;
 }
@@ -55,7 +51,7 @@ CONDITIONALLY_STATIC int modtime_get_timer( INSTANCE * my, int * params )
 /* --------------------------------------------------------------------------- */
 /* Hora del día                                                                */
 
-CONDITIONALLY_STATIC int modtime_time( INSTANCE * my, int * params )
+static int modtime_time( INSTANCE * my, int * params )
 {
     return time( 0 ) ;
 }
@@ -74,7 +70,7 @@ CONDITIONALLY_STATIC int modtime_time( INSTANCE * my, int * params )
  *
  */
 
-CONDITIONALLY_STATIC int modtime_ftime( INSTANCE * my, int * params )
+static int modtime_ftime( INSTANCE * my, int * params )
 {
     char buffer[128] ;
     char * format ;
@@ -216,15 +212,33 @@ CONDITIONALLY_STATIC int modtime_ftime( INSTANCE * my, int * params )
 }
 
 /* --------------------------------------------------------------------------- */
+/* Declaracion de funciones                                                    */
+
+DLSYSFUNCS __bgdexport( mod_time, functions_exports )[] =
+{
+    /* Fecha/Hora */
+    { "GET_TIMER"   , ""    , TYPE_INT      , modtime_get_timer     },
+    { "TIME"        , ""    , TYPE_INT      , modtime_time          },
+    { "FTIME"       , "SI"  , TYPE_STRING   , modtime_ftime         },
+    { 0             , 0     , 0             , 0                     }
+};
+
+/* --------------------------------------------------------------------------- */
 
 void __bgdexport( mod_time, module_initialize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( !SDL_WasInit( SDL_INIT_TIMER ) ) SDL_InitSubSystem( SDL_INIT_TIMER );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 void __bgdexport( mod_time, module_finalize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( SDL_WasInit( SDL_INIT_TIMER ) ) SDL_QuitSubSystem( SDL_INIT_TIMER );
+#endif
 }
+
+/* --------------------------------------------------------------------------- */

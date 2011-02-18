@@ -1,5 +1,5 @@
 /*
- *  Copyright ï¿½ 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -27,7 +27,6 @@
 #include "bgddl.h"
 #include "files.h"
 #include "xstrings.h"
-#include "mod_sys_defines.h"
 
 #include <unistd.h>
 
@@ -37,26 +36,34 @@
 #include <process.h>
 #endif
 
-#ifdef TARGET_WII
-#include <ogc/wiilaunch.h>
+/* ---------------------------------------------------------------------- */
+
+#ifndef _P_WAIT
+#define _P_WAIT     0
 #endif
 
-#ifndef __MONOLITHIC__
-#include "mod_sys_symbols.h"
+#ifndef _P_NOWAIT
+#define _P_NOWAIT   1
 #endif
+
+/*
+#define _P_OVERLAY  2
+#define _OLD_P_OVERLAY  _P_OVERLAY
+#define _P_NOWAITO  3
+#define _P_DETACH   4
+*/
+
+DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
+{
+    { "_P_WAIT"     , TYPE_DWORD,  _P_WAIT   },
+    { "_P_NOWAIT"   , TYPE_DWORD,  _P_NOWAIT },
+    { NULL          , 0         ,  0         }
+} ;
 
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
+static int modsys_exec( INSTANCE * my, int * params )
 {
-#if defined TARGET_PSP
-	#warning NOT IMPLEMENTED FOR PSP!
-	return 0;
-#elif defined TARGET_WII
-    WII_OpenURL(string_get(params[1]));
-    string_discard(params[1]);
-    return 0;
-#else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
     int argc = params[2];
@@ -111,12 +118,11 @@ CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
     if ( argv ) free( argv );
 
     return ( status ) ;
-#endif //TARGET_WII
 }
 
 /* ---------------------------------------------------------------------- */
 
-CONDITIONALLY_STATIC int modsys_getenv( INSTANCE * my, int * params )
+static int modsys_getenv( INSTANCE * my, int * params )
 {
     char *e ;
     int str ;
@@ -134,5 +140,15 @@ CONDITIONALLY_STATIC int modsys_getenv( INSTANCE * my, int * params )
     string_use( str ) ;
     return str ;
 }
+
+/* ----------------------------------------------------------------- */
+/* Declaracion de funciones                                          */
+
+DLSYSFUNCS __bgdexport( mod_sys, functions_exports )[] =
+{
+    { "GETENV"  , "S"    , TYPE_STRING, modsys_getenv },
+    { "EXEC"    , "ISIP" , TYPE_INT   , modsys_exec   },
+    { 0         , 0      , 0          , 0             }
+};
 
 /* ----------------------------------------------------------------- */

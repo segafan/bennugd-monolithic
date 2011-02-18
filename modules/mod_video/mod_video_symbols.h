@@ -26,34 +26,18 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modvideo_set_mode( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_set_mode_2( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_set_mode_3( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_set_mode_4( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_set_fps( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_list_modes( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modvideo_mode_is_ok( INSTANCE * my, int * params );
-
-extern DLVARFIXUP __bgdexport( mod_video, globals_fixup )[];
-#endif
-
-/* --------------------------------------------------------------------------- */
-
+#ifdef __BGDC__
 DLSYSFUNCS  __bgdexport( mod_video, functions_exports )[] =
 {
-    /* Video */
-    { "SET_MODE"        , "I"     , TYPE_INT        , SYSMACRO(modvideo_set_mode)         },
-    { "SET_MODE"        , "II"    , TYPE_INT        , SYSMACRO(modvideo_set_mode_2)       },
-    { "SET_MODE"        , "III"   , TYPE_INT        , SYSMACRO(modvideo_set_mode_3)       },
-    { "SET_MODE"        , "IIII"  , TYPE_INT        , SYSMACRO(modvideo_set_mode_4)       },
-    { "SET_FPS"         , "II"    , TYPE_INT        , SYSMACRO(modvideo_set_fps)          },
-    { "GET_MODES"       , "II"    , TYPE_POINTER    , SYSMACRO(modvideo_list_modes)       },
-    { "MODE_IS_OK"      , "IIII"  , TYPE_INT        , SYSMACRO(modvideo_mode_is_ok)       },
-    { 0                 , 0       , 0               , 0                         }
+    { "SET_MODE"        , "I"     , TYPE_INT        , 0 },
+    { "SET_MODE"        , "II"    , TYPE_INT        , 0 },
+    { "SET_MODE"        , "III"   , TYPE_INT        , 0 },
+    { "SET_MODE"        , "IIII"  , TYPE_INT        , 0 },
+    { "SET_FPS"         , "II"    , TYPE_INT        , 0 },
+    { "GET_MODES"       , "II"    , TYPE_POINTER    , 0 },
+    { "MODE_IS_OK"      , "IIII"  , TYPE_INT        , 0 },
+    { 0                 , 0       , 0               , 0 }
 };
-
-/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_video, modules_dependency )[] =
 {
@@ -62,5 +46,10 @@ char * __bgdexport( mod_video, modules_dependency )[] =
     "librender",
     NULL
 };
+#else
+extern DLVARFIXUP __bgdexport( mod_video, globals_fixup )[];
+extern DLSYSFUNCS  __bgdexport( mod_video, functions_exports )[];
+extern char * __bgdexport( mod_video, modules_dependency )[];
+#endif
 
 #endif

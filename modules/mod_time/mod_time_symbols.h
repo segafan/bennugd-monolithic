@@ -26,25 +26,19 @@
 
 #include <bgddl.h>
 
-#ifndef __BGDC__
-extern CONDITIONALLY_STATIC int modtime_get_timer( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modtime_time( INSTANCE * my, int * params );
-extern CONDITIONALLY_STATIC int modtime_ftime( INSTANCE * my, int * params );
+#ifdef __BGDC__
+DLSYSFUNCS __bgdexport( mod_time, functions_exports )[] =
+{
+    /* Fecha/Hora */
+    { "GET_TIMER"   , ""    , TYPE_INT      , 0 },
+    { "TIME"        , ""    , TYPE_INT      , 0 },
+    { "FTIME"       , "SI"  , TYPE_STRING   , 0 },
+    { 0             , 0     , 0             , 0 }
+};
+#else
+extern DLSYSFUNCS __bgdexport( mod_time, functions_exports )[];
 extern void __bgdexport( mod_time, module_initialize )();
 extern void __bgdexport( mod_time, module_finalize )();
 #endif
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
-DLSYSFUNCS  __bgdexport( mod_time, functions_exports )[] =
-{
-	/* Fecha/Hora */
-    { "GET_TIMER"   , ""    , TYPE_INT      , SYSMACRO(modtime_get_timer)     },
-    { "TIME"        , ""    , TYPE_INT      , SYSMACRO(modtime_time)          },
-    { "FTIME"       , "SI"  , TYPE_STRING   , SYSMACRO(modtime_ftime)         },
-    { 0             , 0     , 0             , 0                     }
-};
-
 
 #endif

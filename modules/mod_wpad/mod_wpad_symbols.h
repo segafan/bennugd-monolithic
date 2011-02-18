@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2010 Joseba García Etxebarria <joseba.gar@gmail.com>
+ *  Copyright © 2011 Joseba García Etxebarria <joseba.gar@gmail.com>
  *
  *  mod_wpad is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,6 +23,12 @@
 #include <bgddl.h>
 #include <instance_st.h>
 #include "mod_wpad.h"
+
+#ifdef __BGDC__
+    #define SYSMACRO(a) 0
+#else
+    #define SYSMACRO(a) a
+#endif
 
 /* Function declaration */
 extern int modwpad_is_ready( INSTANCE * my, int * params );
