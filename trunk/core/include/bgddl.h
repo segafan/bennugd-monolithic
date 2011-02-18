@@ -58,13 +58,6 @@
 
 #define __bgdexport(m,a)    m##_##a
 
-// Monolithic builds need some symbols not to be static
-#ifdef __MONOLITHIC__
-#define CONDITIONALLY_STATIC
-#else
-#define CONDITIONALLY_STATIC static
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 typedef struct
