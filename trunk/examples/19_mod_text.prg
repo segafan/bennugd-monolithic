@@ -5,6 +5,7 @@ import "mod_video"
 import "mod_rand"
 import "mod_text"
 import "mod_sound"
+import "mod_file"
 
 Global
     scr_width=640, scr_height=480;
@@ -13,6 +14,7 @@ End;
 Process main()
 Private
     int textid=0, song=0;
+    int font=0, fd=0;
 
 Begin
     // Check that we can set the video mode before actually setting it
@@ -20,6 +22,14 @@ Begin
         return -1;
     end;
     set_mode(scr_width, scr_height, 16, MODE_WINDOW);
+    
+    // Load the example font
+    font = load_fnt("font.fnt");
+    if(font <= 0)
+        write(0, scr_width, scr_height, 8, "Font load error: "+font);
+    else
+        write(font, scr_width/2, scr_height/2+10, 1, "Sample text");
+    end;
     
     // Load the song and play it
     song = load_song("game.s3m");
@@ -40,7 +50,8 @@ Begin
     // Delete the text
     delete_text(ALL_TEXT);
 
-    // Unload the song
+    // Unload stuff
     stop_song();
     unload_song(song);
+    unload_fnt(font);
 End;
