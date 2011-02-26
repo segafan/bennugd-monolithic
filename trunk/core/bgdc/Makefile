@@ -40,14 +40,14 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -O2 -Wall -D__BGDC__ -D__MONOLITHIC__ -DNO_ZLIB -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-g -O2 -Wall -D__BGDC__ -D__MONOLITHIC__ -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := -lfat -lwiiuse -lbte -logc -lm
+LIBS := -lfat -lz -lwiiuse -lbte -logc -lm
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
