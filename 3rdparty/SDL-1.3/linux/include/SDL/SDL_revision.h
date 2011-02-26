@@ -1,1 +1,2 @@
-#define SDL_REVISION "hg-5300:3f825465a14a"
+#define SDL_REVISION "hg-5401:ccaccc76a196"
+#define SDL_REVISION_NUMBER 5401
