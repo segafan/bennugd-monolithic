@@ -82,6 +82,9 @@
 #ifndef NO_MODIMAGE
 #   include <image_symbols.h>
 #endif
+#ifndef NO_MODCHIPMUNK
+#   include <mod_chipmunk_symbols.h>
+#endif
 //#include <mod_sqlite3_symbols.h>
 
 typedef struct

@@ -24,14 +24,14 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	$(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lSDL_mixer -lsmpeg -lSDL -lpng \
+LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lSDL -lpng \
         -lvorbisidec -lglob -lfat -lz -lwiiuse -lwiikeyboard -lbte -logc -lm \
         -lstdc++
 #---------------------------------------------------------------------------------
