@@ -34,7 +34,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
 				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
 				../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wpad/ \
-				../../modules/mod_image/ ../../modules/mod_sqlite3/
+				../../modules/mod_image/ ../../modules/mod_sqlite3/ ../../modules/mod_chipmunk/
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -92,7 +92,8 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
-					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL
+					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL \
+					-I$(PORTLIBS)/include/chipmunk/
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
