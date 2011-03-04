@@ -36,7 +36,7 @@
 #include "sysprocs_p.h"
 #include "xstrings.h"
 
-#if defined(TARGET_GP2X) || defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
+#if defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <fcntl.h>
@@ -104,10 +104,6 @@ int debug     = 0;  /* 1 if running in debug mode      */
 #define _OS_ID          OS_CAANOO
 #endif
 
-#ifdef TARGET_PSP
-#define _OS_ID          OS_PSP
-#endif
-
 #ifdef TARGET_DINGUX_A320
 #ifdef _OS_ID
 #undef _OS_ID
@@ -124,7 +120,7 @@ int debug     = 0;  /* 1 if running in debug mode      */
 
 /* --------------------------------------------------------------------------- */
 
-#if defined(TARGET_GP2X) || defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
+#if defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
 
 #define TIMER_BASE3 0x1980
 #define TIMER_REG(x) __bgdrtm_memregl[(TIMER_BASE3 + x) >> 2]
@@ -138,7 +134,7 @@ static unsigned long caanoo_firmware_version = 0;
 
 void bgdrtm_ptimer_init(void)
 {
-#if defined(TARGET_GP2X) || defined(TARGET_GP2X_WIZ)
+#if defined(TARGET_GP2X_WIZ)
     TIMER_REG(0x44) = 0x922;
 #else
     if ( caanoo_firmware_version < 1000006 ) /* firmware version < 1.0.6 */
@@ -171,7 +167,6 @@ void bgdrtm_ptimer_cleanup(void)
 
 #endif
 
-#ifndef TARGET_PSP
 /* --------------------------------------------------------------------------- */
 /*
  *  FUNCTION : strncmpi
@@ -196,7 +191,7 @@ int strncmpi( char * str1, char * str2, int sz )
 
     return 0 ;
 }
-#endif
+
 /* --------------------------------------------------------------------------- */
 
 void bgdrtm_entry( int argc, char * argv[] )
@@ -218,7 +213,7 @@ void bgdrtm_entry( int argc, char * argv[] )
     else
         GLODWORD( OS_ID ) = _OS_ID ;
 
-#if defined(TARGET_GP2X) || defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
+#if defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
 
 #ifdef TARGET_CAANOO
     {
@@ -279,7 +274,7 @@ void bgdrtm_exit( int exit_value )
         for ( n = 0; n < module_finalize_count; n++ )
             module_finalize_list[n]();
 
-#if defined(TARGET_GP2X) || defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
+#if defined(TARGET_GP2X_WIZ) || defined(TARGET_CAANOO)
     bgdrtm_ptimer_cleanup();
 
     __bgdrtm_memregl = munmap( 0, 0x20000 ); __bgdrtm_memregl = NULL;

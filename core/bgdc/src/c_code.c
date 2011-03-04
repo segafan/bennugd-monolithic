@@ -1651,7 +1651,6 @@ expresion_result compile_factor()
                 return res ;
             }
             compile_error( MSG_NUMBER_REQUIRED ) ;
-            res.type.chunk[0].type=0;
             return res ;
         }
         else if ( token.code == identifier_bnot ) /* "BNOT" or "~" */
@@ -1675,7 +1674,6 @@ expresion_result compile_factor()
                 return res ;
             }
             compile_error( MSG_NUMBER_REQUIRED ) ;
-            res.type.chunk[0].type=0;
             return res ;
         }
         else if ( token.type == IDENTIFIER && token.code == identifier_plusplus ) /* "++" */

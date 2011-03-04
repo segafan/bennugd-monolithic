@@ -20,11 +20,8 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-#ifdef __STATIC__
-#include "sim_loadlib.h"
-#else
+
 #include <loadlib.h> /* Must be fist include */
-#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -229,10 +226,6 @@ static void get_var_info( DLVARFIXUP * varfixup, DCB_VAR * basevar, int nvars, c
     unsigned int n ;
     DCB_VAR rvar ;
     void * rdata = NULL ;
-    
-    rvar.Type.BaseType[0]=0;
-    rvar.Type.Members=0;
-    rvar.Type.Count[0]=0;
 
     token_ptr = varfixup->var ;
 

@@ -27,7 +27,6 @@
 #define __MOD_IMAGE_H
 
 #include <stdio.h>
-#include <string.h>
 
 #include "libgrbase.h"
 #include "libvideo.h"

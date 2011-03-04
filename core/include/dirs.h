@@ -38,11 +38,7 @@
 #include <windef.h>
 #include <direct.h>
 #else
-#if defined(TARGET_PSP)
-#include <diet-glob.h>
-#else
 #include <glob.h>
-#endif
 #include <sys/stat.h>
 #include <unistd.h>
 #endif

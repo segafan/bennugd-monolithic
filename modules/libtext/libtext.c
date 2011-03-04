@@ -197,9 +197,8 @@ static const char * get_text( TEXT * text )
  *
  */
 
-static int info_text( void * text_in, REGION * bbox, int * z, int * drawme )
+static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
 {
-	TEXT * text = (TEXT *) text_in;
     const char * str = get_text( text );
     REGION prev = *bbox;
     FONT * font;
@@ -343,10 +342,8 @@ static int info_text( void * text_in, REGION * bbox, int * z, int * drawme )
  *
  */
 
-void draw_text( void * text_in, REGION * clip )
+void draw_text( TEXT * text, REGION * clip )
 {
-	TEXT * text = (TEXT *) text_in;
-
     const char * str = get_text( text );
     int save8, save16, save32;
     FONT * font;
