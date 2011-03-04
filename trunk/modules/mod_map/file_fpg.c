@@ -141,39 +141,15 @@ static int gr_read_lib( file * fp )
         for ( y = 0 ; y < gr->height ; y++ )
         {
             uint8_t * line = ( uint8_t * )gr->data + gr->pitch * y;
-            uint8_t tempcolor;
-            int len;
 
             switch ( bpp )
             {
                 case    32:
                     st = file_readUint32A( fp, ( uint32_t * ) line, gr->width );
-#ifdef TARGET_PSP
-                    if (st){
-						for (len =0;len<gr->width;len+=4){
-							tempcolor=line[len+1];
-							line[len+1]=line[len+3];
-							line[len+3]=tempcolor;
-						}
-                    }
-#endif
                     break;
 
                 case    16:
                     st = file_readUint16A( fp, ( uint16_t * ) line, gr->width );
-#ifdef TARGET_PSP
-                    if (st){
-                    	uint16_t * line16 = ( uint16_t * ) line;
-                    	uint8_t rgb[3];
-						for (len =0;len<gr->width;len++){
-							rgb[0] = (*line16 & 0b11111);
-							rgb[1] =(*line16 >>5);
-							rgb[2] = (*line16 >>11);
-							*line16=(rgb[0]<<11)|(rgb[1]<<5)|rgb[2];
-							line16 ++;
-						}
-                    }
-#endif
                     break;
 
                 case    8:

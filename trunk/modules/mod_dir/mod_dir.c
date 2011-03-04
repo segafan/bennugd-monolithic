@@ -36,23 +36,15 @@
 #include <windef.h>
 #else
 #include <unistd.h>
-#ifndef TARGET_PSP
 #if !defined(TARGET_WII) && !defined(TARGET_PSP)
 #include <sys/utsname.h>
-#endif
 #endif
 /* BeOS INCLUDES */
 #ifdef TARGET_BEOS
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
-
-#ifdef TARGET_PSP
-	#include <diet-glob.h>
-#else
-	#include <glob.h>
-#endif
-
+#include <glob.h>
 #endif
 
 #include "bgddl.h"
@@ -111,26 +103,13 @@ DLVARFIXUP __bgdexport( mod_dir, globals_fixup)[] =
 /* ----------------------------------------------------------------- */
 /* DIRECTORY FUNCTIONS */
 
-#ifdef TARGET_PSP
-#include <sys/syslimits.h>
-#else
-#include <limits.h>
-#endif
 static int moddir_cd( INSTANCE * my, int * params )
 {
-#ifndef TARGET_PSP
     char * d = dir_current() ;
     int r = string_new( d ) ;
     string_use( r ) ;
     if ( d ) free( d ) ;
     return r ;
-#else
-	char current_dir[PATH_MAX];
-	getcwd(current_dir,PATH_MAX);
-    int r = string_new( current_dir ) ;
-    string_use( r ) ;
-    return r ;
-#endif
 }
 
 static int moddir_chdir( INSTANCE * my, int * params )
