@@ -24,6 +24,8 @@
 /* --------------------------------------------------------------------------- */
 
 #include <stdlib.h>
+#include <string.h>
+
 
 #include "bgdrtm.h"
 #include "bgddl.h"

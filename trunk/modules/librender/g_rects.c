@@ -24,6 +24,7 @@
 #define __LIB_RENDER
 #include "librender.h"
 #include "fmath.h"
+#include <string.h>
 
 /* --------------------------------------------------------------------------- */
 

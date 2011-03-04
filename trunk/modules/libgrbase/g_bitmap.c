@@ -83,10 +83,11 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
 
         format->Rmask = (( 0xFF >> format->Rloss ) << format->Rshift );
         format->Gmask = (( 0xFF >> format->Gloss ) << format->Gshift );
-        format->Bmask = (( 0xFF >> format->Bloss ) << format->Bshift );
+        format->Bmask =  (( 0xFF >> format->Bloss ) << format->Bshift) ;
     }
     else
     {
+
         format->Rloss = 8;
         format->Gloss = 8;
         format->Bloss = 8;
