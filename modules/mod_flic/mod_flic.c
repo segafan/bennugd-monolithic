@@ -45,8 +45,8 @@ static FLIC * current_fli = 0 ;
 
 /* ----------------------------------------------------------------- */
 
-static int info_fli( FLIC * flic, REGION * clip, int * z, int * drawme ) ;
-static void draw_fli( FLIC * flic, REGION * clip ) ;
+static int info_fli( void * flic, REGION * clip, int * z, int * drawme ) ;
+static void draw_fli( void * flic, REGION * clip ) ;
 static void flic_destroy( FLIC * flic ) ;
 static FLIC * flic_open( const char * filename ) ;
 static FLIC * flic_do_delta( FLIC * flic ) ;
@@ -63,8 +63,9 @@ static int modflic_frame( INSTANCE * my, int * params ) ;
 
 /* ----------------------------------------------------------------- */
 
-static int info_fli( FLIC * flic, REGION * clip, int * z, int * drawme )
+static int info_fli( void * flic_in, REGION * clip, int * z, int * drawme )
 {
+	FLIC * flic = (FLIC *) flic_in;
     int changed ;
     int ms ;
 
@@ -119,8 +120,9 @@ static int info_fli( FLIC * flic, REGION * clip, int * z, int * drawme )
     return 1;
 }
 
-static void draw_fli( FLIC * flic, REGION * clip )
+static void draw_fli( void * flic_in, REGION * clip )
 {
+	FLIC * flic= (FLIC *) flic;
     if ( flic->angle || flic->size != 100 )
         gr_rotated_blit( 0,
                 clip,

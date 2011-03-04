@@ -83,7 +83,7 @@ static int modregex_regex (INSTANCE * my, int * params)
     pb.buffer = malloc(4096);
     pb.allocated = 4096;
     pb.fastmap = malloc(256);
-    pb.regs_allocated = 16;
+    pb.regs_allocated = 0xf;
     re.num_regs = 16;
     re.start = start;
     re.end = end;
@@ -171,7 +171,7 @@ static int modregex_regex_replace (INSTANCE * my, int * params)
     pb.fastmap = malloc(256);
     pb.translate = NULL;
     pb.fastmap_accurate = 0;
-    pb.regs_allocated = 16;
+    pb.regs_allocated = 0xf;
     re.start = start;
     re.end = end;
 
@@ -323,7 +323,7 @@ static int modregex_split (INSTANCE * my, int * params)
     pb.buffer = malloc(4096);
     pb.allocated = 4096;
     pb.fastmap = malloc(256);
-    pb.regs_allocated = 16;
+    pb.regs_allocated = 0xf;
     re.num_regs = 16;
     re.start = start;
     re.end = end;

@@ -25,7 +25,9 @@
 #ifndef LIB_I2CDEV_H
 #define LIB_I2CDEV_H
 
+#ifdef TARGET_CAANOO
 #include <linux/types.h>
+#endif
 #include <sys/ioctl.h>
 
 

@@ -20,18 +20,20 @@
  *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-
+#ifdef __STATIC__
+#include "sim_loadlib.h"
+#else
 #include <loadlib.h> /* Must be first include */
-
+#endif
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
 #include <limits.h>
 
-#include "bgdc.h"
+#include "bgddl.h"
 
-#include <bgddl.h>
+#include "bgdc.h"
 
 /* ---------------------------------------------------------------------- */
 
@@ -171,7 +173,11 @@ int identifier_include ;
 
 int identifier_import ;
 int reserved_words ;
+#ifndef __STATIC__
 int debug = 0 ;
+#else
+	extern int debug;
+#endif
 
 /* ---------------------------------------------------------------------- */
 

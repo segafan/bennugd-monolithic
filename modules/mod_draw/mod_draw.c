@@ -93,8 +93,9 @@ static int drawing_z = -512 ;
  *
  */
 
-static int _moddraw_object_info( DRAWING_OBJECT * dr, REGION * clip, int * z, int * drawme )
+static int _moddraw_object_info( void * dr_in, REGION * clip, int * z, int * drawme )
 {
+	DRAWING_OBJECT * dr = (DRAWING_OBJECT *) dr_in;
     REGION newclip;
     int minx, miny, maxx, maxy;
 
@@ -172,8 +173,9 @@ static int _moddraw_object_info( DRAWING_OBJECT * dr, REGION * clip, int * z, in
  *
  */
 
-static void _moddraw_object_draw( DRAWING_OBJECT * dr, REGION * clip )
+static void _moddraw_object_draw( void * dr_in, REGION * clip )
 {
+	DRAWING_OBJECT * dr = (DRAWING_OBJECT *) dr_in;
     int b8 = pixel_color8;
     int b16 = pixel_color16;
     int b32 = pixel_color32;

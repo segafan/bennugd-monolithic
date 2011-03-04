@@ -216,8 +216,9 @@ static int compare_by_distance( const void * ptr1, const void * ptr2 )
 
 /* --------------------------------------------------------------------------- */
 
-static void draw_mode7( int n, REGION * clip )
+static void draw_mode7( void * n_in, REGION * clip )
 {
+	int n = (int) n_in;
     fixed   bmp_x, bmp_y ;
     fixed   base_x,   base_y,   base_z ;
     fixed   camera_x, camera_y, camera_z ;
@@ -544,8 +545,9 @@ static void draw_mode7( int n, REGION * clip )
 
 /* --------------------------------------------------------------------------- */
 
-static int info_mode7( int n, REGION * clip, int * z, int * drawme )
+static int info_mode7( void * n_in, REGION *  clip, int * z, int * drawme )
 {
+	int n = (int) n_in;
     MODE7_INFO * dat = &(( MODE7_INFO * ) & GLODWORD( mod_m7, M7STRUCTS ) )[n];
 
     * z = dat->z;
@@ -586,7 +588,7 @@ static int modm7_start( INSTANCE * my, int * params )
     mode7_inf[n].region  = region_get( region ) ;
 
     if ( mode7_inf[n].id ) gr_destroy_object( mode7_inf[n].id );
-    mode7_inf[n].id = gr_new_object( dat->z, info_mode7, draw_mode7, n );
+    mode7_inf[n].id = gr_new_object( dat->z, info_mode7, draw_mode7, (void*)n );
 
     return 1;
 }

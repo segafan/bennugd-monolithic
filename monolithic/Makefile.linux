@@ -1,0 +1,84 @@
+# Static BGD Makefile Alternative for Linux
+BUILD_DIR = build_linux
+
+export SDL_INSTALL_DIR = /usr
+export OSSL_INSTALL_DIR = /usr
+
+export GLOBAL_CFLAGS=
+export GLOBAL_LDFLAGS=
+
+export COMMON_CFLAGS = $(GLOBAL_CFLAGS) -D__STATIC__ -Os -fno-strict-aliasing -Wall -I. -DSDL_VIDEO_DRIVER_X11 -D__linux
+
+export COMMON_LDFLAGS = $(GLOBAL_LDFLAGS) -s -lSDLmain -lSDL -lz -lpng -lSDL_mixer -lX11 -lcrypto 
+
+EXTERNAL_INCLUDES = -Wall -I$(SDL_INSTALL_DIR)/include/SDL -I$(BUILD_DIR)/src
+
+CFLAGS= $(COMMON_CFLAGS) -D__BGDI__ -D__BGDRTM__ -DVERSION=\"1.0.0\" -DTARGET_LINUX $(EXTERNAL_INCLUDES) 
+
+LDFLAGS = $(COMMON_LDFLAGS) 
+
+LITTLE_VERSION = 6
+MOD_OBJS_L1 = $(BUILD_DIR)/src/mod_say.o
+MOD_OBJS_L2 = $(BUILD_DIR)/src/libsdlhandler.o $(BUILD_DIR)/src/libjoy.o $(BUILD_DIR)/src/mod_joy.o
+MOD_OBJS_L3 = $(BUILD_DIR)/src/g_bitmap.o  $(BUILD_DIR)/src/g_blendop.o  $(BUILD_DIR)/src/g_clear.o  $(BUILD_DIR)/src/g_conversion.o  $(BUILD_DIR)/src/g_grlib.o  $(BUILD_DIR)/src/g_pal.o  $(BUILD_DIR)/src/libgrbase.o \
+              $(BUILD_DIR)/src/g_blit.o  $(BUILD_DIR)/src/g_pixel.o  $(BUILD_DIR)/src/libblit.o \
+              $(BUILD_DIR)/src/g_fade.o  $(BUILD_DIR)/src/g_frame.o  $(BUILD_DIR)/src/g_instance.o  $(BUILD_DIR)/src/g_object.o  $(BUILD_DIR)/src/g_rects.o  $(BUILD_DIR)/src/g_screen.o  $(BUILD_DIR)/src/librender.o  $(BUILD_DIR)/src/scaler_hq2x.o  \
+              $(BUILD_DIR)/src/scaler_normal.o  $(BUILD_DIR)/src/scaler_scale2x.o  $(BUILD_DIR)/src/scaler_scanline.o \
+              $(BUILD_DIR)/src/g_regions.o  $(BUILD_DIR)/src/g_video.o \
+              $(BUILD_DIR)/src/libfont.o $(BUILD_DIR)/src/libtext.o $(BUILD_DIR)/src/mod_text.o 
+MOD_OBJS_L4 = $(BUILD_DIR)/src/mod_video.o $(BUILD_DIR)/src/mod_proc.o $(BUILD_DIR)/src/libkey.o $(BUILD_DIR)/src/mod_key.o 
+MOD_OBJS_L5 = $(BUILD_DIR)/src/libmouse.o $(BUILD_DIR)/src/mod_mouse.o \
+              $(BUILD_DIR)/src/file_fnt.o  $(BUILD_DIR)/src/file_fpg.o  $(BUILD_DIR)/src/file_map.o  $(BUILD_DIR)/src/file_pal.o  $(BUILD_DIR)/src/file_pcx.o  $(BUILD_DIR)/src/file_png.o $(BUILD_DIR)/src/mod_map.o \
+              $(BUILD_DIR)/src/mod_time.o $(BUILD_DIR)/src/libdraw.o $(BUILD_DIR)/src/mod_draw.o $(BUILD_DIR)/src/mod_sound.o $(BUILD_DIR)/src/mod_grproc.o 
+MOD_OBJS_L6 = $(BUILD_DIR)/src/libscroll.o $(BUILD_DIR)/src/mod_scroll.o $(BUILD_DIR)/src/mod_sort.o $(BUILD_DIR)/src/mod_sys.o $(BUILD_DIR)/src/mod_debug.o $(BUILD_DIR)/src/mod_m7.o $(BUILD_DIR)/src/mod_flic.o $(BUILD_DIR)/src/mod_screen.o $(BUILD_DIR)/src/mod_mathi.o \
+              $(BUILD_DIR)/src/mod_file.o $(BUILD_DIR)/src/mod_crypt.o $(BUILD_DIR)/src/mod_regex.o $(BUILD_DIR)/src/regex.o $(BUILD_DIR)/src/mod_path.o $(BUILD_DIR)/src/mod_effects.o $(BUILD_DIR)/src/mod_string.o $(BUILD_DIR)/src/mod_timers.o \
+              $(BUILD_DIR)/src/mod_blendop.o $(BUILD_DIR)/src/mod_rand.o $(BUILD_DIR)/src/mod_cd.o $(BUILD_DIR)/src/mod_dir.o $(BUILD_DIR)/src/mod_mem.o $(BUILD_DIR)/src/mod_math.o $(BUILD_DIR)/src/libwm.o $(BUILD_DIR)/src/mod_wm.o \
+              $(BUILD_DIR)/src/systexts.o $(BUILD_DIR)/src/dirs.o $(BUILD_DIR)/src/b_crypt.o $(BUILD_DIR)/src/varspace_file.o
+              
+MOD_OBJS = $(MOD_OBJS_L1) $(MOD_OBJS_L2) $(MOD_OBJS_L3) $(MOD_OBJS_L4) $(MOD_OBJS_L5) $(MOD_OBJS_L6)
+
+OBJS_BGDI = $(BUILD_DIR)/src/main.o $(BUILD_DIR)/src/misc.o $(BUILD_DIR)/src/strings.o  $(BUILD_DIR)/src/files.o $(BUILD_DIR)/src/dcbr.o $(BUILD_DIR)/src/xctype.o $(BUILD_DIR)/src/sysprocs.o $(BUILD_DIR)/src/instance.o $(BUILD_DIR)/src/interpreter.o $(BUILD_DIR)/src/dirs.o \
+       $(BUILD_DIR)/src/copy.o $(BUILD_DIR)/src/mod_say.o \
+       $(MOD_OBJS) $(BUILD_DIR)/src/sim_loadlib.o 
+
+OBJS_BGDC = $(BUILD_DIR)/src/c_code.o   $(BUILD_DIR)/src/codeblock.o  $(BUILD_DIR)/src/identifier.o  $(BUILD_DIR)/src/segment.o  $(BUILD_DIR)/src/typedef.o \
+       $(BUILD_DIR)/src/c_data.o   $(BUILD_DIR)/src/constants.o  $(BUILD_DIR)/src/main_bgdc.o   $(BUILD_DIR)/src/strings_bgdc.o  $(BUILD_DIR)/src/varspace.o \
+       $(BUILD_DIR)/src/c_debug.o  $(BUILD_DIR)/src/dcbw.o       $(BUILD_DIR)/src/main_core.o   $(BUILD_DIR)/src/sysstub.o \
+       $(BUILD_DIR)/src/c_main.o   $(BUILD_DIR)/src/error.o      $(BUILD_DIR)/src/procedure.o   $(BUILD_DIR)/src/token.o \
+       $(BUILD_DIR)/src/files.o $(BUILD_DIR)/src/misc.o $(BUILD_DIR)/src/strings.o $(BUILD_DIR)/src/xctype.o $(BUILD_DIR)/src/sysprocs.o $(BUILD_DIR)/src/dcbr.o $(BUILD_DIR)/src/copy.o $(BUILD_DIR)/src/dirs.o $(BUILD_DIR)/src/debug.o\
+       $(BUILD_DIR)/src/instance.o $(BUILD_DIR)/src/interpreter.o \
+       $(MOD_OBJS) $(BUILD_DIR)/src/sim_loadlib.o 
+
+$(BUILD_DIR)/bgdi: $(OBJS_BGDI)   
+	$(CC)  $(LDFLAGS) $? -o $@ $(OBJECTS)
+
+$(BUILD_DIR)/bgdc: $(OBJS_BGDC)   
+	$(CC)  $(LDFLAGS) $? -o $@ $(OBJECTS)
+
+#	src/te9_tf9_hybrid_driver.o \
+#	src/varspace_file.o \
+
+all: $(BUILD_DIR)/bgdi $(BUILD_DIR)/bgdc
+
+clean:
+	$(RM) $(BUILD_DIR)/bgdi $(BUILD_DIR)/bgdc $(BUILD_DIR)/src/*.o
+
+rebuild: clean all
+
+create_links:
+	mkdir -p $(BUILD_DIR)/src/
+	mcopy *.c $(BUILD_DIR)/src/ 
+	mcopy *.h $(BUILD_DIR)/src/ 
+	find ../core/bgdrtm/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/bgdrtm/ -name "*.c" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/bgdi/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/bgdi/ -name "*.c" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/common/ -name "*.c" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/common/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/include/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../modules/ -name "*.c" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../modules/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/bgdc/ -name "*.h" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	find ../core/bgdc/ -name "*.c" -exec ln -s ../../{} $(BUILD_DIR)/src/ \;
+	ln -s ../../../core/bgdc/src/strings.c $(BUILD_DIR)/src/strings_bgdc.c
+	ln -s ../../../core/bgdc/src/main.c $(BUILD_DIR)/src/main_bgdc.c
