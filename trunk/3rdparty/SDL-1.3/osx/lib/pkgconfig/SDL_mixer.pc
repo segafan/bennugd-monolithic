@@ -1,11 +1,11 @@
-prefix=/Users/joseba/cvs/bennugd/SDL1.3/3rdparty/SDL-1.3/osx
+prefix=/Users/joseba/cvs/bennugd/monolithic/3rdparty/SDL-1.3/osx/
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include
 
 Name: SDL_mixer
 Description: mixer library for Simple DirectMedia Layer
-Version: 1.2.11
+Version: 1.2.12
 Requires: sdl >= 1.2.10
 Libs: -L${libdir} -lSDL_mixer
 Cflags: -I${includedir}/SDL
