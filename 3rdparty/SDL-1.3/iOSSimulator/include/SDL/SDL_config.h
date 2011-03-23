@@ -1,6 +1,6 @@
 /*
     SDL - Simple DirectMedia Layer
-    Copyright (C) 1997-2009 Sam Lantinga
+    Copyright (C) 1997-2011 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,20 +26,22 @@
 #include "SDL_platform.h"
 
 /**
- *  \file SDL_config.h.default
+ *  \file SDL_config.h
  *
  *  SDL_config.h for any platform that doesn't build using the configure system.
  */
  
 /* Add any platform that doesn't build using the configure system. */
-#if defined(__NINTENDODS__)
-#include "SDL_config_nintendods.h"
-#elif defined(__IPHONEOS__) 
-#include "SDL_config_iphoneos.h"
+#if defined(__WIN32__)
+#include "SDL_config_windows.h"
 #elif defined(__MACOSX__)
 #include "SDL_config_macosx.h"
-#elif defined(__WIN32__)
-#include "SDL_config_win32.h"
+#elif defined(__IPHONEOS__) 
+#include "SDL_config_iphoneos.h"
+#elif defined(__ANDROID__)
+#include "SDL_config_android.h"
+#elif defined(__NINTENDODS__)
+#include "SDL_config_nintendods.h"
 #else
 #include "SDL_config_minimal.h"
 #endif /* platform config */

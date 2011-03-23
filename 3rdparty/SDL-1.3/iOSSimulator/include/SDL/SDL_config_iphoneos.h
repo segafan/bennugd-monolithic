@@ -1,6 +1,6 @@
 /*
     SDL - Simple DirectMedia Layer
-    Copyright (C) 1997-2010 Sam Lantinga
+    Copyright (C) 1997-2011 Sam Lantinga
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,13 +26,15 @@
 #include "SDL_platform.h"
 
 #if !defined(_STDINT_H_) && (!defined(HAVE_STDINT_H) || !_HAVE_STDINT_H)
-/*typedef signed char int8_t;
+#if 0
+typedef signed char int8_t;
 typedef unsigned char uint8_t;
 typedef signed short int16_t;
 typedef unsigned short uint16_t;
 typedef signed int int32_t;
 typedef unsigned int uint32_t;
-typedef unsigned long uintptr_t;*/
+typedef unsigned long uintptr_t;
+#endif
 #endif /* !_STDINT_H_ && !HAVE_STDINT_H */
 
 #ifdef __LP64__
@@ -42,6 +44,8 @@ typedef unsigned long uintptr_t;*/
 #endif
 
 #define SDL_HAS_64BIT_TYPE	1
+
+#define HAVE_GCC_ATOMICS	1
 
 #define HAVE_ALLOCA_H		1
 #define HAVE_SYS_TYPES_H	1
@@ -93,6 +97,9 @@ typedef unsigned long uintptr_t;*/
 #define HAVE_SSCANF	1
 #define HAVE_SNPRINTF	1
 #define HAVE_VSNPRINTF	1
+#define HAVE_M_PI	1
+#define HAVE_ATAN	1
+#define HAVE_ATAN2	1
 #define HAVE_CEIL	1
 #define HAVE_COPYSIGN	1
 #define HAVE_COS	1
@@ -110,8 +117,6 @@ typedef unsigned long uintptr_t;*/
 #define HAVE_NANOSLEEP	1
 #define HAVE_SYSCONF	1
 #define HAVE_SYSCTLBYNAME 1
-#define HAVE_ATAN 1
-#define HAVE_ATAN2 1
 
 /* enable iPhone version of Core Audio driver */
 #define SDL_AUDIO_DRIVER_COREAUDIOIPHONE 1
@@ -142,6 +147,7 @@ typedef unsigned long uintptr_t;*/
 /* enable OpenGL ES */
 #define SDL_VIDEO_OPENGL_ES	1
 #define SDL_VIDEO_RENDER_OGL_ES	1
+#define SDL_VIDEO_RENDER_OGL_ES2	1
 
 /* Enable system power support */
 #define SDL_POWER_UIKIT 1

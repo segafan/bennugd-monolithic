@@ -48,6 +48,9 @@ extern PROCDEF * mainproc ;
 extern int procdef_count ;
 
 extern char *appname;
+extern char *appexename;
+extern char *appexepath;
+extern char *appexefullpath;
 
 extern int debug ;          /* 1 if running in debug mode                    */
 
@@ -64,11 +67,6 @@ extern int trace_sentence;
 extern INSTANCE * trace_instance;
 
 /* --------------------------------------------------------------------------- */
-// Devkitpro defines strcmpi to strncascmp, but we don't want that
-
-#ifdef strncmpi
-  #undef strncmpi
-#endif
 
 extern int strncmpi( char * str1, char * str2, int sz );
 
@@ -98,16 +96,6 @@ extern void bgdrtm_ptimer_init(void);
 extern unsigned long bgdrtm_ptimer_get_ticks_us(void);
 extern void bgdrtm_ptimer_cleanup(void);
 
-#endif
-
-/* --------------------------------------------------------------------------- */
-
-// TODO: Remove this once PSP is working fine, it's for debugging purposes
-//       and produces a lot of junk in the Wii framebuffer.
-#ifdef TARGET_PSP
-  #define __PSP_fprintf(...)       fprintf(stderr, __VA_ARGS__);
-#else
-  #define __PSP_fprintf(...)
 #endif
 
 /* --------------------------------------------------------------------------- */
