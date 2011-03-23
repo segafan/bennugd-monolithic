@@ -85,11 +85,19 @@ DLCONSTANT  __bgdexport( libvideo, constants_def )[] =
     { "MODE_16BPP",         TYPE_DWORD, 16                  },
     { "MODE_32BPP",         TYPE_DWORD, 32                  },
 
-    { "MODE_MODAL",         TYPE_DWORD, MODE_MODAL          },  /* GRAB INPU */
+    { "MODE_MODAL",         TYPE_DWORD, MODE_MODAL          },  /* GRAB INPUT */
     { "MODE_FRAMELESS",     TYPE_DWORD, MODE_FRAMELESS      },  /* FRAMELESS window */
 
     { "SCALE_NONE",         TYPE_DWORD, SCALE_NONE          },
 
+	{ "SRO_NORMAL",         TYPE_DWORD, SRO_NORMAL          },
+	{ "SRO_LEFT",           TYPE_DWORD, SRO_LEFT            },
+	{ "SRO_DOWN",           TYPE_DWORD, SRO_DOWN            },
+	{ "SRO_RIGHT",          TYPE_DWORD, SRO_RIGHT           },
+	
+	{ "SRA_STRETCH",        TYPE_DWORD, SRA_STRETCH         },
+	{ "SRA_PRESERVE",       TYPE_DWORD, SRA_PRESERVE        },
+	
     { NULL          , 0         ,  0  }
 } ;
 #else

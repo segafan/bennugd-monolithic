@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -37,7 +37,11 @@ static void  dump_new_events()
 
     /* We can't return -1, just return 0 (no event) on error */
 #ifndef TARGET_IOS
+#if SDL_VERSION_ATLEAST(1,3,0)
+	while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT ) > 0 );
+#else
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
+#endif	
 #endif
 
     /* Get new events */

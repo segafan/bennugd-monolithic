@@ -14,7 +14,7 @@
 #---------------------------------------------------------------------------------
 %.o: %.cpp
 	@echo $(notdir $<)
-	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/g++-4.2 $(CXXFLAGS) $< -o $@ $(ERROR_FILTER)
+	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 $(CXXFLAGS) $< -o $@ $(ERROR_FILTER)
 	
 #---------------------------------------------------------------------------------
 %.o: %.c
@@ -65,9 +65,9 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -arch armv6 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-g -arch armv6 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_MAC -DTARGET_IOS -DNO_MODCHIPMUNK -DNO_MODICONV -DNO_MODIMAGE -D_THREAD_SAFE -DVERSION='"1.0.0"' $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O2 -arch armv6 -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-g -arch armv6 -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -185,13 +185,13 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					-I$(CURDIR)/../../3rdparty/SDL-1.3/iOS/include \
 					-I$(CURDIR)/../../3rdparty/SDL-1.3/iOS/include/SDL \
 					-I$(CURDIR)/../../3rdparty/libpng/iOS/include \
-					-I/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include
+					-I/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/include
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
 #---------------------------------------------------------------------------------
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib) \
-					-L/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include
+					-L/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS4.3.sdk/usr/lib
 
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
 .PHONY: $(BUILD) clean
