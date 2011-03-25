@@ -68,9 +68,9 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O2 -D__BGDI__ -D__MONOLITHIC__ -DTARGET_MAC -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-O2 -D__BGDI__ -D__MONOLITHIC__ -m32 -DTARGET_MAC -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O2 $(MACHDEP)
+LDFLAGS		=	-O2 $(MACHDEP) -m32
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
