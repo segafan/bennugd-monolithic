@@ -24,14 +24,14 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-g -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	$(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lSDL -lpng \
+LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lmad -lSDL -lpng \
         -lvorbisidec -lglob -lfat -lz -lwiiuse -lwiikeyboard -lbte -logc -lm \
         -lstdc++
 #---------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile
-	powerpc-eabi-strip $(TARGET).elf
+	#powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:
