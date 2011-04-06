@@ -69,7 +69,8 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c))) \
-              ../../common/debug.c ../../common/files.c ../../common/xctype.c
+              ../../common/debug.c ../../common/files.c ../../common/xctype.c \
+              ../../../3rdparty/libc_additions/realpath.c
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
@@ -93,7 +94,8 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL \
-					-I$(PORTLIBS)/include/chipmunk/
+					-I$(PORTLIBS)/include/chipmunk/ \
+					-I$(CURDIR)/../../3rdparty/libc_additions/
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

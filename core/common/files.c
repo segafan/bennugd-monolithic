@@ -35,6 +35,10 @@
 #include <assert.h>
 #endif
 
+#ifdef TARGET_WII
+#include <realpath.h>
+#endif
+
 #include <stdint.h>
 
 #include "files.h"

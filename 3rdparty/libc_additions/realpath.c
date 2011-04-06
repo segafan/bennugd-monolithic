@@ -27,6 +27,11 @@
  * SUCH DAMAGE.
  */
 
+/* I've removed symlink support from this file, as libogc doesn't include
+ * lstat() and symlinks cannot be created in FAT filesystems (like those
+ * usable in a Wii).
+ */
+
 #if defined(LIBC_SCCS) && !defined(lint)
 static char *rcsid = "$OpenBSD: realpath..c,v 1.4 1998/05/18 09:55:19 deraadt Exp $";
 #endif /* LIBC_SCCS and not lint */
@@ -39,26 +44,11 @@ static char *rcsid = "$OpenBSD: realpath..c,v 1.4 1998/05/18 09:55:19 deraadt Ex
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "lstat.h"
-
-/*
- * S_ISLNK compatibility
- */
-#ifndef S_ISLNK
-#define S_ISLNK(m) ((m & 0170000) == 0120000)
-#endif
-
-/*
- * MAXSYMLINKS
- */
-#ifndef MAXSYMLINKS
-#define MAXSYMLINKS 5
-#endif
 
 /*
  * char *realpath(const char *path, char resolved_path[MAXPATHLEN]);
  *
- * Find the real name of path, by removing all ".", ".." and symlink
+ * Find the real name of path, by removing all "." and ".."
  * components.  Returns (resolved) on success, or (NULL) on failure,
  * in which case the path which caused trouble is left in (resolved).
  */
@@ -81,8 +71,7 @@ realpath(const char *path, char *resolved)
         /*
          * Find the dirname and basename from the path to be resolved.
          * Change directory to the dirname component.
-         * lstat the basename part.
-         *     if it is a symlink, read in the value and loop.
+         * stat the basename part.
          *     if it is a directory, then change to that directory.
          * get the current directory name and append the basename.
          */
@@ -107,18 +96,7 @@ loop:
                 p = resolved;
 
         /* Deal with the last component. */
-        if (lstat(p, &sb) == 0) {
-                if (S_ISLNK(sb.st_mode)) {
-                        if (++symlinks > MAXSYMLINKS) {
-                                serrno = ELOOP;
-                                goto err1;
-                        }
-                        n = readlink(p, resolved, MAXPATHLEN-1);
-                        if (n < 0)
-                                goto err1;
-                        resolved[n] = '\0';
-                        goto loop;
-                }
+        if (stat(p, &sb) == 0) {
                 if (S_ISDIR(sb.st_mode)) {
                         if (chdir(p) < 0)
                                 goto err1;
