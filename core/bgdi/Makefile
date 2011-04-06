@@ -31,9 +31,9 @@ LDFLAGS		=	$(MACHDEP) -Wl,-Map,$(notdir $@).map
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lmad -lSDL -lpng \
-        -lvorbisidec -lglob -lfat -lz -lwiiuse -lwiikeyboard -lbte -logc -lm \
-        -lstdc++
+LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lSDL -lpng \
+        -lvorbisidec -lglob -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard \
+	-lstdc++
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib

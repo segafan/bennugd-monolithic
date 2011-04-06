@@ -50,6 +50,7 @@
 #define OS_DINGUX_A320          10
 #define OS_WII                  1000
 #define OS_PSP                  1001
+#define OS_IOS                  1002
 
 #endif
 

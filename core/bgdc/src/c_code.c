@@ -477,7 +477,7 @@ int compile_sizeof( VARSPACE * here, int * content_size, char * content_type, in
 
     if ( base )
     {
-        token_next() ;
+          token_next() ;
         if ( token.type == IDENTIFIER && token.code != identifier_point )
         {
             token_back() ;
@@ -1251,7 +1251,6 @@ expresion_result compile_cast()
             res.type = type;
         }
         else if ( type.chunk[0].type == TYPE_SBYTE && typedef_is_integer( res.type ) )
-
         {
             codeblock_add( code, MN_INT2BYTE, 0 );
             res.type = type;

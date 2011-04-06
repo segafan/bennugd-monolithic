@@ -66,6 +66,10 @@ int libmode = 0;
 
 char * main_path = NULL;
 
+char * appexename       = NULL;
+char * appexepath       = NULL;
+char * appexefullpath   = NULL;
+
 /* --------------------------------------------------------------------------- */
 
 static char timebuff[11]; /* YYYY/MM/DD or HH:MM:SS */
@@ -75,7 +79,6 @@ static char _tmp[128];
 
 int main( int argc, char *argv[] )
 {
-    FILE *fd;
     time_t curtime;
     struct tm *loctime;
     int value, code;
@@ -88,6 +91,7 @@ int main( int argc, char *argv[] )
     char importname[__MAX_PATH] = "";
     char compilerimport[__MAX_PATH] = "";
     int i, j;
+    char *ptr;
     
 /* The following code has been stolen from devkitpro project's wii-examples */
 #ifdef TARGET_WII
@@ -127,6 +131,31 @@ int main( int argc, char *argv[] )
     VIDEO_WaitVSync();
     if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
 #endif
+    
+    /* get my executable name */
+    ptr = argv[0] + strlen( argv[0] );
+    while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
+    appexename = strdup( ptr );
+
+    /* get executable full pathname  */
+    appexefullpath = getfullpath( argv[0] );
+    if ( ( !strchr( argv[0], '\\' ) && !strchr( argv[0], '/' ) ) && !file_exists( appexefullpath ) )
+    {
+        char *p = whereis( appexename );
+        if ( p )
+        {
+            char * tmp = calloc( 1, strlen( p ) + strlen( appexename ) + 2 );
+            free( appexefullpath );
+            sprintf( tmp, "%s/%s", p, appexename );
+            appexefullpath = getfullpath( tmp );
+            free( tmp );
+        }
+    }
+
+    /* get pathname of executable */
+    ptr = strstr( appexefullpath, appexename );
+    appexepath = calloc( 1, ptr - appexefullpath + 1 );
+    strncpy( appexepath, appexefullpath, ptr - appexefullpath );
 
     printf( BGDC_VERSION "\n"
             "Copyright © 2006-2011 SplinterGU (Fenix/BennuGD)\n"
@@ -270,7 +299,7 @@ int main( int argc, char *argv[] )
                     /* -f "file": Embed a file to the DCB */
 
                     if ( argv[i][j + 1] )
-                        dcb_add_file( argv[i + j] + 1 );
+                        dcb_add_file( &argv[i][j + 1] );
                     else while ( argv[i + 1] )
                         {
                             if ( argv[i + 1][0] == '-' ) break;
@@ -295,7 +324,7 @@ int main( int argc, char *argv[] )
                         i++;
                         break;
                     }
-                    file_addp( argv[i] + j + 1 );
+                    file_addp( &argv[i][j + 1] );
                     break;
                 }
 
@@ -312,7 +341,7 @@ int main( int argc, char *argv[] )
                         i++;
                         break;
                     }
-                    strcpy( langinfo, argv[i] + j + 1 );
+                    strcpy( langinfo, &argv[i][j + 1] );
                     break;
                 }
 
@@ -360,7 +389,7 @@ int main( int argc, char *argv[] )
                     int r = 1;
                     char * f;
                     if ( argv[i][j + 1] )
-                        r = dcb_load_lib( ( f = argv[i + j] + 1 ) );
+                        r = dcb_load_lib( ( f = &argv[i][j + 1] ) );
                     else if ( argv[i + 1] && argv[i + 1][0] != '-' )
                     {
                         r = dcb_load_lib( ( f = argv[i + 1] ) );
