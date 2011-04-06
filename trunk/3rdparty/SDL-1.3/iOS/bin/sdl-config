@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix=/Users/joseba/cvs/bennugd/monolithic/3rdparty/SDL-1.3/iOS
+prefix=/Users/joseba/cvs/bennugd/monolithic/3rdparty/SDL-1.3/iOS/
 exec_prefix=${prefix}
 exec_prefix_set=no
 libdir=${exec_prefix}/lib
@@ -42,14 +42,14 @@ while test $# -gt 0; do
       echo 1.3.0
       ;;
     --cflags)
-      echo -I${prefix}/include/SDL -D__IPHONEOS__ -D_THREAD_SAFE
+      echo -I${prefix}/include/SDL  -D_THREAD_SAFE
       ;;
-    --libs)
-      echo -L${exec_prefix}/lib  -lSDL  
-      ;;
-    --static-libs)
-#    --libs|--static-libs)
-      echo -L${exec_prefix}/lib  ${libdir}/libSDL.a  -Wl,-framework,OpenGL  -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,AudioUnit
+#    --libs)
+#      echo -L${exec_prefix}/lib  -lSDL  
+#      ;;
+#    --static-libs)
+    --libs|--static-libs)
+      echo -L${exec_prefix}/lib  ${libdir}/libSDL.a  -lm -liconv -Wl,-framework,OpenGL  -Wl,-framework,ForceFeedback -lobjc -Wl,-framework,Cocoa -Wl,-framework,Carbon -Wl,-framework,IOKit -Wl,-framework,CoreAudio -Wl,-framework,AudioToolbox -Wl,-framework,AudioUnit
       ;;
     *)
       echo "${usage}" 1>&2
