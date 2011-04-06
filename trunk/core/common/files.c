@@ -21,6 +21,10 @@
  *
  */
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -43,6 +47,7 @@ int opened_files = 0;
 
 typedef struct
 {
+    char * stubname ;
     char * name ;
     int  offset ;
     int  size ;
@@ -63,12 +68,14 @@ void xfile_init( int maxfiles )
     max_x_files = maxfiles;
 }
 
-void file_add_xfile( file * fp, long offset, char * name, int size )
+void file_add_xfile( file * fp, char * stubname, long offset, char * name, int size )
 {
     char * ptr ;
+
     assert( x_files_count < max_x_files ) ;
     assert( fp->type == F_FILE ) ;
 
+    x_file[x_files_count].stubname = strdup( stubname );
     x_file[x_files_count].fp = fp->fp ;
     x_file[x_files_count].offset = offset ;
     x_file[x_files_count].size = size ;
@@ -103,10 +110,10 @@ int file_read( file * fp, void * buffer, int len )
             len = xf->size + xf->offset - fp->pos ;
         }
 
-        fseek( xf->fp, fp->pos, SEEK_SET ) ;
-        result = fread( buffer, 1, len, xf->fp ) ;
+        fseek( fp->fp, fp->pos, SEEK_SET ) ;
+        result = fread( buffer, 1, len, fp->fp ) ;
 
-        fp->pos = ftell( xf->fp ) ;
+        fp->pos = ftell( fp->fp ) ;
         return result ;
     }
 
@@ -175,7 +182,7 @@ int file_qgets( file * fp, char * buffer, int len )
 
         xf = &x_file[fp->n] ;
 
-        fseek( xf->fp, fp->pos, SEEK_SET ) ;
+        fseek( fp->fp, fp->pos, SEEK_SET ) ;
         while ( l < len )
         {
             if ( fp->pos >= xf->offset + xf->size )
@@ -183,17 +190,15 @@ int file_qgets( file * fp, char * buffer, int len )
                 fp->eof = 1 ;
                 break ;
             }
-            fread( ptr, 1, 1, xf->fp ) ;
+            fread( ptr, 1, 1, fp->fp ) ;
             l++ ;
             fp->pos++ ;
-            if ( *ptr++ == '\n' )
-                break ;
+            if ( *ptr++ == '\n' ) break ;
         }
         *ptr = 0 ;
-        fp->pos = ftell( xf->fp ) ;
+        fp->pos = ftell( fp->fp ) ;
 
         if ( l == 0 ) return 0 ;
-
     }
 #ifndef NO_ZLIB
     else if ( fp->type == F_GZFILE )
@@ -252,7 +257,7 @@ int file_gets( file * fp, char * buffer, int len )
 
         xf = &x_file[fp->n] ;
 
-        fseek( xf->fp, fp->pos, SEEK_SET ) ;
+        fseek( fp->fp, fp->pos, SEEK_SET ) ;
         while ( l < len )
         {
             if ( fp->pos >= xf->offset + xf->size )
@@ -260,13 +265,13 @@ int file_gets( file * fp, char * buffer, int len )
                 fp->eof = 1 ;
                 break ;
             }
-            fread( ptr, 1, 1, xf->fp ) ;
+            fread( ptr, 1, 1, fp->fp ) ;
             l++ ;
             fp->pos++ ;
             if ( *ptr++ == '\n' ) break ;
         }
         *ptr = 0 ;
-        fp->pos = ftell( xf->fp ) ;
+        fp->pos = ftell( fp->fp ) ;
 
         if ( l == 0 ) return 0 ;
     }
@@ -487,9 +492,9 @@ int file_write( file * fp, void * buffer, int len )
             fp->eof = 1 ;
             len = xf->size + xf->offset - fp->pos ;
         }
-        fseek( xf->fp, fp->pos, SEEK_SET ) ;
-        result = fwrite( buffer, 1, len, xf->fp ) ;
-        fp->pos = ftell( xf->fp ) ;
+        fseek( fp->fp, fp->pos, SEEK_SET ) ;
+        result = fwrite( buffer, 1, len, fp->fp ) ;
+        fp->pos = ftell( fp->fp ) ;
         return result ;
     }
 
@@ -536,12 +541,10 @@ int file_size( file * fp )
 
 int file_pos( file * fp )
 {
-    if ( fp->type == F_XFILE )
-        return fp->pos - x_file[fp->n].offset ;
+    if ( fp->type == F_XFILE ) return fp->pos - x_file[fp->n].offset ;
 
 #ifndef NO_ZLIB
-    if ( fp->type == F_GZFILE )
-        return gztell( fp->gz ) ;
+    if ( fp->type == F_GZFILE ) return gztell( fp->gz ) ;
 #endif
 
     return ftell( fp->fp ) ;
@@ -674,10 +677,12 @@ file * file_open( const char * filename, char * mode )
         {
             if ( strcmp( filename, x_file[i].name ) == 0 )
             {
-                f->eof  = 0 ;
-                f->pos  = x_file[i].offset ;
-                f->type = F_XFILE ;
-                f->n = i ;
+                f->eof  = 0;
+                f->pos  = x_file[i].offset;
+                f->type = F_XFILE;
+                f->n    = i;
+                f->fp = fopen( x_file[i].stubname, "rb" );
+
                 opened_files++;
                 return f ;
             }
@@ -731,6 +736,7 @@ void file_close( file * fp )
 {
     if ( fp == NULL ) return;
     if ( fp->type == F_FILE ) fclose( fp->fp ) ;
+    if ( fp->type == F_XFILE ) fclose( fp->fp ) ;
 #ifndef NO_ZLIB
     if ( fp->type == F_GZFILE ) gzclose( fp->gz ) ;
 #endif
@@ -811,9 +817,9 @@ FILE * file_fp( file * f )
 {
     if ( f->type == F_XFILE )
     {
-        XFILE * xf = &x_file[f->n] ;
-        fseek( xf->fp, f->pos, SEEK_SET ) ;
-        return xf->fp ;
+//        XFILE * xf = &x_file[f->n] ;
+        fseek( f->fp, f->pos, SEEK_SET ) ;
+        return f->fp ;
     }
 
     return f->fp ;

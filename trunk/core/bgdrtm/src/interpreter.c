@@ -943,7 +943,6 @@ int instance_go( INSTANCE * r )
             case MN_NOT:
             case MN_NOT | MN_UNSIGNED:
                 r->stack_ptr[-1] = !( r->stack_ptr[-1] ) ;
-
                 ptr++ ;
                 break ;
 
@@ -1833,7 +1832,6 @@ int instance_go( INSTANCE * r )
                 r->stack_ptr-- ;
                 ptr++ ;
                 break ;
-
 
             case MN_BYTE | MN_VAROR:
             case MN_BYTE | MN_VAROR | MN_UNSIGNED:

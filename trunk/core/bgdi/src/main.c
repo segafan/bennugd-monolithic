@@ -38,6 +38,7 @@
 #include "bgdi.h"
 #include "bgdrtm.h"
 #include "xstrings.h"
+#include "dirs.h"
 
 #if defined(TARGET_IOS)
 #include <SDL.h>
@@ -71,18 +72,18 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  */
 
 int main( int argc, char *argv[] )
-{	
+{
     char * filename = NULL, dcbname[ __MAX_PATH ], *ptr ;
     int i, j, ret = -1;
     file * fp = NULL;
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
-	
+
     /* get my executable name */
     ptr = argv[0] + strlen( argv[0] );
     while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
     appexename = strdup( ptr );
-	
+
     /* get executable full pathname  */
     appexefullpath = getfullpath( argv[0] );
     if ( ( !strchr( argv[0], '\\' ) && !strchr( argv[0], '/' ) ) && !file_exists( appexefullpath ) )
@@ -97,21 +98,21 @@ int main( int argc, char *argv[] )
             free( tmp );
         }
     }
-	
+
     /* get pathname of executable */
     ptr = strstr( appexefullpath, appexename );
     appexepath = calloc( 1, ptr - appexefullpath + 1 );
     strncpy( appexepath, appexefullpath, ptr - appexefullpath );
-	
+
 #ifdef _WIN32
     appname = calloc( 1, strlen( appexename ) - 3 );
     strncpy( appname, appexename, strlen( appexename ) - 4 );
 #else
     appname = strdup( appexename );
 #endif
-	
+
     standalone = ( strncmpi( appexename, "bgdi", 4 ) == 0 ) ;
-	
+
     /* add binary path */
     file_addp( appexepath );
 
@@ -131,21 +132,21 @@ int main( int argc, char *argv[] )
         {
             file_seek( fp, -( int )sizeof( dcb_signature ), SEEK_END );
             file_read( fp, &dcb_signature, sizeof( dcb_signature ) );
-			
+
             if ( strcmp( dcb_signature.magic, DCB_STUB_MAGIC ) == 0 )
             {
                 ARRANGE_DWORD( &dcb_signature.dcb_offset );
                 embedded = 1;
             }
         }
-		
+
         filename = appname;
     }
-	
+
     if ( standalone )
     {
         /* Calling BGDI.EXE so we must get all command line params */
-		
+
         for ( i = 1 ; i < argc ; i++ )
         {
             if ( argv[i][0] == '-' )
@@ -167,7 +168,7 @@ int main( int argc, char *argv[] )
                             i++ ;
                             break ;
                         }
-                        file_addp( argv[i] + j + 1 ) ;
+                        file_addp( &argv[i][j + 1] ) ;
                         break ;
                     }
                     j++ ;
@@ -184,43 +185,43 @@ int main( int argc, char *argv[] )
                 }
             }
         }
-		
+
         if ( !filename )
         {
             printf( BGDI_VERSION "\n"
-				   "Copyright (c) 2006-2011 SplinterGU (Fenix/BennuGD)\n"
-				   "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
-				   "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
-				   "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
-				   "see COPYING for details\n\n"
-				   "Usage: %s [options] <data code block file>[.dcb]\n\n"
-				   "   -d       Activate DEBUG mode\n"
-				   "   -i dir   Adds the directory to the PATH\n"
-				   "\nThis program is free software distributed under.\n\n"
-				   "GNU General Public License published by Free Software Foundation.\n"
-				   "Permission granted to distribute and/or modify as stated in the license\n"
-				   "agreement (GNU GPL version 2 or later).\n"
-				   "See COPYING for license details.\n",
-				   argv[0] ) ;
+                    "Copyright (c) 2006-2011 SplinterGU (Fenix/BennuGD)\n"
+                    "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
+                    "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
+                    "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
+                    "see COPYING for details\n\n"
+                    "Usage: %s [options] <data code block file>[.dcb]\n\n"
+                    "   -d       Activate DEBUG mode\n"
+                    "   -i dir   Adds the directory to the PATH\n"
+                    "\nThis program is free software distributed under.\n\n"
+                    "GNU General Public License published by Free Software Foundation.\n"
+                    "Permission granted to distribute and/or modify as stated in the license\n"
+                    "agreement (GNU GPL version 2 or later).\n"
+                    "See COPYING for license details.\n",
+                    argv[0] ) ;
             return -1 ;
         }
     }
-	
+
     /* Initialization (modules needed before dcb_load) */
-	
+
     string_init() ;
     init_c_type() ;
-	
+
     /* Init application title for windowed modes */
-	
+
     strcpy( dcbname, filename ) ;
-	
+
     if ( appname && filename != appname )
     {
         free( appname );
         appname = strdup( filename ) ;
     }
-	
+
     if ( !embedded )
     {
         /* First try to load directly (we expect myfile.dcb) */
@@ -228,7 +229,7 @@ int main( int argc, char *argv[] )
         {
             char ** dcbext = dcb_exts;
             int dcbloaded = 0;
-			
+
             while ( dcbext && *dcbext )
             {
                 strcpy( dcbname, filename ) ;
@@ -236,7 +237,7 @@ int main( int argc, char *argv[] )
                 if (( dcbloaded = dcb_load( dcbname ) ) ) break;
                 dcbext++;
             }
-			
+
             if ( !dcbloaded )
             {
                 printf( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
@@ -246,40 +247,40 @@ int main( int argc, char *argv[] )
     }
     else
     {
-        dcb_load_from( fp, dcb_signature.dcb_offset );
+        dcb_load_from( fp, dcbname, dcb_signature.dcb_offset );
     }
-	
+
     /* If the dcb is not in debug mode */
-	
+
     if ( dcb.data.NSourceFiles == 0 ) debug = 0;
-	
+
     /* Initialization (modules needed after dcb_load) */
-	
+
     sysproc_init() ;
-	
+
 #ifdef _WIN32
     HWND hWnd = /*GetForegroundWindow()*/ GetConsoleWindow();
     DWORD dwProcessId;
     GetWindowThreadProcessId( hWnd, &dwProcessId );
     if ( dwProcessId == GetCurrentProcessId() ) ShowWindow( hWnd, SW_HIDE );
 #endif
-	
+
     argv[0] = filename;
     bgdrtm_entry( argc, argv );
-	
+
     if ( mainproc )
     {
         mainproc_running = instance_new( mainproc, NULL ) ;
         ret = instance_go_all() ;
     }
-	
+
     bgdrtm_exit( ret );
-	
+
     free( appexename        );
     free( appexepath        );
     free( appexefullpath    );
     free( appname           );
-	
+
     return ret;
 }
 

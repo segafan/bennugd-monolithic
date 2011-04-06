@@ -378,10 +378,23 @@ void sysproc_add_tab( DLSYSFUNCS * functions_exports )
 
 /* ---------------------------------------------------------------------- */
 
+static char * dlsearchpath[] =
+{
+    "modules",
+    "mod",
+    "mods",
+    "extensions",
+    "plugins",
+    "data",
+    NULL
+};
+
+/* ---------------------------------------------------------------------- */
+
 void sysproc_init()
 {
     SYSPROC       * proc = sysprocs ;
-    void          * library ;
+    void          * library = NULL ;
     const char    * filename ;
     unsigned int    n ;
 
@@ -399,7 +412,7 @@ void sysproc_init()
 
     int             maxcode = 0 ;
 
-    char soname[__MAX_PATH] ;
+    char soname[ __MAX_PATH ], fullsoname[ __MAX_PATH ], **spath ;
 
 #if defined( __MONOLITHIC__ )
 #define DLLEXT      ".fakelib"
@@ -414,7 +427,7 @@ void sysproc_init()
 #define DLLEXT      ".so"
 #define SIZEDLLEXT  3
 #endif
-	
+
     for ( n = 0; n < dcb.data.NImports; n++ )
     {
         filename = string_get( dcb.imports[n] ) ;
@@ -423,11 +436,23 @@ void sysproc_init()
 
         filename = soname ;
 
+        /* Load library */
+
         if ( debug ) printf ("Loading... %s\n", filename );
 
-        /* Load library */
+        fullsoname[0] = '\0';
+
         library  = dlibopen( filename ) ;
-        if ( !library )
+
+        spath = dlsearchpath;
+        while( !library && spath && *spath )
+        {
+            sprintf( fullsoname, "%s%s/%s", appexepath, *spath, filename );
+            library  = dlibopen( fullsoname ) ;
+            spath++;
+        }
+
+        if( !library )
         {
             printf( dliberror() ) ;
             exit( 0 );

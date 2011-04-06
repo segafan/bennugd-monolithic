@@ -71,7 +71,6 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               interpreter.c varspace_file.c \
               ../../../3rdparty/libc_additions/realpath.c \
-              ../../../3rdparty/libc_additions/lstat.c \
               ../../../3rdparty/libc_additions/readlink.c \
               ../../common/debug.c \
               ../../common/files.c \
@@ -164,6 +163,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL \
+					-I$(LIBOGC_INC)/chipmunk/ \
 					-I$(PORTLIBS)/include/chipmunk/
 
 #---------------------------------------------------------------------------------
