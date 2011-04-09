@@ -290,7 +290,8 @@ int instance_go( INSTANCE * r )
                 /* Manipulación de la pila */
 
             case MN_DUP:
-                *r->stack_ptr++ = r->stack_ptr[-1] ;
+                *r->stack_ptr = r->stack_ptr[-1] ;
+                r->stack_ptr++;
                 ptr++ ;
                 break ;
 

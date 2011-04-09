@@ -30,6 +30,7 @@
 /* I've removed symlink support from this file, as libogc doesn't include
  * lstat() and symlinks cannot be created in FAT filesystems (like those
  * usable in a Wii).
+ * -- Joseba García Etxebarria <joseba.gar@gmail.com>
  */
 
 #if defined(LIBC_SCCS) && !defined(lint)
@@ -56,9 +57,8 @@ char *
 realpath(const char *path, char *resolved)
 {
         struct stat sb;
-        int fd, n, rootd, serrno = 0;
+        int fd, rootd, serrno = 0;
         char *p, *q, wbuf[MAXPATHLEN], start[MAXPATHLEN];
-        int symlinks = 0;
 
         /* Save the starting point. */
         getcwd(start,MAXPATHLEN);
