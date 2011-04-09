@@ -40,9 +40,9 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-O3 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-O3 $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -71,7 +71,6 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               interpreter.c varspace_file.c \
               ../../../3rdparty/libc_additions/realpath.c \
-              ../../../3rdparty/libc_additions/readlink.c \
               ../../common/debug.c \
               ../../common/files.c \
               ../../common/xctype.c \
