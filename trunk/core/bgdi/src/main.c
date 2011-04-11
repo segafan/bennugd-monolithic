@@ -78,7 +78,6 @@ int main( int argc, char *argv[] )
     char * filename = NULL, dcbname[ __MAX_PATH ], *ptr ;
     int i, j, ret = -1;
     file * fp = NULL;
-    FILE * fd;
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
 
@@ -212,13 +211,11 @@ int main( int argc, char *argv[] )
 
 #ifdef TARGET_ANDROID
     filename = "/mnt/sdcard/data/main.dcb";
-	fd = fopen(filename, "r");
-	if (fd == NULL) {
+	if (!file_exists(filename)) {
 	    printf("%s doesn't exist, quitting\n", filename);
 	    return -1;
 	}
     printf("%s exists\n", filename);
-    fclose(fd);
     
     // Remember to compile DCB with debug (bgdc -g) info!
     debug = 1;
