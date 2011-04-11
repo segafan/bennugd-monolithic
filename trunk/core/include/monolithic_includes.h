@@ -39,7 +39,9 @@
 #include <mod_proc_symbols.h>
 #include <mod_sort_symbols.h>
 #include <mod_timers_symbols.h>
-#include <mod_regex_symbols.h>
+#ifndef NO_MODREGEX
+#  include <mod_regex_symbols.h>
+#endif
 #include <libgrbase_symbols.h>
 #include <libblit_symbols.h>
 #include <libvideo_symbols.h>
@@ -69,7 +71,9 @@
 #include <libwm_symbols.h>
 #include <mod_wm_symbols.h>
 #include <mod_sys_symbols.h>
-#include <mod_mem_symbols.h>
+#ifndef NO_MODMEM
+#  include <mod_mem_symbols.h>
+#endif
 #include <mod_flic_symbols.h>
 //#include <mod_debug_symbols.h>
 /* Unofficial modules */
@@ -147,7 +151,9 @@ basic_symbols symbol_list[] =
 	{ "mod_proc.fakelib"     , NULL, mod_proc_constants_def, NULL, NULL, mod_proc_locals_def, mod_proc_functions_exports },
 	{ "mod_sort.fakelib"     , NULL, NULL, NULL, NULL, NULL, mod_sort_functions_exports },
 	{ "mod_timers.fakelib"   , NULL, NULL, NULL, mod_timers_globals_def, NULL, NULL },
+#ifndef NO_MODREGEX
 	{ "mod_regex.fakelib"    , NULL, NULL, NULL, mod_regex_globals_def, NULL, mod_regex_functions_exports },
+#endif
 	{ "mod_video.fakelib"    , mod_video_modules_dependency, NULL, NULL, NULL, NULL, mod_video_functions_exports },
 	{ "mod_mouse.fakelib"    , mod_mouse_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	{ "mod_map.fakelib"      , mod_map_modules_dependency, mod_map_constants_def, NULL, NULL, NULL, mod_map_functions_exports },
@@ -167,9 +173,11 @@ basic_symbols symbol_list[] =
 	{ "mod_m7.fakelib"       , mod_m7_modules_dependency, mod_m7_constants_def, NULL, mod_m7_globals_def, mod_m7_locals_def, mod_m7_functions_exports },
 	{ "mod_wm.fakelib"       , mod_wm_modules_dependency, NULL, NULL, NULL, NULL, mod_wm_functions_exports },
 	{ "mod_sys.fakelib"      , NULL, mod_sys_constants_def, NULL, NULL, NULL, mod_sys_functions_exports },
+#ifndef NO_MODMEM
 	{ "mod_mem.fakelib"      , NULL, NULL, NULL, NULL, NULL, mod_mem_functions_exports },
+#endif
 	{ "mod_flic.fakelib"     , NULL, NULL, NULL, NULL, NULL, mod_flic_functions_exports },
-//	{ "mod_debug.fakelib"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
+    //	{ "mod_debug.fakelib"    , mod_debug_modules_dependency, NULL, NULL, NULL, NULL, NULL },
 	/* Unofficial modules */
 #ifndef NO_MODICONV
 	{ "mod_iconv.fakelib"    , NULL, NULL, NULL, NULL, NULL, mod_iconv_functions_exports },
@@ -220,7 +228,9 @@ extra_symbols symbol_list_runtime[] =
 	{ NULL, mod_proc_locals_fixup, NULL, NULL, NULL, NULL, mod_proc_process_exec_hook, NULL}, //mod_proc
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sort
 	{ mod_timers_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, mod_timers_handler_hooks }, //mod_timers
+#ifndef NO_MODREGEX
 	{ mod_regex_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_regex
+#endif
 	{ mod_video_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_video
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mouse
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_map
@@ -240,9 +250,11 @@ extra_symbols symbol_list_runtime[] =
 	{ mod_m7_globals_fixup, mod_m7_locals_fixup, mod_m7_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_m7
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wm
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sys
+#ifndef NO_MODMEM
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_mem
+#endif
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_flic
-//	{ mod_debug_globals_fixup, mod_debug_locals_fixup, mod_debug_module_initialize, mod_debug_module_finalize, NULL, NULL, mod_debug_process_exec_hook, NULL }, //mod_debug
+    //	{ mod_debug_globals_fixup, mod_debug_locals_fixup, mod_debug_module_initialize, mod_debug_module_finalize, NULL, NULL, mod_debug_process_exec_hook, NULL }, //mod_debug
 	/* Unofficial modules */
 #ifndef NO_MODICONV
 	{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_iconv
