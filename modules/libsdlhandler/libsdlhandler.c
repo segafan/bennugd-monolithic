@@ -36,7 +36,7 @@ static void  dump_new_events()
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
-#ifndef TARGET_IOS
+#if !defined(TARGET_IOS) && !defined(TARGET_ANDROID)
 #if SDL_VERSION_ATLEAST(1,3,0)
 	while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_FIRSTEVENT, SDL_LASTEVENT ) > 0 );
 #else
