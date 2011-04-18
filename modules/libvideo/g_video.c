@@ -372,6 +372,7 @@ int gr_set_mode( int width, int height, int depth )
 
     if ( scale_resolution )
     {
+        printf("Scale_resolution ON\n");
         switch ( scale_resolution_orientation )
         {
             case    SRO_LEFT:
@@ -494,7 +495,11 @@ int gr_set_mode( int width, int height, int depth )
     }
     else
     {
-        screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        printf("Scale_resolution OFF\n");
+        //screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        //printf("Setting mode %dx%dx%d\n (Flags: %d)\n", surface_width, surface_height, depth, sdl_flags);
+        screen = SDL_SetVideoMode(0, 0, 16, 0);
+        printf("Video resolution set to %dx%dx%d\n", screen->w, screen->h, screen->format->BitsPerPixel);
     }
 
     if ( !screen ) return -1;
