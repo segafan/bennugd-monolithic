@@ -455,7 +455,6 @@ static int modcpvsub(INSTANCE * my, int * params)
     return 0;
 }
 
-
 static int modcpvneg(INSTANCE * my, int * params)
 {
     cpVect *v1=params[2];
@@ -1506,7 +1505,7 @@ static int addConstr(cpBody *bod1, cpBody *bod2,cpConstraint * cons)
             elem->Constraints=malloc(sizeof(cpConstraint *));
             elem->constraintsBody=malloc(sizeof(cpConstraint *));
             elem->Constraints[elem->nConstraints-1]=cons;
-            elem->constraintsBody[elem->nConstraints-1]=bod2;
+            elem->constraintsBody[elem->nConstraints-1]=bod1;
         }
         else
         {
@@ -2092,7 +2091,7 @@ static int modaddCircleShape(INSTANCE * my, int * params)
 
 
     dato->Shapes[dato->nShapes-1]=sha;
-    if ( LOCDWORD( mod_chipmunk, my, LOC_STATIC))
+    if ( cpBodyIsStatic(bod) )
         cpSpaceAddStaticShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
     else
         cpSpaceAddShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
@@ -2139,7 +2138,7 @@ static int modaddSegmentShape(INSTANCE * my, int * params)
     sha->group=LOCDWORD( mod_chipmunk,  my, LOC_GROUP );
     sha->layers=LOCDWORD( mod_chipmunk,  my, LOC_LAYERS );
     dato->Shapes[dato->nShapes-1]=sha;
-    if ( LOCDWORD( mod_chipmunk, my, LOC_STATIC))
+    if ( cpBodyIsStatic(bod))
         cpSpaceAddStaticShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
     else
         cpSpaceAddShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
@@ -2186,7 +2185,7 @@ static int modaddPolyShape(INSTANCE * my, int * params)
     sha->group=LOCDWORD( mod_chipmunk,  my, LOC_GROUP );
     sha->layers=LOCDWORD( mod_chipmunk,  my, LOC_LAYERS );
     dato->Shapes[dato->nShapes-1]=sha;
-    if ( LOCDWORD( mod_chipmunk, my, LOC_STATIC))
+    if ( cpBodyIsStatic(bod))
         cpSpaceAddStaticShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
     else
         cpSpaceAddShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
@@ -2343,7 +2342,7 @@ static int creaBodyAndShapeAutomat(INSTANCE *my)
     sha->group=LOCDWORD( mod_chipmunk,  my, LOC_GROUP );
     sha->layers=LOCDWORD( mod_chipmunk,  my, LOC_LAYERS );
     dato->Shapes[dato->nShapes-1]=sha;
-    if ( LOCDWORD( mod_chipmunk, my, LOC_STATIC))
+    if ( cpBodyIsStatic(bod))
         cpSpaceAddStaticShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
     else
         cpSpaceAddShape((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), sha);
@@ -3199,13 +3198,16 @@ static int modGetOptimalInertia(INSTANCE * my, int * params)
 {
     float sha=0;
     cpShape * shape=params[1];
-    if (params[0]==TYPE_CONVEX_POLYGON || params[0]==TYPE_BOX){
+    if (params[0]==TYPE_CONVEX_POLYGON || params[0]==TYPE_BOX)
+    {
         int cant=cpPolyShapeGetNumVerts(shape),z;
         cpVect ver[cant];
-        for (z=0;z<cant;z++)
-        ver[z]=cpPolyShapeGetVert(shape,z);
+        for (z=0; z<cant; z++)
+            ver[z]=cpPolyShapeGetVert(shape,z);
         sha=cpMomentForPoly(shape->body->m, cant, &ver, cpv(*(float *)&params[2],*(float*)&params[3]));
-    }else{
+    }
+    else
+    {
         switch (params[0])
         {
         case TYPE_CIRCLE:
@@ -3297,7 +3299,6 @@ static void postStepRemove(void *a, void *b, void *unused)
 
             for (z=0; z<elem->nConstraints; z++)    //elimina todo registro de estas constraints de los demás procesos
             {
-
                 if (elem->Constraints[z]!=0)
                 {
                     cpSpaceRemoveConstraint((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ), elem->Constraints[z]);
@@ -3311,12 +3312,15 @@ static void postStepRemove(void *a, void *b, void *unused)
                             if (dato->Constraints[i]==elem->Constraints[z])
                             {
                                 dato->Constraints[i]=0;
+                                break;
                             }
                         }
                         for (i=0; i<dato->nConstraints; i++)
                         {
-                            if (dato->constraintsBody[i]==elem->body)
+                            if (dato->constraintsBody[i]==elem->body){
                                 dato->constraintsBody[i]=0;
+                                break;
+                                }
                         }
                     }
                 }
@@ -3361,7 +3365,6 @@ static void postStepRemove(void *a, void *b, void *unused)
         free(lista);
         lista=NULL;
     }
-
 }
 static modInitLista()
 {
@@ -3448,9 +3451,11 @@ static void eliminaListaProcesos()
 
 void actualizaProcess(DataPointer dat)
 {
+
     cpBody * cuerpo = dat->body;
+    int estatico=cpBodyIsStatic(cuerpo);
     INSTANCE * ins= instance_get( dat->father ) ;
-    if (!LOCDWORD( mod_chipmunk, ins, LOC_STATIC ))
+    if (!estatico)
     {
         if (LOCDWORD( mod_chipmunk, ins, LOC_RSTATUS )== STATUS_RUNNING && cpBodyIsSleeping(cuerpo))
         {
@@ -3465,7 +3470,7 @@ void actualizaProcess(DataPointer dat)
 
         }
         if (cuerpo->m!=*(float*)LOCADDR( mod_chipmunk, ins, LOC_MASS ))
-            cpBodySetMass(cuerpo,LOCDWORD( mod_chipmunk, ins, LOC_MASS ));
+            cpBodySetMass(cuerpo,*(float*)LOCADDR( mod_chipmunk, ins, LOC_MASS ));
 
         if (cuerpo->i!=*(float*)LOCADDR( mod_chipmunk, ins, LOC_INERTIA ))
             cpBodySetMoment(cuerpo,*(float*)LOCADDR( mod_chipmunk, ins, LOC_INERTIA ));
@@ -3478,7 +3483,7 @@ void actualizaProcess(DataPointer dat)
         dat->x=LOCDWORD( mod_chipmunk, ins, LOC_X );
         dat->y=LOCDWORD( mod_chipmunk, ins, LOC_Y );
         cuerpo->p.y=LOCDWORD( mod_chipmunk, ins, LOC_Y )/resolucion;
-        if (LOCDWORD( mod_chipmunk, ins, LOC_STATIC ))
+        if (estatico)
             gEstatico=1;
         // cpSpaceRehashStatic((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ));
     }
@@ -3492,7 +3497,7 @@ void actualizaProcess(DataPointer dat)
     {
         dat->angle=LOCDWORD( mod_chipmunk, ins, LOC_ANGLE );
         cpBodySetAngle(cuerpo,-deg2rad(dat->angle));
-        if (LOCDWORD( mod_chipmunk, ins, LOC_STATIC ))
+        if (estatico)
             gEstatico=1;
         // cpSpaceRehashStatic((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ));
     }
@@ -3516,7 +3521,7 @@ void actualizaProcess(DataPointer dat)
     {
         cuerpo->p.x=(LOCDWORD( mod_chipmunk, ins, LOC_INCR_X )+LOCDWORD( mod_chipmunk, ins, LOC_X ))/resolucion;
         cuerpo->p.y=(LOCDWORD( mod_chipmunk, ins, LOC_INCR_Y )+LOCDWORD( mod_chipmunk, ins, LOC_Y ))/resolucion;
-        if (LOCDWORD( mod_chipmunk, ins, LOC_STATIC ))
+        if (estatico)
             gEstatico=1;
         //cpSpaceRehashStatic((cpSpace *)GLODWORD(mod_chipmunk, GLO_SPACE ));
         LOCDWORD( mod_chipmunk, ins, LOC_INCR_X )=0;
@@ -3973,8 +3978,8 @@ DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
     {"SETVERTCONVEXPOLIGON" , "IFFIP",   TYPE_INT, modsetVertConvexPoligonI},
 
     {"SHAPECACHEBB" , "IP",   TYPE_INT, modShapeCacheBB},
-    {"GETOPTIMALINERTIA" , "II",   TYPE_INT, modGetOptimalInertia},
-    {"GETOPTIMALINERTIA" , "IIFF",   TYPE_INT, modGetOptimalInertia},
+    {"GETOPTIMALINERTIA" , "II",   TYPE_FLOAT, modGetOptimalInertia},
+    {"GETOPTIMALINERTIA" , "IIFF",   TYPE_FLOAT, modGetOptimalInertia},
 
     {0, 0, 0, 0}//TYPE_POINTER
 };

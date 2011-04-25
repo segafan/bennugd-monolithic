@@ -87,15 +87,15 @@
 char __bgdexport( mod_chipmunk, globals_def )[] =
     "STRUCT gphysics\n"
     "int space;\n"
-    "float gravity_X;\n"
-    "float gravity_Y;\n"
-    "float bias_coef=0.5;\n" 
-    "float collision_slop=0.1;\n"
+    "float gravity_X;\n"                                                  /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_GRAVITY_X)) */
+    "float gravity_Y;\n"                                                  /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_GRAVITY_Y)) */
+    "float bias_coef=0.5;\n"                                                  /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_BIAS_COEF)) */
+    "float collision_slop=0.1;\n"                                             /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_COLLISION_SLOP)) */
     "int contact_persistence=3;\n"
-    "int iterations=10;\n"
+    "int iterations=10;\n"                                        /* Access and set with GLOADDR(mod_chipmunk,GLO_CONTACT_PERSISTENCE)) */
     "float damping=1.0;\n"
     "float idleSpeedThreshold =0;\n"
-    "float sleepTimeThreshold =infinity;\n"
+    "float sleepTimeThreshold =9999999999;\n"
     "float interval =1.0/25.0;\n"
     "int phresolution =3;\n"
     "END\n"
@@ -104,9 +104,9 @@ char __bgdexport( mod_chipmunk, globals_def )[] =
 
 char __bgdexport( mod_chipmunk, locals_def )[] =
     "STRUCT lphysics\n"
-    "int body=0;\n"
-    "int shape=0;\n"
-    "int incr_x=0;\n"
+    "int body=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
+    "int shape=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
+    "int incr_x=0;\n"                                    /* Access and set with GLOADDR(mod_chipmunk,GLO_CONTACT_PERSISTENCE)) */
     "int incr_y=0;\n"
     "float inertia=1;\n"
     "float mass=1;\n"
@@ -158,7 +158,6 @@ DLCONSTANT __bgdexport( mod_chipmunk, constants_def )[] =
     { "CP_C_GROUP", TYPE_INT, CP_C_GROUP },
     { "CP_C_LAYERS", TYPE_INT, CP_C_LAYERS },
     { "CP_C_DATA", TYPE_INT, CP_C_DATA },
-    { "INFINITY", TYPE_FLOAT, INFINITY },
     { "NOT_GRABABLE_MASK", TYPE_INT, NOT_GRABABLE_MASK },
     { "GRABABLE_MASK_BIT", TYPE_INT, GRABABLE_MASK_BIT },
     { "CP_NO_GROUP", TYPE_INT, CP_NO_GROUP },
@@ -205,6 +204,7 @@ char * __bgdexport( mod_chipmunk, modules_dependency )[] =
 
 DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
 {
+    {"INFINITYF" , "",   TYPE_FLOAT, 0},
     {"DEG2RAD" , "F",   TYPE_FLOAT, 0},
     {"SEGMENTQUERYHITDIST" , "IIIIP",   TYPE_FLOAT, 0},
     {"SEGMENTQUERYHITPOINT" , "IIIIPPP",   TYPE_INT, 0},
@@ -264,7 +264,7 @@ DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
     {"CPMOMENTFORSEGMENT" , "FFFFF",   TYPE_FLOAT, 0},
     {"CPMOMENTFORPOLY" , "FIPFF",   TYPE_FLOAT, 0},
     {"CPAREAFORCIRCLE" , "FF",   TYPE_FLOAT, 0},
-    {"CPAREAFORSEGMENT" , "PPF",   TYPE_FLOAT, 0},
+    {"CPAREAFORSEGMENT" , "FFFFF",   TYPE_FLOAT, 0},
     {"CPAREAFORPOLY" , "IP",   TYPE_FLOAT, 0},
     {"CPBODYSETMASS" , "IF",   TYPE_INT, 0},
     {"CPBODYSETMOMENT" , "IF",   TYPE_INT, 0},
@@ -397,6 +397,8 @@ DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
     {"SETRADIUSCIRCLE" , "IF",   TYPE_INT, 0},
     {"SETVERTCONVEXPOLIGON" , "IFFIP",   TYPE_INT, 0},
     {"SHAPECACHEBB" , "IP",   TYPE_INT, 0},
+    {"GETOPTIMALINERTIA" , "II",   TYPE_FLOAT, 0},
+    {"GETOPTIMALINERTIA" , "IIFF",   TYPE_FLOAT, 0},
     {0, 0, 0, 0}//TYPE_POINTER
 };
 #else
