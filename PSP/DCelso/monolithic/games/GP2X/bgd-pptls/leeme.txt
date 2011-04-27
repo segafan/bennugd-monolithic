@@ -1,0 +1,8 @@
+FAQ
+***
+¿Que es PPTLS?: Es el juego del piedra, papel, tijeras, lagarto, spock.
+¿Cuales son las reglas?: Las del juego del piedra, papel, tijeras, lagarto, spock.
+¿Cuales son las teclas?: Con enter empiezas, con escape terminas y con izquierda/derecha seleccionas piedra, papel, tijeras, lagarto o spock.
+
+By DCelso.
+

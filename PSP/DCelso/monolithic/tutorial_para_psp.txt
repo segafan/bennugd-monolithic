@@ -1,0 +1,67 @@
+
+mkdir ~/tmp/pspjim_src
+cd ~/tmp/pspjim_src
+svn co svn://psp.jim.sh/svn/psp/trunk .
+
+sudo apt-get install build-essential autoconf automake bison flex \
+  libncurses5-dev libreadline-dev libusb-dev texinfo libgmp3-dev   \
+  libmpfr-dev 
+
+export PSPDEV="/SDKs/pspdev"
+export PSPSDK="$PSPDEV/psp/sdk"
+export PATH="$PATH:$PSPDEV/bin:$PSPSDK/bin"
+
+mkdir $PSPDEV
+
+mkdir ~/tmp/pspjim_src/psptoolchain/build
+
+cd ~/tmp/pspjim_src/psptoolchain/build
+
+ln -s ../../pspsdk pspsdk
+
+ln -s ../../psplinkusb psplinkusb
+
+cd ..
+
+./toolchain.sh 
+
+cd ~/tmp/pspjim_src/psplibraries
+mkdir build
+cd build
+  ln -s ../../bzip2/ .
+  ln -s ../../SDL_gfx/ .
+  ln -s ../../pspirkeyb/ .
+  ln -s ../../jpeg/ .
+  ln -s ../../pspgl/ .
+  ln -s ../../SDL_mixer/ .
+  ln -s ../../libmad/ .
+  ln -s ../../libvorbis/ .
+  ln -s ../../libogg/ .
+  ln -s ../../zlib/ .
+  ln -s ../../lua/ .
+  ln -s ../../freetype/ .
+  ln -s ../../libpng/ .
+  ln -s ../../zziplib/ .
+  ln -s ../../SDL_ttf/ .
+  ln -s ../../libTremor/ .
+  ln -s ../../libbulletml/ .
+  ln -s ../../SDL/ .
+  ln -s ../../SDL_image/ .
+  ln -s ../../libpspvram/ .
+  ln -s ../../sqlite/ .
+  ln -s ../../libmikmod/ .
+./psplibraries/libraries-sudo.sh
+
+cd ~/tmp/pspjim_src/openssl
+gunzip < openssl-0.9.7j.tar.gz | tar xv
+cd openssl-0.9.7j
+patch -p1 < ../openssl-0.9.7j.patch
+
+./Configure psp --prefix=$(psp-config --psp-prefix) threads zlib no-shared no-asm
+make
+make install	
+
+
+LIBS = -lstdc++ -lSDL_ttf -lfreetype -lSDL_image -ljpeg -lpng -lz -lm -lSDL_mixer -lvorbisidec -lmikmod -lmad $(shell $(SDL_CONFIG) --libs)
+LIBS += -lpspaudiolib -lpspaudio -lpsppower
+
