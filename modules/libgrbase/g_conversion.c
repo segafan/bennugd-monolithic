@@ -252,9 +252,15 @@ static void init_conversion_tables()
 
     /* Special case if screen already in 565 format */
 
+#ifdef TARGET_PSP
+    if ( sys_pixel_format->Rmask == 0x001F &&
+            sys_pixel_format->Gmask == 0x07E0 &&
+            sys_pixel_format->Bmask == 0xF800 )
+#else
     if ( sys_pixel_format->Rmask == 0xF800 &&
             sys_pixel_format->Gmask == 0x07E0 &&
             sys_pixel_format->Bmask == 0x001F )
+#endif
     {
         for ( n = 0; n < 65536; n++ )
         {
@@ -270,9 +276,15 @@ static void init_conversion_tables()
     {
         /* Calculate conversion from 565 to screen format */
 
+#ifdef TARGET_PSP
+        b = (( n >> 8 ) & 0xF8 ) >> sys_pixel_format->Bloss ;
+        g = (( n >> 3 ) & 0xFC ) >> sys_pixel_format->Gloss ;
+        r = (( n << 3 ) & 0xF8 ) >> sys_pixel_format->Rloss ;
+#else
         r = (( n >> 8 ) & 0xF8 ) >> sys_pixel_format->Rloss ;
         g = (( n >> 3 ) & 0xFC ) >> sys_pixel_format->Gloss ;
         b = (( n << 3 ) & 0xF8 ) >> sys_pixel_format->Bloss ;
+#endif
 
         convert565ToScreen[ n ] = ( r << sys_pixel_format->Rshift ) | ( g << sys_pixel_format->Gshift ) | ( b << sys_pixel_format->Bshift ) ;
 
@@ -282,7 +294,11 @@ static void init_conversion_tables()
         g = ((( n & sys_pixel_format->Gmask ) >> sys_pixel_format->Gshift ) << sys_pixel_format->Gloss );
         b = ((( n & sys_pixel_format->Bmask ) >> sys_pixel_format->Bshift ) << sys_pixel_format->Bloss );
 
+#ifdef TARGET_PSP
+        convertScreenTo565[ n ] = (( b & 0xF8 ) << 8 ) | (( g & 0xFC ) << 3 ) | (( r & 0xF8 ) >> 3 ) ;
+#else
         convertScreenTo565[ n ] = (( r & 0xF8 ) << 8 ) | (( g & 0xFC ) << 3 ) | (( b & 0xF8 ) >> 3 ) ;
+#endif
     }
     conversion_tables_ok = 1;
 }

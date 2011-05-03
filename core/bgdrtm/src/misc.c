@@ -122,10 +122,10 @@ int debug = 0;  /* 1 if running in debug mode      */
 #endif
 
 #ifdef TARGET_PSP
-	#ifdef _OS_ID
-		#undef _OS_ID
-	#endif
-	#define _OS_ID          OS_PSP
+#ifdef _OS_ID
+#undef _OS_ID
+#endif
+#define _OS_ID          OS_PSP
 #endif
 
 /* --------------------------------------------------------------------------- */
@@ -289,8 +289,6 @@ void bgdrtm_exit( int exit_value )
 
     __bgdrtm_memregl = munmap( 0, 0x20000 ); __bgdrtm_memregl = NULL;
     close( __bgdrtm_memdev ); __bgdrtm_memdev = -1;
-#elif defined(TARGET_PSP)
-    sceKernelExitGame();
 #endif
 
     exit( exit_value ) ;

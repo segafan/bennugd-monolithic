@@ -173,9 +173,15 @@ GRAPH * gr_read_png( const char * filename )
 
         for ( n = 0; n < 256 ; n++ )
         {
+#ifdef TARGET_PSP
+            * p++ = png_palette[n].blue;
+            * p++ = png_palette[n].green;
+            * p++ = png_palette[n].red;
+#else
             * p++ = png_palette[n].red;
             * p++ = png_palette[n].green;
             * p++ = png_palette[n].blue;
+#endif
         }
 
         bitmap->format->palette = pal_new_rgb(( uint8_t * )colors );
@@ -255,6 +261,11 @@ GRAPH * gr_read_png( const char * filename )
             {
                 ARRANGE_DWORD( orig );
                 *ptr32 = *orig ;
+                
+#ifdef TARGET_PSP
+                ((uint8_t *)ptr32)[0] = ((uint8_t *)orig)[2];
+                ((uint8_t *)ptr32)[2] = ((uint8_t *)orig)[0];
+#endif
 
                 /* DCelso */
                 if (( color == PNG_COLOR_TYPE_RGB ) && ( info_ptr->pixel_depth == 24 ) && ( info_ptr->valid & PNG_INFO_tRNS ))
@@ -311,6 +322,16 @@ GRAPH * gr_read_png( const char * filename )
         			   )
         				*ptr = 0;
                 }
+                
+#ifdef TARGET_PSP
+				uint16_t * dest = (uint8_t *)ptr;
+				uint8_t red,green,blue;
+				red = (*dest & 0b11111);
+				green = (*dest >>5) & 0b111111;
+				blue = (*dest >>11)& 0b11111;
+				*dest = (red<<11)|(green<<5)|blue;
+#endif
+
                 ptr++, orig++ ;
             }
         }
@@ -499,11 +520,21 @@ int gr_save_png( GRAPH * gr, const char * filename )
                         *ptr = 0x00000000 ;
                     else
                     {
+
+#ifdef TARGET_PSP
+                        *ptr =
+                            (( *orig & 0xf800 ) << 8 ) |
+                            (( *orig & 0x07e0 ) << 5 ) |
+                            (( *orig & 0x001f ) << 3 ) |
+                            0xFF000000 ;
+#else
                         *ptr =
                             (( *orig & 0xf800 ) >> 8 ) |
                             (( *orig & 0x07e0 ) << 5 ) |
                             (( *orig & 0x001f ) << 19 ) |
                             0xFF000000 ;
+#endif
+
                         /* Rearrange data */
                         ARRANGE_DWORD( ptr ) ;
                     }
