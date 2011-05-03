@@ -17,9 +17,9 @@
  * kernelmode for our loaderInit function
  */
 #ifndef USERSPACE_ONLY
-	PSP_MODULE_INFO("BGDI-PSP", 0x1000, 1, 1);
+    PSP_MODULE_INFO("BennuGD PSP", PSP_MODULE_USER, 1, 0);
 #else
-	PSP_MODULE_INFO("BGDI-PSP", 0, 1, 1);
+	PSP_MODULE_INFO("BennuGD PSP", 0, 1, 1);
 #endif
 
 /**
@@ -54,16 +54,17 @@ void MyExceptionHandler(PspDebugRegBlock *regs)
  */
 __attribute__ ((constructor)) void loaderInit()
 {
-	pspKernelSetKernelPC();
-	pspDebugInstallErrorHandler(MyExceptionHandler);
+    pspKernelSetKernelPC();
+    pspDebugInstallErrorHandler(MyExceptionHandler);
 }
 #endif
 
 /* Exit callback */
 SceKernelCallbackFunction exit_callback(int arg1, int arg2, void* common)
 {
-	sceKernelExitGame();
-	return 0;
+    sceKernelExitGame();
+    exit(0);
+    return 0;
 }
 
 /* Callback thread */
@@ -80,7 +81,7 @@ int CallbackThread(SceSize size, void *arg)
 
 /* Sets up the callback thread and returns its thread id */
 int SetupCallbacks(void) {
-	int thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11, 0xFA0, THREAD_ATTR_USER, 0);
+	int thid = sceKernelCreateThread("update_thread", CallbackThread, 0x11, 0xFA0, 0, 0);
 	if (thid >= 0) {
 		sceKernelStartThread(thid, 0, 0);
 	}

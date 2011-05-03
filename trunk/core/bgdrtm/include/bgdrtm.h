@@ -73,10 +73,12 @@ extern int trace_sentence;
 extern INSTANCE * trace_instance;
 
 /* --------------------------------------------------------------------------- */
-// Devkitpro defines strcmpi to strncasecmp, but that's not what we want to do
+// Some SDKs define strcmpi to strncasecmp, but we want to user our own
 
+#if defined(TARGET_WII) || defined(TARGET_PSP)
 #ifdef strncmpi
 #undef strncmpi
+#endif
 #endif
 
 extern int strncmpi( char * str1, char * str2, int sz );

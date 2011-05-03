@@ -113,7 +113,17 @@ int main( int argc, char *argv[] )
     appname = strdup( appexename );
 #endif
 
+#ifdef TARGET_PSP
+    PSP_HEAP_SIZE_MAX ();
+    pspDebugScreenInit();
+    SetupCallbacks();
+#endif
+
+#ifdef TARGET_PSP
+    standalone = ( strncmpi( appexename, "EBOOT", 4 ) == 0 ) ;
+#else
     standalone = ( strncmpi( appexename, "bgdi", 4 ) == 0 ) ;
+#endif
 
     /* add binary path */
     file_addp( appexepath );
@@ -148,6 +158,15 @@ int main( int argc, char *argv[] )
     if ( standalone )
     {
         /* Calling BGDI.EXE so we must get all command line params */
+#ifdef TARGET_PSP
+    	filename="EBOOT.dcb";
+    	glob_t globbuf;
+    	glob("*.dcb", 0, NULL, &globbuf);
+    	if (globbuf.gl_pathc>0){
+    		filename=globbuf.gl_pathv[0];
+    		filename[strlen(filename)-4]=0;
+    	}
+#endif
 
         for ( i = 1 ; i < argc ; i++ )
         {
@@ -287,6 +306,10 @@ int main( int argc, char *argv[] )
         mainproc_running = instance_new( mainproc, NULL ) ;
         ret = instance_go_all() ;
     }
+
+#ifdef TARGET_PSP
+    sceKernelExitGame();
+#endif
 
     bgdrtm_exit( ret );
 

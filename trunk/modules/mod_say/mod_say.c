@@ -32,6 +32,8 @@
 #include <android/log.h>
 #define printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
 #define fprintf(stderr, ...) __android_log_print(ANDROID_LOG_INFO, "BennuGD Error", __VA_ARGS__)
+#elif defined(TARGET_PSP)
+#define printf pspDebugScreenPrintf
 #endif
 
 /* ---------------------------------------------------------------------- */

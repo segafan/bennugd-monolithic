@@ -77,7 +77,11 @@ static char _tmp[128];
 
 /* --------------------------------------------------------------------------- */
 
+#if defined(TARGET_PSP)
+int SDL_main( int argc, char *argv[] )
+#else
 int main( int argc, char *argv[] )
+#endif
 {
     time_t curtime;
     struct tm *loctime;
@@ -234,6 +238,13 @@ int main( int argc, char *argv[] )
     sysproc_init();
 
     /* Get command line parameters */
+#ifdef TARGET_PSP
+    	if (argc<2){
+    		char* newargv[2]={argv[0],"EBOOT.prg"};
+    		argc = 2;
+    	    argv=newargv;
+    	}
+#endif
 
     for ( i = 1 ; i < argc ; i++ )
     {
