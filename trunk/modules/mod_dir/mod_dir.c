@@ -44,7 +44,11 @@
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
-#include <glob.h>
+#ifdef TARGET_PSP
+	#include <diet-glob.h>
+#else
+	#include <glob.h>
+#endif
 #endif
 
 #include "bgddl.h"
