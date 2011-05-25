@@ -14,12 +14,12 @@
 #---------------------------------------------------------------------------------
 %.o: %.cpp
 	@echo $(notdir $<)
-	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 $(CXXFLAGS) $< -o $@ $(ERROR_FILTER)
+	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/g++-4.2 $(CXXFLAGS) $< -o $@ $(ERROR_FILTER)
 	
 #---------------------------------------------------------------------------------
 %.o: %.c
 	@echo $(notdir $<)
-	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 $(CFLAGS) -c $< -o $@ $(ERROR_FILTER)
+	@/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/gcc-4.2 -x objective-c $(CFLAGS) -c $< -o $@ $(ERROR_FILTER)
 
 #---------------------------------------------------------------------------------
 # canned command sequence for binary data
