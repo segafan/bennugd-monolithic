@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/Users/joseba/cvs/bennugd/monolithic/3rdparty/SDL-1.3/osx/lib'
+libdir='/Users/joseba/cvs/bennugd/monolithic/3rdparty/SDL-1.3/osx//lib'
