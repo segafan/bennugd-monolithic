@@ -46,7 +46,7 @@ $(LIB_DIR)/libchipmunk.a: $(OBJS)
 	@echo ----
 
 # Compilation flags.
-COMMON_FLAGS	:= -std=gnu99 -O3 -mrvl -ffast-math $(MACHDEP)
+COMMON_FLAGS	:= -std=gnu99 -O3 -ffast-math $(MACHDEP)
 INCLUDES		:= -Iinclude/chipmunk -Iinclude/chipmunk/constraints
 # -include sys/wait.h 
 # -include sys/syslimits.h
