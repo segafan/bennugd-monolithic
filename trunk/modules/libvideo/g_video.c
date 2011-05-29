@@ -49,6 +49,10 @@ GRAPH * icon = NULL ;
 
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
+#if SDL_VERSION_ATLEAST(1,3,0)
+SDL_Window *window;
+SDL_Renderer *renderer;
+#endif
 
 char * apptitle = NULL ;
 
@@ -391,8 +395,14 @@ int gr_set_mode( int width, int height, int depth )
                     break;
             }
         }
-
+#if SDL_VERSION_ATLEAST(1,3,0)
+        window = SDL_CreateWindow(NULL, 0, 0, surface_width, surface_height,
+                                  SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
+                                  SDL_WINDOW_BORDERLESS);
+        scale_screen = SDL_GetWindowSurface(window);
+#else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+#endif
 
         if ( !scale_screen ) return -1;
         screen = SDL_CreateRGBSurface( sdl_flags,
@@ -502,7 +512,14 @@ int gr_set_mode( int width, int height, int depth )
     }
     else
     {
+#if SDL_VERSION_ATLEAST(1,3,0)
+        window = SDL_CreateWindow(NULL, 0, 0, surface_width, surface_height,
+                                  SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN |
+                                  SDL_WINDOW_BORDERLESS);
+        scale_screen = SDL_GetWindowSurface(window);
+#else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+#endif
     }
 
     if ( !screen ) return -1;
