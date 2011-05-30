@@ -161,7 +161,7 @@ static void do_mouse_events()
     GLODWORD( libmouse, MOUSEWHEELDOWN ) = 0 ;
 
 #if SDL_VERSION_ATLEAST(1,3,0)
-	while ( SDL_PollEvent(&e) > 0 )
+	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEBUTTONUP ) > 0 )
 #else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEEVENTMASK ) > 0 )
 #endif

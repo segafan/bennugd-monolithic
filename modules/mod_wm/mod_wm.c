@@ -130,7 +130,7 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 #if SDL_VERSION_ATLEAST(1,3,0)
     int x,y;
 
-    SDL_GetWindowPosition(SDL_GetWindowFromID(1), &x, &y );
+    SDL_GetWindowPosition(SDL_GetWindowFromID(0), &x, &y );
     if ( params[0] ) *(( int * )( params[0] ) ) = x;
     if ( params[1] ) *(( int * )( params[1] ) ) = y;
 #else
@@ -188,7 +188,7 @@ static int bgd_get_window_size( INSTANCE * my, int * params )
 #if SDL_VERSION_ATLEAST(1,3,0)
     int w,h;
 
-    SDL_GetWindowSize(SDL_GetWindowFromID(1), &w, &h );
+    SDL_GetWindowSize(SDL_GetWindowFromID(0), &w, &h );
     if ( params[0] ) *(( int * )( params[0] ) ) = w;
     if ( params[1] ) *(( int * )( params[1] ) ) = h;
     //FIXME: Get this working

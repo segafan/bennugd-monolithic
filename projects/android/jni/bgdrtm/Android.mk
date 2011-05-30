@@ -1,6 +1,6 @@
 LOCAL_PATH := $(call my-dir)
-CORE_PATH := $(LOCAL_PATH)/../../../core/
-MODULES_PATH := $(LOCAL_PATH)/../../../modules/
+CORE_PATH := $(LOCAL_PATH)/../../../../core/
+MODULES_PATH := $(LOCAL_PATH)/../../../../modules/
 
 include $(CLEAR_VARS)
 
