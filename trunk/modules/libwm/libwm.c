@@ -34,6 +34,12 @@
 #include <SDL.h>
 #endif
 
+#if defined(TARGET_IOS)
+#if SDL_VERSION_ATLEAST(1,3,0)
+#include <g_video.h>
+#endif
+#endif
+
 #include "bgdrtm.h"
 
 #include "bgddl.h"
@@ -95,11 +101,8 @@ static void wm_events()
     GLODWORD( libwm, EXIT_STATUS ) = 0 ;
 
 #if SDL_VERSION_ATLEAST(1,3,0)
-    GLODWORD( libwm, FOCUS_STATUS ) = 0;
-
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUIT, SDL_WINDOWEVENT ) > 0 )
     {
-        NSLog(@"BennuGD: Got window event");
         switch ( e.type )
         {
             case SDL_QUIT:
@@ -111,6 +114,23 @@ static void wm_events()
                 switch (e.window.event) {
                     case SDL_WINDOWEVENT_RESTORED:
                         NSLog(@"BennuGD: Got SDL_WINDOWEVENT_RESTORED event on window %d", e.window.windowID);
+#if defined(TARGET_IOS)
+                        if(scale_screen) {
+                            if(scale_resolution_orientation==SRO_LEFT ||
+                               scale_resolution_orientation==SRO_RIGHT)
+                                gr_set_mode(scale_screen->h, scale_screen->w,
+                                            scale_screen->format->BitsPerPixel);
+                            else
+                                gr_set_mode(scale_screen->w, scale_screen->h,
+                                        scale_screen->format->BitsPerPixel);
+                            NSLog(@"Automatically setting video mode: %dx%dx%d", scale_screen->w, scale_screen->h,
+                                  scale_screen->format->BitsPerPixel);
+                        }
+                        else {
+                            gr_set_mode(screen->w, screen->h, screen->format->BitsPerPixel);
+                            NSLog(@"Automatically setting video mode: %dx%dx%d", screen->w, screen->h, screen->format->BitsPerPixel);
+                        }
+#endif
                         GLODWORD(libwm, FOCUS_STATUS ) = 1;
                         break;
                     case SDL_WINDOWEVENT_ENTER:
@@ -168,6 +188,9 @@ HOOK __bgdexport( libwm, handler_hooks )[] =
 
 char * __bgdexport( libwm, modules_dependency )[] =
 {
+#if defined(TARGET_IOS)
+    "libvideo",
+#endif
     "libsdlhandler",
     NULL
 };

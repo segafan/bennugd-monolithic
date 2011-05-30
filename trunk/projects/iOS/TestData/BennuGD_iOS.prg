@@ -11,10 +11,12 @@ import "mod_text"
 import "mod_mouse"
 import "mod_wm"
 import "mod_map"
+import "mod_say"
 
 Process Main()
 Private
 int vx=0, vy=0;
+int w=0, h=0;
 
 Begin
     set_mode(320, 480, 16, MODE_FULLSCREEN);
@@ -48,10 +50,6 @@ Begin
         end;
         if(y <= 10 || y >= 470)
             vy = 0;
-        end;
-
-        if(focus_status==1)
-            set_mode(320, 480, 16, MODE_FULLSCREEN);
         end;
 
         frame;
