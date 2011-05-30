@@ -101,9 +101,9 @@
 		921B4AED1391E237005F1832 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE61391E237005F1832 /* debug.c */; };
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
-		921B4AF71391E860005F1832 /* BennuGD_iOS.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 921B4AF51391E85E005F1832 /* BennuGD_iOS.dcb */; };
-		921B4AF81391E860005F1832 /* BennuGD_iOS.prg in Resources */ = {isa = PBXBuildFile; fileRef = 921B4AF61391E85F005F1832 /* BennuGD_iOS.prg */; };
 		921B4B0E1391EC63005F1832 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4B0D1391EC62005F1832 /* libSDL.a */; };
+		92F2E3C013943518001D7391 /* BennuGD_iOS.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */; };
+		92F2E3C113943518001D7391 /* BennuGD_iOS.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -312,9 +312,9 @@
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
-		921B4AF51391E85E005F1832 /* BennuGD_iOS.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BennuGD_iOS.dcb; path = ../../projects/BennuGD_iOS/TestData/BennuGD_iOS.dcb; sourceTree = "<group>"; };
-		921B4AF61391E85F005F1832 /* BennuGD_iOS.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BennuGD_iOS.prg; path = ../../projects/BennuGD_iOS/TestData/BennuGD_iOS.prg; sourceTree = "<group>"; };
 		921B4B0D1391EC62005F1832 /* libSDL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL.a; path = "../../3rdparty/SDL-1.3/iOS/lib/libSDL.a"; sourceTree = "<group>"; };
+		92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BennuGD_iOS.dcb; path = TestData/BennuGD_iOS.dcb; sourceTree = "<group>"; };
+		92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BennuGD_iOS.prg; path = TestData/BennuGD_iOS.prg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -359,7 +359,6 @@
 				921B49131391D866005F1832 /* bgdrtm */,
 				921B48161391CE07005F1832 /* Frameworks */,
 				921B48141391CE07005F1832 /* Products */,
-				921B4AF91391E894005F1832 /* Test */,
 			);
 			sourceTree = "<group>";
 		};
@@ -367,6 +366,8 @@
 			isa = PBXGroup;
 			children = (
 				921B48131391CE07005F1832 /* BennuGD_iOS.app */,
+				92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */,
+				92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1000,16 +1001,6 @@
 			path = ../../core/common;
 			sourceTree = "<group>";
 		};
-		921B4AF91391E894005F1832 /* Test */ = {
-			isa = PBXGroup;
-			children = (
-				921B4AF51391E85E005F1832 /* BennuGD_iOS.dcb */,
-				921B4AF61391E85F005F1832 /* BennuGD_iOS.prg */,
-			);
-			name = Test;
-			path = ../../core/bgdrtm;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1057,8 +1048,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				921B4AF71391E860005F1832 /* BennuGD_iOS.dcb in Resources */,
-				921B4AF81391E860005F1832 /* BennuGD_iOS.prg in Resources */,
+				92F2E3C013943518001D7391 /* BennuGD_iOS.dcb in Resources */,
+				92F2E3C113943518001D7391 /* BennuGD_iOS.prg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

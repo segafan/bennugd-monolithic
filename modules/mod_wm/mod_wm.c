@@ -186,9 +186,16 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 static int bgd_get_window_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(1,3,0)
-    int w,h;
-
-    SDL_GetWindowSize(SDL_GetWindowFromID(0), &w, &h );
+    int i,w,h;
+    SDL_Window *window = NULL;
+    
+    // We'll only support one of the first 10 displays (is that enough?)
+    for(i=0; i<=10; i++) {
+        if((window = SDL_GetWindowFromID(i)) != NULL)
+            break;
+    }
+    
+    SDL_GetWindowSize(window, &w, &h );
     if ( params[0] ) *(( int * )( params[0] ) ) = w;
     if ( params[1] ) *(( int * )( params[1] ) ) = h;
     //FIXME: Get this working
@@ -262,9 +269,17 @@ static int bgd_get_window_size( INSTANCE * my, int * params )
 static int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(1,3,0)
+    int i;
+    SDL_Window *window;
     SDL_DisplayMode mode;
     
-    if(SDL_GetDesktopDisplayMode(0, &mode) < 0 ) return -1;
+    // We'll only support one of the first 10 displays (is that enough?)
+    for(i=0; i<=10; i++) {
+        if((window = SDL_GetWindowFromID(i)) != NULL)
+            break;
+    }
+    
+    if(SDL_GetDesktopDisplayMode(i, &mode) < 0 ) return -1;
 
     if ( params[0] ) *(( int * )( params[0] ) ) = mode.w;
     if ( params[1] ) *(( int * )( params[1] ) ) = mode.h;
