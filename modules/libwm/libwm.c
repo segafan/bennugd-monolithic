@@ -112,27 +112,20 @@ static void wm_events()
                 
             case SDL_WINDOWEVENT:
                 switch (e.window.event) {
+#if defined(TARGET_IOS)
                     case SDL_WINDOWEVENT_RESTORED:
                         NSLog(@"BennuGD: Got SDL_WINDOWEVENT_RESTORED event on window %d", e.window.windowID);
-#if defined(TARGET_IOS)
-                        if(scale_screen) {
-                            if(scale_resolution_orientation==SRO_LEFT ||
-                               scale_resolution_orientation==SRO_RIGHT)
-                                gr_set_mode(scale_screen->h, scale_screen->w,
-                                            scale_screen->format->BitsPerPixel);
-                            else
-                                gr_set_mode(scale_screen->w, scale_screen->h,
-                                        scale_screen->format->BitsPerPixel);
-                            NSLog(@"Automatically setting video mode: %dx%dx%d", scale_screen->w, scale_screen->h,
-                                  scale_screen->format->BitsPerPixel);
+                        if(scale_resolution) {
+                                gr_set_mode(scr_width, scr_height,
+                                        screen->format->BitsPerPixel);
                         }
                         else {
-                            gr_set_mode(screen->w, screen->h, screen->format->BitsPerPixel);
-                            NSLog(@"Automatically setting video mode: %dx%dx%d", screen->w, screen->h, screen->format->BitsPerPixel);
+                            gr_set_mode(scr_width, scr_height, screen->format->BitsPerPixel);
                         }
-#endif
+                        NSLog(@"Automatically setting video mode: %dx%dx%d", scr_width, scr_height, screen->format->BitsPerPixel);
                         GLODWORD(libwm, FOCUS_STATUS ) = 1;
                         break;
+#endif
                     case SDL_WINDOWEVENT_ENTER:
                         GLODWORD(libwm, MOUSE_STATUS) = 1;
                         break;

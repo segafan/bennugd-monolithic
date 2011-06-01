@@ -92,7 +92,6 @@
 		921B4AB31391D8A5005F1832 /* mod_video.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4A451391D8A4005F1832 /* mod_video.c */; };
 		921B4AB41391D8A5005F1832 /* mod_wm.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4A481391D8A4005F1832 /* mod_wm.c */; };
 		921B4AB81391DB7F005F1832 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4AB61391DB7F005F1832 /* libSDL_mixer.a */; };
-		921B4ABB1391DBAF005F1832 /* libmikmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4ABA1391DBAE005F1832 /* libmikmod.a */; };
 		921B4ABD1391DBD0005F1832 /* libvorbisidec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4ABC1391DBD0005F1832 /* libvorbisidec.a */; };
 		921B4ABF1391DBE4005F1832 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4ABE1391DBE4005F1832 /* libpng.a */; };
 		921B4ADF1391DDFC005F1832 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AD31391DDFC005F1832 /* main.c */; };
@@ -102,6 +101,7 @@
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		921B4B0E1391EC63005F1832 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4B0D1391EC62005F1832 /* libSDL.a */; };
+		9232A64E1396E1E100058FDB /* libogg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9232A64D1396E1E100058FDB /* libogg.a */; };
 		92F2E3C013943518001D7391 /* BennuGD_iOS.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */; };
 		92F2E3C113943518001D7391 /* BennuGD_iOS.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */; };
 /* End PBXBuildFile section */
@@ -302,7 +302,6 @@
 		921B4A481391D8A4005F1832 /* mod_wm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_wm.c; sourceTree = "<group>"; };
 		921B4A491391D8A4005F1832 /* mod_wm_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_wm_symbols.h; sourceTree = "<group>"; };
 		921B4AB61391DB7F005F1832 /* libSDL_mixer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL_mixer.a; path = "../../3rdparty/SDL-1.3/iOS/lib/libSDL_mixer.a"; sourceTree = "<group>"; };
-		921B4ABA1391DBAE005F1832 /* libmikmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmikmod.a; path = ../../3rdparty/libmikmod/iOS/lib/libmikmod.a; sourceTree = "<group>"; };
 		921B4ABC1391DBD0005F1832 /* libvorbisidec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libvorbisidec.a; path = ../../3rdparty/libtremor/iOS/lib/libvorbisidec.a; sourceTree = "<group>"; };
 		921B4ABE1391DBE4005F1832 /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../../3rdparty/libpng/iOS/lib/libpng.a; sourceTree = "<group>"; };
 		921B4ACE1391DDFC005F1832 /* bgdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bgdi.h; sourceTree = "<group>"; };
@@ -313,6 +312,7 @@
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
 		921B4B0D1391EC62005F1832 /* libSDL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL.a; path = "../../3rdparty/SDL-1.3/iOS/lib/libSDL.a"; sourceTree = "<group>"; };
+		9232A64D1396E1E100058FDB /* libogg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libogg.a; path = ../../3rdparty/libogg/iOS/lib/libogg.a; sourceTree = "<group>"; };
 		92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BennuGD_iOS.dcb; path = TestData/BennuGD_iOS.dcb; sourceTree = "<group>"; };
 		92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BennuGD_iOS.prg; path = TestData/BennuGD_iOS.prg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -330,12 +330,12 @@
 				921B48E61391D4F6005F1832 /* AudioToolbox.framework in Frameworks */,
 				921B48E81391D52C005F1832 /* CoreAudio.framework in Frameworks */,
 				921B4AB81391DB7F005F1832 /* libSDL_mixer.a in Frameworks */,
-				921B4ABB1391DBAF005F1832 /* libmikmod.a in Frameworks */,
 				921B4ABD1391DBD0005F1832 /* libvorbisidec.a in Frameworks */,
 				921B4ABF1391DBE4005F1832 /* libpng.a in Frameworks */,
 				921B4AE11391DEB1005F1832 /* libz.dylib in Frameworks */,
 				921B4AE31391DED3005F1832 /* libm.dylib in Frameworks */,
 				921B4B0E1391EC63005F1832 /* libSDL.a in Frameworks */,
+				9232A64E1396E1E100058FDB /* libogg.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -348,8 +348,8 @@
 				921B4AE41391E237005F1832 /* common */,
 				921B4AC31391DDFB005F1832 /* bgdi */,
 				921B4ABE1391DBE4005F1832 /* libpng.a */,
+				9232A64D1396E1E100058FDB /* libogg.a */,
 				921B4ABC1391DBD0005F1832 /* libvorbisidec.a */,
-				921B4ABA1391DBAE005F1832 /* libmikmod.a */,
 				921B4AB61391DB7F005F1832 /* libSDL_mixer.a */,
 				921B4B0D1391EC62005F1832 /* libSDL.a */,
 				921B4AE21391DED3005F1832 /* libm.dylib */,
@@ -1150,7 +1150,7 @@
 		921B483D1391CE08005F1832 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
@@ -1179,16 +1179,16 @@
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
 		921B483E1391CE08005F1832 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
@@ -1216,9 +1216,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				USER_HEADER_SEARCH_PATHS = "";
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
 		};
@@ -1226,7 +1226,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1239,10 +1239,11 @@
 					"\"$(SRCROOT)/../../3rdparty/libmikmod/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng/iOS/lib\"",
+					"\"$(SRCROOT)/../../3rdparty/libogg/iOS/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = iphoneos;
-				VALID_ARCHS = armv6;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				VALID_ARCHS = "armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1251,7 +1252,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = armv6;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
@@ -1263,11 +1264,12 @@
 					"\"$(SRCROOT)/../../3rdparty/libmikmod/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng/iOS/lib\"",
+					"\"$(SRCROOT)/../../3rdparty/libogg/iOS/lib\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = armv6;
+				VALID_ARCHS = "armv6 armv7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
