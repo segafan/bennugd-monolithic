@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -126,6 +126,13 @@ int debug = 0;  /* 1 if running in debug mode      */
 #undef _OS_ID
 #endif
 #define _OS_ID          OS_PSP
+#endif
+
+#ifdef TARGET_IOS
+#ifdef _OS_ID
+#undef _OS_ID
+#endif
+#define _OS_ID          OS_IOS
 #endif
 
 /* --------------------------------------------------------------------------- */
