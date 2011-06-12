@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92098E0113A534B200F70BC2 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 92098DEE13A534B200F70BC2 /* COPYING */; };
+		92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DEF13A534B200F70BC2 /* mod_chipmunk.c */; };
+		92098E0313A534B200F70BC2 /* PlayerJump.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF213A534B200F70BC2 /* PlayerJump.prg */; };
+		92098E0413A534B200F70BC2 /* TheoJansen.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF313A534B200F70BC2 /* TheoJansen.prg */; };
+		92098E0513A534B200F70BC2 /* bola40.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF413A534B200F70BC2 /* bola40.png */; };
+		92098E0613A534B200F70BC2 /* bomba.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF513A534B200F70BC2 /* bomba.png */; };
+		92098E0713A534B200F70BC2 /* bombermanFisica.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF613A534B200F70BC2 /* bombermanFisica.prg */; };
+		92098E0813A534B200F70BC2 /* cambioZona.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF713A534B200F70BC2 /* cambioZona.prg */; };
+		92098E0913A534B200F70BC2 /* cuadro.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF813A534B200F70BC2 /* cuadro.png */; };
+		92098E0A13A534B200F70BC2 /* dominos.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92098DF913A534B200F70BC2 /* dominos.dcb */; };
+		92098E0B13A534B200F70BC2 /* dominos.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFA13A534B200F70BC2 /* dominos.prg */; };
+		92098E0C13A534B200F70BC2 /* ejem.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFB13A534B200F70BC2 /* ejem.prg */; };
+		92098E0D13A534B200F70BC2 /* fondoImg.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFC13A534B200F70BC2 /* fondoImg.png */; };
+		92098E0E13A534B200F70BC2 /* graficos.fpg in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFD13A534B200F70BC2 /* graficos.fpg */; };
+		92098E0F13A534B200F70BC2 /* pelota.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFE13A534B200F70BC2 /* pelota.png */; };
+		92098E1013A534B200F70BC2 /* tri.png in Resources */ = {isa = PBXBuildFile; fileRef = 92098DFF13A534B200F70BC2 /* tri.png */; };
+		92098E1113A534B200F70BC2 /* triangulo.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92098E0013A534B200F70BC2 /* triangulo.prg */; };
+		92098E1313A5389A00F70BC2 /* libChipmunk-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92098E1213A5389A00F70BC2 /* libChipmunk-iOS.a */; };
 		921B48181391CE07005F1832 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48171391CE07005F1832 /* UIKit.framework */; };
 		921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48191391CE07005F1832 /* Foundation.framework */; };
 		921B481C1391CE07005F1832 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B481B1391CE07005F1832 /* CoreGraphics.framework */; };
@@ -105,6 +123,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		92098DEE13A534B200F70BC2 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
+		92098DEF13A534B200F70BC2 /* mod_chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_chipmunk.c; sourceTree = "<group>"; };
+		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
+		92098DF213A534B200F70BC2 /* PlayerJump.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PlayerJump.prg; sourceTree = "<group>"; };
+		92098DF313A534B200F70BC2 /* TheoJansen.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TheoJansen.prg; sourceTree = "<group>"; };
+		92098DF413A534B200F70BC2 /* bola40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bola40.png; sourceTree = "<group>"; };
+		92098DF513A534B200F70BC2 /* bomba.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bomba.png; sourceTree = "<group>"; };
+		92098DF613A534B200F70BC2 /* bombermanFisica.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bombermanFisica.prg; sourceTree = "<group>"; };
+		92098DF713A534B200F70BC2 /* cambioZona.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cambioZona.prg; sourceTree = "<group>"; };
+		92098DF813A534B200F70BC2 /* cuadro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuadro.png; sourceTree = "<group>"; };
+		92098DF913A534B200F70BC2 /* dominos.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; path = dominos.dcb; sourceTree = "<group>"; };
+		92098DFA13A534B200F70BC2 /* dominos.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dominos.prg; sourceTree = "<group>"; };
+		92098DFB13A534B200F70BC2 /* ejem.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ejem.prg; sourceTree = "<group>"; };
+		92098DFC13A534B200F70BC2 /* fondoImg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fondoImg.png; sourceTree = "<group>"; };
+		92098DFD13A534B200F70BC2 /* graficos.fpg */ = {isa = PBXFileReference; lastKnownFileType = file; path = graficos.fpg; sourceTree = "<group>"; };
+		92098DFE13A534B200F70BC2 /* pelota.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pelota.png; sourceTree = "<group>"; };
+		92098DFF13A534B200F70BC2 /* tri.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tri.png; sourceTree = "<group>"; };
+		92098E0013A534B200F70BC2 /* triangulo.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = triangulo.prg; sourceTree = "<group>"; };
+		92098E1213A5389A00F70BC2 /* libChipmunk-iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libChipmunk-iOS.a"; path = "../../3rdparty/Chipmunk-5.3.4/iOS/libChipmunk-iOS.a"; sourceTree = "<group>"; };
 		921B48131391CE07005F1832 /* BennuGD_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BennuGD_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		921B48191391CE07005F1832 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -330,6 +367,7 @@
 				921B4ABF1391DBE4005F1832 /* libpng.a in Frameworks */,
 				921B4B0E1391EC63005F1832 /* libSDL.a in Frameworks */,
 				9232A64E1396E1E100058FDB /* libogg.a in Frameworks */,
+				92098E1313A5389A00F70BC2 /* libChipmunk-iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,6 +377,7 @@
 		92098DE913A5313000F70BC2 /* External dependencies */ = {
 			isa = PBXGroup;
 			children = (
+				92098E1213A5389A00F70BC2 /* libChipmunk-iOS.a */,
 				921B4ABE1391DBE4005F1832 /* libpng.a */,
 				9232A64D1396E1E100058FDB /* libogg.a */,
 				921B4ABC1391DBD0005F1832 /* libvorbisidec.a */,
@@ -346,6 +385,39 @@
 				921B4B0D1391EC62005F1832 /* libSDL.a */,
 			);
 			name = "External dependencies";
+			sourceTree = "<group>";
+		};
+		92098DED13A534B200F70BC2 /* mod_chipmunk */ = {
+			isa = PBXGroup;
+			children = (
+				92098DEE13A534B200F70BC2 /* COPYING */,
+				92098DEF13A534B200F70BC2 /* mod_chipmunk.c */,
+				92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */,
+				92098DF113A534B200F70BC2 /* samples */,
+			);
+			path = mod_chipmunk;
+			sourceTree = "<group>";
+		};
+		92098DF113A534B200F70BC2 /* samples */ = {
+			isa = PBXGroup;
+			children = (
+				92098DF213A534B200F70BC2 /* PlayerJump.prg */,
+				92098DF313A534B200F70BC2 /* TheoJansen.prg */,
+				92098DF413A534B200F70BC2 /* bola40.png */,
+				92098DF513A534B200F70BC2 /* bomba.png */,
+				92098DF613A534B200F70BC2 /* bombermanFisica.prg */,
+				92098DF713A534B200F70BC2 /* cambioZona.prg */,
+				92098DF813A534B200F70BC2 /* cuadro.png */,
+				92098DF913A534B200F70BC2 /* dominos.dcb */,
+				92098DFA13A534B200F70BC2 /* dominos.prg */,
+				92098DFB13A534B200F70BC2 /* ejem.prg */,
+				92098DFC13A534B200F70BC2 /* fondoImg.png */,
+				92098DFD13A534B200F70BC2 /* graficos.fpg */,
+				92098DFE13A534B200F70BC2 /* pelota.png */,
+				92098DFF13A534B200F70BC2 /* tri.png */,
+				92098E0013A534B200F70BC2 /* triangulo.prg */,
+			);
+			path = samples;
 			sourceTree = "<group>";
 		};
 		921B48081391CE07005F1832 = {
@@ -473,6 +545,7 @@
 				921B49B01391D8A3005F1832 /* libvideo */,
 				921B49B71391D8A3005F1832 /* libwm */,
 				921B49BA1391D8A3005F1832 /* mod_blendop */,
+				92098DED13A534B200F70BC2 /* mod_chipmunk */,
 				921B49D81391D8A4005F1832 /* mod_dir */,
 				921B49DB1391D8A4005F1832 /* mod_draw */,
 				921B49DE1391D8A4005F1832 /* mod_effects */,
@@ -1053,6 +1126,22 @@
 			files = (
 				92F2E3C013943518001D7391 /* BennuGD_iOS.dcb in Resources */,
 				92F2E3C113943518001D7391 /* BennuGD_iOS.prg in Resources */,
+				92098E0113A534B200F70BC2 /* COPYING in Resources */,
+				92098E0313A534B200F70BC2 /* PlayerJump.prg in Resources */,
+				92098E0413A534B200F70BC2 /* TheoJansen.prg in Resources */,
+				92098E0513A534B200F70BC2 /* bola40.png in Resources */,
+				92098E0613A534B200F70BC2 /* bomba.png in Resources */,
+				92098E0713A534B200F70BC2 /* bombermanFisica.prg in Resources */,
+				92098E0813A534B200F70BC2 /* cambioZona.prg in Resources */,
+				92098E0913A534B200F70BC2 /* cuadro.png in Resources */,
+				92098E0A13A534B200F70BC2 /* dominos.dcb in Resources */,
+				92098E0B13A534B200F70BC2 /* dominos.prg in Resources */,
+				92098E0C13A534B200F70BC2 /* ejem.prg in Resources */,
+				92098E0D13A534B200F70BC2 /* fondoImg.png in Resources */,
+				92098E0E13A534B200F70BC2 /* graficos.fpg in Resources */,
+				92098E0F13A534B200F70BC2 /* pelota.png in Resources */,
+				92098E1013A534B200F70BC2 /* tri.png in Resources */,
+				92098E1113A534B200F70BC2 /* triangulo.prg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1144,6 +1233,7 @@
 				921B4AED1391E237005F1832 /* debug.c in Sources */,
 				921B4AEE1391E237005F1832 /* files.c in Sources */,
 				921B4AF01391E237005F1832 /* xctype.c in Sources */,
+				92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1167,7 +1257,6 @@
 					__BGDI__,
 					TARGET_MAC,
 					TARGET_IOS,
-					NO_MODCHIPMUNK,
 					NO_MODICONV,
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
@@ -1182,6 +1271,7 @@
 					"../../modules/**",
 					"../../3rdparty/SDL-1.3/iOS/include/**",
 					../../3rdparty/libpng/iOS/include/,
+					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_LDFLAGS = (
@@ -1211,7 +1301,6 @@
 					__BGDI__,
 					TARGET_MAC,
 					TARGET_IOS,
-					NO_MODCHIPMUNK,
 					NO_MODICONV,
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
@@ -1225,6 +1314,7 @@
 					"../../modules/**",
 					"../../3rdparty/SDL-1.3/iOS/include/**",
 					../../3rdparty/libpng/iOS/include/,
+					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -1243,7 +1333,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1257,6 +1350,7 @@
 					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libogg/iOS/lib\"",
+					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1269,7 +1363,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
@@ -1282,6 +1379,7 @@
 					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libpng/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/libogg/iOS/lib\"",
+					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
