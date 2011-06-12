@@ -95,8 +95,6 @@
 		921B4ABD1391DBD0005F1832 /* libvorbisidec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4ABC1391DBD0005F1832 /* libvorbisidec.a */; };
 		921B4ABF1391DBE4005F1832 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4ABE1391DBE4005F1832 /* libpng.a */; };
 		921B4ADF1391DDFC005F1832 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AD31391DDFC005F1832 /* main.c */; };
-		921B4AE11391DEB1005F1832 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4AE01391DEB1005F1832 /* libz.dylib */; };
-		921B4AE31391DED3005F1832 /* libm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B4AE21391DED3005F1832 /* libm.dylib */; };
 		921B4AED1391E237005F1832 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE61391E237005F1832 /* debug.c */; };
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
@@ -306,8 +304,6 @@
 		921B4ABE1391DBE4005F1832 /* libpng.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpng.a; path = ../../3rdparty/libpng/iOS/lib/libpng.a; sourceTree = "<group>"; };
 		921B4ACE1391DDFC005F1832 /* bgdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bgdi.h; sourceTree = "<group>"; };
 		921B4AD31391DDFC005F1832 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		921B4AE01391DEB1005F1832 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		921B4AE21391DED3005F1832 /* libm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libm.dylib; path = usr/lib/libm.dylib; sourceTree = SDKROOT; };
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
@@ -332,8 +328,6 @@
 				921B4AB81391DB7F005F1832 /* libSDL_mixer.a in Frameworks */,
 				921B4ABD1391DBD0005F1832 /* libvorbisidec.a in Frameworks */,
 				921B4ABF1391DBE4005F1832 /* libpng.a in Frameworks */,
-				921B4AE11391DEB1005F1832 /* libz.dylib in Frameworks */,
-				921B4AE31391DED3005F1832 /* libm.dylib in Frameworks */,
 				921B4B0E1391EC63005F1832 /* libSDL.a in Frameworks */,
 				9232A64E1396E1E100058FDB /* libogg.a in Frameworks */,
 			);
@@ -342,23 +336,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		921B48081391CE07005F1832 = {
+		92098DE913A5313000F70BC2 /* External dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				921B4AE41391E237005F1832 /* common */,
-				921B4AC31391DDFB005F1832 /* bgdi */,
 				921B4ABE1391DBE4005F1832 /* libpng.a */,
 				9232A64D1396E1E100058FDB /* libogg.a */,
 				921B4ABC1391DBD0005F1832 /* libvorbisidec.a */,
 				921B4AB61391DB7F005F1832 /* libSDL_mixer.a */,
 				921B4B0D1391EC62005F1832 /* libSDL.a */,
-				921B4AE21391DED3005F1832 /* libm.dylib */,
-				921B4AE01391DEB1005F1832 /* libz.dylib */,
+			);
+			name = "External dependencies";
+			sourceTree = "<group>";
+		};
+		921B48081391CE07005F1832 = {
+			isa = PBXGroup;
+			children = (
+				921B4AE41391E237005F1832 /* common */,
+				921B4AC31391DDFB005F1832 /* bgdi */,
 				921B49551391D8A3005F1832 /* modules */,
 				921B49391391D891005F1832 /* include */,
 				921B49131391D866005F1832 /* bgdrtm */,
 				921B48161391CE07005F1832 /* Frameworks */,
 				921B48141391CE07005F1832 /* Products */,
+				92098DE913A5313000F70BC2 /* External dependencies */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1026,6 +1026,9 @@
 /* Begin PBXProject section */
 		921B480A1391CE07005F1832 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 921B480D1391CE07005F1832 /* Build configuration list for PBXProject "BennuGD_iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -1150,7 +1153,10 @@
 		921B483D1391CE08005F1832 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
@@ -1167,7 +1173,7 @@
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1177,7 +1183,11 @@
 					"../../3rdparty/SDL-1.3/iOS/include/**",
 					../../3rdparty/libpng/iOS/include/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lz",
+				);
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1188,7 +1198,10 @@
 		921B483E1391CE08005F1832 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					armv6,
+					armv7,
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
@@ -1203,7 +1216,7 @@
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
 				);
-				GCC_VERSION = 4.2;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1213,8 +1226,12 @@
 					"../../3rdparty/SDL-1.3/iOS/include/**",
 					../../3rdparty/libpng/iOS/include/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-lm",
+					"-lz",
+				);
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				USER_HEADER_SEARCH_PATHS = "";
