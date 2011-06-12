@@ -241,7 +241,7 @@ int main( int argc, char *argv[] )
                     "   misrepresented as being the original software.\n"
                     "\n"
                     "   3. This notice may not be removed or altered from any source\n"
-                    "   distribution.\n"
+                    "   distribution.\n",
                     argv[0] ) ;
             return -1 ;
         }
