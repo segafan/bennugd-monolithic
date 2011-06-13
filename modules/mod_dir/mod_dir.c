@@ -44,11 +44,13 @@
 #include <sys/types.h>
 #endif
 #include <sys/stat.h>
+
 #ifdef TARGET_PSP
-	#include <diet-glob.h>
-#else
-	#include <glob.h>
+	#define PATH_MAX GLOB_MAXPATH
 #endif
+
+#include <glob.h>
+
 #endif
 
 #include "bgddl.h"
