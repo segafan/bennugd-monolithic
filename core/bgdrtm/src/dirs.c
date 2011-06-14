@@ -5,19 +5,24 @@
  *
  *  This file is part of Bennu - Game Development
  *
- *  Bennu is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
+ *  This software is provided 'as-is', without any express or implied
+ *  warranty. In no event will the authors be held liable for any damages
+ *  arising from the use of this software.
  *
- *  Bennu is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ *  Permission is granted to anyone to use this software for any purpose,
+ *  including commercial applications, and to alter it and redistribute it
+ *  freely, subject to the following restrictions:
  *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *     1. The origin of this software must not be misrepresented; you must not
+ *     claim that you wrote the original software. If you use this software
+ *     in a product, an acknowledgment in the product documentation would be
+ *     appreciated but is not required.
+ *
+ *     2. Altered source versions must be plainly marked as such, and must not be
+ *     misrepresented as being the original software.
+ *
+ *     3. This notice may not be removed or altered from any source
+ *     distribution.
  *
  */
 
@@ -208,9 +213,17 @@ __DIR_ST * dir_open( const char * path )
 #ifdef _WIN32
     hDir->handle = FindFirstFile( hDir->path, &hDir->data );
     hDir->eod = ( hDir->handle == INVALID_HANDLE_VALUE );
+
+    if ( !hDir->handle )
+    {
+        free( hDir->path );
+        free( hDir );
+        return NULL;
+    }
 #else
     const char * ptr = hDir->path;
     char * fptr;
+    int r;
 
     hDir->pattern = malloc( strlen( path ) * 4 );
     if ( !hDir->pattern )
@@ -253,10 +266,18 @@ __DIR_ST * dir_open( const char * path )
     if ( fptr > hDir->pattern + 2 && fptr[ -1 ] == '*' && fptr[ -2 ] == '.' && fptr[ -3 ] == '*' ) fptr[ -2 ] = 0;
 
 #if defined(TARGET_MAC) || defined(TARGET_BEOS) || defined(TARGET_WII) || defined(TARGET_PSP) || defined(TARGET_ANDROID)
-    glob( hDir->pattern, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
+    r = glob( hDir->pattern, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
 #else
-    glob( hDir->pattern, GLOB_ERR | GLOB_PERIOD | GLOB_NOSORT, NULL, &hDir->globd );
+    r = glob( hDir->pattern, GLOB_ERR | GLOB_PERIOD | GLOB_NOSORT, NULL, &hDir->globd );
 #endif
+
+    if ( r )
+    {
+        free( hDir->pattern );
+        free( hDir->path );
+        free( hDir );
+        return NULL;
+    }
 
     hDir->currFile = 0;
 #endif
