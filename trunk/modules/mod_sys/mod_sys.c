@@ -68,12 +68,17 @@ DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
 
 static int modsys_exec( INSTANCE * my, int * params )
 {
-#if defined TARGET_PSP
+#if defined(TARGET_PSP)
     return 0;
-#elif defined TARGET_WII
+#elif defined(TARGET_WII)
     WII_OpenURL(string_get(params[1]));
     string_discard(params[1]);
     return 0;
+#elif defined(TARGET_IOS)
+    NSURL *myURL = [NSURL URLWithString:@"%s", string_get(params[1])];
+    string_discard(params[1]);
+
+    [[UIApplication sharedApplication] openURL:myURL];
 #else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
