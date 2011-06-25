@@ -26,7 +26,8 @@ CHIPMUNK_OBJS = $(CHIPMUNK_C_FILES:.c=.o)
 # source files
 OBJS  = $(foreach obj, $(CHIPMUNK_OBJS), $(CHIPMUNK_DIR)/src/$(obj))
 
-CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' -std=c99
+CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' -std=gnu99
+CFLAGS += -DCP_USE_DOUBLES=1
 CFLAGS += -I$(CHIPMUNK_DIR)/include/chipmunk
 CFLAGS += -I$(CHIPMUNK_DIR)/include/chipmunk/constraints -I$(CHIPMUNK_DIR)
 CFLAGS += -I$(ROOT_DIR)/core/include
@@ -43,6 +44,7 @@ PSPSDK = $(shell psp-config --pspsdk-path)
 PSP_FW_VERSION = 500
 BUILD_PRX = 0
 USE_USER_LIBS = 1
+USE_KERNEL_LIBS = 0
 
 # this is the last thing we put in the makefile
 include $(PSPSDK)/lib/build.mak

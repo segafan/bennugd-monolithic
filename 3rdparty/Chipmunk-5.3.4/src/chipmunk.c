@@ -22,12 +22,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #define _USE_MATH_DEFINES
-#ifndef TARGET_PSP
-    #include <math.h>
-#else
-    #include "fmath.h"
-#endif
 
+#include <math.h>
 
 #include "chipmunk.h"
 

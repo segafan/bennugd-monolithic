@@ -12,7 +12,7 @@
 	#elif TARGET_OS_MAC
 		#import <ApplicationServices/ApplicationServices.h>
 	#endif
-	
+
 	#if defined(__LP64__) && __LP64__
 		#define CP_USE_DOUBLES 1
 	#else
