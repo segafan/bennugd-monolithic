@@ -1,5 +1,8 @@
 #
-# experimental CMake build system for bennugd
+# experimental CMake build system for bennugd 
+# 
+# based on the ScummVM CMake proposed build system 
+# and the Ogre3D CMake build system
 #
 
 # minimal CMake version required for build

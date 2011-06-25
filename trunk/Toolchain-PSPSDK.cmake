@@ -1,6 +1,6 @@
 #
 #  This toolchain file is based on the project cmaketoolchain4psp
-#  https://github.com/ifreedom/cmaketoolchain4psp
+#  http://github.com/ifreedom/cmaketoolchain4psp
 #
 
 # You will need at least CMake 2.6.0.
