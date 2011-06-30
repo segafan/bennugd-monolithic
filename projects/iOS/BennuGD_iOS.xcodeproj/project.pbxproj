@@ -101,6 +101,7 @@
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
 		92A632E813BD32D200382D60 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632E713BD32D200382D60 /* libSDL.a */; };
+		92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */; };
 		92F2E3C013943518001D7391 /* BennuGD_iOS.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */; };
 		92F2E3C113943518001D7391 /* BennuGD_iOS.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */; };
 /* End PBXBuildFile section */
@@ -147,6 +148,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = FD6526620DE8FCCB002AD96B;
 			remoteInfo = libSDL;
+		};
+		92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE1FA95407AF96B2004B6283;
+			remoteInfo = "Static Library";
+		};
+		92CD37C313BD3B5E000D5ED7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BE1FA90707AF96B2004B6283;
+			remoteInfo = "Static Library";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -349,13 +364,11 @@
 		921B4A461391D8A4005F1832 /* mod_video_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_video_symbols.h; sourceTree = "<group>"; };
 		921B4A481391D8A4005F1832 /* mod_wm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_wm.c; sourceTree = "<group>"; };
 		921B4A491391D8A4005F1832 /* mod_wm_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_wm_symbols.h; sourceTree = "<group>"; };
-		921B4AB61391DB7F005F1832 /* libSDL_mixer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL_mixer.a; path = "../../3rdparty/SDL-1.3/iOS/lib/libSDL_mixer.a"; sourceTree = "<group>"; };
 		921B4ACE1391DDFC005F1832 /* bgdi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bgdi.h; sourceTree = "<group>"; };
 		921B4AD31391DDFC005F1832 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
-		921B4B0D1391EC62005F1832 /* libSDL.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL.a; path = "../../3rdparty/SDL-1.3/iOS/lib/libSDL.a"; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,6 +376,8 @@
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
 		92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDLiPhoneOS.xcodeproj; path = "../../3rdparty/SDL-1.3/src/Xcode-iPhoneOS/SDL/SDLiPhoneOS.xcodeproj"; sourceTree = "<group>"; };
 		92A632E713BD32D200382D60 /* libSDL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL.a; sourceTree = SOURCE_ROOT; };
+		92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = ../../3rdparty/SDL_mixer/src/Xcode/SDL_mixer.xcodeproj; sourceTree = "<group>"; };
+		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
 		92F2E3BE13943518001D7391 /* BennuGD_iOS.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BennuGD_iOS.dcb; path = TestData/BennuGD_iOS.dcb; sourceTree = "<group>"; };
 		92F2E3BF13943518001D7391 /* BennuGD_iOS.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BennuGD_iOS.prg; path = TestData/BennuGD_iOS.prg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -372,6 +387,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */,
 				92A632E813BD32D200382D60 /* libSDL.a in Frameworks */,
 				92A632BA13BD302800382D60 /* libpng.a in Frameworks */,
 				92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */,
@@ -392,12 +408,11 @@
 		92098DE913A5313000F70BC2 /* External dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				92A632B913BD302800382D60 /* libpng.a */,
 				92A632E713BD32D200382D60 /* libSDL.a */,
+				92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */,
+				92A632B913BD302800382D60 /* libpng.a */,
 				92A6320D13BD2E1D00382D60 /* libtremor.a */,
 				92098E1213A5389A00F70BC2 /* libChipmunk-iOS.a */,
-				921B4AB61391DB7F005F1832 /* libSDL_mixer.a */,
-				921B4B0D1391EC62005F1832 /* libSDL.a */,
 			);
 			name = "External dependencies";
 			sourceTree = "<group>";
@@ -415,6 +430,7 @@
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
+				92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */,
 				92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */,
 				92A6328E13BD2FA500382D60 /* png.xcodeproj */,
 				92A631FC13BD2BE200382D60 /* tremor.xcodeproj */,
@@ -1094,6 +1110,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		92CD37BA13BD3AFC000D5ED7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1108,6 +1132,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */,
 				92A632E513BD324500382D60 /* PBXTargetDependency */,
 				92A632B813BD301E00382D60 /* PBXTargetDependency */,
 				92A6320B13BD2D2D00382D60 /* PBXTargetDependency */,
@@ -1139,6 +1164,10 @@
 				{
 					ProductGroup = 92A6328F13BD2FA500382D60 /* Products */;
 					ProjectRef = 92A6328E13BD2FA500382D60 /* png.xcodeproj */;
+				},
+				{
+					ProductGroup = 92CD37BA13BD3AFC000D5ED7 /* Products */;
+					ProjectRef = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
 				},
 				{
 					ProductGroup = 92A632D613BD323500382D60 /* Products */;
@@ -1176,6 +1205,13 @@
 			fileType = archive.ar;
 			path = libSDL.a;
 			remoteRef = 92A632E013BD323600382D60 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL_mixer.a;
+			remoteRef = 92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1301,6 +1337,11 @@
 			name = libSDL;
 			targetProxy = 92A632E413BD324500382D60 /* PBXContainerItemProxy */;
 		};
+		92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Static Library";
+			targetProxy = 92CD37C313BD3B5E000D5ED7 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1333,7 +1374,6 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/iOS/include/**",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 				);
@@ -1376,7 +1416,6 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/iOS/include/**",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 				);
@@ -1410,16 +1449,14 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/iOS/include/**",
+					"../../3rdparty/SDL-1.3/src/include",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
+					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../3rdparty/SDL-1.3/iOS/lib\"",
-					"\"$(SRCROOT)/../../3rdparty/libmikmod/iOS/lib\"",
-					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 					"\"$(SRCROOT)\"",
 				);
@@ -1447,16 +1484,14 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/iOS/include/**",
+					"../../3rdparty/SDL-1.3/src/include",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
+					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../3rdparty/SDL-1.3/iOS/lib\"",
-					"\"$(SRCROOT)/../../3rdparty/libmikmod/iOS/lib\"",
-					"\"$(SRCROOT)/../../3rdparty/libtremor/iOS/lib\"",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 					"\"$(SRCROOT)\"",
 				);

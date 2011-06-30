@@ -30,11 +30,7 @@
 #define __JOY_H
 
 #include <bgddl.h>
-#ifdef TARGET_MAC
-#include <SDL/SDL_joystick.h>
-#else
 #include <SDL_joystick.h>
-#endif
 
 #ifdef __BGDC__
 /* --------------------------------------------------------------------------- */
