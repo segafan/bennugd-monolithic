@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -41,7 +41,7 @@
 #include <process.h>
 #endif
 
-#ifdef TARGET_WII
+#if defined(TARGET_WII)
 #include <ogc/wiilaunch.h>
 #endif
 
@@ -79,7 +79,7 @@ static int modsys_exec( INSTANCE * my, int * params )
     WII_OpenURL(string_get(params[1]));
     string_discard(params[1]);
     return 0;
-#elif defined(TARGET_IOS)
+#elif 0
     NSURL *myURL = [NSURL URLWithString:@"%s", string_get(params[1])];
     string_discard(params[1]);
 
