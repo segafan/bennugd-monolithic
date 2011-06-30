@@ -28,11 +28,7 @@
 
 /* --------------------------------------------------------------------------- */
 
-#ifdef TARGET_MAC
-#include <SDL/SDL.h>
-#else
 #include <SDL.h>
-#endif
 
 #if defined(TARGET_IOS)
 #if SDL_VERSION_ATLEAST(1,3,0)
