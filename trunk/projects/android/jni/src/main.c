@@ -268,7 +268,7 @@ int main( int argc, char *argv[] )
     }
     else
     {
-        dcb_load_from( fp, dcb_signature.dcb_offset );
+        dcb_load_from( fp, dcbname, dcb_signature.dcb_offset );
     }
 	
     /* If the dcb is not in debug mode */
