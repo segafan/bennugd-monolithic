@@ -426,6 +426,10 @@ int gr_set_mode( int width, int height, int depth )
 
                     fw = (double)screen->w / (double)scale_screen->w;
                     fh = (double)screen->h / (double)scale_screen->h;
+#ifdef TARGET_IOS
+                    // Let the user rotate the device as they like as long as it's in portrait
+                    SDL_SetHint("SDL_IOS_ORIENTATIONS", "Portrait PortraitUpsideDown");
+#endif
                     break;
 
             case    SRO_LEFT:
@@ -438,6 +442,10 @@ int gr_set_mode( int width, int height, int depth )
 
                     fh = (double)screen->w / (double)scale_screen->h;
                     fw = (double)screen->h / (double)scale_screen->w;
+#ifdef TARGET_IOS
+                    // Let the user rotate the device as they like as long as it's in landscape
+                    SDL_SetHint("SDL_IOS_ORIENTATIONS", "Portrait PortraitUpsideDown");
+#endif
                     break;
         }
 
