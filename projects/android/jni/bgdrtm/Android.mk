@@ -8,9 +8,9 @@ LOCAL_MODULE := bgdrtm
 
 LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
-    $(LOCAL_PATH)/../SDL/include/ \
-    $(LOCAL_PATH)/../SDL_mixer/ \
-    $(LOCAL_PATH)/../png/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL-1.3/src/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL_mixer/src/ \
+	$(LOCAL_PATH)/../../../../3rdparty/libpng/src/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(MODULES_PATH)/mod_say/ \
 	$(MODULES_PATH)/mod_string/ \
