@@ -103,6 +103,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/libgrbase/libgrbase.c \
 	../../../../modules/libblit/g_blit.c \
 	../../../../modules/libblit/g_pixel.c \
+	../../../../modules/libblit/libblit.c \
 	../../../../modules/libvideo/g_regions.c \
 	../../../../modules/libvideo/g_video.c \
 	../../../../modules/librender/g_fade.c \
@@ -148,6 +149,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_flic/mod_flic.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
+LOCAL_SHARED_LIBRARIES := SDL SDL_mixer
 LOCAL_STATIC_LIBRARIES := png
 
 include $(BUILD_STATIC_LIBRARY)
