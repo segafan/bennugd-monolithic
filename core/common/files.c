@@ -44,6 +44,10 @@
 #include <realpath.h>
 #endif
 
+#ifdef TARGET_ANDROID
+#include <sys/stat.h>
+#endif
+
 #include <stdint.h>
 
 #include "files.h"
