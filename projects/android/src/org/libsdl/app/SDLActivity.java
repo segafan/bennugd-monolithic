@@ -382,7 +382,14 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             }
             EGLConfig config = configs[0];
 
-            EGLContext ctx = egl.eglCreateContext(dpy, config, EGL10.EGL_NO_CONTEXT, null);
+            int EGL_CONTEXT_CLIENT_VERSION=0x3098;
+            int contextAttrs[] = new int[]
+            {
+                EGL_CONTEXT_CLIENT_VERSION, majorVersion,
+                EGL10.EGL_NONE
+            };
+
+            EGLContext ctx = egl.eglCreateContext(dpy, config, EGL10.EGL_NO_CONTEXT, contextAttrs);
             if (ctx == EGL10.EGL_NO_CONTEXT) {
                 Log.e("SDL", "Couldn't create context");
                 return false;

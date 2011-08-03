@@ -551,12 +551,23 @@ int file_size( file * fp )
 int file_pos( file * fp )
 {
     if ( fp->type == F_XFILE ) return fp->pos - x_file[fp->n].offset ;
-
+    
 #ifndef NO_ZLIB
     if ( fp->type == F_GZFILE ) return gztell( fp->gz ) ;
 #endif
-
+    
     return ftell( fp->fp ) ;
+}
+
+int file_flush( file * fp )
+{
+    if ( fp->type == F_XFILE ) return 0 ;
+    
+#ifndef NO_ZLIB
+    if ( fp->type == F_GZFILE ) return 0 ;
+#endif
+    
+    return fflush( fp->fp ) ;
 }
 
 /* Set current file pointer position */
@@ -677,6 +688,7 @@ file * file_open( const char * filename, char * mode )
         opened_files++;
         return f ;
     }
+
 
     /* if real file don't exists in disk */
     if (  strchr( mode, 'r' ) &&  strchr( mode, 'b' ) &&  /* Only read-only files */
@@ -860,22 +872,27 @@ char * whereis( char *file )
 {
     char * path = getenv( "PATH" ), *pact = path, *p;
     char fullname[ __MAX_PATH ];
-
-    while ( pact && *pact && ( p = strchr( pact, ENV_PATH_SEP ) ) )
+    
+    while ( pact && *pact )
     {
-        *p = '\0';
-        sprintf( fullname, "%s/%s", pact, file );
-        if ( file_exists( fullname ) )
+        struct stat st;
+        
+        if ( ( p = strchr( pact, ENV_PATH_SEP ) ) ) *p = '\0';
+        sprintf( fullname, "%s%s%s", pact, ( pact[ strlen( pact ) - 1 ] == ENV_PATH_SEP ) ? "" : PATH_SEP, file );
+        
+        if ( !stat( fullname, &st ) && S_ISREG( st.st_mode ) )
         {
             pact = strdup( pact );
-            *p = ENV_PATH_SEP;
+            if ( p ) *p = ENV_PATH_SEP;
             return ( pact );
         }
-
+        
+        if ( !p ) break;
+        
         *p = ENV_PATH_SEP;
         pact = p + 1;
     }
-
+    
     return NULL;
 }
 
