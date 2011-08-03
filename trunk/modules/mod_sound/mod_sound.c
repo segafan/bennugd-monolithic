@@ -96,6 +96,7 @@ static int SDLCALL __modsound_seek_cb( SDL_RWops *context, int offset, int whenc
 {
     if ( file_seek( context->hidden.unknown.data1, offset, whence ) < 0 ) return ( -1 );
     return( file_pos( context->hidden.unknown.data1 ) );
+    //    return ( file_seek( context->hidden.unknown.data1, offset, whence ) );
 }
 
 static int SDLCALL __modsound_read_cb( SDL_RWops *context, void *ptr, int size, int maxnum )
@@ -251,636 +252,21 @@ static void sound_close()
  *
  */
 
-static int load_song( const char * filename )
-{
-    Mix_Music *music = NULL;
-    file      *fp;
-
-    if ( !audio_initialized && sound_init() ) return ( 0 );
-
-    if ( !( fp = file_open( filename, "rb0" ) ) ) return ( 0 );
-
-    if ( !( music = Mix_LoadMUS_RW( SDL_RWFromBGDFP( fp ) ) ) )
-    {
-        file_close( fp );
-        fprintf( stderr, "Couldn't load %s: %s\n", filename, SDL_GetError() );
-        return( 0 );
-    }
-
-    return (( int )music );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : play_song
- *
- *  Play a MOD/OGG
- *
- *  PARAMS:
- *      mod pointer
- *      number of loops (-1 infinite loops)
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int play_song( int id, int loops )
-{
-    if ( audio_initialized && id )
-    {
-        int result = Mix_PlayMusic(( Mix_Music * )id, loops );
-        if ( result == -1 ) fprintf( stderr, "%s", Mix_GetError() );
-        return result;
-    }
-
-    fprintf( stderr, "Play song called with invalid handle" );
-    return( -1 );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : fade_music_in
- *
- *  Play a MOD/OGG fading in it
- *
- *  PARAMS:
- *      mod pointer
- *      number of loops (-1 infinite loops)
- *      ms  microsends of fadding
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int fade_music_in( int id, int loops, int ms )
-{
-    if ( audio_initialized && id ) return( Mix_FadeInMusic(( Mix_Music * )id, loops, ms ) );
-    return( -1 );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : fade_music_off
- *
- *  Stop the play of a mod
- *
- *  PARAMS:
- *
- *  ms  microsends of fadding
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int fade_music_off( int ms )
-{
-    if ( !audio_initialized ) return ( 0 );
-    return ( Mix_FadeOutMusic( ms ) );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : unload_song
- *
- *  Play a MOD
- *
- *  PARAMS:
- *
- *  mod id
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int unload_song( int id )
-{
-    if ( audio_initialized && id )
-    {
-        if ( Mix_PlayingMusic() ) Mix_HaltMusic();
-        Mix_FreeMusic(( Mix_Music * )id );
-    }
-    return ( 0 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : stop_song
- *
- *  Stop the play of a mod
- *
- *  PARAMS:
- *
- *  no params
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int stop_song( void )
-{
-    if ( audio_initialized ) Mix_HaltMusic();
-    return ( 0 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : pause_song
- *
- *  Pause the mod in curse, you can resume it after
- *
- *  PARAMS:
- *
- *  no params
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int pause_song( void )
-{
-    if ( audio_initialized ) Mix_PauseMusic();
-    return ( 0 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : resume_song
- *
- *  Resume the mod, paused before
- *
- *  PARAMS:
- *
- *  no params
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int resume_song( void )
-{
-    if ( audio_initialized ) Mix_ResumeMusic();
-    return( 0 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : is_playing_song
- *
- *  Check if there is any mod playing
- *
- *  PARAMS:
- *
- *  no params
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *  TRUE OR FALSE if there is no error
- *
- */
-
-static int is_playing_song( void )
-{
-    if ( !audio_initialized ) return ( 0 );
-    return Mix_PlayingMusic();
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_song_volume
- *
- *  Set the volume for mod playing (0-128)
- *
- *  PARAMS:
- *
- *  int volume
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *  0 if there is no error
- *
- */
-
-static int set_song_volume( int volume )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( volume < 0 ) volume = 0;
-    if ( volume > 128 ) volume = 128;
-
-    Mix_VolumeMusic( volume );
-    return 0;
-}
-
-/* ------------ */
-/* Sonido WAV   */
-/* ------------ */
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : load_wav
- *
- *  Load a WAV from a file
- *
- *  PARAMS:
- *      file name
- *
- *  RETURN VALUE:
- *
- *  wav pointer
- *
- */
-
-static int load_wav( const char * filename )
-{
-    Mix_Chunk *music = NULL;
-    file      *fp;
-
-    if ( !audio_initialized && sound_init() ) return ( 0 );
-
-    if ( !( fp = file_open( filename, "rb0" ) ) ) return ( 0 );
-
-    if ( !( music = Mix_LoadWAV_RW( SDL_RWFromBGDFP( fp ), 1 ) ) )
-    {
-        file_close( fp );
-        fprintf( stderr, "Couldn't load %s: %s\n", filename, SDL_GetError() );
-        return( 0 );
-    }
-    return (( int )music );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : play_wav
- *
- *  Play a WAV
- *
- *  PARAMS:
- *      wav pointer;
- *      number of loops (-1 infinite loops)
- *      channel (-1 any channel)
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *  else channel where the music plays
- *
- */
-
-static int play_wav( int id, int loops, int channel )
-{
-    if ( audio_initialized && id ) return ( ( int ) Mix_PlayChannel( channel, ( Mix_Chunk * )id, loops ) );
-    return ( -1 );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : unload_wav
- *
- *  Frees the resources from a wav, unloading it
- *
- *  PARAMS:
- *
- *  wav pointer
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int unload_wav( int id )
-{
-    if ( audio_initialized && id ) Mix_FreeChunk(( Mix_Chunk * )id );
-    return ( 0 );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : stop_wav
- *
- *  Stop a wav playing
- *
- *  PARAMS:
- *
- *  int channel
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int stop_wav( int canal )
-{
-    if ( audio_initialized && Mix_Playing( canal ) ) return( Mix_HaltChannel( canal ) );
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : pause_wav
- *
- *  Pause a wav playing, you can resume it after
- *
- *  PARAMS:
- *
- *  int channel
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int pause_wav( int canal )
-{
-    if ( audio_initialized && Mix_Playing( canal ) )
-    {
-        Mix_Pause( canal );
-        return ( 0 ) ;
-    }
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : resume_wav
- *
- *  Resume a wav playing, paused before
- *
- *  PARAMS:
- *
- *  int channel
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int resume_wav( int canal )
-{
-    if ( audio_initialized && Mix_Playing( canal ) )
-    {
-        Mix_Resume( canal );
-        return ( 0 ) ;
-    }
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : is_playing_wav
- *
- *  Check a wav playing
- *
- *  PARAMS:
- *
- *  int channel
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *  TRUE OR FALSE if there is no error
- *
- */
-
-static int is_playing_wav( int canal )
-{
-    if ( audio_initialized ) return( Mix_Playing( canal ) );
-    return ( 0 );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_wav_volume
- *
- *  Set the volume for wav playing (0-128) IN SAMPLE
- *
- *  PARAMS:
- *
- *  channel id
- *  int volume
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int  set_wav_volume( int sample, int volume )
-{
-    if ( !audio_initialized ) return ( -1 );
-
-    if ( volume < 0 ) volume = 0;
-    if ( volume > 128 ) volume = 128;
-
-    if ( sample ) return( Mix_VolumeChunk(( Mix_Chunk * )sample, volume ) );
-
-    return -1 ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_channel_volume
- *
- *  Set the volume for wav playing (0-128) IN CHANNEL
- *
- *  PARAMS:
- *
- *  channel id
- *  int volume
- *
- *  RETURN VALUE:
- *
- * -1 if there is any error
- *
- */
-
-static int  set_channel_volume( int canal, int volume )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( volume < 0 ) volume = 0;
-    if ( volume > 128 ) volume = 128;
-
-    return( Mix_Volume( canal, volume ) );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : reserve_channels
- *
- *  Reserve the first channels (0 -> n-1) for the application, i.e. don't allocate
- *  them dynamically to the next sample if requested with a -1 value below.
- *
- *  PARAMS:
- *  number of channels to reserve.
- *
- *  RETURN VALUE:
- *  number of reserved channels.
- * -1 if there is any error
- *
- */
-
-static int reserve_channels( int canales )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-    return Mix_ReserveChannels( canales );
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_panning
- *
- *  Set the panning for a wav channel
- *
- *  PARAMS:
- *
- *  channel
- *  left volume (0-255)
- *  right volume (0-255)
- *
- */
-
-static int set_panning( int canal, int left, int right )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( Mix_Playing( canal ) )
-    {
-        Mix_SetPanning( canal, ( Uint8 )left, ( Uint8 )right );
-        return ( 0 ) ;
-    }
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_position
- *
- *  Set the position of a channel. (angle) is an integer from 0 to 360
- *
- *  PARAMS:
- *
- *  channel
- *  angle (0-360)
- *  distance (0-255)
- *
- */
-
-static int set_position( int canal, int angle, int dist )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( Mix_Playing( canal ) )
-    {
-        Mix_SetPosition( canal, ( Sint16 )angle, ( Uint8 )dist );
-        return ( 0 ) ;
-    }
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : set_distance
- *
- *  Set the "distance" of a channel. (distance) is an integer from 0 to 255
- *  that specifies the location of the sound in relation to the listener.
- *
- *  PARAMS:
- *
- *  channel
- *
- *  distance (0-255)
- *
- */
-
-static int set_distance( int canal, int dist )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( Mix_Playing( canal ) )
-    {
-        Mix_SetDistance( canal, ( Uint8 )dist );
-        return ( 0 ) ;
-    }
-
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : reverse_stereo
- *
- *  Causes a channel to reverse its stereo.
- *
- *  PARAMS:
- *
- *  channel
- *  flip  0 normal  != reverse
- *
- */
-
-static int reverse_stereo( int canal, int flip )
-{
-    if ( !audio_initialized && sound_init() ) return ( -1 );
-
-    if ( Mix_Playing( canal ) )
-    {
-        Mix_SetReverseStereo( canal, flip );
-        return ( 0 ) ;
-    }
-
-    return ( -1 ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-/* Sonido                                                                      */
-/* --------------------------------------------------------------------------- */
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : modsound_load_song
- *
- *  Load a MOD from a file
- *
- *  PARAMS:
- *      file name
- *
- *  RETURN VALUE:
- *
- *      mod id
- *
- */
-
 static int modsound_load_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
-
+    
     if ( !( filename = string_get( params[0] ) ) ) return ( 0 ) ;
-
+    
     var = load_song( filename );
     string_discard( params[0] );
-
+    
     return ( var );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -902,8 +288,12 @@ static int modsound_load_song( INSTANCE * my, int * params )
 
 static int modsound_play_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return -1;
     return( play_song( params[0], params[1] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -924,8 +314,12 @@ static int modsound_play_song( INSTANCE * my, int * params )
 
 static int modsound_unload_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return ( -1 );
     return( unload_song( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -946,11 +340,15 @@ static int modsound_unload_song( INSTANCE * my, int * params )
 
 static int modsound_unload_song2( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     int *s = params[0], r;
     if ( !s || *s == -1 ) return ( -1 );
     r = unload_song( *s );
     *s = 0;
     return( r );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -972,7 +370,11 @@ static int modsound_unload_song2( INSTANCE * my, int * params )
 
 static int modsound_stop_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( stop_song() );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -994,7 +396,11 @@ static int modsound_stop_song( INSTANCE * my, int * params )
 
 static int modsound_pause_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( pause_song() );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1016,7 +422,11 @@ static int modsound_pause_song( INSTANCE * my, int * params )
 
 static int modsound_resume_song( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( resume_song() );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1060,7 +470,11 @@ static int modsound_is_playing_song( INSTANCE * my, int * params )
 
 static int modsound_set_song_volume( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( set_song_volume( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1082,8 +496,12 @@ static int modsound_set_song_volume( INSTANCE * my, int * params )
 
 static int modsound_fade_music_in( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return -1;
     return ( fade_music_in( params[0], params[1], params[2] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1104,7 +522,9 @@ static int modsound_fade_music_in( INSTANCE * my, int * params )
 
 static int modsound_fade_music_off( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( fade_music_off( params[0] ) );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1124,15 +544,19 @@ static int modsound_fade_music_off( INSTANCE * my, int * params )
 
 static int modsound_load_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
-
+    
     if ( !( filename = string_get( params[0] ) ) ) return ( 0 ) ;
-
+    
     var = load_wav( filename );
     string_discard( params[0] );
-
+    
     return ( var );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1154,8 +578,12 @@ static int modsound_load_wav( INSTANCE * my, int * params )
 
 static int modsound_play_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return -1;
     return( play_wav( params[0], params[1], -1 ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1178,8 +606,12 @@ static int modsound_play_wav( INSTANCE * my, int * params )
 
 static int modsound_play_wav_channel( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return -1;
     return( play_wav( params[0], params[1], params[2] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1201,8 +633,12 @@ static int modsound_play_wav_channel( INSTANCE * my, int * params )
 
 static int modsound_unload_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     if ( params[0] == -1 ) return -1;
     return( unload_wav( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1224,11 +660,15 @@ static int modsound_unload_wav( INSTANCE * my, int * params )
 
 static int modsound_unload_wav2( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     int *s = params[0], r;
     if ( !s || *s == -1 ) return ( -1 );
     r = unload_wav( *s );
     *s = 0;
     return( r );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1250,7 +690,11 @@ static int modsound_unload_wav2( INSTANCE * my, int * params )
 
 static int modsound_stop_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( stop_wav( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1272,7 +716,11 @@ static int modsound_stop_wav( INSTANCE * my, int * params )
 
 static int modsound_pause_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( pause_wav( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1294,7 +742,11 @@ static int modsound_pause_wav( INSTANCE * my, int * params )
 
 static int modsound_resume_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( resume_wav( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1317,7 +769,11 @@ static int modsound_resume_wav( INSTANCE * my, int * params )
 
 static int modsound_is_playing_wav( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( is_playing_wav( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1340,7 +796,11 @@ static int modsound_is_playing_wav( INSTANCE * my, int * params )
 
 static int modsound_set_channel_volume( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( set_channel_volume( params[0], params[1] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1361,7 +821,11 @@ static int modsound_set_channel_volume( INSTANCE * my, int * params )
 
 static int modsound_reserve_channels( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( reserve_channels( params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1384,7 +848,11 @@ static int modsound_reserve_channels( INSTANCE * my, int * params )
 
 static int modsound_set_wav_volume( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( set_wav_volume( params[0], params[1] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1403,7 +871,11 @@ static int modsound_set_wav_volume( INSTANCE * my, int * params )
 
 static int modsound_set_panning( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( set_panning( params[0], params[1], params[2] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1422,7 +894,11 @@ static int modsound_set_panning( INSTANCE * my, int * params )
 
 static int modsound_set_position( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( set_position( params[0], params[1], params[2] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1442,7 +918,11 @@ static int modsound_set_position( INSTANCE * my, int * params )
 
 static int modsound_set_distance( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( set_distance( params[0], params[1] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1461,29 +941,45 @@ static int modsound_set_distance( INSTANCE * my, int * params )
 
 static int modsound_reverse_stereo( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( reverse_stereo( params[0], params[1] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 static int modsound_set_music_position( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return ( Mix_SetMusicPosition( ( double ) *( float * ) &params[0] ) );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 static int modsound_init( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     return( sound_init() );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 static int modsound_close( INSTANCE * my, int * params )
 {
+#ifndef TARGET_DINGUX_A320
     sound_close();
     return( 0 );
+#else
+    return -1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1528,14 +1024,18 @@ DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
 
 void  __bgdexport( mod_sound, module_initialize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( !SDL_WasInit( SDL_INIT_AUDIO ) ) SDL_InitSubSystem( SDL_INIT_AUDIO );
-}
+#endif
+        }
 
 /* --------------------------------------------------------------------------- */
 
 void __bgdexport( mod_sound, module_finalize )()
 {
+#ifndef TARGET_DINGUX_A320
     if ( SDL_WasInit( SDL_INIT_AUDIO ) ) SDL_QuitSubSystem( SDL_INIT_AUDIO );
-}
+#endif
+        }
 
 /* --------------------------------------------------------------------------- */

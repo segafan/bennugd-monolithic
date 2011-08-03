@@ -134,7 +134,7 @@ void instance_get_bbox( INSTANCE * i, GRAPH * gr, REGION * dest )
 
 /* ---------------------------------------------------------------------- */
 
-void draw_instance_at( INSTANCE * i, REGION * region, int x, int y )
+void draw_instance_at( INSTANCE * i, REGION * region, int x, int y, GRAPH * dest )
 {
     GRAPH * map ;
     int16_t * blend_table = NULL ;
@@ -144,49 +144,49 @@ void draw_instance_at( INSTANCE * i, REGION * region, int x, int y )
     int blendop;
     PALETTE * palette = NULL;
     int paletteid;
-
+    
     map = instance_graph( i ) ;
     if ( !map ) return ;
-
+    
     flags = ( LOCDWORD( librender, i, FLAGS ) ^ LOCDWORD( librender, i, XGRAPH_FLAGS ) );
-
+    
     if (( alpha = LOCDWORD( librender, i, ALPHA ) ) != 255 )
     {
         if ( alpha <= 0 ) return ;
         else if ( alpha < 255 )
             flags |= B_ALPHA | ( alpha << B_ALPHA_SHIFT );
     }
-
+    
     scalex = LOCINT32( librender, i, GRAPHSIZEX );
     scaley = LOCINT32( librender, i, GRAPHSIZEY );
     if ( scalex == 100 && scaley == 100 ) scalex = scaley = LOCINT32( librender, i, GRAPHSIZE );
-
+    
     if (( blendop = LOCDWORD( librender, i, BLENDOP ) ) )
     {
         blend_table = map->blend_table;
         map->blend_table = ( int16_t * ) blendop;
     }
-
+    
     if (( paletteid = LOCDWORD( librender, i, PALETTEID ) ) )
     {
         palette = map->format->palette ;
         map->format->palette = ( PALETTE * ) paletteid;
     }
-
+    
     /* XGRAPH does not rotate destination graphic.
-       WARNING: don't remove "scalex != 100 || scaley != 100 ||" from begin the next condition */
+     WARNING: don't remove "scalex != 100 || scaley != 100 ||" from begin the next condition */
     if ( scalex != 100 || scaley != 100 || ( LOCINT32( librender, i, ANGLE ) && !LOCDWORD( librender, i, XGRAPH ) ) )
     {
-        gr_rotated_blit( 0, region, x, y, flags, LOCDWORD( librender, i, XGRAPH ) ? 0 : LOCINT32( librender, i, ANGLE ), scalex, scaley, map ) ;
+        gr_rotated_blit( dest, region, x, y, flags, LOCDWORD( librender, i, XGRAPH ) ? 0 : LOCINT32( librender, i, ANGLE ), scalex, scaley, map ) ;
     }
     else
     {
-        gr_blit( 0, region, x, y, flags, map ) ;
+        gr_blit( dest, region, x, y, flags, map ) ;
     }
-
+    
     if ( paletteid ) map->format->palette = palette;
     if ( blendop ) map->blend_table = blend_table;
-
+    
 }
 
 /* --------------------------------------------------------------------------- */

@@ -401,7 +401,7 @@ static int modpathfind_path_wall( INSTANCE * my, int * params )
 
 DLSYSFUNCS __bgdexport( mod_path, functions_exports )[] =
 {
-    /* Path finding */
+    /* Búsqueda de caminos*/
     { "PATH_FIND"   , "IIIIIII", TYPE_INT   , modpathfind_path_find     },
     { "PATH_GETXY"  , "PP"     , TYPE_INT   , modpathfind_path_getxy    },
     { "PATH_WALL"   , "I"      , TYPE_INT   , modpathfind_path_wall     },

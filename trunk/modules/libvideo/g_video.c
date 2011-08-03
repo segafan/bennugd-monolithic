@@ -366,9 +366,6 @@ int gr_set_mode( int width, int height, int depth )
     /* Setup the SDL Video Mode */
 
     sdl_flags = SDL_HWPALETTE;
-#ifdef TARGET_IOS
-    sdl_flags |= SDL_NOFRAME;
-#endif
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
     if ( full_screen ) sdl_flags |= SDL_FULLSCREEN;
     if ( frameless ) sdl_flags |= SDL_NOFRAME;
@@ -391,6 +388,7 @@ int gr_set_mode( int width, int height, int depth )
                     break;
             }
         }
+
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 
         if ( !scale_screen ) return -1;
@@ -426,10 +424,6 @@ int gr_set_mode( int width, int height, int depth )
 
                     fw = (double)screen->w / (double)scale_screen->w;
                     fh = (double)screen->h / (double)scale_screen->h;
-#ifdef TARGET_IOS
-                    // Let the user rotate the device as they like as long as it's in portrait
-                    SDL_SetHint("SDL_IOS_ORIENTATIONS", "Portrait PortraitUpsideDown");
-#endif
                     break;
 
             case    SRO_LEFT:
@@ -442,10 +436,6 @@ int gr_set_mode( int width, int height, int depth )
 
                     fh = (double)screen->w / (double)scale_screen->h;
                     fw = (double)screen->h / (double)scale_screen->w;
-#ifdef TARGET_IOS
-                    // Let the user rotate the device as they like as long as it's in landscape
-                    SDL_SetHint("SDL_IOS_ORIENTATIONS", "Portrait PortraitUpsideDown");
-#endif
                     break;
         }
 
