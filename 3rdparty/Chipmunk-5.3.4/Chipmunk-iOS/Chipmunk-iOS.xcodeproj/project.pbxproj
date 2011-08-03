@@ -190,6 +190,9 @@
 /* Begin PBXProject section */
 		92098D9913A52B7200F70BC2 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 92098D9C13A52B7200F70BC2 /* Build configuration list for PBXProject "Chipmunk-iOS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

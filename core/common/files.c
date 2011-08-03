@@ -44,7 +44,7 @@
 #include <realpath.h>
 #endif
 
-#ifdef TARGET_ANDROID
+#if defined(TARGET_ANDROID) || defined (TARGET_IOS)
 #include <sys/stat.h>
 #endif
 

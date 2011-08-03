@@ -235,6 +235,9 @@
 /* Begin PBXProject section */
 		9232A5AA1396D47300058FDB /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 9232A5AD1396D47300058FDB /* Build configuration list for PBXProject "tremor" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;

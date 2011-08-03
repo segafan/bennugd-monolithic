@@ -110,6 +110,9 @@
 /* Begin PBXProject section */
 		9232A58A1396CEF000058FDB /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 9232A58D1396CEF000058FDB /* Build configuration list for PBXProject "Ogg" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
