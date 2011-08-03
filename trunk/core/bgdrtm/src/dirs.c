@@ -307,12 +307,12 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
 {
     char realpath[__MAX_PATH];
     char * ptr ;
-
+    
 #ifdef _WIN32
     SYSTEMTIME time;
-
+    
     if ( hDir->eod ) return NULL;
-
+    
     /* Fill the FILEINFO struct */
     strcpy( realpath, hDir->path );
     ptr = realpath + strlen( realpath );
@@ -325,54 +325,71 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
         }
         ptr--;
     }
-
+    
+    memset( &hDir->info, '\0', sizeof( hDir->info ) );
+    
     strcat( realpath, hDir->data.cFileName );
     GetFullPathName( realpath, __MAX_PATH, hDir->info.fullpath, &ptr );
     if ( ptr ) * ptr = '\0';
-
+    
     strcpy ( hDir->info.filename, hDir->data.cFileName );
-
+    
     hDir->info.attributes    = (( hDir->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) ? DIR_FI_ATTR_DIRECTORY : 0 ) |
-                               (( hDir->data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN    ) ? DIR_FI_ATTR_HIDDEN    : 0 ) |
-                               (( hDir->data.dwFileAttributes & FILE_ATTRIBUTE_READONLY  ) ? DIR_FI_ATTR_READONLY  : 0 );
-
+    (( hDir->data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN    ) ? DIR_FI_ATTR_HIDDEN    : 0 ) |
+    (( hDir->data.dwFileAttributes & FILE_ATTRIBUTE_READONLY  ) ? DIR_FI_ATTR_READONLY  : 0 );
+    
     hDir->info.size          = hDir->data.nFileSizeLow;
-
+    
     /* Format and store the creation time */
     FileTimeToSystemTime( &hDir->data.ftCreationTime, &time );
-
-    hDir->info.creation_time.tm_sec      = time.wSecond;
-    hDir->info.creation_time.tm_min      = time.wMinute;
-    hDir->info.creation_time.tm_hour     = time.wHour;
-    hDir->info.creation_time.tm_mday     = time.wDay;
-    hDir->info.creation_time.tm_mon      = time.wMonth - 1;
-    hDir->info.creation_time.tm_year     = time.wYear - 1900;
-    hDir->info.creation_time.tm_wday     = time.wDayOfWeek;
-    hDir->info.creation_time.tm_yday     = time.wMonth;
-    hDir->info.creation_time.tm_isdst    = -1;
-
+    
+    hDir->info.crtime.tm_sec    = time.wSecond;
+    hDir->info.crtime.tm_min    = time.wMinute;
+    hDir->info.crtime.tm_hour   = time.wHour;
+    hDir->info.crtime.tm_mday   = time.wDay;
+    hDir->info.crtime.tm_mon    = time.wMonth - 1;
+    hDir->info.crtime.tm_year   = time.wYear - 1900;
+    hDir->info.crtime.tm_wday   = time.wDayOfWeek;
+    hDir->info.crtime.tm_yday   = time.wMonth;
+    hDir->info.crtime.tm_isdst  = -1;
+    
     /* Format and store the last write time */
     FileTimeToSystemTime( &hDir->data.ftLastWriteTime, &time );
-
-    hDir->info.modified_time.tm_sec      = time.wSecond;
-    hDir->info.modified_time.tm_min      = time.wMinute;
-    hDir->info.modified_time.tm_hour     = time.wHour;
-    hDir->info.modified_time.tm_mday     = time.wDay;
-    hDir->info.modified_time.tm_mon      = time.wMonth - 1;
-    hDir->info.modified_time.tm_year     = time.wYear - 1900;
-    hDir->info.modified_time.tm_wday     = time.wDayOfWeek;
-    hDir->info.modified_time.tm_yday     = time.wMonth;
-    hDir->info.modified_time.tm_isdst    = -1;
-
+    
+    hDir->info.mtime.tm_sec     = time.wSecond;
+    hDir->info.mtime.tm_min     = time.wMinute;
+    hDir->info.mtime.tm_hour    = time.wHour;
+    hDir->info.mtime.tm_mday    = time.wDay;
+    hDir->info.mtime.tm_mon     = time.wMonth - 1;
+    hDir->info.mtime.tm_year    = time.wYear - 1900;
+    hDir->info.mtime.tm_wday    = time.wDayOfWeek;
+    hDir->info.mtime.tm_yday    = time.wMonth;
+    hDir->info.mtime.tm_isdst   = -1;
+    
+    /* Format and store the last access time */
+    FileTimeToSystemTime( &hDir->data.ftLastAccessTime, &time );
+    
+    hDir->info.atime.tm_sec     = time.wSecond;
+    hDir->info.atime.tm_min     = time.wMinute;
+    hDir->info.atime.tm_hour    = time.wHour;
+    hDir->info.atime.tm_mday    = time.wDay;
+    hDir->info.atime.tm_mon     = time.wMonth - 1;
+    hDir->info.atime.tm_year    = time.wYear - 1900;
+    hDir->info.atime.tm_wday    = time.wDayOfWeek;
+    hDir->info.atime.tm_yday    = time.wMonth;
+    hDir->info.atime.tm_isdst   = -1;
+    
     /* Continue last search */
     if (!FindNextFile( hDir->handle, &hDir->data )) hDir->eod = 1;
 #else
     struct stat s;
-
+    
     if ( hDir->currFile == hDir->globd.gl_pathc ) return NULL;
-
+    
+    memset( &hDir->info, '\0', sizeof( hDir->info ) );
+    
     stat( hDir->globd.gl_pathv[ hDir->currFile ], &s );
-
+    
     ptr = strrchr( hDir->globd.gl_pathv[ hDir->currFile ], '/' );
     if ( !ptr )
     {
@@ -396,20 +413,21 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
             *(ptr + 1) = '\0';
         }
     }
-
+    
     hDir->info.attributes    = (( S_ISDIR( s.st_mode )          ) ? DIR_FI_ATTR_DIRECTORY : 0 ) |
-                               (( hDir->info.filename[0] == '.' ) ? DIR_FI_ATTR_HIDDEN    : 0 ) |
-                               (( !( s.st_mode & 0444 )         ) ? DIR_FI_ATTR_READONLY  : 0 );
-
+    (( hDir->info.filename[0] == '.' ) ? DIR_FI_ATTR_HIDDEN    : 0 ) |
+    (( !( s.st_mode & 0444 )         ) ? DIR_FI_ATTR_READONLY  : 0 );
+    
     hDir->info.size          = s.st_size;
-
-    hDir->info.creation_time = *localtime( &s.st_ctime ) ;
-    hDir->info.modified_time = *localtime( &s.st_mtime ) ;
-
+    
+    hDir->info.mtime    = *localtime( &s.st_mtime ) ;
+    hDir->info.atime    = *localtime( &s.st_atime ) ;
+    hDir->info.ctime    = *localtime( &s.st_ctime ) ;
+    
     hDir->currFile++;
-
+    
 #endif
-
+    
     return ( &hDir->info );
 }
 
