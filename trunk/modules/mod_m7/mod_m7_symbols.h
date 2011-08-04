@@ -66,11 +66,16 @@ char __bgdexport( mod_m7, locals_def )[] =
 
 DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
 {
-    { "MODE7_START" , "IIIIII", TYPE_INT , 0 },
-    { "MODE7_STOP"  , "I"     , TYPE_INT , 0 },
-    { "START_MODE7" , "IIIIII", TYPE_INT , 0 },
-    { "STOP_MODE7"  , "I"     , TYPE_INT , 0 },
-    { NULL          , NULL    , 0        , 0 }
+    { "MODE7_START" , "IIIIIIII"    , TYPE_INT , 0 },
+    { "MODE7_START" , "IIIIII"      , TYPE_INT , 0 },
+    { "MODE7_STOP"  , "I"           , TYPE_INT , 0 },
+    
+    { "START_MODE7" , "IIIIIIII"    , TYPE_INT , 0 },
+    { "START_MODE7" , "IIIIII"      , TYPE_INT , 0 },
+    { "STOP_MODE7"  , "I"           , TYPE_INT , 0 },
+    
+    { NULL          , NULL          , 0        , NULL }
+    
 };
 
 /* --------------------------------------------------------------------------- */
