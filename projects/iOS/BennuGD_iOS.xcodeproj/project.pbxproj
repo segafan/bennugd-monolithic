@@ -107,6 +107,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		92A320F413EA1FA900CCBD74 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 006E982211955059001DE610;
+			remoteInfo = testsdl;
+		};
 		92A6320313BD2BE200382D60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92A631FC13BD2BE200382D60 /* tremor.xcodeproj */;
@@ -1121,6 +1128,7 @@
 			isa = PBXGroup;
 			children = (
 				92A632E113BD323600382D60 /* libSDL.a */,
+				92A320F513EA1FA900CCBD74 /* testsdl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1223,6 +1231,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		92A320F513EA1FA900CCBD74 /* testsdl.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = testsdl.app;
+			remoteRef = 92A320F413EA1FA900CCBD74 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		92A6320413BD2BE200382D60 /* libtremor.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;

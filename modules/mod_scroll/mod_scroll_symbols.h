@@ -34,13 +34,18 @@
 #ifdef __BGDC__
 DLSYSFUNCS __bgdexport( mod_scroll, functions_exports )[] =
 {
-    { "SCROLL_START"    , "IIIIII", TYPE_INT   , 0 },
-    { "SCROLL_STOP"     , "I"     , TYPE_INT   , 0 },
-    { "SCROLL_MOVE"     , "I"     , TYPE_INT   , 0 },
-    { "START_SCROLL"    , "IIIIII", TYPE_INT   , 0 },
-    { "STOP_SCROLL"     , "I"     , TYPE_INT   , 0 },
-    { "MOVE_SCROLL"     , "I"     , TYPE_INT   , 0 },
-    { 0                 , 0       , 0          , 0 }
+    { "SCROLL_START"    , "IIIIIIII", TYPE_INT   , 0 },
+    { "SCROLL_START"    , "IIIIII"  , TYPE_INT   , 0 },
+    { "SCROLL_STOP"     , "I"       , TYPE_INT   , 0 },
+    { "SCROLL_MOVE"     , "I"       , TYPE_INT   , 0 },
+    
+    { "START_SCROLL"    , "IIIIIIII", TYPE_INT   , 0 },
+    { "START_SCROLL"    , "IIIIII"  , TYPE_INT   , 0 },
+    { "STOP_SCROLL"     , "I"       , TYPE_INT   , 0 },
+    { "MOVE_SCROLL"     , "I"       , TYPE_INT   , 0 },
+    
+    { 0                 , 0         , 0          , 0 }
+    
 };
 
 char * __bgdexport( mod_scroll, modules_dependency )[] =
