@@ -36,7 +36,6 @@
 		921B4A5D1391D8A5005F1832 /* g_pal.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49761391D8A3005F1832 /* g_pal.c */; };
 		921B4A5E1391D8A5005F1832 /* libgrbase.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49791391D8A3005F1832 /* libgrbase.c */; };
 		921B4A601391D8A5005F1832 /* libjoy.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49821391D8A3005F1832 /* libjoy.c */; };
-		921B4A611391D8A5005F1832 /* libkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49861391D8A3005F1832 /* libkey.c */; };
 		921B4A621391D8A5005F1832 /* libmouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B498A1391D8A3005F1832 /* libmouse.c */; };
 		921B4A631391D8A5005F1832 /* g_fade.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B498D1391D8A3005F1832 /* g_fade.c */; };
 		921B4A641391D8A5005F1832 /* g_frame.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B498F1391D8A3005F1832 /* g_frame.c */; };
@@ -268,9 +267,6 @@
 		921B49821391D8A3005F1832 /* libjoy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libjoy.c; sourceTree = "<group>"; };
 		921B49831391D8A3005F1832 /* libjoy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libjoy.h; sourceTree = "<group>"; };
 		921B49841391D8A3005F1832 /* libjoy_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libjoy_symbols.h; sourceTree = "<group>"; };
-		921B49861391D8A3005F1832 /* libkey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libkey.c; sourceTree = "<group>"; };
-		921B49871391D8A3005F1832 /* libkey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libkey.h; sourceTree = "<group>"; };
-		921B49881391D8A3005F1832 /* libkey_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libkey_symbols.h; sourceTree = "<group>"; };
 		921B498A1391D8A3005F1832 /* libmouse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libmouse.c; sourceTree = "<group>"; };
 		921B498B1391D8A3005F1832 /* libmouse_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = libmouse_symbols.h; sourceTree = "<group>"; };
 		921B498D1391D8A3005F1832 /* g_fade.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_fade.c; sourceTree = "<group>"; };
@@ -569,7 +565,6 @@
 				921B49661391D8A3005F1832 /* libfont */,
 				921B496A1391D8A3005F1832 /* libgrbase */,
 				921B497D1391D8A3005F1832 /* libjoy */,
-				921B49851391D8A3005F1832 /* libkey */,
 				921B49891391D8A3005F1832 /* libmouse */,
 				921B498C1391D8A3005F1832 /* librender */,
 				921B49A51391D8A3005F1832 /* libscroll */,
@@ -680,16 +675,6 @@
 				921B49841391D8A3005F1832 /* libjoy_symbols.h */,
 			);
 			path = libjoy;
-			sourceTree = "<group>";
-		};
-		921B49851391D8A3005F1832 /* libkey */ = {
-			isa = PBXGroup;
-			children = (
-				921B49861391D8A3005F1832 /* libkey.c */,
-				921B49871391D8A3005F1832 /* libkey.h */,
-				921B49881391D8A3005F1832 /* libkey_symbols.h */,
-			);
-			path = libkey;
 			sourceTree = "<group>";
 		};
 		921B49891391D8A3005F1832 /* libmouse */ = {
@@ -1313,7 +1298,6 @@
 				921B4A5D1391D8A5005F1832 /* g_pal.c in Sources */,
 				921B4A5E1391D8A5005F1832 /* libgrbase.c in Sources */,
 				921B4A601391D8A5005F1832 /* libjoy.c in Sources */,
-				921B4A611391D8A5005F1832 /* libkey.c in Sources */,
 				921B4A621391D8A5005F1832 /* libmouse.c in Sources */,
 				921B4A631391D8A5005F1832 /* g_fade.c in Sources */,
 				921B4A641391D8A5005F1832 /* g_frame.c in Sources */,
@@ -1421,6 +1405,7 @@
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
 					__BGDI__,
@@ -1428,6 +1413,7 @@
 					TARGET_IOS,
 					NO_MODICONV,
 					NO_MODIMAGE,
+					NO_LIBKEY,
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -1464,6 +1450,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
 					__BGDI__,
@@ -1471,6 +1458,7 @@
 					TARGET_IOS,
 					NO_MODICONV,
 					NO_MODIMAGE,
+					NO_LIBKEY,
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_VERSION = "";
@@ -1505,6 +1493,17 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					SDL_NO_COMPAT,
+					__MONOLITHIC__,
+					__BGDRTM__,
+					__BGDI__,
+					TARGET_MAC,
+					TARGET_IOS,
+					NO_MODICONV,
+					NO_MODIMAGE,
+					"VERSION='\"1.0.0\"'",
+				);
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
@@ -1539,6 +1538,17 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					SDL_NO_COMPAT,
+					__MONOLITHIC__,
+					__BGDRTM__,
+					__BGDI__,
+					TARGET_MAC,
+					TARGET_IOS,
+					NO_MODICONV,
+					NO_MODIMAGE,
+					"VERSION='\"1.0.0\"'",
+				);
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
