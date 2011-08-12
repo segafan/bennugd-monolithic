@@ -19,7 +19,8 @@ LOCAL_C_INCLUDES := \
 LOCAL_CFLAGS := \
 	-D__BGDI__ \
 	-DTARGET_ANDROID \
-	-DVERSION='"1.0.0"'
+	-DVERSION='"1.0.0"' \
+	-DSDL_NO_COMPAT
 
 # Add your application source files here...
 LOCAL_SRC_FILES := ../../../../3rdparty/SDL-1.3/src/src/main/android/SDL_android_main.cpp \
