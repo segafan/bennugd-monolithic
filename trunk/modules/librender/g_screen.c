@@ -413,7 +413,12 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( scale_screen ) ) SDL_UnlockSurface( scale_screen ) ;
         if ( waitvsync ) gr_wait_vsync();
+
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+        SDL_UpdateWindowSurface( window );
+#else
         SDL_Flip( scale_screen ) ;
+#endif
     }
     else if ( enable_scale )
     {
@@ -481,7 +486,11 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
         if ( waitvsync ) gr_wait_vsync();
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+        SDL_UpdateWindowSurface( window );
+#else
         SDL_Flip( screen ) ;
+#endif
     }
     else if ( scrbitmap->info_flags & GI_EXTERNAL_DATA )
     {

@@ -62,7 +62,6 @@
 		921B4A901391D8A5005F1832 /* mod_flic.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49E91391D8A4005F1832 /* mod_flic.c */; };
 		921B4A911391D8A5005F1832 /* mod_grproc.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49ED1391D8A4005F1832 /* mod_grproc.c */; };
 		921B4A941391D8A5005F1832 /* mod_joy.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49F61391D8A4005F1832 /* mod_joy.c */; };
-		921B4A951391D8A5005F1832 /* mod_key.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49F91391D8A4005F1832 /* mod_key.c */; };
 		921B4A961391D8A5005F1832 /* mod_m7.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49FC1391D8A4005F1832 /* mod_m7.c */; };
 		921B4A971391D8A5005F1832 /* file_fnt.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49FF1391D8A4005F1832 /* file_fnt.c */; };
 		921B4A981391D8A5005F1832 /* file_fpg.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4A001391D8A4005F1832 /* file_fpg.c */; };
@@ -326,8 +325,6 @@
 		921B49EE1391D8A4005F1832 /* mod_grproc_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_grproc_symbols.h; sourceTree = "<group>"; };
 		921B49F61391D8A4005F1832 /* mod_joy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_joy.c; sourceTree = "<group>"; };
 		921B49F71391D8A4005F1832 /* mod_joy_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_joy_symbols.h; sourceTree = "<group>"; };
-		921B49F91391D8A4005F1832 /* mod_key.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_key.c; sourceTree = "<group>"; };
-		921B49FA1391D8A4005F1832 /* mod_key_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_key_symbols.h; sourceTree = "<group>"; };
 		921B49FC1391D8A4005F1832 /* mod_m7.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_m7.c; sourceTree = "<group>"; };
 		921B49FD1391D8A4005F1832 /* mod_m7_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_m7_symbols.h; sourceTree = "<group>"; };
 		921B49FF1391D8A4005F1832 /* file_fnt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = file_fnt.c; sourceTree = "<group>"; };
@@ -581,7 +578,6 @@
 				921B49E81391D8A4005F1832 /* mod_flic */,
 				921B49EC1391D8A4005F1832 /* mod_grproc */,
 				921B49F51391D8A4005F1832 /* mod_joy */,
-				921B49F81391D8A4005F1832 /* mod_key */,
 				921B49FB1391D8A4005F1832 /* mod_m7 */,
 				921B49FE1391D8A4005F1832 /* mod_map */,
 				921B4A081391D8A4005F1832 /* mod_math */,
@@ -839,15 +835,6 @@
 				921B49F71391D8A4005F1832 /* mod_joy_symbols.h */,
 			);
 			path = mod_joy;
-			sourceTree = "<group>";
-		};
-		921B49F81391D8A4005F1832 /* mod_key */ = {
-			isa = PBXGroup;
-			children = (
-				921B49F91391D8A4005F1832 /* mod_key.c */,
-				921B49FA1391D8A4005F1832 /* mod_key_symbols.h */,
-			);
-			path = mod_key;
 			sourceTree = "<group>";
 		};
 		921B49FB1391D8A4005F1832 /* mod_m7 */ = {
@@ -1324,7 +1311,6 @@
 				921B4A901391D8A5005F1832 /* mod_flic.c in Sources */,
 				921B4A911391D8A5005F1832 /* mod_grproc.c in Sources */,
 				921B4A941391D8A5005F1832 /* mod_joy.c in Sources */,
-				921B4A951391D8A5005F1832 /* mod_key.c in Sources */,
 				921B4A961391D8A5005F1832 /* mod_m7.c in Sources */,
 				921B4A971391D8A5005F1832 /* file_fnt.c in Sources */,
 				921B4A981391D8A5005F1832 /* file_fpg.c in Sources */,
@@ -1500,6 +1486,7 @@
 					__BGDI__,
 					TARGET_MAC,
 					TARGET_IOS,
+					NO_LIBKEY,
 					NO_MODICONV,
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
@@ -1545,6 +1532,7 @@
 					__BGDI__,
 					TARGET_MAC,
 					TARGET_IOS,
+					NO_LIBKEY,
 					NO_MODICONV,
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",

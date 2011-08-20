@@ -102,12 +102,18 @@ static int modvideo_set_fps( INSTANCE * my, int * params )
 
 static int get_sdl_flags( int flags )
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    int sdl_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS;
+    sdl_flags |= ( flags & MODE_FULLSCREEN ) ? SDL_WINDOW_FULLSCREEN : 0;
+    sdl_flags |= ( flags & MODE_FRAMELESS ) ? SDL_WINDOW_BORDERLESS : 0;
+#else
     int sdl_flags = SDL_HWPALETTE;
-
+    
     sdl_flags |= ( flags & MODE_FULLSCREEN ) ? SDL_FULLSCREEN : 0 ;
     sdl_flags |= ( flags & MODE_DOUBLEBUFFER ) ? SDL_DOUBLEBUF : 0 ;
     sdl_flags |= ( flags & MODE_HARDWARE ) ? SDL_HWSURFACE : SDL_SWSURFACE ;
     sdl_flags |= ( flags & MODE_FRAMELESS ) ? SDL_NOFRAME : 0 ;
+#endif
 
     return sdl_flags;
 }

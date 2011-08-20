@@ -19,7 +19,7 @@ int vx=0, vy=0;
 int w=0, h=0;
 
 Begin
-    set_mode(320, 480, 16, MODE_FULLSCREEN);
+    set_mode(320, 480, 32);
     graph = write_in_map(0, "Tilt your device!", 4);
     x = 160; y = 240;
     write_var(0, 0, 460, 6, focus_status); 
