@@ -64,6 +64,9 @@
 
 extern GRAPH * icon ;
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+extern SDL_Window * window ;
+#endif
 extern SDL_Surface * screen ;
 extern SDL_Surface * scale_screen ;
 

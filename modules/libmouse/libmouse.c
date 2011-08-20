@@ -144,15 +144,29 @@ static void do_mouse_events()
     {
         if ( scale_resolution )
         {
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+            SDL_WarpMouseInWindow(window,
+                                  GLOINT32( libmouse, MOUSEX ) / ( (double)screen->w / (double)scale_screen->w ),
+                                  GLOINT32( libmouse, MOUSEY ) / ( (double)screen->h / (double)scale_screen->h ));
+#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ) / ( (double)screen->w / (double)scale_screen->w ), GLOINT32( libmouse, MOUSEY ) / ( (double)screen->h / (double)scale_screen->h ) ) ;
+#endif
         }
         else if ( enable_scale || scale_mode != SCALE_NONE )
         {
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+            SDL_WarpMouseInWindow(window, GLOINT32( libmouse, MOUSEX ) * 2, GLOINT32( libmouse, MOUSEY ) * 2);
+#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ) * 2 , GLOINT32( libmouse, MOUSEY ) * 2 ) ;
+#endif
         }
         else
         {
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+            SDL_WarpMouseInWindow(window, GLOINT32(libmouse, MOUSEX), GLOINT32( libmouse, MOUSEY ));
+#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ), GLOINT32( libmouse, MOUSEY ) ) ;
+#endif
         }
     }
 
@@ -162,7 +176,7 @@ static void do_mouse_events()
     GLODWORD( libmouse, MOUSEWHEELDOWN ) = 0 ;
 
 #if SDL_VERSION_ATLEAST(1,3,0)
-	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEBUTTONUP ) > 0 )
+	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEWHEEL ) > 0 )
 #else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEEVENTMASK ) > 0 )
 #endif
@@ -267,8 +281,10 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_LEFT )      GLODWORD( libmouse, MOUSELEFT )     = 1 ;
                 if ( e.button.button == SDL_BUTTON_MIDDLE )    GLODWORD( libmouse, MOUSEMIDDLE )   = 1 ;
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )    = 1 ;
+#if !SDL_VERSION_ATLEAST(1, 3, 0)
                 if ( e.button.button == SDL_BUTTON_WHEELUP )   GLODWORD( libmouse, MOUSEWHEELUP )++ ;
                 if ( e.button.button == SDL_BUTTON_WHEELDOWN ) GLODWORD( libmouse, MOUSEWHEELDOWN )++ ;
+#endif
                 break ;
 
             case SDL_MOUSEBUTTONUP:
@@ -276,6 +292,15 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_MIDDLE )    GLODWORD( libmouse, MOUSEMIDDLE )    = 0 ;
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )     = 0 ;
                 break ;
+
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+            case SDL_MOUSEWHEEL:
+                if(e.wheel.y > 0)
+                    GLODWORD(libmouse, MOUSEWHEELUP)++;
+                else if(e.wheel.y < 0)
+                    GLODWORD(libmouse, MOUSEWHEELDOWN)++;
+                break;
+#endif
         }
     }
 

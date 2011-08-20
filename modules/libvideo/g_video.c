@@ -46,7 +46,9 @@
 /* --------------------------------------------------------------------------- */
 
 GRAPH * icon = NULL ;
-
+#if SDL_VERSION_ATLEAST(1,3,0)
+SDL_Window   * window ;
+#endif
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
 
@@ -228,7 +230,11 @@ void gr_wait_vsync()
 
 void gr_set_caption( char * title )
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_SetWindowTitle(window, apptitle = title);
+#else
     SDL_WM_SetCaption( apptitle = title, "" ) ;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -253,15 +259,23 @@ int gr_set_icon( GRAPH * map )
             }
 
             ico = SDL_CreateRGBSurfaceFrom( icon->data, 32, 32, 8, 32, 0x00, 0x00, 0x00, 0x00 ) ;
+
+#if SDL_VERSION_ATLEAST(1,3,0)
+            SDL_SetPaletteColors(ico->format->palette, palette, 0, 256);
+#else
             SDL_SetPalette( ico, SDL_LOGPAL, palette, 0, 256 );
+#endif
         }
         else
         {
             ico = SDL_CreateRGBSurfaceFrom( icon->data, 32, 32, icon->format->depth, icon->pitch, icon->format->Rmask, icon->format->Gmask, icon->format->Bmask, icon->format->Amask ) ;
         }
-
+#if SDL_VERSION_ATLEAST(1,3,0)
+        SDL_SetWindowIcon(window, ico);
+#else
         SDL_SetColorKey( ico, SDL_SRCCOLORKEY, SDL_MapRGB( ico->format, 0, 0, 0 ) ) ;
         SDL_WM_SetIcon( ico, NULL );
+#endif
         SDL_FreeSurface( ico ) ;
     }
 
@@ -365,13 +379,19 @@ int gr_set_mode( int width, int height, int depth )
 
     /* Setup the SDL Video Mode */
 
+#if SDL_VERSION_ATLEAST(1,3,0)
+    sdl_flags = SDL_WINDOW_SHOWN;
+    if ( full_screen ) sdl_flags |= SDL_WINDOW_FULLSCREEN;
+    if ( frameless ) sdl_flags   |= SDL_WINDOW_BORDERLESS;
+#else
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
     if ( full_screen ) sdl_flags |= SDL_FULLSCREEN;
     if ( frameless ) sdl_flags |= SDL_NOFRAME;
 
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
-
+#endif
+    
     if ( scale_screen ) SDL_FreeSurface( scale_screen ) ;
     if ( screen ) SDL_FreeSurface( screen ) ;
 
@@ -388,8 +408,13 @@ int gr_set_mode( int width, int height, int depth )
                     break;
             }
         }
-
+#if SDL_VERSION_ATLEAST(1,3,0)
+        window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                  surface_width, surface_height, sdl_flags);
+        scale_screen = SDL_GetWindowSurface(window);
+#else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+#endif
 
         if ( !scale_screen ) return -1;
         screen = SDL_CreateRGBSurface( sdl_flags,
@@ -499,12 +524,26 @@ int gr_set_mode( int width, int height, int depth )
     }
     else
     {
+#if SDL_VERSION_ATLEAST(1,3,0)
+        window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                  surface_width, surface_height, sdl_flags);
+        if(!window)
+            NSLog(@"Couldn't create SDL_Window, this is BAD!");
+        screen = SDL_GetWindowSurface(window);
+        if(!screen)
+            NSLog(@"Couldn't get window surface, this is BAD!");
+        //screen = SDL_CreateRGBSurface(0, surface_width, surface_height, depth, 0, 0, 0, 0);
+#else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+#endif
     }
 
     if ( !screen ) return -1;
-
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_SetWindowGrab(window, grab_input ? SDL_TRUE : SDL_FALSE);
+#else
     SDL_WM_GrabInput( grab_input ? SDL_GRAB_ON : SDL_GRAB_OFF ) ;
+#endif
 
     /* Set window title */
     gr_set_caption( apptitle ) ;
