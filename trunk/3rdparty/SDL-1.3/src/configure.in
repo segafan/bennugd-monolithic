@@ -682,7 +682,6 @@ AC_HELP_STRING([--enable-oss], [support the OSS audio API [[default=yes]]]),
         if test x$have_oss = xyes; then
             AC_DEFINE(SDL_AUDIO_DRIVER_OSS, 1, [ ])
             SOURCES="$SOURCES $srcdir/src/audio/dsp/*.c"
-            SOURCES="$SOURCES $srcdir/src/audio/dma/*.c"
             have_audio=yes
 
             # We may need to link with ossaudio emulation library
@@ -1727,6 +1726,7 @@ AC_HELP_STRING([--enable-directx], [use DirectX for Windows audio/video [[defaul
         AC_CHECK_HEADER(ddraw.h, have_ddraw=yes)
         AC_CHECK_HEADER(dsound.h, have_dsound=yes)
         AC_CHECK_HEADER(dinput.h, have_dinput=yes)
+        AC_CHECK_HEADER(xaudio2.h, have_xaudio2=yes)
     fi
 }
 
@@ -2058,11 +2058,15 @@ AC_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         fi
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
-            AC_DEFINE(SDL_AUDIO_DRIVER_WINWAVEOUT, 1, [ ])
-            SOURCES="$SOURCES $srcdir/src/audio/windib/*.c"
+            AC_DEFINE(SDL_AUDIO_DRIVER_WINMM, 1, [ ])
+            SOURCES="$SOURCES $srcdir/src/audio/winmm/*.c"
             if test x$have_dsound = xyes; then
                 AC_DEFINE(SDL_AUDIO_DRIVER_DSOUND, 1, [ ])
-                SOURCES="$SOURCES $srcdir/src/audio/windx5/*.c"
+                SOURCES="$SOURCES $srcdir/src/audio/directsound/*.c"
+            fi
+            if test x$have_xaudio2 = xyes; then
+                AC_DEFINE(SDL_AUDIO_DRIVER_XAUDIO2, 1, [ ])
+                SOURCES="$SOURCES $srcdir/src/audio/xaudio2/*.c"
             fi
             have_audio=yes
         fi
@@ -2145,11 +2149,15 @@ AC_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         fi
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
-            AC_DEFINE(SDL_AUDIO_DRIVER_WINWAVEOUT, 1, [ ])
-            SOURCES="$SOURCES $srcdir/src/audio/windib/*.c"
+            AC_DEFINE(SDL_AUDIO_DRIVER_WINMM, 1, [ ])
+            SOURCES="$SOURCES $srcdir/src/audio/winmm/*.c"
             if test x$have_dsound = xyes; then
                 AC_DEFINE(SDL_AUDIO_DRIVER_DSOUND, 1, [ ])
-                SOURCES="$SOURCES $srcdir/src/audio/windx5/*.c"
+                SOURCES="$SOURCES $srcdir/src/audio/directsound/*.c"
+            fi
+            if test x$have_xaudio2 = xyes; then
+                AC_DEFINE(SDL_AUDIO_DRIVER_XAUDIO2, 1, [ ])
+                SOURCES="$SOURCES $srcdir/src/audio/xaudio2/*.c"
             fi
             have_audio=yes
         fi
@@ -2298,7 +2306,7 @@ AC_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         # Set up files for the audio library
         if test x$enable_audio = xyes; then
             AC_DEFINE(SDL_AUDIO_DRIVER_COREAUDIO, 1, [ ])
-            SOURCES="$SOURCES $srcdir/src/audio/macosx/*.c"
+            SOURCES="$SOURCES $srcdir/src/audio/coreaudio/*.c"
             have_audio=yes
         fi
         # Set up files for the joystick library

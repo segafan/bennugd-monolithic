@@ -65,7 +65,12 @@ static int bgd_set_icon( INSTANCE * my, int * params )
 
 static int bgd_minimize( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_MinimizeWindow(window);
+    return 1;
+#else
     return SDL_WM_IconifyWindow();
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -76,7 +81,7 @@ static int bgd_move_window( INSTANCE * my, int * params )
     if ( full_screen ) return 0;
 
 #if SDL_VERSION_ATLEAST(1,3,0)
-    SDL_SetWindowPosition(SDL_GetWindowFromID(1), params[0], params[1]);
+    SDL_SetWindowPosition(window, params[0], params[1]);
 #else
 
 #   if defined( WIN32 ) || ( __linux && ( defined( SDL_VIDEO_DRIVER_X11 ) ) )
@@ -131,7 +136,7 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 #if SDL_VERSION_ATLEAST(1,3,0)
     int x,y;
 
-    SDL_GetWindowPosition(SDL_GetWindowFromID(0), &x, &y );
+    SDL_GetWindowPosition(window, &x, &y );
     if ( params[0] ) *(( int * )( params[0] ) ) = x;
     if ( params[1] ) *(( int * )( params[1] ) ) = y;
 #else
@@ -187,15 +192,8 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 static int bgd_get_window_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(1,3,0)
-    int i,w,h;
-    SDL_Window *window = NULL;
-    
-    // We'll only support one of the first 10 displays (is that enough?)
-    for(i=0; i<=10; i++) {
-        if((window = SDL_GetWindowFromID(i)) != NULL)
-            break;
-    }
-    
+    int w,h;
+
     SDL_GetWindowSize(window, &w, &h );
     if ( params[0] ) *(( int * )( params[0] ) ) = w;
     if ( params[1] ) *(( int * )( params[1] ) ) = h;
@@ -271,14 +269,7 @@ static int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(1,3,0)
     int i;
-    SDL_Window *window;
     SDL_DisplayMode mode;
-    
-    // We'll only support one of the first 10 displays (is that enough?)
-    for(i=0; i<=10; i++) {
-        if((window = SDL_GetWindowFromID(i)) != NULL)
-            break;
-    }
     
     if(SDL_GetDesktopDisplayMode(i, &mode) < 0 ) return -1;
 
