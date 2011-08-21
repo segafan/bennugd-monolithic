@@ -204,6 +204,9 @@
 /* Begin PBXProject section */
 		0867D690FE84028FC02AAC07 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
 			buildConfigurationList = 00B7E497097EC6B300826121 /* Build configuration list for PBXProject "SDL_mixer" */;
 			compatibilityVersion = "Xcode 2.4";
 			developmentRegion = English;
