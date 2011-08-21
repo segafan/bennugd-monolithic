@@ -1,0 +1,14 @@
+proc = procdef_get_by_name ("ADD"); // Get definition function (name must be in uppercase)
+   if (!proc)
+   {
+       printf ("Procc 'ADD' not found\n") ;
+       return -1 ;
+   }
+   r = instance_new (proc, 0) ; // Create Function
+ 
+   PRIDWORD(r, 0) = 12 ;    // Argument 1
+   PRIDWORD(r, 4) = 32 ;    // Argument 2
+ 
+   ret = instance_go(r) ; // Call Function
+ 
+   printf ("%d\n", ret);
