@@ -19,9 +19,10 @@ int vx=0, vy=0;
 int w=0, h=0;
 
 Begin
-    set_mode(320, 480, 32);
+    scale_resolution = 10240768;
+    set_mode(1024, 768, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     graph = write_in_map(0, "Tilt your device!", 4);
-    x = 160; y = 240;
+    x = 320; y = 480;
     write_var(0, 0, 460, 6, focus_status); 
     write_var(0, 0, 470, 6, mouse_status); 
     write_var(0, 0, 480, 6, window_status);

@@ -291,6 +291,9 @@ int gr_set_mode( int width, int height, int depth )
     int surface_width = width;
     int surface_height = height;
     char * e;
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+    SDL_DisplayMode desktop_mode;
+#endif
 
     enable_scale = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_2XSCALE ) ? 1 : 0 ;
     full_screen = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_FULLSCREEN ) ? 1 : 0 ;
@@ -394,6 +397,9 @@ int gr_set_mode( int width, int height, int depth )
     
     if ( scale_screen ) SDL_FreeSurface( scale_screen ) ;
     if ( screen ) SDL_FreeSurface( screen ) ;
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_DestroyWindow(window);
+#endif
 
     if ( scale_resolution )
     {
@@ -412,6 +418,8 @@ int gr_set_mode( int width, int height, int depth )
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
         scale_screen = SDL_GetWindowSurface(window);
+        
+        NSLog(@"Video mode set to %dx%d", scale_screen->w, scale_screen->h);
 #else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
@@ -527,17 +535,13 @@ int gr_set_mode( int width, int height, int depth )
 #if SDL_VERSION_ATLEAST(1,3,0)
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
-        if(!window)
-            NSLog(@"Couldn't create SDL_Window, this is BAD!");
         screen = SDL_GetWindowSurface(window);
-        if(!screen)
-            NSLog(@"Couldn't get window surface, this is BAD!");
-        //screen = SDL_CreateRGBSurface(0, surface_width, surface_height, depth, 0, 0, 0, 0);
+        NSLog(@"Video mode set to %dx%d", screen->w, screen->h);
 #else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
     }
-
+    
     if ( !screen ) return -1;
 #if SDL_VERSION_ATLEAST(1,3,0)
     SDL_SetWindowGrab(window, grab_input ? SDL_TRUE : SDL_FALSE);
@@ -669,6 +673,12 @@ void __bgdexport( libvideo, module_finalize )()
         directdraw = NULL;
     }
 #endif
+
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+    // This may not be needed
+    SDL_DestroyWindow(window);
+#endif
+
     if ( SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_QuitSubSystem( SDL_INIT_VIDEO );
 }
 
