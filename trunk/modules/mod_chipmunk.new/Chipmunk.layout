@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="Arreglos.c" open="0" top="0" tabpos="12">
+		<Cursor position="1405" topLine="31" />
+	</File>
+	<File name="Arreglos.h" open="0" top="0" tabpos="8">
+		<Cursor position="20" topLine="0" />
+	</File>
+	<File name="Constraints.c" open="1" top="1" tabpos="2">
+		<Cursor position="9663" topLine="396" />
+	</File>
+	<File name="Constraints.h" open="0" top="0" tabpos="3">
+		<Cursor position="2698" topLine="3" />
+	</File>
+	<File name="Cuerpo.c" open="1" top="0" tabpos="6">
+		<Cursor position="6644" topLine="279" />
+	</File>
+	<File name="Cuerpo.h" open="0" top="0" tabpos="7">
+		<Cursor position="38" topLine="0" />
+	</File>
+	<File name="Espacio.c" open="0" top="0" tabpos="2">
+		<Cursor position="930" topLine="19" />
+	</File>
+	<File name="Espacio.h" open="0" top="0" tabpos="4">
+		<Cursor position="340" topLine="0" />
+	</File>
+	<File name="Handlers.c" open="1" top="0" tabpos="4">
+		<Cursor position="5892" topLine="150" />
+	</File>
+	<File name="Handlers.h" open="0" top="0" tabpos="8">
+		<Cursor position="61" topLine="0" />
+	</File>
+	<File name="LL.c" open="1" top="0" tabpos="3">
+		<Cursor position="1212" topLine="25" />
+	</File>
+	<File name="LL.h" open="0" top="0" tabpos="9">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="Miscelanea.c" open="1" top="0" tabpos="5">
+		<Cursor position="271" topLine="0" />
+	</File>
+	<File name="Miscelanea.h" open="1" top="0" tabpos="7">
+		<Cursor position="103" topLine="0" />
+	</File>
+	<File name="arbitros.c" open="0" top="0" tabpos="6">
+		<Cursor position="134" topLine="0" />
+	</File>
+	<File name="arbitros.h" open="0" top="0" tabpos="7">
+		<Cursor position="1258" topLine="10" />
+	</File>
+	<File name="constantes.h" open="0" top="0" tabpos="8">
+		<Cursor position="929" topLine="46" />
+	</File>
+	<File name="estructuras.h" open="0" top="0" tabpos="5">
+		<Cursor position="814" topLine="41" />
+	</File>
+	<File name="globales.h" open="0" top="0" tabpos="3">
+		<Cursor position="203" topLine="0" />
+	</File>
+	<File name="locales.h" open="0" top="0" tabpos="9">
+		<Cursor position="219" topLine="0" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="1">
+		<Cursor position="46109" topLine="1614" />
+	</File>
+</CodeBlocks_layout_file>
