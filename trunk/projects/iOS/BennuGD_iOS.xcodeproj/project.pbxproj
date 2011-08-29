@@ -94,6 +94,7 @@
 		921B4AED1391E237005F1832 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE61391E237005F1832 /* debug.c */; };
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
+		923933BB1401E84B0060D1B1 /* mod_multipointer.c in Sources */ = {isa = PBXBuildFile; fileRef = 923933B91401E84B0060D1B1 /* mod_multipointer.c */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
@@ -382,6 +383,8 @@
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
+		923933B91401E84B0060D1B1 /* mod_multipointer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multipointer.c; sourceTree = "<group>"; };
+		923933BA1401E84B0060D1B1 /* mod_multipointer_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multipointer_symbols.h; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -585,6 +588,7 @@
 				921B4A0E1391D8A4005F1832 /* mod_mem */,
 				921B4A111391D8A4005F1832 /* mod_mouse */,
 				921B4A131391D8A4005F1832 /* mod_path */,
+				923933B81401E84B0060D1B1 /* mod_multipointer */,
 				921B4A161391D8A4005F1832 /* mod_proc */,
 				921B4A191391D8A4005F1832 /* mod_rand */,
 				921B4A1C1391D8A4005F1832 /* mod_regex */,
@@ -1080,6 +1084,15 @@
 			path = ../../core/common;
 			sourceTree = "<group>";
 		};
+		923933B81401E84B0060D1B1 /* mod_multipointer */ = {
+			isa = PBXGroup;
+			children = (
+				923933B91401E84B0060D1B1 /* mod_multipointer.c */,
+				923933BA1401E84B0060D1B1 /* mod_multipointer_symbols.h */,
+			);
+			path = mod_multipointer;
+			sourceTree = "<group>";
+		};
 		92A631FD13BD2BE200382D60 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1345,6 +1358,7 @@
 				921B4AF01391E237005F1832 /* xctype.c in Sources */,
 				92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */,
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
+				923933BB1401E84B0060D1B1 /* mod_multipointer.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
