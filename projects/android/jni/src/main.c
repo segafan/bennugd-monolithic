@@ -215,7 +215,7 @@ int main( int argc, char *argv[] )
     }
 
 #ifdef TARGET_ANDROID
-    filename = "/mnt/sdcard/data/main.dcb";
+    filename = "main.dcb";
 	fd = fopen(filename, "r");
 	if (fd == NULL) {
 	    printf("%s doesn't exist, quitting\n", filename);

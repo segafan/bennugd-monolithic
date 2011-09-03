@@ -40,8 +40,6 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_grproc/ \
 	$(MODULES_PATH)/libscroll/ \
 	$(MODULES_PATH)/mod_scroll/ \
-	$(MODULES_PATH)/libkey/ \
-	$(MODULES_PATH)/mod_key/ \
 	$(MODULES_PATH)/libdraw/ \
 	$(MODULES_PATH)/mod_draw/ \
 	$(MODULES_PATH)/mod_screen/ \
@@ -64,6 +62,7 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODICONV \
 	-DNO_MODREGEX \
 	-DNO_MODMEM \
+    -DNO_LIBKEY \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DSDL_NO_COMPAT
@@ -135,8 +134,6 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_grproc/mod_grproc.c \
 	../../../../modules/libscroll/libscroll.c \
 	../../../../modules/mod_scroll/mod_scroll.c \
-	../../../../modules/libkey/libkey.c \
-	../../../../modules/mod_key/mod_key.c \
 	../../../../modules/libdraw/libdraw.c \
 	../../../../modules/mod_draw/mod_draw.c \
 	../../../../modules/mod_screen/mod_screen.c \
