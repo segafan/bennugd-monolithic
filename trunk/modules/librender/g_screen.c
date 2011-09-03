@@ -506,7 +506,11 @@ void gr_unlock_screen()
         {
             if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
             if ( waitvsync ) gr_wait_vsync();
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+            SDL_UpdateWindowSurface( window );
+#else
             SDL_Flip( screen ) ;
+#endif
         }
         else
         {
@@ -523,7 +527,11 @@ void gr_unlock_screen()
                 }
                 if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
                 if ( waitvsync ) gr_wait_vsync();
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+                SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
+#else
                 SDL_UpdateRects( screen, updaterects_count, rects ) ;
+#endif
             }
         }
     }

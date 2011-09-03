@@ -386,6 +386,15 @@ int gr_set_mode( int width, int height, int depth )
     sdl_flags = SDL_WINDOW_SHOWN;
     if ( full_screen ) sdl_flags |= SDL_WINDOW_FULLSCREEN;
     if ( frameless ) sdl_flags   |= SDL_WINDOW_BORDERLESS;
+    
+    // Set a hint for the orientation for iOS devices
+    if(surface_width > surface_height)
+        SDL_SetHint( SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight" );
+    else
+        SDL_SetHint( SDL_HINT_ORIENTATIONS, "Portrait PortraitUpsideDown" );
+    
+    const char *hints = SDL_GetHint(SDL_HINT_ORIENTATIONS);
+    NSLog(@"Orientation hints: %s", hints);
 #else
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
@@ -399,6 +408,7 @@ int gr_set_mode( int width, int height, int depth )
     if ( screen ) SDL_FreeSurface( screen ) ;
 #if SDL_VERSION_ATLEAST(1,3,0)
     SDL_DestroyWindow(window);
+    window = NULL;
 #endif
 
     if ( scale_resolution )
@@ -415,10 +425,11 @@ int gr_set_mode( int width, int height, int depth )
             }
         }
 #if SDL_VERSION_ATLEAST(1,3,0)
+        NSLog(@"Scaling, asked for %dx%d", surface_width, surface_height);
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
         scale_screen = SDL_GetWindowSurface(window);
-        
+
         NSLog(@"Video mode set to %dx%d", scale_screen->w, scale_screen->h);
 #else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
@@ -533,6 +544,8 @@ int gr_set_mode( int width, int height, int depth )
     else
     {
 #if SDL_VERSION_ATLEAST(1,3,0)
+        NSLog(@"No scaling, asked for %dx%d", surface_width, surface_height);
+        
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
         screen = SDL_GetWindowSurface(window);
@@ -675,7 +688,6 @@ void __bgdexport( libvideo, module_finalize )()
 #endif
 
 #if SDL_VERSION_ATLEAST(1, 3, 0)
-    // This may not be needed
     SDL_DestroyWindow(window);
 #endif
 

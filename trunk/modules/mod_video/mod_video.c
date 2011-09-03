@@ -129,6 +129,9 @@ or -1 if any dimension is okay for the given format.
 
 static int modvideo_list_modes( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+    return NULL;
+#else
     SDL_Rect **modes;
     SDL_PixelFormat vfmt;
     int sdl_flags = get_sdl_flags( params[1] );
@@ -161,6 +164,7 @@ static int modvideo_list_modes( INSTANCE * my, int * params )
     available_modes[i*2+1] = 0;
 
     return ( int )available_modes;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -177,12 +181,16 @@ static int modvideo_list_modes( INSTANCE * my, int * params )
 
 static int modvideo_mode_is_ok( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(1, 3, 0)
+    return 0;
+#else
     int sdl_flags = get_sdl_flags( params[3] );
     int depth = params[2];
 
     if ( !depth ) depth = ( params[3] & MODE_32BITS ) ? 32 : (( params[3] & MODE_16BITS ) ? 16 : 8 );
 
     return ( SDL_VideoModeOK( params[0], params[1], depth, sdl_flags ) );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
