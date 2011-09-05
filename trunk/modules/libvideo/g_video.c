@@ -404,8 +404,7 @@ int gr_set_mode( int width, int height, int depth )
     if ( scale_screen ) SDL_FreeSurface( scale_screen ) ;
     if ( screen ) SDL_FreeSurface( screen ) ;
 #if SDL_VERSION_ATLEAST(1,3,0)
-    SDL_DestroyWindow(window);
-    window = NULL;
+    if( window ) SDL_DestroyWindow(window);
 #endif
 
     if ( scale_resolution )
