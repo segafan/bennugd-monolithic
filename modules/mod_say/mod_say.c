@@ -33,20 +33,12 @@
 #include "bgddl.h"
 #include "xstrings.h"
 
-#if defined(TARGET_ANDROID)
-#include <android/log.h>
-#define printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
-#define fprintf(stderr, ...) __android_log_print(ANDROID_LOG_INFO, "BennuGD Error", __VA_ARGS__)
-#elif defined(TARGET_PSP)
-#define printf pspDebugScreenPrintf
-#endif
-
 /* ---------------------------------------------------------------------- */
 
 static int modsay_say( INSTANCE * my, int * params )
 {
     /* Show debugging info also in stdout */
-    printf( "%s\n", string_get( params[0] ) );
+    _printf( "%s\n", string_get( params[0] ) );
     fflush( stdout );
     string_discard( params[0] ) ;
     return 1 ;
@@ -57,7 +49,7 @@ static int modsay_say( INSTANCE * my, int * params )
 static int modsay_say_fast( INSTANCE * my, int * params )
 {
     /* Show debugging info also in stdout */
-    printf( "%s\n", string_get( params[0] ) );
+    _printf( "%s\n", string_get( params[0] ) );
     string_discard( params[0] ) ;
     return 1 ;
 }
