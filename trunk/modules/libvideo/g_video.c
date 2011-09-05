@@ -291,9 +291,6 @@ int gr_set_mode( int width, int height, int depth )
     int surface_width = width;
     int surface_height = height;
     char * e;
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-    SDL_DisplayMode desktop_mode;
-#endif
 
     enable_scale = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_2XSCALE ) ? 1 : 0 ;
     full_screen = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_FULLSCREEN ) ? 1 : 0 ;
@@ -394,7 +391,7 @@ int gr_set_mode( int width, int height, int depth )
         SDL_SetHint( SDL_HINT_ORIENTATIONS, "Portrait PortraitUpsideDown" );
     
     const char *hints = SDL_GetHint(SDL_HINT_ORIENTATIONS);
-    NSLog(@"Orientation hints: %s", hints);
+    _printf("Orientation hints: %s", hints);
 #else
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
@@ -425,12 +422,13 @@ int gr_set_mode( int width, int height, int depth )
             }
         }
 #if SDL_VERSION_ATLEAST(1,3,0)
-        NSLog(@"Scaling, asked for %dx%d", surface_width, surface_height);
+        _printf("Scaling, asked for %dx%d", surface_width, surface_height);
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
+
         scale_screen = SDL_GetWindowSurface(window);
 
-        NSLog(@"Video mode set to %dx%d", scale_screen->w, scale_screen->h);
+        _printf("Video mode set to %dx%d", scale_screen->w, scale_screen->h);
 #else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
@@ -544,12 +542,13 @@ int gr_set_mode( int width, int height, int depth )
     else
     {
 #if SDL_VERSION_ATLEAST(1,3,0)
-        NSLog(@"No scaling, asked for %dx%d", surface_width, surface_height);
+        _printf("No scaling, asked for %dx%d", surface_width, surface_height);
         
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
+
         screen = SDL_GetWindowSurface(window);
-        NSLog(@"Video mode set to %dx%d", screen->w, screen->h);
+        _printf("Video mode set to %dx%d", screen->w, screen->h);
 #else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
@@ -621,13 +620,13 @@ int gr_set_mode( int width, int height, int depth )
         }
     }
 
-    scr_width = width ;
-    scr_height = height ;
+    scr_width = screen->w ;
+    scr_height = screen->h ;
 
     regions[0].x  = 0 ;
     regions[0].y  = 0 ;
-    regions[0].x2 = width - 1 ;
-    regions[0].y2 = height - 1 ;
+    regions[0].x2 = screen->w - 1 ;
+    regions[0].y2 = screen->h - 1 ;
 
     // Finalmente seteamos icono de aplicacion
     // Necesitamos crear una surface a partir de un MAP generico de 16x16...

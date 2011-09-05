@@ -399,6 +399,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             if (surface == EGL10.EGL_NO_SURFACE) {
                 Log.e("SDL", "Couldn't create surface");
                 return false;
+            } else {
+                Log.e("SDL", "Surface created");
             }
 
             if (!egl.eglMakeCurrent(dpy, surface, surface, ctx)) {

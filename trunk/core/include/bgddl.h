@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2006-2011 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -26,6 +26,19 @@
 
 #ifndef __BGDDL_H
 #define __BGDDL_H
+
+#if defined(TARGET_ANDROID)
+#include <android/log.h>
+#define _printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
+#define _fprintf(stderr, ...) __android_log_print(ANDROID_LOG_INFO, "BennuGD Error", __VA_ARGS__)
+#elif defined(TARGET_IOS)
+#define _printf(...) NSLog(@__VA_ARGS__)
+#elif defined(TARGET_PSP)
+#define _printf(...) pspDebugScreenPrintf(__VA_ARGS__)
+#else
+#define _printf(...) printf(__VA_ARGS__)
+#define _fprintf(...) fprintf(__VA_ARGS__)
+#endif
 
 /* --------------------------------------------------------------------------- */
 
