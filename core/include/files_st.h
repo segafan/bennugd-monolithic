@@ -41,9 +41,14 @@
 #define F_XFILE  1
 #define F_FILE   2
 #define F_GZFILE 3
+#define F_RWOPS  4
 
 #ifndef NO_ZLIB
 #include <zlib.h>
+#endif
+
+#ifdef WITH_SDLRWOPS
+#include <SDL_rwops.h>
 #endif
 
 #ifdef _WIN32
@@ -82,6 +87,9 @@ typedef struct
     FILE *  fp ;
 #ifndef NO_ZLIB
     gzFile  gz ;
+#endif
+#ifdef WITH_SDLRWOPS
+    SDL_RWops * rwops ;
 #endif
     int     n ;
     int     error ;

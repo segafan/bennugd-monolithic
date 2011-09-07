@@ -65,7 +65,8 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
     -DNO_LIBKEY \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
-	-DSDL_NO_COMPAT
+	-DSDL_NO_COMPAT \
+    -DWITH_SDLRWOPS
 
 LOCAL_SRC_FILES := \
 	../../../../core/bgdrtm/src/copy.c \
