@@ -48,6 +48,10 @@
 #include <sys/stat.h>
 #endif
 
+#ifdef WITH_SDLRWOPS
+#include <SDL_rwops.h>
+#endif
+
 #include <stdint.h>
 
 #include "files.h"
@@ -137,6 +141,13 @@ int file_read( file * fp, void * buffer, int len )
         fp->error = ( result < len );
         if ( result < 0 ) result = 0;
         return result ;
+    }
+#endif
+    
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS )
+    {
+        return SDL_RWread( fp->rwops, buffer, len, 1 );
     }
 #endif
 
@@ -519,6 +530,13 @@ int file_write( file * fp, void * buffer, int len )
         return ( result < len ) ? 0 : len ;
     }
 #endif
+    
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS )
+    {
+        return SDL_RWwrite(fp->rwops, buffer, 1, len);
+    }
+#endif
 
     return fwrite( buffer, 1, len, fp->fp ) ;
 }
@@ -559,6 +577,10 @@ int file_pos( file * fp )
 #ifndef NO_ZLIB
     if ( fp->type == F_GZFILE ) return gztell( fp->gz ) ;
 #endif
+
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS ) return SDL_RWtell( fp->rwops ) ;
+#endif
     
     return ftell( fp->fp ) ;
 }
@@ -569,6 +591,10 @@ int file_flush( file * fp )
     
 #ifndef NO_ZLIB
     if ( fp->type == F_GZFILE ) return 0 ;
+#endif
+
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS ) return 0 ;
 #endif
     
     return fflush( fp->fp ) ;
@@ -602,6 +628,14 @@ int file_seek( file * fp, int pos, int where )
     }
 #endif
 
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS )
+    {
+        assert( fp->rwops );
+        return SDL_RWseek( fp->rwops, (long)pos, where );
+    }
+#endif
+
     assert( fp->fp );
     return fseek( fp->fp, pos, where ) ;
 }
@@ -619,6 +653,12 @@ void file_rewind( file * fp )
 #ifndef NO_ZLIB
         case F_GZFILE:
             gzrewind( fp->gz ) ;
+            break;
+#endif
+
+#ifdef WITH_SDLRWOPS
+        case F_RWOPS:
+            SDL_RWseek( fp->rwops, 0, SEEK_END );
             break;
 #endif
 
@@ -655,6 +695,13 @@ static int open_raw( file * f, const char * filename, const char * mode )
         mode++;
     }
     *p = '\0';
+
+#ifdef WITH_SDLRWOPS
+    f->eof = 0 ;
+    f->type = F_RWOPS ;
+    f->rwops = SDL_RWFromFile( filename, _mode );
+    if ( f->rwops ) return 1;
+#endif
 
     f->eof  = 0 ;
     f->type = F_FILE ;
@@ -765,6 +812,9 @@ void file_close( file * fp )
 #ifndef NO_ZLIB
     if ( fp->type == F_GZFILE ) gzclose( fp->gz ) ;
 #endif
+#ifdef WITH_SDLRWOPS
+    if (fp->type == F_RWOPS ) SDL_RWclose( fp->rwops ) ;
+#endif
     opened_files--;
     free( fp ) ;
 }
@@ -830,6 +880,13 @@ int file_eof( file * fp )
     {
         if ( fp->error ) return 1 ;
         return gzeof( fp->gz ) ? 1 : 0;
+    }
+#endif
+
+#ifdef WITH_SDLRWOPS
+    if ( fp->type == F_RWOPS)
+    {
+        return fp->eof ? 1 : 0;
     }
 #endif
 

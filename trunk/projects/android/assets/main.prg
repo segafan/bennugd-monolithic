@@ -18,7 +18,7 @@ GLOBAL
 // Set to your liking
 width  = 320;
 height = 480;
-sound  = 0;
+sound  = 1;
 quit   = 0;
 
 Process bouncer()
