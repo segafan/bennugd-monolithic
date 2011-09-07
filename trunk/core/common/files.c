@@ -230,6 +230,51 @@ int file_qgets( file * fp, char * buffer, int len )
         result = gzgets( fp->gz, buffer, len ) ;
     }
 #endif
+
+#ifdef WITH_SDLRWOPS
+    else if ( fp->type == F_RWOPS )
+    {
+        /*// fgetc equivalent for SDL_rwops
+        
+        int rwgetc(SDL_RWops *rw)
+        {
+            char c;
+            
+            return SDL_RWread(rw, &c, 1, 1) == 1 ? c : EOF;
+        }
+        
+        // fgets equivalent for SDL_rwops
+        
+        char *rwgets(char *buf, int count, SDL_RWops *rw)
+        {
+            int i;
+            
+            buf[count - 1] = '\0';
+            
+            for (i = 0; i < count - 1; i++)
+            {
+                if (SDL_RWread(rw, buf + i, 1, 1) != 1)
+                {
+                    if (i == 0)
+                    {
+                        return NULL;
+                    }
+                    
+                    break;
+                }
+                
+                if (buf[i] == '\n')
+                {
+                    break;
+                }
+            }
+            
+            buf[i] = '\0';
+            
+            return buf;
+        }*/
+    }
+#endif
     else
     {
         result = fgets( buffer, len, fp->fp );
@@ -303,6 +348,51 @@ int file_gets( file * fp, char * buffer, int len )
     else if ( fp->type == F_GZFILE )
     {
         result = gzgets( fp->gz, buffer, len ) ;
+    }
+#endif
+
+    #ifdef WITH_SDLRWOPS
+    else if ( fp->type == F_RWOPS )
+    {
+        /*// fgetc equivalent for SDL_rwops
+        
+        int rwgetc(SDL_RWops *rw)
+        {
+            char c;
+            
+            return SDL_RWread(rw, &c, 1, 1) == 1 ? c : EOF;
+        }
+        
+        // fgets equivalent for SDL_rwops
+        
+        char *rwgets(char *buf, int count, SDL_RWops *rw)
+        {
+            int i;
+            
+            buf[count - 1] = '\0';
+            
+            for (i = 0; i < count - 1; i++)
+            {
+                if (SDL_RWread(rw, buf + i, 1, 1) != 1)
+                {
+                    if (i == 0)
+                    {
+                        return NULL;
+                    }
+                    
+                    break;
+                }
+                
+                if (buf[i] == '\n')
+                {
+                    break;
+                }
+            }
+            
+            buf[i] = '\0';
+            
+            return buf;
+        }*/
     }
 #endif
     else
