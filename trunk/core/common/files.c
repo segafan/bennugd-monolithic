@@ -42,6 +42,7 @@
 
 #ifdef TARGET_WII
 #include <realpath.h>
+#include <sys/stat.h>
 #endif
 
 #if defined(TARGET_ANDROID) || defined (TARGET_IOS)
