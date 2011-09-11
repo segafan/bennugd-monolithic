@@ -24,7 +24,7 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DWITH_GPL_CODE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-O3 $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
