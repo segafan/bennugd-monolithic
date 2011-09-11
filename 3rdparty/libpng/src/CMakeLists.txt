@@ -25,15 +25,15 @@ endif()
 project(libpng C)
 enable_testing()
 
-# Copyright (C) 2007-2010 Glenn Randers-Pehrson
+# Copyright (C) 2007-2011 Glenn Randers-Pehrson
 
 # This code is released under the libpng license.
 # For conditions of distribution and use, see the disclaimer
 # and license in png.h
 
 set(PNGLIB_MAJOR 1)
-set(PNGLIB_MINOR 4)
-set(PNGLIB_RELEASE 7)
+set(PNGLIB_MINOR 5)
+set(PNGLIB_RELEASE 4)
 set(PNGLIB_NAME libpng${PNGLIB_MAJOR}${PNGLIB_MINOR})
 set(PNGLIB_VERSION ${PNGLIB_MAJOR}.${PNGLIB_MINOR}.${PNGLIB_RELEASE})
 
@@ -107,14 +107,23 @@ set(PNG_LIB_NAME png${PNGLIB_MAJOR}${PNGLIB_MINOR})
 # to distinguish between debug and release lib
 set(CMAKE_DEBUG_POSTFIX "d")
 
+# Use the prebuilt pnglibconf.h file from the scripts folder
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/scripts/pnglibconf.h.prebuilt
+               ${CMAKE_CURRENT_BINARY_DIR}/pnglibconf.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
 # OUR SOURCES
 set(libpng_public_hdrs
   png.h
   pngconf.h
+  ${CMAKE_CURRENT_BINARY_DIR}/pnglibconf.h
 )
 set(libpng_sources
   ${libpng_public_hdrs}
+  pngdebug.h
+  pnginfo.h
   pngpriv.h
+  pngstruct.h
   png.c
   pngerror.c
   pngget.c
@@ -137,10 +146,6 @@ set(pngtest_sources
 # SOME NEEDED DEFINITIONS
 
 add_definitions(-DPNG_CONFIGURE_LIBPNG)
-
-if(_AIX)
-  add_definitions(-D_ALL_SOURCE)
-endif(_AIX)
 
 if(MSVC)
   add_definitions(-DPNG_NO_MODULEDEF -D_CRT_SECURE_NO_DEPRECATE)
@@ -255,9 +260,9 @@ install(CODE ${PNG_CONFIG_INSTALL_CODE})
 # SET UP LINKS
 if(PNG_SHARED)
   set_target_properties(${PNG_LIB_NAME} PROPERTIES
-#   VERSION 14.${PNGLIB_RELEASE}.1.4.7
-    VERSION 14.${PNGLIB_RELEASE}.0
-    SOVERSION 14
+#   VERSION 15.${PNGLIB_RELEASE}.1.5.4
+    VERSION 15.${PNGLIB_RELEASE}.0
+    SOVERSION 15
     CLEAN_DIRECT_OUTPUT 1)
 endif()
 if(PNG_STATIC)
@@ -289,7 +294,7 @@ if(NOT SKIP_INSTALL_LIBRARIES AND NOT SKIP_INSTALL_ALL )
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-    # Create a symlink for libpng.dll.a => libpng14.dll.a on Cygwin
+    # Create a symlink for libpng.dll.a => libpng15.dll.a on Cygwin
     if(CYGWIN)
       _png_generate_symlink_code(PNG_SHARED_IMPLIB_INSTALL_CODE
         ${PNGLIB_NAME}${CMAKE_IMPORT_LIBRARY_SUFFIX}
@@ -381,7 +386,7 @@ if(PNG_EXPORT_RULE AND NOT SKIP_INSTALL_EXPORT AND NOT SKIP_INSTALL_ALL )
   install(EXPORT libpng DESTINATION lib/libpng FILE lib${PNG_LIB_NAME}.cmake)
 endif()
 
-# what's with libpng-manual.txt and all the extra files?
+# what's with libpng-$VER%.txt and all the extra files?
 
 
 # UNINSTALL
