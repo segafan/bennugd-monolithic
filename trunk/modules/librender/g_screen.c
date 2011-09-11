@@ -466,11 +466,11 @@ void gr_unlock_screen()
             case SCALE_SCALE2X:
                 scale2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
-
+#ifdef WITH_GPL_CODE
             case SCALE_HQ2X:
                 hq2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
-
+#endif
             case SCALE_SCANLINE2X:
                 scanline2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;

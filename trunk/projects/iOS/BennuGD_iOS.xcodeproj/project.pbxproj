@@ -44,7 +44,6 @@
 		921B4A671391D8A5005F1832 /* g_rects.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49951391D8A3005F1832 /* g_rects.c */; };
 		921B4A681391D8A5005F1832 /* g_screen.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49971391D8A3005F1832 /* g_screen.c */; };
 		921B4A691391D8A5005F1832 /* librender.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49991391D8A3005F1832 /* librender.c */; };
-		921B4A6A1391D8A5005F1832 /* scaler_hq2x.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B499D1391D8A3005F1832 /* scaler_hq2x.c */; };
 		921B4A6B1391D8A5005F1832 /* scaler_normal.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B499F1391D8A3005F1832 /* scaler_normal.c */; };
 		921B4A6C1391D8A5005F1832 /* scaler_scale2x.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49A11391D8A3005F1832 /* scaler_scale2x.c */; };
 		921B4A6D1391D8A5005F1832 /* scaler_scanline.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B49A31391D8A3005F1832 /* scaler_scanline.c */; };
@@ -287,8 +286,6 @@
 		921B499A1391D8A3005F1832 /* librender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = librender.h; sourceTree = "<group>"; };
 		921B499B1391D8A3005F1832 /* librender_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = librender_symbols.h; sourceTree = "<group>"; };
 		921B499C1391D8A3005F1832 /* scaler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scaler.h; sourceTree = "<group>"; };
-		921B499D1391D8A3005F1832 /* scaler_hq2x.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scaler_hq2x.c; sourceTree = "<group>"; };
-		921B499E1391D8A3005F1832 /* scaler_hq2x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scaler_hq2x.h; sourceTree = "<group>"; };
 		921B499F1391D8A3005F1832 /* scaler_normal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scaler_normal.c; sourceTree = "<group>"; };
 		921B49A01391D8A3005F1832 /* scaler_normal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scaler_normal.h; sourceTree = "<group>"; };
 		921B49A11391D8A3005F1832 /* scaler_scale2x.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = scaler_scale2x.c; sourceTree = "<group>"; };
@@ -709,8 +706,6 @@
 				921B499A1391D8A3005F1832 /* librender.h */,
 				921B499B1391D8A3005F1832 /* librender_symbols.h */,
 				921B499C1391D8A3005F1832 /* scaler.h */,
-				921B499D1391D8A3005F1832 /* scaler_hq2x.c */,
-				921B499E1391D8A3005F1832 /* scaler_hq2x.h */,
 				921B499F1391D8A3005F1832 /* scaler_normal.c */,
 				921B49A01391D8A3005F1832 /* scaler_normal.h */,
 				921B49A11391D8A3005F1832 /* scaler_scale2x.c */,
@@ -1314,7 +1309,6 @@
 				921B4A671391D8A5005F1832 /* g_rects.c in Sources */,
 				921B4A681391D8A5005F1832 /* g_screen.c in Sources */,
 				921B4A691391D8A5005F1832 /* librender.c in Sources */,
-				921B4A6A1391D8A5005F1832 /* scaler_hq2x.c in Sources */,
 				921B4A6B1391D8A5005F1832 /* scaler_normal.c in Sources */,
 				921B4A6C1391D8A5005F1832 /* scaler_scale2x.c in Sources */,
 				921B4A6D1391D8A5005F1832 /* scaler_scanline.c in Sources */,

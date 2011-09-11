@@ -49,7 +49,9 @@
 #include "g_rects.h"
 #include "g_screen.h"
 #include "scaler.h"
+#ifdef WITH_GPL_CODE
 #include "scaler_hq2x.h"
+#endif
 #include "scaler_normal.h"
 #include "scaler_scale2x.h"
 #include "scaler_scanline.h"
