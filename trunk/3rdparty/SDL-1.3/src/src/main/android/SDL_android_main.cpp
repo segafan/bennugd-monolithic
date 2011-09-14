@@ -6,6 +6,7 @@
                  Functions called by JNI
 *******************************************************************************/
 #include <jni.h>
+#include  <android/log.h>
 
 // Called before SDL_main() to initialize JNI bindings in SDL library
 extern "C" void SDL_Android_Init(JNIEnv* env, jclass cls);
@@ -27,6 +28,7 @@ extern "C" void Java_org_libsdl_app_SDLActivity_nativeInit(JNIEnv* env, jclass c
     char *argv[2];
     argv[0] = strdup("SDL_app");
     argv[1] = NULL;
+    __android_log_print(ANDROID_LOG_INFO, "SDL", "Gonna call SDL_main()");
     status = SDL_main(1, argv);
 
     /* We exit here for consistency with other platforms. */

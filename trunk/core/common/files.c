@@ -197,13 +197,13 @@ int file_qputs( file * fp, char * buffer )
 
 int file_qgets( file * fp, char * buffer, int len )
 {
-    char * ptr, * result = NULL ;
+    char * result = NULL ;
+    int l = 0;
+    char * ptr = result = buffer ;
 
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
-        int l = 0;
-        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
@@ -235,45 +235,15 @@ int file_qgets( file * fp, char * buffer, int len )
 #ifdef WITH_SDLRWOPS
     else if ( fp->type == F_RWOPS )
     {
-        /*// fgetc equivalent for SDL_rwops
-        
-        int rwgetc(SDL_RWops *rw)
+        while ( l < len )
         {
-            char c;
-            
-            return SDL_RWread(rw, &c, 1, 1) == 1 ? c : EOF;
+            SDL_RWread( fp->rwops, ptr, 1, 1 );
+            l++ ;
+            if ( *ptr++ == '\n' ) break ;
         }
+        *ptr = 0 ;
         
-        // fgets equivalent for SDL_rwops
-        
-        char *rwgets(char *buf, int count, SDL_RWops *rw)
-        {
-            int i;
-            
-            buf[count - 1] = '\0';
-            
-            for (i = 0; i < count - 1; i++)
-            {
-                if (SDL_RWread(rw, buf + i, 1, 1) != 1)
-                {
-                    if (i == 0)
-                    {
-                        return NULL;
-                    }
-                    
-                    break;
-                }
-                
-                if (buf[i] == '\n')
-                {
-                    break;
-                }
-            }
-            
-            buf[i] = '\0';
-            
-            return buf;
-        }*/
+        if ( l == 0 ) return 0 ;
     }
 #endif
     else
@@ -317,13 +287,13 @@ int file_puts( file * fp, char * buffer )
 
 int file_gets( file * fp, char * buffer, int len )
 {
+    int l = 0;
     char * result = NULL ;
+    char * ptr = result = buffer ;
 
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
-        int l = 0;
-        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
@@ -352,48 +322,18 @@ int file_gets( file * fp, char * buffer, int len )
     }
 #endif
 
-    #ifdef WITH_SDLRWOPS
+#ifdef WITH_SDLRWOPS
     else if ( fp->type == F_RWOPS )
     {
-        /*// fgetc equivalent for SDL_rwops
-        
-        int rwgetc(SDL_RWops *rw)
+        while ( l < len )
         {
-            char c;
-            
-            return SDL_RWread(rw, &c, 1, 1) == 1 ? c : EOF;
+            SDL_RWread(fp->rwops, ptr, 1, 1);
+            l++ ;
+            if ( *ptr++ == '\n' ) break ;
         }
+        *ptr = 0 ;
         
-        // fgets equivalent for SDL_rwops
-        
-        char *rwgets(char *buf, int count, SDL_RWops *rw)
-        {
-            int i;
-            
-            buf[count - 1] = '\0';
-            
-            for (i = 0; i < count - 1; i++)
-            {
-                if (SDL_RWread(rw, buf + i, 1, 1) != 1)
-                {
-                    if (i == 0)
-                    {
-                        return NULL;
-                    }
-                    
-                    break;
-                }
-                
-                if (buf[i] == '\n')
-                {
-                    break;
-                }
-            }
-            
-            buf[i] = '\0';
-            
-            return buf;
-        }*/
+        if ( l == 0 ) return 0 ;
     }
 #endif
     else
