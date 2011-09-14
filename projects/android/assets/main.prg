@@ -27,7 +27,7 @@ Private
     int w=0, h=0;
 
 Begin
-    graph = load_png("/mnt/sdcard/data/Icon.png");
+    graph = load_png("Icon.png");
     // Position the graphic onscreen
     w = graphic_info(0, graph, G_WIDTH);
     h = graphic_info(0, graph, G_HEIGHT);
@@ -62,7 +62,7 @@ Begin
     say_fast("Running at "+width+"x"+height);
     bouncer();
     if(sound == 1)
-        song = load_song("/mnt/sdcard/data/1.ogg");
+        song = load_song("1.ogg");
         play_song(song, 0);
     end;
     graph = write_in_map(0, "Tilt your device!", 4);
