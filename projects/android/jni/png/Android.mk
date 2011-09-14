@@ -1,28 +1,27 @@
-LOCAL_PATH:= $(call my-dir)
+LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
 
 common_SRC_FILES := \
-	png.c \
-	pngset.c \
-	pngget.c \
-	pngrutil.c \
-	pngtrans.c \
-	pngwutil.c \
-	pngread.c \
-	pngrio.c \
-	pngwio.c \
-	pngwrite.c \
-	pngrtran.c \
-	pngtrans.c \
-	pngwtran.c \
-	pngmem.c \
-	pngerror.c \
-	pngpread.c
+	/../../../../3rdparty/libpng/src/png.c \
+    /../../../../3rdparty/libpng/src/pngerror.c \
+    /../../../../3rdparty/libpng/src/pngget.c \
+    /../../../../3rdparty/libpng/src/pngmem.c \
+    /../../../../3rdparty/libpng/src/pngpread.c \
+    /../../../../3rdparty/libpng/src/pngread.c \
+    /../../../../3rdparty/libpng/src/pngrio.c \
+    /../../../../3rdparty/libpng/src/pngrtran.c \
+    /../../../../3rdparty/libpng/src/pngwio.c \
+    /../../../../3rdparty/libpng/src/pngwrite.c \
+    /../../../../3rdparty/libpng/src/pngwtran.c \
+    /../../../../3rdparty/libpng/src/pngwutil.c \
+    /../../../../3rdparty/libpng/src/pngrutil.c \
+    /../../../../3rdparty/libpng/src/pngset.c \
+    /../../../../3rdparty/libpng/src/pngtrans.c
 
 common_CFLAGS := ## -fomit-frame-pointer
 
-common_C_INCLUDES += \
+common_C_INCLUDES += $(LOCAL_PATH)/../../../../3rdparty/libpng/src/\
 
 # For the host
 # =====================================================
