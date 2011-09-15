@@ -57,6 +57,7 @@ static int gr_read_lib( file * fp )
     GRAPH * gr ;
     PALETTE * pal = NULL ;
     int st = 0;
+    int len = 0, tempcolor = 0;
 
     libid = grlib_new() ;
     if ( libid < 0 ) return -1 ;
@@ -151,9 +152,9 @@ static int gr_read_lib( file * fp )
             {
                 case    32:
                     st = file_readUint32A( fp, ( uint32_t * ) line, gr->width );
-#ifdef TARGET_PSP
+#ifdef COLORSPACE_BGR
                     if (st){
-						for (len =0;len<gr->width;len+=4){
+						for (len=0; len<gr->width; len+=4){
 							tempcolor=line[len+1];
 							line[len+1]=line[len+3];
 							line[len+3]=tempcolor;
@@ -164,12 +165,12 @@ static int gr_read_lib( file * fp )
 
                 case    16:
                     st = file_readUint16A( fp, ( uint16_t * ) line, gr->width );
-#ifdef TARGET_PSP
+#ifdef COLORSPACE_BGR
                     if (st){
                     	uint16_t * line16 = ( uint16_t * ) line;
                     	uint8_t rgb[3];
 						for (len =0;len<gr->width;len++){
-							rgb[0] = (*line16 & 0b11111);
+							rgb[0] = (*line16 & 0x1F);
 							rgb[1] =(*line16 >>5);
 							rgb[2] = (*line16 >>11);
 							*line16=(rgb[0]<<11)|(rgb[1]<<5)|rgb[2];

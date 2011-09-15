@@ -63,7 +63,7 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
         format->Gloss = 0;
         format->Bloss = 0;
 
-#ifdef TARGET_PSP
+#ifdef COLORSPACE_BGR
         format->Ashift = 0x18;
         format->Rshift = 0x00;
         format->Gshift = 0x08;
@@ -94,7 +94,7 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
         format->Gloss = 8 - ( bpp / 3 ) - ( bpp % 3 );
         format->Bloss = 8 - ( bpp / 3 );
 
-#ifdef TARGET_PSP
+#ifdef COLORSPACE_BGR
         format->Rshift = 0;
         format->Gshift = ( bpp / 3 );
         format->Bshift = (( bpp / 3 ) + ( bpp % 3 ) ) + ( bpp / 3 );

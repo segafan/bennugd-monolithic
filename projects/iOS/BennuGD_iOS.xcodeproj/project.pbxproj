@@ -190,7 +190,7 @@
 		92098DEE13A534B200F70BC2 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		92098DEF13A534B200F70BC2 /* mod_chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_chipmunk.c; sourceTree = "<group>"; };
 		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
-		921B48131391CE07005F1832 /* BennuGD_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BennuGD_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		921B48131391CE07005F1832 /* iOSBennuGD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSBennuGD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		921B48191391CE07005F1832 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		921B481B1391CE07005F1832 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -469,7 +469,7 @@
 		921B48141391CE07005F1832 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				921B48131391CE07005F1832 /* BennuGD_iOS.app */,
+				921B48131391CE07005F1832 /* iOSBennuGD.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1166,7 +1166,7 @@
 			);
 			name = BennuGD_iOS;
 			productName = BennuGD_iOS;
-			productReference = 921B48131391CE07005F1832 /* BennuGD_iOS.app */;
+			productReference = 921B48131391CE07005F1832 /* iOSBennuGD.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1408,6 +1408,7 @@
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1454,6 +1455,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1493,11 +1495,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1526,7 +1530,8 @@
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 					"\"$(SRCROOT)\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = iOSBennuGD;
+				PROVISIONING_PROFILE = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "armv6 armv7 i386";
@@ -1539,11 +1544,13 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1572,7 +1579,8 @@
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
 					"\"$(SRCROOT)\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = iOSBennuGD;
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				TARGETED_DEVICE_FAMILY = 1;

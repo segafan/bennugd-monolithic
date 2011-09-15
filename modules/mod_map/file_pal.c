@@ -45,7 +45,7 @@ PALETTE * gr_read_pal( file * fp )
 
     for ( i = 0; i < 768; i++ ) colors[i] <<= 2;
 
-#ifdef TARGET_PSP
+#ifdef COLORSPACE_BGR
     for ( i = 0; i < 768; i+=3 ){
     	uint8_t temp_color =colors[i];
     	colors[i]=colors[i+2];
