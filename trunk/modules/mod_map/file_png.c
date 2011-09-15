@@ -182,9 +182,15 @@ GRAPH * gr_read_png( const char * filename )
 
         for ( n = 0; n < 256 ; n++ )
         {
+#ifdef COLORSPACE_BGR
+            * p++ = png_palette[n].blue;
+            * p++ = png_palette[n].green;
+            * p++ = png_palette[n].red;
+#else
             * p++ = png_palette[n].red;
             * p++ = png_palette[n].green;
             * p++ = png_palette[n].blue;
+#endif
         }
 
         bitmap->format->palette = pal_new_rgb(( uint8_t * )colors );
@@ -269,6 +275,11 @@ GRAPH * gr_read_png( const char * filename )
             {
                 ARRANGE_DWORD( orig );
                 *ptr32 = *orig ;
+                
+#ifdef COLORSPACE_BGR
+                ((uint8_t *)ptr32)[0] = ((uint8_t *)orig)[2];
+                ((uint8_t *)ptr32)[2] = ((uint8_t *)orig)[0];
+#endif
 
                 /* DCelso */
 #if (PNG_LIBPNG_VER>=10500)
@@ -350,6 +361,14 @@ GRAPH * gr_read_png( const char * filename )
         			   )
         				*ptr = 0;
                 }
+#ifdef COLORSPACE_BGR
+				uint16_t * dest = (uint8_t *)ptr;
+				uint8_t red,green,blue;
+				red = (*dest & 0x1F);
+				green = (*dest >>5) & 0x1F;
+				blue = (*dest >>11)& 0x1F;
+				*dest = (red<<11)|(green<<5)|blue;
+#endif
                 ptr++, orig++ ;
             }
         }
@@ -562,11 +581,19 @@ int gr_save_png( GRAPH * gr, const char * filename )
                         *ptr = 0x00000000 ;
                     else
                     {
+#ifdef COLORSPACE_BGR
+                        *ptr =
+                            (( *orig & 0xf800 ) << 8 ) |
+                            (( *orig & 0x07e0 ) << 5 ) |
+                            (( *orig & 0x001f ) << 3 ) |
+                            0xFF000000 ;
+#else
                         *ptr =
                             (( *orig & 0xf800 ) >> 8 ) |
                             (( *orig & 0x07e0 ) << 5 ) |
                             (( *orig & 0x001f ) << 19 ) |
                             0xFF000000 ;
+#endif
                         /* Rearrange data */
                         ARRANGE_DWORD( ptr ) ;
                     }
