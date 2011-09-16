@@ -17,25 +17,21 @@
   2. Altered source versions must be plainly marked as such, and must not be
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
-*/
-#include "SDL_config.h"
+*/	
 
+#ifndef SDL_BEVENTS_H
+#define SDL_BEVENTS_H
+
+#include "../SDL_sysvideo.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Handle the BeApp specific portions of the application */
 
-/* Initialize the Be Application, if it's not already started */
-extern int SDL_InitBeApp(void);
-
-/* Quit the Be Application, if there's nothing left to do */
-extern void SDL_QuitBeApp(void);
-
-/* Flag to tell whether the app is active or not */
-extern int SDL_BeAppActive;
-/* vi: set ts=4 sw=4 expandtab: */
+extern void BE_PumpEvents(_THIS);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
