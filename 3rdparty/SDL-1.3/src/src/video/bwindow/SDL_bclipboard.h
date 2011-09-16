@@ -18,24 +18,14 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
+
 #include "SDL_config.h"
 
+#ifndef SDL_BCLIPBOARD_H
+#define SDL_BCLIPBOARD_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/* Handle the BeApp specific portions of the application */
+extern int BE_SetClipboardText(_THIS, const char *text);
+extern char *BE_GetClipboardText(_THIS);
+extern SDL_bool BE_HasClipboardText(_THIS);
 
-/* Initialize the Be Application, if it's not already started */
-extern int SDL_InitBeApp(void);
-
-/* Quit the Be Application, if there's nothing left to do */
-extern void SDL_QuitBeApp(void);
-
-/* Flag to tell whether the app is active or not */
-extern int SDL_BeAppActive;
-/* vi: set ts=4 sw=4 expandtab: */
-
-#ifdef __cplusplus
-}
 #endif

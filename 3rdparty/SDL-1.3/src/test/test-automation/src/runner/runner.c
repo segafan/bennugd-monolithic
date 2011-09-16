@@ -607,7 +607,7 @@ LoadTestCaseFunction(void *suite, char *testName)
 {
 	TestCaseFp test = (TestCaseFp) SDL_LoadFunction(suite, testName);
 	if(test == NULL) {
-		fprintf(stderr, "Loading test failed, tests == NULL\n");
+		fprintf(stderr, "Loading test %s failed, test == NULL\n", testName);
 		fprintf(stderr, "%s\n", SDL_GetError());
 	}
 
@@ -702,6 +702,7 @@ LoadCountFailedAssertsFunction(void *suite) {
 	return countFailedAssert;
 }
 
+#define USE_SDL_TIMER_FOR_TIMEOUT
 
 /*!
  * Set timeout for test.
@@ -722,7 +723,7 @@ SetTestTimeout(int timeout, void (*callback)(int))
 
 	int tm = (timeout > universal_timeout ? timeout : universal_timeout);
 
-#if 1
+#ifdef USE_SDL_TIMER_FOR_TIMEOUT
 	/* Init SDL timer if not initialized before */
 	if(SDL_WasInit(SDL_INIT_TIMER) == 0) {
 		if(SDL_InitSubSystem(SDL_INIT_TIMER)) {
@@ -1365,8 +1366,17 @@ main(int argc, char *argv[])
 	// if --show-tests option is given, only print tests and exit
 	if(only_print_tests) {
 		TestCase *testItem = NULL;
+		char *lastSuiteName = NULL;
 		for(testItem = testCases; testItem; testItem = testItem->next) {
-			printf("%s (in %s) - %s\n", testItem->testName, testItem->suiteName, testItem->description);
+		        if ((lastSuiteName == NULL) || (strcmp(lastSuiteName, testItem->suiteName)!=0)) {
+		                lastSuiteName = testItem->suiteName;
+		                printf ("%s:\n", lastSuiteName);
+		        }
+			printf("  %s: %s", testItem->testName, testItem->description);
+			if (testItem->timeout>0) {
+			        printf (" (timeout: %i sec)", testItem->timeout);
+			}
+			printf ("\n");
 		}
 
 		return 0;

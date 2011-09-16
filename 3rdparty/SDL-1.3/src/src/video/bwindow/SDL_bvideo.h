@@ -18,24 +18,25 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-#include "SDL_config.h"
 
+#ifndef BVIDEO_H
+#define BVIDEO_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Handle the BeApp specific portions of the application */
 
-/* Initialize the Be Application, if it's not already started */
-extern int SDL_InitBeApp(void);
+#include "../../main/beos/SDL_BeApp.h"
+#include "../SDL_sysvideo.h"
 
-/* Quit the Be Application, if there's nothing left to do */
-extern void SDL_QuitBeApp(void);
 
-/* Flag to tell whether the app is active or not */
-extern int SDL_BeAppActive;
-/* vi: set ts=4 sw=4 expandtab: */
+extern void BE_VideoQuit(_THIS);
+extern int BE_VideoInit(_THIS);
+extern void BE_DeleteDevice(_THIS);
+extern int BE_Available(void);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

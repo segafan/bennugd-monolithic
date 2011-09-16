@@ -18,24 +18,28 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-#include "SDL_config.h"
 
-
+#ifndef SDL_BFRAMEBUFFER_H
+#define SDL_BFRAMEBUFFER_H
+#include <SupportDefs.h>
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Handle the BeApp specific portions of the application */
 
-/* Initialize the Be Application, if it's not already started */
-extern int SDL_InitBeApp(void);
+#define DRAWTHREAD
 
-/* Quit the Be Application, if there's nothing left to do */
-extern void SDL_QuitBeApp(void);
+#include "../SDL_sysvideo.h"
 
-/* Flag to tell whether the app is active or not */
-extern int SDL_BeAppActive;
-/* vi: set ts=4 sw=4 expandtab: */
+extern int BE_CreateWindowFramebuffer(_THIS, SDL_Window * window,
+                                       Uint32 * format,
+                                       void ** pixels, int *pitch);
+extern int BE_UpdateWindowFramebuffer(_THIS, SDL_Window * window,
+                                       SDL_Rect * rects, int numrects);
+extern void BE_DestroyWindowFramebuffer(_THIS, SDL_Window * window);
+extern int32 BE_DrawThread(void *data);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif

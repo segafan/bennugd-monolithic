@@ -18,24 +18,32 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-#include "SDL_config.h"
 
+#ifndef SDL_BOPENGL_H
+#define SDL_BOPENGL_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Handle the BeApp specific portions of the application */
 
-/* Initialize the Be Application, if it's not already started */
-extern int SDL_InitBeApp(void);
+#include "../SDL_sysvideo.h"
 
-/* Quit the Be Application, if there's nothing left to do */
-extern void SDL_QuitBeApp(void);
 
-/* Flag to tell whether the app is active or not */
-extern int SDL_BeAppActive;
-/* vi: set ts=4 sw=4 expandtab: */
+extern int BE_GL_LoadLibrary(_THIS, const char *path);					//FIXME
+extern void *BE_GL_GetProcAddress(_THIS, const char *proc);				//FIXME
+extern void BE_GL_UnloadLibrary(_THIS);									//TODO
+extern int BE_GL_MakeCurrent(_THIS, SDL_Window * window,
+                              SDL_GLContext context);
+extern int BE_GL_SetSwapInterval(_THIS, int interval);					//TODO
+extern int BE_GL_GetSwapInterval(_THIS);								//TODO
+extern void BE_GL_SwapWindow(_THIS, SDL_Window * window);
+extern SDL_GLContext BE_GL_CreateContext(_THIS, SDL_Window * window);
+extern void BE_GL_DeleteContext(_THIS, SDL_GLContext context);
+
+extern void BE_GL_RebootContexts(_THIS);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
