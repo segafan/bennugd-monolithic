@@ -27,6 +27,7 @@ Private
     int w=0, h=0;
 
 Begin
+    say("Hi!");
     graph = load_png("Icon.png");
     // Position the graphic onscreen
     w = graphic_info(0, graph, G_WIDTH);

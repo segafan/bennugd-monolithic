@@ -31,8 +31,8 @@
 
     #include <stdint.h>
 
-    #define __LIL_ENDIAN 1234
-    #define __BIG_ENDIAN 4321
+    #define __BGD_LIL_ENDIAN 1234
+    #define __BGD_BIG_ENDIAN 4321
 
     #if defined(__hppa__) || \
         defined(__m68k__) || \
@@ -44,16 +44,16 @@
         defined(_M_PPC) || \
         defined(__sparc__) || \
         defined(GEKKO)
-        #define __BYTEORDER  __BIG_ENDIAN
+        #define __BYTEORDER  __BGD_BIG_ENDIAN
     #else
-        #define __BYTEORDER  __LIL_ENDIAN
+        #define __BYTEORDER  __BGD_LIL_ENDIAN
     #endif
 
     /* ---------------------------------------------------------------------- */
     /* Trucos de portabilidad                                                 */
     /* ---------------------------------------------------------------------- */
 
-    #if __BYTEORDER == __LIL_ENDIAN
+    #if __BYTEORDER == __BGD_LIL_ENDIAN
         #define ARRANGE_DWORD(x)
         #define ARRANGE_WORD(x)
 

@@ -35,9 +35,8 @@ public class SDLActivity extends Activity {
     // Load the .so
     static {
         System.loadLibrary("SDL");
-        //System.loadLibrary("SDL_image");
-        //System.loadLibrary("SDL_mixer");
-        //System.loadLibrary("SDL_ttf");
+        System.loadLibrary("mikmod");
+        System.loadLibrary("SDL_mixer");
         System.loadLibrary("main");
     }
 
