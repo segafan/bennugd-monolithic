@@ -1,7 +1,7 @@
 /*
  *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright © 1999-2002 JosŽ Luis Cebri‡n PagŸe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -30,28 +30,13 @@
  * INCLUDES
  */
 
-#ifdef _WIN32
-#define  _WIN32_WINNT 0x0500
-#include <windows.h>
-#endif
-
+#include "SDL.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 
-#include "bgdi.h"
 #include "bgdrtm.h"
-#include "xstrings.h"
 
-#if defined(TARGET_IOS) || defined(TARGET_ANDROID)
-#include <SDL.h>
-#elif defined(TARGET_WII)
-#include <SDL.h>
-#include <fat.h>
-#elif defined(TARGET_PSP)
-#include "psp.h"
-#endif
+#include <android/log.h>
+#define _printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
 
 /* ---------------------------------------------------------------------- */
 
@@ -76,24 +61,22 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  */
 
 int main( int argc, char *argv[] )
-{	
+{
     char * filename = NULL, dcbname[ __MAX_PATH ], *ptr ;
     int i, j, ret = -1;
     file * fp = NULL;
-    file * fd;
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
     
-    printf ("BennuGD init\n");
-
+    _printf ("BennuGD init\n");
+    
     filename = "main.dcb";
-	fd = file_open(filename, "r");
-	if (fd == NULL) {
-	    printf("%s doesn't exist, quitting\n", filename);
-	    return -1;
-	}
-    printf("%s exists\n", filename);
-    file_close(fd);
+	if(file_exists("main.dcb"))
+        _printf("main.dcb exists in APK\n");
+    else {
+        _printf("main.dcb doesn't exist in APK, quitting\n");
+        return 1;
+    }
     
     // Remember to compile DCB with debug (bgdc -g) info!
     debug = 1;
@@ -106,6 +89,8 @@ int main( int argc, char *argv[] )
     /* Init application title for windowed modes */
 	
     strcpy( dcbname, filename ) ;
+    
+    _printf("Gonna try to load main.dcb\n");
 	
     /* First try to load directly (we expect myfile.dcb) */
     if ( !dcb_load( dcbname ) )
@@ -120,10 +105,10 @@ int main( int argc, char *argv[] )
             if (( dcbloaded = dcb_load( dcbname ) ) ) break;
             dcbext++;
         }
-			
+        
         if ( !dcbloaded )
         {
-            printf( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
+            _printf( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
             return -1 ;
         }
     }
@@ -154,4 +139,3 @@ int main( int argc, char *argv[] )
 	
     return ret;
 }
-
