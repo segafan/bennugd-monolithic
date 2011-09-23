@@ -13,10 +13,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "92B5442C142D0AE6002AFF41"
-               BuildableName = "bgdrtm.dylib"
-               BlueprintName = "bgdrtm"
-               ReferencedContainer = "container:bgdrtm.xcodeproj">
+               BlueprintIdentifier = "924C6656142D19FE002F8F45"
+               BuildableName = "liblibjoy.dylib"
+               BlueprintName = "libjoy"
+               ReferencedContainer = "container:libjoy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

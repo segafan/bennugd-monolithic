@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "92B54480142D10CA002AFF41"
-               BuildableName = "liblibblit.dylib"
+               BuildableName = "libblit.dylib"
                BlueprintName = "libblit"
                ReferencedContainer = "container:libblit.xcodeproj">
             </BuildableReference>

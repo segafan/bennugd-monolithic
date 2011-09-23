@@ -13,10 +13,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "92B5442C142D0AE6002AFF41"
-               BuildableName = "bgdrtm.dylib"
-               BlueprintName = "bgdrtm"
-               ReferencedContainer = "container:bgdrtm.xcodeproj">
+               BlueprintIdentifier = "924C6624142D1555002F8F45"
+               BuildableName = "liblibdraw.dylib"
+               BlueprintName = "libdraw"
+               ReferencedContainer = "container:libdraw.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

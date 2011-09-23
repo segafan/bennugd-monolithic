@@ -25,7 +25,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		92B5442D142D0AE6002AFF41 /* bgdrtm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = bgdrtm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		92B5442D142D0AE6002AFF41 /* libbgdrtm.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libbgdrtm.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 		92B54434142D0D7E002AFF41 /* copy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = copy.c; path = ../../../core/bgdrtm/src/copy.c; sourceTree = "<group>"; };
 		92B54435142D0D7E002AFF41 /* dcbr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dcbr.c; path = ../../../core/bgdrtm/src/dcbr.c; sourceTree = "<group>"; };
 		92B54436142D0D7E002AFF41 /* dirs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dirs.c; path = ../../../core/bgdrtm/src/dirs.c; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 		92B5442E142D0AE6002AFF41 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				92B5442D142D0AE6002AFF41 /* bgdrtm.dylib */,
+				92B5442D142D0AE6002AFF41 /* libbgdrtm.dylib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,7 +130,7 @@
 			);
 			name = bgdrtm;
 			productName = bgdrtm;
-			productReference = 92B5442D142D0AE6002AFF41 /* bgdrtm.dylib */;
+			productReference = 92B5442D142D0AE6002AFF41 /* libbgdrtm.dylib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -254,7 +254,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = i386;
 			};
@@ -264,7 +264,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_PREFIX = lib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = i386;
 			};
@@ -289,6 +289,7 @@
 				92B54433142D0AE6002AFF41 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

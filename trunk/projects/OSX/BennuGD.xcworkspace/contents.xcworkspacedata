@@ -19,4 +19,13 @@
    <FileRef
       location = "group:libblit/libblit.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:libdraw/libdraw.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:libfont/libfont.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:libjoy/libjoy.xcodeproj">
+   </FileRef>
 </Workspace>
