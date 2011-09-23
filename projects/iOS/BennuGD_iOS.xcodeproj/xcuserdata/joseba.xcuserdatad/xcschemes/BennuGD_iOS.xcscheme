@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "921B48121391CE07005F1832"
-               BuildableName = "BennuGD_iOS.app"
+               BuildableName = "iOSBennuGD.app"
                BlueprintName = "BennuGD_iOS"
                ReferencedContainer = "container:BennuGD_iOS.xcodeproj">
             </BuildableReference>
@@ -32,7 +32,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "921B48121391CE07005F1832"
-            BuildableName = "BennuGD_iOS.app"
+            BuildableName = "iOSBennuGD.app"
             BlueprintName = "BennuGD_iOS"
             ReferencedContainer = "container:BennuGD_iOS.xcodeproj">
          </BuildableReference>
@@ -47,12 +47,13 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Debug"
       debugDocumentVersioning = "YES"
+      enablesOpenGLESFrameCapture = "YES"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "921B48121391CE07005F1832"
-            BuildableName = "BennuGD_iOS.app"
+            BuildableName = "iOSBennuGD.app"
             BlueprintName = "BennuGD_iOS"
             ReferencedContainer = "container:BennuGD_iOS.xcodeproj">
          </BuildableReference>
@@ -72,7 +73,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "921B48121391CE07005F1832"
-            BuildableName = "BennuGD_iOS.app"
+            BuildableName = "iOSBennuGD.app"
             BlueprintName = "BennuGD_iOS"
             ReferencedContainer = "container:BennuGD_iOS.xcodeproj">
          </BuildableReference>

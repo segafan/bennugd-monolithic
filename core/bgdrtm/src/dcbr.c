@@ -40,6 +40,8 @@
 #include "files.h"
 #include "xstrings.h"
 
+#include <bgddl.h>
+
 #define SYSPROCS_ONLY_DECLARE
 #include "sysprocs.h"
 
@@ -216,10 +218,10 @@ int dcb_load_from( file * fp, char * filename, int offset )
     uint32_t size;
 
     /* Lee el contenido del fichero */
-
+    _printf("dcb_load_from_start\n");
     file_seek( fp, offset, SEEK_SET );
     file_read( fp, &dcb, sizeof( DCB_HEADER_DATA ) ) ;
-
+    _printf("2\n");
     ARRANGE_DWORD( &dcb.data.Version );
     ARRANGE_DWORD( &dcb.data.NProcs );
     ARRANGE_DWORD( &dcb.data.NFiles );
@@ -268,19 +270,20 @@ int dcb_load_from( file * fp, char * filename, int offset )
     local_strings = dcb.data.NLocStrings ;
 
     /* Recupera las zonas de datos globales */
-
+    _printf("3\n");
     file_seek( fp, offset + dcb.data.OGlobal, SEEK_SET ) ;
     file_read( fp, globaldata, dcb.data.SGlobal ) ;         /* **** */
 
     file_seek( fp, offset + dcb.data.OLocal, SEEK_SET ) ;
     file_read( fp, localdata, dcb.data.SLocal ) ;           /* **** */
-
+    _printf("4\n");
     if ( dcb.data.NLocStrings )
     {
+        _printf("4b\n");
         file_seek( fp, offset + dcb.data.OLocStrings, SEEK_SET ) ;
         file_readUint32A( fp, (uint32_t *)localstr, dcb.data.NLocStrings ) ;
     }
-
+    _printf("5\n");
     file_seek( fp, offset + dcb.data.OProcsTab, SEEK_SET ) ;
     for ( n = 0 ; n < dcb.data.NProcs ; n++ )
     {
@@ -320,12 +323,12 @@ int dcb_load_from( file * fp, char * filename, int offset )
     }
 
     /* Recupera las cadenas */
-
+    _printf("6\n");
     dcb.data.OStrings += offset;
     dcb.data.OText += offset;
 
     string_load( fp, dcb.data.OStrings, dcb.data.OText, dcb.data.NStrings, dcb.data.SText );
-
+    _printf("7\n");
     /* Recupera los ficheros incluídos */
 
     if ( dcb.data.NFiles )
@@ -347,7 +350,7 @@ int dcb_load_from( file * fp, char * filename, int offset )
             file_add_xfile( fp, filename, offset + dcbfile.OFile, fname, dcbfile.SFile ) ;
         }
     }
-
+    _printf("8\n");
     /* Recupera los imports */
 
     if ( dcb.data.NImports )
@@ -404,7 +407,7 @@ int dcb_load_from( file * fp, char * filename, int offset )
             dcb.varspace_vars[n] = read_and_arrange_varspace( fp, dcb.varspace[n].NVars );
         }
     }
-
+    _printf("8\n");
     if ( dcb.data.NSourceFiles )
     {
         char fname[__MAX_PATH] ;
@@ -420,7 +423,7 @@ int dcb_load_from( file * fp, char * filename, int offset )
             if ( !load_file( fname, n ) ) fprintf( stdout, "WARNING: Runtime warning - file not found (%s)\n", fname ) ;
         }
     }
-
+    _printf("9\n");
     /* ZZZZZZZZZZZZZZZZZZZZZZZZZZ */
 
     /* Recupera los procesos */
@@ -496,7 +499,6 @@ int dcb_load_from( file * fp, char * filename, int offset )
             dcb.proc[n].pubvar = read_and_arrange_varspace( fp, dcb.proc[n].data.NPubVars );
         }
     }
-
     /* Recupero tabla de fixup de sysprocs */
 
     sysproc_code_ref = calloc( dcb.data.NSysProcsCodes, sizeof( DCB_SYSPROC_CODE2 ) ) ;
@@ -504,7 +506,9 @@ int dcb_load_from( file * fp, char * filename, int offset )
     for ( n = 0; n < dcb.data.NSysProcsCodes; n++ )
     {
         DCB_SYSPROC_CODE sdcb;
+        _printf("Calling file_read\n");
         file_read( fp, &sdcb, sizeof( DCB_SYSPROC_CODE ) ) ;
+        _printf("file_read done\n");
 
         ARRANGE_DWORD( &sdcb.Id );
         ARRANGE_DWORD( &sdcb.Type );
@@ -516,13 +520,17 @@ int dcb_load_from( file * fp, char * filename, int offset )
         sysproc_code_ref[n].Params = sdcb.Params ;
         sysproc_code_ref[n].Code = sdcb.Code ;
         sysproc_code_ref[n].ParamTypes = ( uint8_t * ) calloc( sdcb.Params + 1, sizeof( char ) );
-        if ( sdcb.Params ) file_read( fp, sysproc_code_ref[n].ParamTypes, sdcb.Params ) ;
+        if ( sdcb.Params ) {
+            _printf("Calling file_read (2)\n");
+            file_read( fp, sysproc_code_ref[n].ParamTypes, sdcb.Params ) ;
+            _printf("file_read (2) done\n");
+        }
     }
-
+    _printf("11\n");
     sysprocs_fixup();
 
     mainproc = procdef_get_by_name( "MAIN" );
-
+    _printf("dcb_load_from_end\n");
     return 1 ;
 }
 
