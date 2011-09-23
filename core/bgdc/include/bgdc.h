@@ -51,6 +51,10 @@
 #define exit( retval ) printf("\nQUITTING in 5 seconds.\n"); sleep(5); exit(retval);
 #endif
 
+#ifdef TARGET_MAC
+#define _printf(...) printf(__VA_ARGS__)
+#endif
+
 /*
  *  HEADER FILES
  */

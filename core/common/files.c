@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 
 #ifdef TARGET_BEOS
 #include <posix/assert.h>
@@ -42,13 +43,13 @@
 
 #ifdef TARGET_WII
 #include <realpath.h>
-#include <sys/stat.h>
 #endif
 
-#if defined(TARGET_ANDROID) || defined (TARGET_IOS)
+#ifdef TARGET_ANDROID
 #include <android/log.h>
 #define _printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
-#include <sys/stat.h>
+#else
+#define _printf(...) printf(__VA_ARGS__)
 #endif
 
 #ifdef WITH_SDLRWOPS
