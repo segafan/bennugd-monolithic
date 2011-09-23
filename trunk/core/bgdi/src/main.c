@@ -248,7 +248,7 @@ int main( int argc, char *argv[] )
     }
 
 #ifdef TARGET_ANDROID
-    filename = "/mnt/sdcard/data/main.dcb";
+    filename = "main.dcb";
 	if (!file_exists(filename)) {
 	    printf("%s doesn't exist, quitting\n", filename);
 	    return -1;
