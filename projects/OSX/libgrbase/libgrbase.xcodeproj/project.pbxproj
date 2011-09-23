@@ -15,7 +15,6 @@
 		92B544B7142D1245002AFF41 /* g_pal.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B544B0142D1245002AFF41 /* g_pal.c */; };
 		92B544B8142D1245002AFF41 /* libgrbase.c in Sources */ = {isa = PBXBuildFile; fileRef = 92B544B1142D1245002AFF41 /* libgrbase.c */; };
 		92B544BC142D1261002AFF41 /* bgdrtm.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B544BA142D1261002AFF41 /* bgdrtm.dylib */; };
-		92B544BD142D1261002AFF41 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B544BB142D1261002AFF41 /* SDL.framework */; };
 		92B544BF142D1268002AFF41 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B544BE142D1268002AFF41 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
@@ -29,7 +28,6 @@
 		92B544B0142D1245002AFF41 /* g_pal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = g_pal.c; path = ../../../modules/libgrbase/g_pal.c; sourceTree = "<group>"; };
 		92B544B1142D1245002AFF41 /* libgrbase.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = libgrbase.c; path = ../../../modules/libgrbase/libgrbase.c; sourceTree = "<group>"; };
 		92B544BA142D1261002AFF41 /* bgdrtm.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = bgdrtm.dylib; path = "../../../../../../Library/Developer/Xcode/DerivedData/BennuGD-cadtqqqxurunkidxrlgrcnpqnpyn/Build/Products/Debug/bgdrtm.dylib"; sourceTree = "<group>"; };
-		92B544BB142D1261002AFF41 /* SDL.framework */ = {isa = PBXFileReference; lastKnownFileType = file; name = SDL.framework; path = "../../../3rdparty/SDL-1.3/src/Xcode/SDL/build/Default/SDL.framework"; sourceTree = "<group>"; };
 		92B544BE142D1268002AFF41 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -40,7 +38,6 @@
 			files = (
 				92B544BF142D1268002AFF41 /* libz.dylib in Frameworks */,
 				92B544BC142D1261002AFF41 /* bgdrtm.dylib in Frameworks */,
-				92B544BD142D1261002AFF41 /* SDL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,7 +51,6 @@
 				92B544A5142D11D9002AFF41 /* Products */,
 				92B544BE142D1268002AFF41 /* libz.dylib */,
 				92B544BA142D1261002AFF41 /* bgdrtm.dylib */,
-				92B544BB142D1261002AFF41 /* SDL.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -164,8 +160,8 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
+					COLORSPACE_BGR,
+					TARGET_MAC,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -193,6 +189,10 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					COLORSPACE_BGR,
+					TARGET_MAC,
+				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
@@ -251,6 +251,7 @@
 				92B544AA142D11D9002AFF41 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

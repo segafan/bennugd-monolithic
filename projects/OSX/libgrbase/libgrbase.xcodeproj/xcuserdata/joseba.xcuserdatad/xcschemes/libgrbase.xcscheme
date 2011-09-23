@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "92B544A3142D11D9002AFF41"
-               BuildableName = "liblibgrbase.dylib"
+               BuildableName = "libgrbase.dylib"
                BlueprintName = "libgrbase"
                ReferencedContainer = "container:libgrbase.xcodeproj">
             </BuildableReference>
