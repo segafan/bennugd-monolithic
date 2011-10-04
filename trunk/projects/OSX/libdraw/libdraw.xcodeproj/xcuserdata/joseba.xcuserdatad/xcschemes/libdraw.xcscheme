@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "924C6624142D1555002F8F45"
-               BuildableName = "liblibdraw.dylib"
+               BuildableName = "libdraw.dylib"
                BlueprintName = "libdraw"
                ReferencedContainer = "container:libdraw.xcodeproj">
             </BuildableReference>

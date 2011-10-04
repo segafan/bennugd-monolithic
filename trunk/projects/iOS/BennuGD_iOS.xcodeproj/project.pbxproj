@@ -1524,7 +1524,7 @@
 					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1573,7 +1573,7 @@
 					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",

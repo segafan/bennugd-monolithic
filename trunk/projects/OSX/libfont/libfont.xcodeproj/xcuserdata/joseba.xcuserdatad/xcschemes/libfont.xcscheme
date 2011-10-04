@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "924C663C142D1653002F8F45"
-               BuildableName = "liblibfont.dylib"
+               BuildableName = "libfont.dylib"
                BlueprintName = "libfont"
                ReferencedContainer = "container:libfont.xcodeproj">
             </BuildableReference>
