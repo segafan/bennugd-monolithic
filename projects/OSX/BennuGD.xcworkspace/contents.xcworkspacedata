@@ -28,4 +28,7 @@
    <FileRef
       location = "group:libjoy/libjoy.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:librender/librender.xcodeproj">
+   </FileRef>
 </Workspace>

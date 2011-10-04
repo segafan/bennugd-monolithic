@@ -31,8 +31,8 @@
 
     #include <stdint.h>
 
-    #define __BGD_LIL_ENDIAN 1234
-    #define __BGD_BIG_ENDIAN 4321
+    #define __LIL_ENDIAN 1234
+    #define __BIG_ENDIAN 4321
 
     #if defined(__hppa__) || \
         defined(__m68k__) || \
@@ -42,54 +42,30 @@
         defined(__ppc__) || \
         defined(__POWERPC__) || \
         defined(_M_PPC) || \
-        defined(__sparc__) || \
-        defined(GEKKO)
-        #define __BYTEORDER  __BGD_BIG_ENDIAN
+        defined(__sparc__)
+        #define __BYTEORDER  __BIG_ENDIAN
     #else
-        #define __BYTEORDER  __BGD_LIL_ENDIAN
+        #define __BYTEORDER  __LIL_ENDIAN
     #endif
 
     /* ---------------------------------------------------------------------- */
     /* Trucos de portabilidad                                                 */
     /* ---------------------------------------------------------------------- */
 
-    #if __BYTEORDER == __BGD_LIL_ENDIAN
+    #if __BYTEORDER == __LIL_ENDIAN
         #define ARRANGE_DWORD(x)
         #define ARRANGE_WORD(x)
 
         #define ARRANGE_DWORDS(x,c)
         #define ARRANGE_WORDS(x,c)
     #else
-        #if defined(__GNUC__) && ( defined(__powerpc__) || defined(__ppc__) || defined(GEKKO) )
-            /* PowerPC optimized assembly code */
-            static __inline__ void DO_Swap16(uint16_t * D)
-            {
-                uint16_t result;
-	            __asm__("rlwimi %0,%2,8,16,23" : "=&r" (result) : "0" (*D >> 8), "r" (*D));
+        static __inline__ void DO_Swap16(uint16_t * D) {
+            *D = ((*D<<8)|(*D>>8));
+        }
 
-	            *D = result;
-            }
-
-            static __inline__ void DO_Swap32(uint32_t * D)
-            {
-                uint32_t result;
-
-	            __asm__("rlwimi %0,%2,24,16,23" : "=&r" (result) : "0" (*D>>24), "r" (*D));
-	            __asm__("rlwimi %0,%2,8,8,15"   : "=&r" (result) : "0" (result),    "r" (*D));
-	            __asm__("rlwimi %0,%2,24,0,7"   : "=&r" (result) : "0" (result),    "r" (*D));
-
-	            *D = result;
-            }
-        #else
-            static __inline__ void DO_Swap16(uint16_t * D) {
-                *D = ((*D<<8)|(*D>>8));
-            }
-
-            static __inline__ void DO_Swap32(uint32_t * D) {
-                *D = ((*D<<24)|((*D<<8)&0x00FF0000)|((*D>>8)&0x0000FF00)|(*D>>24));
-            }
-        #endif
-
+        static __inline__ void DO_Swap32(uint32_t * D) {
+            *D = ((*D<<24)|((*D<<8)&0x00FF0000)|((*D>>8)&0x0000FF00)|(*D>>24));
+        }
 
         #define ARRANGE_DWORD(x)    DO_Swap32(x)
         #define ARRANGE_WORD(x)     DO_Swap16(x)
