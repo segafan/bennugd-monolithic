@@ -842,7 +842,11 @@ int modmap_bgload_fpg( INSTANCE * my, int * params )
 {
     bgdata *t = prep( params );
     t->fn = gr_load_fpg;
+#if SDL_VERSION_ATLEAST(1,3,0)
+    SDL_CreateThread( bgDoLoad, NULL, ( void * )t );
+#else
     SDL_CreateThread( bgDoLoad, ( void * )t );
+#endif
     return 0 ;
 }
 
