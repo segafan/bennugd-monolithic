@@ -45,13 +45,6 @@
 #include <realpath.h>
 #endif
 
-#ifdef TARGET_ANDROID
-#include <android/log.h>
-#define _printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
-#else
-#define _printf(...) printf(__VA_ARGS__)
-#endif
-
 #ifdef WITH_SDLRWOPS
 #include <SDL_rwops.h>
 #endif
@@ -116,7 +109,6 @@ void file_add_xfile( file * fp, char * stubname, long offset, char * name, int s
 
 int file_read( file * fp, void * buffer, int len )
 {
-    _printf("Called file_read with len: %d\n", len);
     assert( len != 0 );
 
     if ( fp->type == F_XFILE )
@@ -153,10 +145,6 @@ int file_read( file * fp, void * buffer, int len )
     if ( fp->type == F_RWOPS )
     {
         int retval = SDL_RWread( fp->rwops, buffer, 1, len );
-        if(retval <= 0) {
-            _printf("SDL_RWread returned %d\n", retval);
-            _printf("Error: %s\n", SDL_GetError());
-        }
         return retval;
     }
 #endif
@@ -671,8 +659,6 @@ int file_seek( file * fp, int pos, int where )
 #ifdef WITH_SDLRWOPS
     if ( fp->type == F_RWOPS )
     {
-        if(! fp->rwops)
-            _printf("file_seek will fail as fp->rwops is NULL\n");
         assert( fp->rwops );
         return SDL_RWseek( fp->rwops, (long)pos, where );
     }
