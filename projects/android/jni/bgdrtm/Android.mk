@@ -51,7 +51,8 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_wm/ \
 	$(MODULES_PATH)/mod_sys/ \
 	$(MODULES_PATH)/mod_flic/ \
-	$(MODULES_PATH)/mod_mathi/
+	$(MODULES_PATH)/mod_mathi/ \
+	$(MODULES_PATH)/mod_multi/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DSTDC_HEADERS \
@@ -63,7 +64,6 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODREGEX \
 	-DNO_MODMEM \
 	-DNO_LIBKEY \
-	-DNO_MODMULTI \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DSDL_NO_COMPAT \
@@ -146,7 +146,8 @@ LOCAL_SRC_FILES := \
 	../../../../modules/libwm/libwm.c \
 	../../../../modules/mod_wm/mod_wm.c \
 	../../../../modules/mod_sys/mod_sys.c \
-	../../../../modules/mod_flic/mod_flic.c
+	../../../../modules/mod_flic/mod_flic.c \
+	../../../../modules/mod_multi/mod_multi.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES := SDL SDL_mixer

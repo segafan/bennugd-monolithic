@@ -12,6 +12,7 @@ import "mod_sound"
 import "mod_wm"
 import "mod_map"
 import "mod_say"
+import "mod_multi"
 
 GLOBAL
 // Set to your liking
@@ -51,7 +52,7 @@ Process Main()
 Private
 int vx=0, vy=0;
 int song=0;
-int i=0;
+int num_fingers=0;
 
 Begin
     //set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
@@ -66,10 +67,11 @@ Begin
     end;
     graph = write_in_map(0, "Tilt your device!", 4);
     x = width/2; y = height/2;
+    write_var(0, 0, height-30, 6, num_fingers);
     write_var(0, 0, height-20, 6, focus_status); 
     write_var(0, 0, height-10, 6, mouse_status); 
     write_var(0, 0, height, 6, window_status);
-    while(focus_status == 1)
+    while(num_fingers != 5)
         if(x <= width-graphic_info(0, graph, G_WIDTH)/2 && vx > 0)
             x += vx;
         end;
@@ -92,7 +94,8 @@ Begin
             vy = 0;
         end;
         
-        say_fast("Running"+(i++));
+        // Store the total amount of fingers touching the screen
+        num_fingers = multi_numpointers();
 
         frame;
     End;

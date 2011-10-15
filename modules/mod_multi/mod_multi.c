@@ -23,7 +23,9 @@
  */
 
 #include <stdio.h>
+#ifndef FAKE_MULTIPOINTER
 #include <SDL.h>
+#endif
 #include "bgdrtm.h"
 #include "bgddl.h"
 
@@ -37,13 +39,9 @@ int numpointers=0;
 
 /* Process SDL events looking for multitouch-related ones */
 void parse_input_events() {
+#ifndef FAKE_MULTIPOINTER
     SDL_Event e;
     SDL_Touch *state;
-    
-    // Reset the value
-    numpointers = 0;
-    
-    _printf("Parsing events\n");
     
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_MULTIGESTURE ) > 0 ) {
         switch ( e.type ) {
@@ -54,16 +52,21 @@ void parse_input_events() {
                 // touch device
                 numpointers = state->num_fingers;
                 break;
+            
+            case SDL_FINGERMOTION:
+                break;
 
             case SDL_FINGERUP:
-                // What to do here?
-                // Looks like I cannot access the fingers from here
+                // Refresh the total number of fingers onscreen
+                state = SDL_GetTouch(e.tfinger.touchId);
+                numpointers = state->num_fingers;
                 break;
         }
     }
+#endif
 }
 
-int modmulti_numpointers(INSTANCE * my, int * params) {
+static int modmulti_numpointers(INSTANCE * my, int * params) {
     return numpointers;
 }
 
@@ -72,6 +75,7 @@ int modmulti_numpointers(INSTANCE * my, int * params) {
 DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[] =
 {
     { "MULTI_NUMPOINTERS"     , ""      , TYPE_INT    , modmulti_numpointers },
+    {0, 0, 0, 0}
 };
 
 HOOK __bgdexport( mod_multi, handler_hooks )[] =
