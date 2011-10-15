@@ -123,9 +123,10 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeKeyUp(
 // Touch
 extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
                                     JNIEnv* env, jclass jcls,
+                                    jint touch_device_id_in, jint pointer_finger_id_in,
                                     jint action, jfloat x, jfloat y, jfloat p)
 {
-    Android_OnTouch(action, x, y, p);
+    Android_OnTouch(touch_device_id_in, pointer_finger_id_in, action, x, y, p);
 }
 
 // Accelerometer
@@ -521,13 +522,26 @@ extern "C" long Android_JNI_FileSeek(SDL_RWops* ctx, long offset, int whence)
 
     if (movement > 0) {
         // The easy case where we're seeking forwards
+        void *buffer = malloc(1024);
+        long result;
         while (movement > 0) {
+            // skip shouldn't skip more bytes than requested, but under certain conditions
+            // it seems to be buggy, and from the documents it's implied that it reads bytes anyway,
+            // so we just read the bytes ourselves to avoid problems
             // inputStream.skip(...);
-            movement -= mEnv->CallLongMethod(inputStream, skipMethod, movement);
+            //movement -= mEnv->CallLongMethod(inputStream, skipMethod, movement);
+            if(movement > 1024) result = Android_JNI_FileRead(ctx, buffer, 1, 1024);
+            else result = Android_JNI_FileRead(ctx, buffer, 1, movement);
+            if (result == -1) {
+                newPosition += movement;
+                break;
+            }
+            movement -= result;
             if (Android_JNI_ExceptionOccurred()) {
                 return -1;
             }
         }
+        free(buffer);
     } else if (movement < 0) {
         // We can't seek backwards so we have to reopen the file and seek
         // forwards which obviously isn't very efficient
