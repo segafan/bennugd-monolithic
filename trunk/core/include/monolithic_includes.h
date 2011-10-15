@@ -89,6 +89,9 @@
 #ifndef NO_MODCHIPMUNK
 #   include <mod_chipmunk_symbols.h>
 #endif
+#ifndef NO_MODMULTI
+#   include <mod_multi_symbols.h>
+#endif
 //#include <mod_sqlite3_symbols.h>
 
 typedef struct
@@ -192,6 +195,9 @@ basic_symbols symbol_list[] =
 #ifndef NO_MODCHIPMUNK
     { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency, mod_chipmunk_constants_def, mod_chipmunk_types_def, mod_chipmunk_globals_def, mod_chipmunk_locals_def, mod_chipmunk_functions_exports },
 #endif
+#ifndef NO_MODMULTI
+    { "mod_multi.fakelib" , mod_multi_modules_dependency, NULL, NULL, NULL, NULL, mod_multi_functions_exports },
+#endif
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -268,6 +274,9 @@ extra_symbols symbol_list_runtime[] =
 	//{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
 #ifndef NO_MODCHIPMUNK
 	{ mod_chipmunk_globals_fixup, mod_chipmunk_locals_fixup, mod_chipmunk_module_initialize, mod_chipmunk_module_finalize, NULL, NULL, NULL, mod_chipmunk_handler_hooks }, //mod_chipmunk
+#endif
+#ifndef NO_MODMULTI
+    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, mod_multi_handler_hooks }, //mod_multi
 #endif
 };
 #endif

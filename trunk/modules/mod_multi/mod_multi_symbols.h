@@ -22,10 +22,25 @@
 *
 */
 
-#ifndef BennuGD_iOS_mod_multipointer_h
-#define BennuGD_iOS_mod_multipointer_h
+#ifndef __MODMULTIPOINTER_SYMBOLS_H
+#define __MODMULTIPOINTER_SYMBOLS_H
 
 #include "bgddl.h"
 
+#ifdef __BGDC__
+char * __bgdexport( mod_multi, modules_dependency )[] =
+{
+    "libsdlhandler",
+    NULL
+};
 
+DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[] =
+{
+    { "MULTI_NUMPOINTERS"     , ""      , TYPE_INT    , 0 },
+};
+#else
+extern DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[];
+extern HOOK __bgdexport( mod_multi, handler_hooks )[];
+extern char * __bgdexport( mod_multi, modules_dependency )[];
+#endif
 #endif

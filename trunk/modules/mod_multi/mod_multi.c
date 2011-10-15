@@ -24,10 +24,13 @@
 
 #include <stdio.h>
 #include <SDL.h>
-#include <bgddl.h>
+#include "bgdrtm.h"
+#include "bgddl.h"
 
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
-#error This module needs SDL 1.3, refusing to compile
+#ifndef FAKE_MULTIPOINTER
+#   if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
+#       error This module needs SDL 1.3, refusing to compile
+#   endif
 #endif
 
 int numpointers=0;
@@ -39,6 +42,8 @@ void parse_input_events() {
     
     // Reset the value
     numpointers = 0;
+    
+    _printf("Parsing events\n");
     
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_MULTIGESTURE ) > 0 ) {
         switch ( e.type ) {
@@ -58,25 +63,28 @@ void parse_input_events() {
     }
 }
 
-static int modmulti_numpointers() {
+int modmulti_numpointers(INSTANCE * my, int * params) {
     return numpointers;
 }
 
-DLSYSFUNCS  __bgdexport( mod_multipointer, functions_exports )[] =
+/* ----------------------------------------------------------------- */
+
+DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[] =
 {
-    { "MULTI_NUMPOINTERS"     , ""      , TYPE_INT    , modmulti_numpointers    },
+    { "MULTI_NUMPOINTERS"     , ""      , TYPE_INT    , modmulti_numpointers },
 };
 
-/* Bigest priority first execute
- Lowest priority last execute
- We need to run before libsdlhandler or otherwise touch events will be
- discarded. */
-
-HOOK __bgdexport( mod_multipointer, handler_hooks )[] =
+HOOK __bgdexport( mod_multi, handler_hooks )[] =
 {
     { 5500, parse_input_events                },
     {    0, NULL                              }
 } ;
+
+char * __bgdexport( mod_multi, modules_dependency )[] =
+{
+    "libsdlhandler",
+    NULL
+};
 
 /* ----------------------------------------------------------------- */
 
