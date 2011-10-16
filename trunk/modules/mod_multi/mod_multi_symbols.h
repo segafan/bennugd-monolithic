@@ -36,7 +36,8 @@ char * __bgdexport( mod_multi, modules_dependency )[] =
 
 DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[] =
 {
-    { "MULTI_NUMPOINTERS"     , ""      , TYPE_INT    , 0 },
+    { "MULTI_NUMPOINTERS" , ""      , TYPE_INT    , 0 },
+    { "MULTI_INFO"        , "IS"    , TYPE_FLOAT  , 0 },
 };
 #else
 extern DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[];
