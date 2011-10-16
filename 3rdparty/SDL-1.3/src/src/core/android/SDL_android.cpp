@@ -346,11 +346,6 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
     ctx->hidden.androidio.inputStream = inputStream;
     ctx->hidden.androidio.inputStreamRef = mEnv->NewGlobalRef(inputStream);
 
-    // Store .skip id for seeking purposes
-    mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
-            "skip", "(J)J");
-    ctx->hidden.androidio.skipMethod = mid;
-
     // Despite all the visible documentation on [Asset]InputStream claiming
     // that the .available() method is not guaranteed to return the entire file
     // size, comments in <sdk>/samples/<ver>/ApiDemos/src/com/example/ ...
@@ -518,30 +513,25 @@ extern "C" long Android_JNI_FileSeek(SDL_RWops* ctx, long offset, int whence)
 
     long movement = newPosition - ctx->hidden.androidio.position;
     jobject inputStream = (jobject)ctx->hidden.androidio.inputStream;
-    jmethodID skipMethod = (jmethodID)ctx->hidden.androidio.skipMethod;
 
     if (movement > 0) {
+        unsigned char buffer[1024];
+
         // The easy case where we're seeking forwards
-        void *buffer = malloc(1024);
-        long result;
         while (movement > 0) {
-            // skip shouldn't skip more bytes than requested, but under certain conditions
-            // it seems to be buggy, and from the documents it's implied that it reads bytes anyway,
-            // so we just read the bytes ourselves to avoid problems
-            // inputStream.skip(...);
-            //movement -= mEnv->CallLongMethod(inputStream, skipMethod, movement);
-            if(movement > 1024) result = Android_JNI_FileRead(ctx, buffer, 1, 1024);
-            else result = Android_JNI_FileRead(ctx, buffer, 1, movement);
-            if (result == -1) {
-                newPosition += movement;
-                break;
+            long amount = (long) sizeof (buffer);
+            if (amount > movement) {
+                amount = movement;
             }
-            movement -= result;
-            if (Android_JNI_ExceptionOccurred()) {
+            size_t result = Android_JNI_FileRead(ctx, buffer, 1, amount);
+
+            if (result <= 0) {
+                // Failed to read/skip the required amount, so fail
                 return -1;
             }
+
+            movement -= result;
         }
-        free(buffer);
     } else if (movement < 0) {
         // We can't seek backwards so we have to reopen the file and seek
         // forwards which obviously isn't very efficient

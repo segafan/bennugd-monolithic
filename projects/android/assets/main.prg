@@ -11,6 +11,7 @@ import "mod_mouse"
 import "mod_sound"
 import "mod_wm"
 import "mod_map"
+import "mod_draw"
 import "mod_say"
 import "mod_multi"
 
@@ -41,61 +42,47 @@ Begin
             vy = -vy;
         end
         x += vx; y += vy;
-        if(mouse.left)
-            x = mouse.x; y = mouse.y;
-        end;
         FRAME;
     End;
 End;
 
 Process Main()
 Private
-int vx=0, vy=0;
-int song=0;
-int num_fingers=0;
+int song=0, num_fingers=0, i=0;
 
 Begin
     //set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
     width = graphic_info(0, -1, G_WIDTH);
     height = graphic_info(0, -1, G_HEIGHT);
-    say_fast("Running at "+width+"x"+height);
+    
+    graph = map_new(width, height, 16);
+    x = width/2; y = height/2;
+
     bouncer();
+
     if(sound == 1)
         song = load_song("1.ogg");
         play_song(song, 0);
     end;
-    graph = write_in_map(0, "Tilt your device!", 4);
-    x = width/2; y = height/2;
-    write_var(0, 0, height-30, 6, num_fingers);
-    write_var(0, 0, height-20, 6, focus_status); 
-    write_var(0, 0, height-10, 6, mouse_status); 
-    write_var(0, 0, height, 6, window_status);
+    write_var(0, 0, height, 6, num_fingers);
+    drawing_map(0, graph);
+    drawing_color(rgb(0, 255, 255));
     while(num_fingers != 5)
-        if(x <= width-graphic_info(0, graph, G_WIDTH)/2 && vx > 0)
-            x += vx;
-        end;
-        if(x >= graphic_info(0, graph, G_WIDTH)/2 && vx < 0)
-            x += vx;
-        end;
-
-        if(y <= height-graphic_info(0, graph, G_HEIGHT)/2 && vy > 0)
-            y += vy;
-        end;
-        if(y >= graphic_info(0, graph, G_HEIGHT)/2 && vy < 0)
-            y += vy;
-        end;
-
-        // Reset the counters if we're at the border of the screen
-        if(x <= 10 || x >= width-10)
-            vx = 0;
-        end;
-        if(y <= 10 || y >= height-10)
-            vy = 0;
-        end;
-        
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
+        
+        for(i=0; i<=10; i++)
+            if(multi_info(i, "ACTIVE") > 0.0)
+                draw_fcircle(multi_info(i, "Y")*(float)width,
+                             multi_info(i, "X")*(float)height, 5);
+                say_fast("Drawing fcircle for pointer "+i+" @ "+
+                             multi_info(i, "Y")*(float)width+
+                         "x"+multi_info(i, "X")*(float)height);
+            else
+                say_fast(multi_info(i, "ACTIVE"));
+            end;
+        end;
 
         frame;
     End;
