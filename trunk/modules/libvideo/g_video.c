@@ -427,6 +427,18 @@ int gr_set_mode( int width, int height, int depth )
 
         scale_screen = SDL_GetWindowSurface(window);
 
+        // Set the screen depth
+        // TODO: Check we should actually be using scale_screen and not screen
+        if(scale_screen->format->BitsPerPixel == 16) {
+            enable_16bits = 1;
+            enable_32bits = 0;    
+            depth = 16;
+        } else if(scale_screen->format->BitsPerPixel == 32) {
+            enable_16bits = 0;
+            enable_32bits = 1;    
+            depth = 32;
+        }
+
         _printf("Video mode set to %dx%d", scale_screen->w, scale_screen->h);
 #else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
@@ -547,7 +559,19 @@ int gr_set_mode( int width, int height, int depth )
                                   surface_width, surface_height, sdl_flags);
 
         screen = SDL_GetWindowSurface(window);
-        _printf("Video mode set to %dx%d", screen->w, screen->h);
+        
+        // Set the screen depth 
+        if(screen->format->BitsPerPixel == 16) {
+            enable_16bits = 1;
+            enable_32bits = 0;    
+            depth = 16;
+        } else if(screen->format->BitsPerPixel == 32) {
+            enable_16bits = 0;
+            enable_32bits = 1;    
+            depth = 32;
+        }
+
+        _printf("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
 #else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
