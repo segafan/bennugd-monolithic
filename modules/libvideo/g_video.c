@@ -427,7 +427,7 @@ int gr_set_mode( int width, int height, int depth )
 
         scale_screen = SDL_GetWindowSurface(window);
 
-        // Set the screen depth
+        // Set the screen depth to what SDL gave us
         // TODO: Check we should actually be using scale_screen and not screen
         if(scale_screen->format->BitsPerPixel == 16) {
             enable_16bits = 1;
@@ -560,7 +560,7 @@ int gr_set_mode( int width, int height, int depth )
 
         screen = SDL_GetWindowSurface(window);
         
-        // Set the screen depth 
+        // Set the screen depth  to what SDL gave us
         if(screen->format->BitsPerPixel == 16) {
             enable_16bits = 1;
             enable_32bits = 0;    
