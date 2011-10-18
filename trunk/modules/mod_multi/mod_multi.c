@@ -25,64 +25,114 @@
 #include <stdio.h>
 #include <strings.h>
 #include <bgddl.h>
-#include <mod_multi.h>
-#ifndef FAKE_MULTIPOINTER
 #include <SDL.h>
-#endif
 
 #ifndef MAX_POINTERS
 #   define MAX_POINTERS 10
 #endif
 
-#ifndef FAKE_MULTIPOINTER
-#   if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
-#       error This module needs SDL 1.3, refusing to compile
-#   endif
+#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
+#    error This module needs SDL 1.3, refusing to compile
 #endif
 
-int numpointers=0;
+typedef struct {
+    SDL_bool active;
+    float x;
+    float y;
+    float pressure;
+    SDL_FingerID fingerid;
+} multi_pointer;
+
 multi_pointer pointers[MAX_POINTERS];
+
+int numpointers=0;
+
+/* Return the position of finger in the pointers array, if it's not there,
+return the first unused entry.
+If there are none available, return -1 */
+int get_sdlfinger_index(SDL_FingerID finger) {
+    int n=0;
+
+    // First, try to see if the given ID matches any active one
+    for(n=0; n<MAX_POINTERS; n++) {
+        if(finger == pointers[n].fingerid) {
+            return n;
+        }
+    }
+    
+    // ID not found, try to find a free spot
+    for(n=0; n<MAX_POINTERS; n++) {
+        if(pointers[n].active == SDL_FALSE) {
+            return n;
+        }
+    }
+    
+    // Fail
+    return -1;
+}
 
 /* Process SDL events looking for multitouch-related ones */
 void parse_input_events() {
-#ifndef FAKE_MULTIPOINTER
     int n=0;
     SDL_Event e;
     SDL_Touch *state;
 
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_MULTIGESTURE ) > 0 ) {
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
         switch ( e.type ) {
             case SDL_FINGERDOWN:
+                // Retrive the touch state, the finger id and the position in the array
+                state  = SDL_GetTouch(e.tfinger.touchId);
+                n      = get_sdlfinger_index(e.tfinger.fingerId);
+
+                // Quit if fingerid not found
+                if (n == -1)
+                    break;
+
                 // Store the amount of fingers onscreen
-                state = SDL_GetTouch(e.tfinger.touchId);
                 numpointers = state->num_fingers;
                 // Store the data about this finger's position
-                pointers[n].active = 1;
+                pointers[n].fingerid = e.tfinger.fingerId;
+                pointers[n].active = SDL_TRUE;
                 pointers[n].x = (float)e.tfinger.x / state->xres;
                 pointers[n].y = (float)e.tfinger.y / state->yres;
+                pointers[n].pressure = (float)e.tfinger.pressure / state->pressure_max ;
                 break;
             
             case SDL_FINGERMOTION:
+                // Retrive the touch state, the finger id and the position in the array
+                state  = SDL_GetTouch(e.tfinger.touchId);
+                n      = get_sdlfinger_index(e.tfinger.fingerId);
+                
+                // Quit if fingerid not found
+                if (n == -1)
+                    break;
+
                 // Update the data about this finger's position
-                state = SDL_GetTouch(e.tfinger.touchId);
                 pointers[n].x = (float)e.tfinger.x / state->xres;
                 pointers[n].y = (float)e.tfinger.y / state->yres;
+                pointers[n].pressure = (float)e.tfinger.pressure / state->pressure_max ;
                 break;
 
             case SDL_FINGERUP:
+                // Retrive the touch state, the finger id and the position in the array
+                state  = SDL_GetTouch(e.tfinger.touchId);
+                n      = get_sdlfinger_index(e.tfinger.fingerId);
+
                 // Refresh the total number of fingers onscreen
-                state = SDL_GetTouch(e.tfinger.touchId);
                 numpointers = state->num_fingers;
+                
+                // Quit if fingerid not found
+                if (n == -1)
+                    break;
+                
                 // Remove the data about this finger's position
-                pointers[n].active = 0;
+                pointers[n].active = SDL_FALSE;
                 pointers[n].x = -1.0;
                 pointers[n].y = -1.0;
+                pointers[n].pressure = -1.0;
                 break;
         }
-        
-        n++;
     }
-#endif
 }
 
 // Return the total number of active pointers
@@ -92,7 +142,6 @@ static int modmulti_numpointers(INSTANCE * my, int * params) {
 
 // Get some info about the given pointer
 static float modmulti_info(INSTANCE * my, int * params) {
-#ifndef FAKE_MULTIPOINTER
     const unsigned char *info = (unsigned char *) string_get(params[1]);
     int n=params[0];
     
@@ -105,12 +154,17 @@ static float modmulti_info(INSTANCE * my, int * params) {
         return pointers[n].x;
     } else if(strncasecmp(info, "y", 1)) {
         return pointers[n].y;
+    } else if(strncasecmp(info, "pressure", 8)) {
+        return pointers[n].pressure;
     } else if(strncasecmp(info, "active", 6)) {
-        return (float)pointers[n].active;
+        if(pointers[n].active == SDL_TRUE)
+            return 1.0;
+        else
+            return 0.0;
     }
     
     string_discard(params[1]);
-#endif
+
     return -1.0;
 }
 

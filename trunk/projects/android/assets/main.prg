@@ -72,15 +72,14 @@ Begin
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
         
-        for(i=0; i<=10; i++)
+        for(i=0; i<10; i++)
             if(multi_info(i, "ACTIVE") > 0.0)
                 draw_fcircle(multi_info(i, "Y")*(float)width,
                              multi_info(i, "X")*(float)height, 5);
                 say_fast("Drawing fcircle for pointer "+i+" @ "+
                              multi_info(i, "Y")*(float)width+
-                         "x"+multi_info(i, "X")*(float)height);
-            else
-                say_fast(multi_info(i, "ACTIVE"));
+                         "x"+multi_info(i, "X")*(float)height+
+                         " active:"+multi_info(i, "ACTIVE"));
             end;
         end;
 
