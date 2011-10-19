@@ -1,3 +1,4 @@
+#define CP_USE_DOUBLES 0
 #ifdef __APPLE__
    #import "TargetConditionals.h"
 #endif
@@ -12,7 +13,7 @@
 	#elif TARGET_OS_MAC
 		#import <ApplicationServices/ApplicationServices.h>
 	#endif
-	
+
 	#if defined(__LP64__) && __LP64__
 		#define CP_USE_DOUBLES 1
 	#else
@@ -68,11 +69,11 @@
 		static union MSVC_EVIL_FLOAT_HACK INFINITY_HACK = {{0x00, 0x00, 0x80, 0x7F}};
 		#define INFINITY (INFINITY_HACK.Value)
 	#endif
-	
+
 	#ifdef __GNUC__
 		#define INFINITY (__builtin_inf())
 	#endif
-	
+
 	#ifndef INFINITY
 		#define INFINITY (1e1000)
 	#endif
@@ -110,14 +111,6 @@ static inline cpFloat cpfclamp(cpFloat f, cpFloat min, cpFloat max)
 {
 	return cpfmin(cpfmax(f, min), max);
 }
-
-/// Clamp @c f to be between 0 and 1.
-static inline cpFloat cpfclamp01(cpFloat f)
-{
-	return cpfmax(0.0f, cpfmin(f, 1.0f));
-}
-
-
 
 /// Linearly interpolate (or extrapolate) between @c f1 and @c f2 by @c t percent.
 static inline cpFloat cpflerp(cpFloat f1, cpFloat f2, cpFloat t)
