@@ -55,10 +55,6 @@
 #include "libgrbase.h"
 #include "librender.h"
 
-#ifndef __MONOLITHIC__
-#include "mod_debug_symbols.h"
-#endif
-
 /* --------------------------------------------------------------------------- */
 
 extern void systext_color( int cfg, int cbg );
@@ -2519,9 +2515,9 @@ static int console_keyboard_handler_cb( SDL_keysym k )
 static void console_draw( INSTANCE * i, REGION * clip )
 {
     int x, y, line, count ;
-    
+
     if ( break_on_next_proc ) return ;
-    
+
     if ( debug_on_frame || force_debug )
     {
         SDL_EnableKeyRepeat( 250, 50 );
@@ -2530,13 +2526,13 @@ static void console_draw( INSTANCE * i, REGION * clip )
         debug_mode = 1;
         console_showing = 1 ;
     }
-    
+
     if ( console_columns > scrbitmap->width / CHARWIDTH )
         console_columns = scrbitmap->width / CHARWIDTH ;
-    
+
     if ( console_lines > ( scrbitmap->height - CHARHEIGHT * 3 ) / CHARHEIGHT )
         console_lines = ( scrbitmap->height - CHARHEIGHT * 3 ) / CHARHEIGHT ;
-    
+
     if ( console_showing )
     {
         if ( console_y < console_lines * CHARHEIGHT ) console_y += CHARHEIGHT ;
@@ -2547,14 +2543,14 @@ static void console_draw( INSTANCE * i, REGION * clip )
         if ( console_y > 0 ) console_y -= CHARHEIGHT ;
         if ( console_y < 0 ) console_y = 0 ;
     }
-    
+
     x = ( scrbitmap->width - console_columns * CHARWIDTH ) / 2 ;
     y = -console_lines * CHARHEIGHT + console_y ;
-    
+
     if ( show_expression )
     {
         char * result = eval_expression( show_expression, 0 );
-        
+
         if ( !result )
         {
             free( show_expression );
@@ -2566,7 +2562,7 @@ static void console_draw( INSTANCE * i, REGION * clip )
             int rl = ln * CHARWIDTH;
             int xo = ( scrbitmap->width - rl ) / 2;
             int yo = ( console_y < 1 ) ? 2 : console_y + CHARHEIGHT * 2 + 1;
-            
+
             systext_color( 0, 0 ) ;
             systext_puts( scrbitmap, xo - 1, yo - 1, result, ln );
             systext_puts( scrbitmap, xo - 1, yo    , result, ln );
@@ -2576,20 +2572,20 @@ static void console_draw( INSTANCE * i, REGION * clip )
             systext_puts( scrbitmap, xo + 1, yo    , result, ln );
             systext_puts( scrbitmap, xo + 1, yo - 1, result, ln );
             systext_puts( scrbitmap, xo    , yo - 1, result, ln );
-            
+
             systext_color( console_showcolor, 0 ) ;
             systext_puts( scrbitmap, xo, yo, result, ln );
-            
+
             gr_mark_rect( xo, yo, rl, CHARHEIGHT);
         }
     }
-    
+
     if ( console_y <= 0 ) return ;
-    
+
     int shiftstatus = GLODWORD( mod_debug, SHIFTSTATUS ) ;
-    
+
     line = console_tail ;
-    
+
     for ( count = 0 ; count < console_lines + console_scroll_pos ; count++ )
     {
         if ( line == console_head ) break ;
@@ -2598,7 +2594,7 @@ static void console_draw( INSTANCE * i, REGION * clip )
     }
     console_scroll_pos = count - console_lines ;
     if ( console_scroll_pos < 0 ) console_scroll_pos = 0 ;
-    
+
     for ( count = 0; count < console_lines; count++ )
     {
         systext_color( 0xC0C0C0, 0x000020 ) ;
@@ -2610,7 +2606,7 @@ static void console_draw( INSTANCE * i, REGION * clip )
         {
             int pos = 0 ;
             int off = 0;
-            
+
             do
             {
                 if ( console[line][pos] == '¬' )
@@ -2621,18 +2617,18 @@ static void console_draw( INSTANCE * i, REGION * clip )
                 pos++;
             }
             while ( pos - off < console_scroll_lateral_pos ) ;
-            
+
             if ( console_scroll_lateral_pos + off < strlen( console[line] ) )
                 systext_puts( scrbitmap, x, y, console[line] + console_scroll_lateral_pos + off, console_columns ) ;
             else
                 systext_puts( scrbitmap, x, y, "", console_columns ) ;
         }
-        
+
         y += CHARHEIGHT ;
         line++ ;
         if ( line == CONSOLE_HISTORY ) line = 0 ;
     }
-    
+
     if ( console_showing && trace_sentence != -1 )
     {
         if ( dcb.data.Version < 0x0710 )
@@ -2640,10 +2636,10 @@ static void console_draw( INSTANCE * i, REGION * clip )
             if ( trace_instance && instance_exists( trace_instance ) && dcb.sourcecount[trace_sentence >> 24] )
             {
                 console_printf( "¬07[%s(%d):%d]\n¬14%s¬07\n\n",
-                               trace_instance->proc->name,
-                               LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
-                               trace_sentence & 0xFFFFFF,
-                               dcb.sourcelines [trace_sentence >> 24] [( trace_sentence & 0xFFFFFF )-1] ) ;
+                        trace_instance->proc->name,
+                        LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
+                        trace_sentence & 0xFFFFFF,
+                        dcb.sourcelines [trace_sentence >> 24] [( trace_sentence & 0xFFFFFF )-1] ) ;
             }
         }
         else
@@ -2651,10 +2647,10 @@ static void console_draw( INSTANCE * i, REGION * clip )
             if ( trace_instance && instance_exists( trace_instance ) && dcb.sourcecount[trace_sentence >> 20] )
             {
                 console_printf( "¬07[%s(%d):%d]\n¬14%s¬07\n\n",
-                               trace_instance->proc->name,
-                               LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
-                               trace_sentence & 0xFFFFF,
-                               dcb.sourcelines [trace_sentence >> 20] [( trace_sentence & 0xFFFFF )-1] ) ;
+                        trace_instance->proc->name,
+                        LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
+                        trace_sentence & 0xFFFFF,
+                        dcb.sourcelines [trace_sentence >> 20] [( trace_sentence & 0xFFFFF )-1] ) ;
             }
         }
         debug_on_frame = 0;
@@ -2662,13 +2658,13 @@ static void console_draw( INSTANCE * i, REGION * clip )
         debug_next = 0;
         trace_sentence = -1;
     }
-    
+
     systext_color( 0xFFFFFF, 0x404040 ) ;
     systext_puts( scrbitmap, x, y, ">", 2 ) ;
     strcat( console_input, "_" ) ;
     systext_puts( scrbitmap, x + CHARWIDTH*2, y, console_input, console_columns - 2 ) ;
     console_input[strlen( console_input )-1] = 0 ;
-    
+
     if ( shiftstatus & 3 )
     {
         show_list_window();
@@ -2762,5 +2758,14 @@ void __bgdexport( mod_debug, module_initialize )()
 void __bgdexport( mod_debug, module_finalize )()
 {
 }
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_debug, modules_dependency )[] =
+{
+    "libkey",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

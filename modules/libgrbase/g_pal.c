@@ -432,6 +432,7 @@ void pal_refresh( PALETTE * pal )
     }
     else
         if ( !pal || pal == sys_pixel_format->palette ) palette_changed = 1 ;
+
 }
 
 /* --------------------------------------------------------------------------- */
