@@ -256,18 +256,18 @@ static int load_song( const char * filename )
 {
     Mix_Music *music = NULL;
     file      *fp;
-    
+
     if ( !audio_initialized && sound_init() ) return ( 0 );
-    
+
     if ( !( fp = file_open( filename, "rb0" ) ) ) return ( 0 );
-    
+
     if ( !( music = Mix_LoadMUS_RW( SDL_RWFromBGDFP( fp ) ) ) )
     {
         file_close( fp );
         fprintf( stderr, "Couldn't load %s: %s\n", filename, SDL_GetError() );
         return( 0 );
     }
-    
+
     return (( int )music );
 }
 
@@ -295,7 +295,7 @@ static int play_song( int id, int loops )
         if ( result == -1 ) fprintf( stderr, "%s", Mix_GetError() );
         return result;
     }
-    
+
     fprintf( stderr, "Play song called with invalid handle" );
     return( -1 );
 }
@@ -480,10 +480,10 @@ static int is_playing_song( void )
 static int set_song_volume( int volume )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( volume < 0 ) volume = 0;
     if ( volume > 128 ) volume = 128;
-    
+
     Mix_VolumeMusic( volume );
     return 0;
 }
@@ -511,11 +511,11 @@ static int load_wav( const char * filename )
 {
     Mix_Chunk *music = NULL;
     file      *fp;
-    
+
     if ( !audio_initialized && sound_init() ) return ( 0 );
-    
+
     if ( !( fp = file_open( filename, "rb0" ) ) ) return ( 0 );
-    
+
     if ( !( music = Mix_LoadWAV_RW( SDL_RWFromBGDFP( fp ), 1 ) ) )
     {
         file_close( fp );
@@ -688,12 +688,12 @@ static int is_playing_wav( int canal )
 static int  set_wav_volume( int sample, int volume )
 {
     if ( !audio_initialized ) return ( -1 );
-    
+
     if ( volume < 0 ) volume = 0;
     if ( volume > 128 ) volume = 128;
-    
+
     if ( sample ) return( Mix_VolumeChunk(( Mix_Chunk * )sample, volume ) );
-    
+
     return -1 ;
 }
 
@@ -717,10 +717,10 @@ static int  set_wav_volume( int sample, int volume )
 static int  set_channel_volume( int canal, int volume )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( volume < 0 ) volume = 0;
     if ( volume > 128 ) volume = 128;
-    
+
     return( Mix_Volume( canal, volume ) );
 }
 
@@ -763,7 +763,7 @@ static int reserve_channels( int canales )
 static int set_panning( int canal, int left, int right )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( Mix_Playing( canal ) )
     {
         Mix_SetPanning( canal, ( Uint8 )left, ( Uint8 )right );
@@ -789,7 +789,7 @@ static int set_panning( int canal, int left, int right )
 static int set_position( int canal, int angle, int dist )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( Mix_Playing( canal ) )
     {
         Mix_SetPosition( canal, ( Sint16 )angle, ( Uint8 )dist );
@@ -816,13 +816,13 @@ static int set_position( int canal, int angle, int dist )
 static int set_distance( int canal, int dist )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( Mix_Playing( canal ) )
     {
         Mix_SetDistance( canal, ( Uint8 )dist );
         return ( 0 ) ;
     }
-    
+
     return ( -1 ) ;
 }
 
@@ -842,13 +842,13 @@ static int set_distance( int canal, int dist )
 static int reverse_stereo( int canal, int flip )
 {
     if ( !audio_initialized && sound_init() ) return ( -1 );
-    
+
     if ( Mix_Playing( canal ) )
     {
         Mix_SetReverseStereo( canal, flip );
         return ( 0 ) ;
     }
-    
+
     return ( -1 ) ;
 }
 
@@ -876,12 +876,12 @@ static int modsound_load_song( INSTANCE * my, int * params )
 #ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
-    
+
     if ( !( filename = string_get( params[0] ) ) ) return ( 0 ) ;
-    
+
     var = load_song( filename );
     string_discard( params[0] );
-    
+
     return ( var );
 #else
     return -1;
@@ -1166,12 +1166,12 @@ static int modsound_load_wav( INSTANCE * my, int * params )
 #ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
-    
+
     if ( !( filename = string_get( params[0] ) ) ) return ( 0 ) ;
-    
+
     var = load_wav( filename );
     string_discard( params[0] );
-    
+
     return ( var );
 #else
     return -1;
@@ -1646,7 +1646,7 @@ void  __bgdexport( mod_sound, module_initialize )()
 #ifndef TARGET_DINGUX_A320
     if ( !SDL_WasInit( SDL_INIT_AUDIO ) ) SDL_InitSubSystem( SDL_INIT_AUDIO );
 #endif
-        }
+}
 
 /* --------------------------------------------------------------------------- */
 
@@ -1655,6 +1655,6 @@ void __bgdexport( mod_sound, module_finalize )()
 #ifndef TARGET_DINGUX_A320
     if ( SDL_WasInit( SDL_INIT_AUDIO ) ) SDL_QuitSubSystem( SDL_INIT_AUDIO );
 #endif
-        }
+}
 
 /* --------------------------------------------------------------------------- */
