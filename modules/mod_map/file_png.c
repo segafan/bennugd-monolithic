@@ -295,9 +295,16 @@ GRAPH * gr_read_png( const char * filename )
         				( ptr8[1] == trans_color->green ) &&
         				( ptr8[2] == trans_color->blue  )
 #else
-        			    ( ptr8[0] == info_ptr->trans_values.red   ) &&
+        			    #ifdef TARGET_PSP
+						( ptr8[0] == info_ptr->trans_color.red   ) &&
+        				( ptr8[1] == info_ptr->trans_color.green ) &&
+        				( ptr8[2] == info_ptr->trans_color.blue  )
+						
+						#else
+						( ptr8[0] == info_ptr->trans_values.red   ) &&
         				( ptr8[1] == info_ptr->trans_values.green ) &&
         				( ptr8[2] == info_ptr->trans_values.blue  )
+						#endif
 #endif
         			   )
         				*ptr32 = 0;
@@ -354,9 +361,16 @@ GRAPH * gr_read_png( const char * filename )
         				( ptr8[1] == trans_color->green ) &&
         				( ptr8[2] == trans_color->blue  )
 #else
-        			    ( ptr8[0] == info_ptr->trans_values.red   ) &&
+        			    #ifdef TARGET_PSP
+						( ptr8[0] == info_ptr->trans_color.red   ) &&
+        				( ptr8[1] == info_ptr->trans_color.green ) &&
+        				( ptr8[2] == info_ptr->trans_color.blue  )
+						
+						#else
+						( ptr8[0] == info_ptr->trans_values.red   ) &&
         				( ptr8[1] == info_ptr->trans_values.green ) &&
         				( ptr8[2] == info_ptr->trans_values.blue  )
+						#endif
 #endif
         			   )
         				*ptr = 0;
@@ -505,6 +519,21 @@ int gr_save_png( GRAPH * gr, const char * filename )
             png_set_tRNS( png_ptr, info_ptr, &trans, 1, &trans_color );
         }
 #else
+		#ifdef TARGET_PSP
+		if (!( gr->info_flags & GI_NOCOLORKEY ))
+        {
+            /* this need test */
+            png_color_16 trans_color;
+            png_byte trans = 1;
+
+            trans_color.red = 0;
+            trans_color.green = 0;
+            trans_color.blue = 0;
+            trans_color.gray = 0;
+
+            png_set_tRNS( png_ptr, info_ptr, &trans, 1, &trans_color );
+        }		
+		#else
         /* DCelso */
         if (!( gr->info_flags & GI_NOCOLORKEY ))
         {
@@ -514,6 +543,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
 			info_ptr->valid = info_ptr->valid | PNG_INFO_tRNS;
         }
         /* DCelso */
+		#endif
 #endif
         pal = ( png_colorp ) png_malloc( png_ptr, 256 * sizeof( png_color ) ) ;
         if ( !pal )
