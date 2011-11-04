@@ -51,6 +51,7 @@ SDL_X11_SYM(int,XFreeGC,(Display* a,GC b),(a,b),return)
 SDL_X11_SYM(int,XFreeModifiermap,(XModifierKeymap* a),(a),return)
 SDL_X11_SYM(int,XFreePixmap,(Display* a,Pixmap b),(a,b),return)
 SDL_X11_SYM(char*,XGetAtomName,(Display *a,Atom b),(a,b),return)
+SDL_X11_SYM(int,XGetInputFocus,(Display *a,Window *b,int *c),(a,b,c),return)
 SDL_X11_SYM(int,XGetErrorDatabaseText,(Display* a,_Xconst char* b,_Xconst char* c,_Xconst char* d,char* e,int f),(a,b,c,d,e,f),return)
 SDL_X11_SYM(XModifierKeymap*,XGetModifierMapping,(Display* a),(a),return)
 SDL_X11_SYM(int,XGetPointerControl,(Display* a,int* b,int* c,int* d),(a,b,c,d),return)
@@ -188,6 +189,7 @@ SDL_X11_SYM(Cursor,XcursorImageLoadCursor,(Display *a,const XcursorImage *b),(a,
 SDL_X11_MODULE(XINERAMA)
 SDL_X11_SYM(Bool,XineramaIsActive,(Display *a),(a),return)
 SDL_X11_SYM(Bool,XineramaQueryExtension,(Display *a,int *b,int *c),(a,b,c),return)
+SDL_X11_SYM(Status,XineramaQueryVersion,(Display *a,int *b,int *c),(a,b,c),return)
 SDL_X11_SYM(XineramaScreenInfo*,XineramaQueryScreens,(Display *a, int *b),(a,b),return)
 #endif
 

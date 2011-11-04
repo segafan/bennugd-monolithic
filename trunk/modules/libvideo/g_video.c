@@ -386,9 +386,9 @@ int gr_set_mode( int width, int height, int depth )
     
     // Set a hint for the orientation for iOS devices
     if(surface_width > surface_height)
-        SDL_SetHint( SDL_HINT_ORIENTATIONS, "LandscapeLeft LandscapeRight" );
+        SDL_SetHint( SDL_HINT_ORIENTATIONS, "LandscapeLeft" );
     else
-        SDL_SetHint( SDL_HINT_ORIENTATIONS, "Portrait PortraitUpsideDown" );
+        SDL_SetHint( SDL_HINT_ORIENTATIONS, "Portrait" );
     
     const char *hints = SDL_GetHint(SDL_HINT_ORIENTATIONS);
     _printf("Orientation hints: %s", hints);

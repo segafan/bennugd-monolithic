@@ -191,6 +191,21 @@ SetupWindowData(_THIS, SDL_Window * window, Window w, BOOL created)
         }
     }
 
+    {
+        Window FocalWindow;
+        int RevertTo=0;
+        XGetInputFocus(data->videodata->display, &FocalWindow, &RevertTo);
+        if (FocalWindow==w)
+        {
+            window->flags |= SDL_WINDOW_INPUT_FOCUS;
+            SDL_SetKeyboardFocus(data->window);
+        }
+
+        if (window->flags & SDL_WINDOW_INPUT_GRABBED) {
+            /* Tell x11 to clip mouse */
+        }
+    }
+
     /* FIXME: How can I tell?
        {
        DWORD style = GetWindowLong(hwnd, GWL_STYLE);
@@ -250,6 +265,7 @@ X11_CreateWindow(_THIS, SDL_Window * window)
     Atom _NET_WM_WINDOW_TYPE_NORMAL;
     int wmstate_count;
     Atom wmstate_atoms[3];
+    Uint32 fevent = 0;
 
 #if SDL_VIDEO_DRIVER_X11_XINERAMA
 /* FIXME
@@ -539,27 +555,18 @@ X11_CreateWindow(_THIS, SDL_Window * window)
     }
 
 #ifdef X_HAVE_UTF8_STRING
-    {
-        Uint32 fevent = 0;
+    if (SDL_X11_HAVE_UTF8) {
         pXGetICValues(((SDL_WindowData *) window->driverdata)->ic,
                       XNFilterEvents, &fevent, NULL);
-        XSelectInput(display, w,
-                     (FocusChangeMask | EnterWindowMask | LeaveWindowMask |
-                      ExposureMask | ButtonPressMask | ButtonReleaseMask |
-                      PointerMotionMask | KeyPressMask | KeyReleaseMask |
-                      PropertyChangeMask | StructureNotifyMask |
-                      KeymapStateMask | fevent));
-    }
-#else
-    {
-        XSelectInput(display, w,
-                     (FocusChangeMask | EnterWindowMask | LeaveWindowMask |
-                      ExposureMask | ButtonPressMask | ButtonReleaseMask |
-                      PointerMotionMask | KeyPressMask | KeyReleaseMask |
-                      PropertyChangeMask | StructureNotifyMask |
-                      KeymapStateMask));
     }
 #endif
+
+    XSelectInput(display, w,
+                 (FocusChangeMask | EnterWindowMask | LeaveWindowMask |
+                 ExposureMask | ButtonPressMask | ButtonReleaseMask |
+                 PointerMotionMask | KeyPressMask | KeyReleaseMask |
+                 PropertyChangeMask | StructureNotifyMask |
+                 KeymapStateMask | fevent));
 
     XFlush(display);
 
@@ -593,14 +600,14 @@ X11_GetWindowTitle(_THIS, Window xwindow)
     status = XGetWindowProperty(display, xwindow, data->_NET_WM_NAME,
                 0L, 8192L, False, data->UTF8_STRING, &real_type, &real_format,
                 &items_read, &items_left, &propdata);
-    if (status == Success) {
+    if (status == Success && propdata) {
         title = SDL_strdup(SDL_static_cast(char*, propdata));
         XFree(propdata);
     } else {
         status = XGetWindowProperty(display, xwindow, XA_WM_NAME,
                     0L, 8192L, False, XA_STRING, &real_type, &real_format,
                     &items_read, &items_left, &propdata);
-        if (status == Success) {
+        if (status == Success && propdata) {
             title = SDL_iconv_string("UTF-8", "", SDL_static_cast(char*, propdata), items_read+1);
         } else {
             title = SDL_strdup("");
