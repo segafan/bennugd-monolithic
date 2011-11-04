@@ -361,11 +361,10 @@ GRAPH * gr_read_png( const char * filename )
         				( ptr8[1] == trans_color->green ) &&
         				( ptr8[2] == trans_color->blue  )
 #else
-        			    #ifdef TARGET_PSP
+        			    #ifdef COLORSPACE_BGR
 						( ptr8[0] == info_ptr->trans_color.red   ) &&
         				( ptr8[1] == info_ptr->trans_color.green ) &&
         				( ptr8[2] == info_ptr->trans_color.blue  )
-						
 						#else
 						( ptr8[0] == info_ptr->trans_values.red   ) &&
         				( ptr8[1] == info_ptr->trans_values.green ) &&

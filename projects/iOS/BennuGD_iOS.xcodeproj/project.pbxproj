@@ -93,23 +93,30 @@
 		921B4AED1391E237005F1832 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE61391E237005F1832 /* debug.c */; };
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
+		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
 		9233FED61412C6F700D99C88 /* 1.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED51412C6F700D99C88 /* 1.ogg */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
-		923933BB1401E84B0060D1B1 /* mod_multipointer.c in Sources */ = {isa = PBXBuildFile; fileRef = 923933B91401E84B0060D1B1 /* mod_multipointer.c */; };
+		927DF2A614620244000E1643 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 927DF2A314620236000E1643 /* libSDL.a */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
-		92A632E813BD32D200382D60 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632E713BD32D200382D60 /* libSDL.a */; };
-		92C9D04F13E9FCC5002B8B84 /* BennuGD_iOS.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* BennuGD_iOS.dcb */; };
-		92C9D05113E9FCCB002B8B84 /* BennuGD_iOS.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* BennuGD_iOS.prg */; };
+		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
+		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
 		92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */; };
 		92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		92A320F413EA1FA900CCBD74 /* PBXContainerItemProxy */ = {
+		927DF2A214620236000E1643 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */;
+			containerPortal = 927DF29714620235000E1643 /* SDLiPhoneOS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
+			remoteInfo = libSDL;
+		};
+		927DF2A414620236000E1643 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 927DF29714620235000E1643 /* SDLiPhoneOS.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 006E982211955059001DE610;
 			remoteInfo = testsdl;
@@ -141,20 +148,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 92A6326413BD2FA500382D60;
 			remoteInfo = png;
-		};
-		92A632E013BD323600382D60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
-			remoteInfo = libSDL;
-		};
-		92A632E413BD324500382D60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = FD6526620DE8FCCB002AD96B;
-			remoteInfo = libSDL;
 		};
 		92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -382,19 +375,18 @@
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
+		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
+		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
 		9233FED51412C6F700D99C88 /* 1.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = 1.ogg; path = ../android/assets/1.ogg; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
-		923933B91401E84B0060D1B1 /* mod_multipointer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multipointer.c; sourceTree = "<group>"; };
-		923933BA1401E84B0060D1B1 /* mod_multipointer_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multipointer_symbols.h; sourceTree = "<group>"; };
+		927DF29714620235000E1643 /* SDLiPhoneOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDLiPhoneOS.xcodeproj; path = "../../3rdparty/SDL-1.3/src/Xcode-iPhoneOS/SDL/SDLiPhoneOS.xcodeproj"; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A6328E13BD2FA500382D60 /* png.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = png.xcodeproj; path = ../../3rdparty/libpng/src/projects/png/png.xcodeproj; sourceTree = "<group>"; };
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
-		92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDLiPhoneOS.xcodeproj; path = "../../3rdparty/SDL-1.3/src/Xcode-iPhoneOS/SDL/SDLiPhoneOS.xcodeproj"; sourceTree = "<group>"; };
-		92A632E713BD32D200382D60 /* libSDL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL.a; sourceTree = SOURCE_ROOT; };
-		92C9D04E13E9FCC5002B8B84 /* BennuGD_iOS.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = BennuGD_iOS.dcb; path = TestData/BennuGD_iOS.dcb; sourceTree = "<group>"; };
-		92C9D05013E9FCCB002B8B84 /* BennuGD_iOS.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = BennuGD_iOS.prg; path = TestData/BennuGD_iOS.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
+		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
+		92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD.prg; path = TestData/iOSBennuGD.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = ../../3rdparty/SDL_mixer/src/Xcode/SDL_mixer.xcodeproj; sourceTree = "<group>"; };
 		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
 		92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Chipmunk-iOS.xcodeproj"; path = "../../3rdparty/Chipmunk-5.3.4/Chipmunk-iOS/Chipmunk-iOS.xcodeproj"; sourceTree = "<group>"; };
@@ -406,9 +398,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				927DF2A614620244000E1643 /* libSDL.a in Frameworks */,
 				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
 				92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */,
-				92A632E813BD32D200382D60 /* libSDL.a in Frameworks */,
 				92A632BA13BD302800382D60 /* libpng.a in Frameworks */,
 				92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */,
 				921B48181391CE07005F1832 /* UIKit.framework in Frameworks */,
@@ -427,7 +419,6 @@
 		92098DE913A5313000F70BC2 /* External dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				92A632E713BD32D200382D60 /* libSDL.a */,
 				92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */,
 				92A632B913BD302800382D60 /* libpng.a */,
 				92A6320D13BD2E1D00382D60 /* libtremor.a */,
@@ -449,7 +440,7 @@
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
-				92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */,
+				927DF29714620235000E1643 /* SDLiPhoneOS.xcodeproj */,
 				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
 				92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */,
 				92A6328E13BD2FA500382D60 /* png.xcodeproj */,
@@ -588,8 +579,8 @@
 				921B4A0B1391D8A4005F1832 /* mod_mathi */,
 				921B4A0E1391D8A4005F1832 /* mod_mem */,
 				921B4A111391D8A4005F1832 /* mod_mouse */,
+				92307D451461F1B00011C04E /* mod_multi */,
 				921B4A131391D8A4005F1832 /* mod_path */,
-				923933B81401E84B0060D1B1 /* mod_multipointer */,
 				921B4A161391D8A4005F1832 /* mod_proc */,
 				921B4A191391D8A4005F1832 /* mod_rand */,
 				921B4A1C1391D8A4005F1832 /* mod_regex */,
@@ -1083,13 +1074,22 @@
 			path = ../../core/common;
 			sourceTree = "<group>";
 		};
-		923933B81401E84B0060D1B1 /* mod_multipointer */ = {
+		92307D451461F1B00011C04E /* mod_multi */ = {
 			isa = PBXGroup;
 			children = (
-				923933B91401E84B0060D1B1 /* mod_multipointer.c */,
-				923933BA1401E84B0060D1B1 /* mod_multipointer_symbols.h */,
+				92307D461461F1B00011C04E /* mod_multi.c */,
+				92307D471461F1B00011C04E /* mod_multi_symbols.h */,
 			);
-			path = mod_multipointer;
+			path = mod_multi;
+			sourceTree = "<group>";
+		};
+		927DF29814620235000E1643 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				927DF2A314620236000E1643 /* libSDL.a */,
+				927DF2A514620236000E1643 /* testsdl.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		92A631FD13BD2BE200382D60 /* Products */ = {
@@ -1108,20 +1108,11 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92A632D613BD323500382D60 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92A632E113BD323600382D60 /* libSDL.a */,
-				92A320F513EA1FA900CCBD74 /* testsdl.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		92C5D40013BE98FC00CA43D0 /* Game Resources */ = {
 			isa = PBXGroup;
 			children = (
-				92C9D05013E9FCCB002B8B84 /* BennuGD_iOS.prg */,
-				92C9D04E13E9FCC5002B8B84 /* BennuGD_iOS.dcb */,
+				92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */,
+				92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */,
 				9233FED51412C6F700D99C88 /* 1.ogg */,
 				9233FED71412D34A00D99C88 /* Icon.png */,
 			);
@@ -1160,7 +1151,6 @@
 			dependencies = (
 				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
 				92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */,
-				92A632E513BD324500382D60 /* PBXTargetDependency */,
 				92A632B813BD301E00382D60 /* PBXTargetDependency */,
 				92A6320B13BD2D2D00382D60 /* PBXTargetDependency */,
 			);
@@ -1201,8 +1191,8 @@
 					ProjectRef = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
 				},
 				{
-					ProductGroup = 92A632D613BD323500382D60 /* Products */;
-					ProjectRef = 92A632D513BD323500382D60 /* SDLiPhoneOS.xcodeproj */;
+					ProductGroup = 927DF29814620235000E1643 /* Products */;
+					ProjectRef = 927DF29714620235000E1643 /* SDLiPhoneOS.xcodeproj */;
 				},
 				{
 					ProductGroup = 92A631FD13BD2BE200382D60 /* Products */;
@@ -1217,11 +1207,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		92A320F513EA1FA900CCBD74 /* testsdl.app */ = {
+		927DF2A314620236000E1643 /* libSDL.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL.a;
+			remoteRef = 927DF2A214620236000E1643 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		927DF2A514620236000E1643 /* testsdl.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = testsdl.app;
-			remoteRef = 92A320F413EA1FA900CCBD74 /* PBXContainerItemProxy */;
+			remoteRef = 927DF2A414620236000E1643 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92A6320413BD2BE200382D60 /* libtremor.a */ = {
@@ -1236,13 +1233,6 @@
 			fileType = archive.ar;
 			path = libpng.a;
 			remoteRef = 92A6329313BD2FA600382D60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92A632E113BD323600382D60 /* libSDL.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDL.a;
-			remoteRef = 92A632E013BD323600382D60 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */ = {
@@ -1266,8 +1256,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92C9D04F13E9FCC5002B8B84 /* BennuGD_iOS.dcb in Resources */,
-				92C9D05113E9FCCB002B8B84 /* BennuGD_iOS.prg in Resources */,
+				92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */,
+				92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */,
 				9233FED61412C6F700D99C88 /* 1.ogg in Resources */,
 				9233FED81412D34A00D99C88 /* Icon.png in Resources */,
 			);
@@ -1360,7 +1350,7 @@
 				921B4AF01391E237005F1832 /* xctype.c in Sources */,
 				92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */,
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
-				923933BB1401E84B0060D1B1 /* mod_multipointer.c in Sources */,
+				92307D481461F1B00011C04E /* mod_multi.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1376,11 +1366,6 @@
 			isa = PBXTargetDependency;
 			name = png;
 			targetProxy = 92A632B713BD301E00382D60 /* PBXContainerItemProxy */;
-		};
-		92A632E513BD324500382D60 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = libSDL;
-			targetProxy = 92A632E413BD324500382D60 /* PBXContainerItemProxy */;
 		};
 		92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1421,7 +1406,7 @@
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1431,7 +1416,7 @@
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lz",
@@ -1467,7 +1452,7 @@
 					NO_LIBKEY,
 					"VERSION='\"1.0.0\"'",
 				);
-				GCC_VERSION = "";
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1477,7 +1462,7 @@
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
 					"-lm",
@@ -1495,7 +1480,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1513,7 +1498,7 @@
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
 				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
@@ -1524,7 +1509,7 @@
 					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1544,7 +1529,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1562,7 +1547,7 @@
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
 				);
-				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
@@ -1573,7 +1558,7 @@
 					../../3rdparty/SDL_mixer/src/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
