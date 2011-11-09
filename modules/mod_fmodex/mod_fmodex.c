@@ -1,14 +1,29 @@
-/*==============================================================================
- PlayStream Example
- Copyright (c), Firelight Technologies Pty, Ltd 2004-2009.
+/*
+ *  Copyright © 2009-2011 Joseba García Etxebarria <joseba.gar@gmail.com>
+ *
+ *  This file is part of Bennu - Game Development
+ *
+ *  This software is provided 'as-is', without any express or implied
+ *  warranty. In no event will the authors be held liable for any damages
+ *  arising from the use of this software.
+ *
+ *  Permission is granted to anyone to use this software for any purpose,
+ *  including commercial applications, and to alter it and redistribute it
+ *  freely, subject to the following restrictions:
+ *
+ *     1. The origin of this software must not be misrepresented; you must not
+ *     claim that you wrote the original software. If you use this software
+ *     in a product, an acknowledgment in the product documentation would be
+ *     appreciated but is not required.
+ *
+ *     2. Altered source versions must be plainly marked as such, and must not be
+ *     misrepresented as being the original software.
+ *
+ *     3. This notice may not be removed or altered from any source
+ *     distribution.
+ *
+ */
 
- This example shows how to simply play a stream, such as an mp3 or wav.
- The stream behaviour is achieved by specifying FMOD_CREATESTREAM in the call to 
- FMOD_System_CreateSound.
- This makes FMOD decode the file in realtime as it plays, instead of loading it
- all at once.
- This uses far less memory, in exchange for a runtime cpu hit.
-==============================================================================*/
 #ifdef WIN32
 #include <windows.h>
 #include <winbase.h>
@@ -18,8 +33,8 @@
 #include <string.h>
 
 /* FMOD headers */
-#include <inc/fmod.h>
-#include <inc/fmod_errors.h>
+#include <fmod.h>
+#include <fmod_errors.h>
 
 /* BennuGD stuff */
 #include <bgddl.h>
@@ -61,7 +76,7 @@ static FMOD_CHANNEL    *spectrum_channel = 0;
 static int              analyzing_spectrum;
 
 /* Global info (where spectrum is stored) */
-char * __bgdexport( mod_fmodex, globals_def )=
+char __bgdexport( mod_fmodex, globals_def )[] =
     "float fmodex_spectrum[256];\n"
     "int   sound_freq = 48000;\n"
     "int   fmodex_spectrumsize = 0;\n";
@@ -396,11 +411,6 @@ void __bgdexport( mod_fmodex, module_finalize )()
     fmodex_stop_spectrum_analysis();
 	FMOD_System_Release(fsystem);
 }
-
-char * __bgdexport( mod_fmodex, modules_dependency )[] =
-{
-	NULL
-};
 
 /* Bigest priority first execute
    Lowest priority last execute */
