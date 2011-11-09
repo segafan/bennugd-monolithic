@@ -1,99 +1,121 @@
-/**
- * iOS accelerometer test
- * in iOS, accelerometers are emulated as joysticks
- * Joseba García Etxebarria - (C) 2011
- * Use as you wish
- */
-
-import "mod_video"
-import "mod_joy"
-import "mod_text"
-import "mod_mouse"
-import "mod_sound"
-import "mod_wm"
-import "mod_map"
 import "mod_say"
+import "mod_video"
+import "mod_text"
+import "mod_fmodex"
+import "mod_file"
+import "mod_video"
+import "mod_draw"
+import "mod_map"
+import "mod_math"
+import "mod_proc"
+import "mod_mouse"
 
 GLOBAL
 // Set to your liking
-width  = 320;
-height = 480;
-sound  = 1;
-quit   = 0;
+float width  = 480.0;
+float height = 320.0;
 
-Process bouncer()
+Process spectrum_analyser()
 Private
-    int vx=3, vy=3;
+	int i=0;
+	float w=0.0;
 
 Begin
-    graph = load_png("Icon.png");
-    // Position the graphic onscreen
-    x = 10+graphic_info(0, GRAPH, G_WIDTH);
-    y = 10+graphic_info(0, GRAPH, G_HEIGHT);
-    while(quit == 0)
-        if(x + vx >= width || x+vx < 0)
-            vx = -vx;
-        end
-        if(y+vy >= height || y+vy < 0)
-            vy = -vy;
-        end
-        x += vx; y += vy;
-        FRAME;
-    End;
-End;
-
-Process Main()
-Private
-int vx=0, vy=0;
-int w=0, h=0;
-int song=0;
-
-Begin
-    set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
-    bouncer();
-    if(sound == 1)
-        song = load_song("1.ogg");
-        play_song(song, 0);
-    end;
-    graph = write_in_map(0, "Tilt your device!", 4);
+    // Determine bar width
+    w = width/fmodex_spectrumsize;
+	
+	// Graph used for bar drawing
+    graph = map_new(width, height, 16);
+    drawing_map(0, graph);
+    drawing_color(rgb(200, 200, 200));
     x = width/2; y = height/2;
-    write_var(0, 0, 460, 6, focus_status); 
-    write_var(0, 0, 470, 6, mouse_status); 
-    write_var(0, 0, 480, 6, window_status);
-    Repeat
-        // Accelerometers are emulated as joysticks in iOS
-        // Max-min readings are somewhere around +-6000
-        vx += joy_getaxis(0,0)/2000;
-        vy -= joy_getaxis(0,1)/2000;
-        if(x <= width-graphic_info(0, graph, G_WIDTH)/2 && vx > 0)
-            x += vx;
-        end;
-        if(x >= graphic_info(0, graph, G_WIDTH)/2 && vx < 0)
-            x += vx;
-        end;
-
-        if(y <= height-graphic_info(0, graph, G_HEIGHT)/2 && vy > 0)
-            y += vy;
-        end;
-        if(y >= graphic_info(0, graph, G_HEIGHT)/2 && vy < 0)
-            y += vy;
-        end;
-
-        // Reset the counters if we're at the border of the screen
-        if(x <= 10 || x >= width-10)
-            vx = 0;
-        end;
-        if(y <= 10 || y >= height-10)
-            vy = 0;
-        end;
-
-        frame;
-    Until(mouse.left)
-
-    unload_map(0, graph);
-    if(sound == 1)
-        unload_song(song);
-    end
-
-    quit = 1;
+	
+	LOOP
+		for(i=0; i<fmodex_spectrumsize; i++)
+			draw_box(i*w, height, i*w, height*(1.0-FMODEX_SPECTRUM[i]) );
+		end;
+        FRAME;
+        map_clear(0, graph, rgb(0, 0, 0));
+	End;
 End;
+
+Process main()
+Private
+    int channel=0, retval=0, pid=0, i=0;
+    string song="";
+
+Begin
+    set_mode(width, height, 16);
+    say("Mic section=========================================================");
+    retval = fmodex_mic_num();
+    if(retval > 0)
+        write(0, width/2, height/2, 4, "Please enter the mic num you want to use with your keyboard");
+        // Last microphone should display an error
+        for(i=0; i<retval; i++)
+            say("Mic "+i+": "+fmodex_mic_name(i));
+        end;
+    end;
+
+	// Start the spectrum analysis on given mic
+    fmodex_mic_get_spectrum(0);
+
+    // Draw spectrum bars
+	pid = spectrum_analyser();
+	
+	// Wait for user to get bored of seeing their own voice dance
+    while(! mouse.left)
+		FRAME;
+    end;
+
+    delete_text(ALL_TEXT);
+
+    fmodex_stop_spectrum();
+
+/*    say("Sound playback section==============================================");
+    if(argc != 2)
+        say("ERROR: Must be called as "+argv[0]+" filename");
+		unload_map(0, pid.graph);
+		signal(pid, S_KILL);
+        return -1;
+    end;
+    if(file_exists(argv[1]))
+        song = argv[1];
+    else
+        say("ERROR: Couldn't find "+argv[0]);
+        return -1;
+    end;
+
+    // Make sure the song loads correctly
+    if((channel = fmodex_song_load(song)) < 0)
+        return -1;
+    end;
+
+    // Play the song & wait for it to finish
+    if(fmodex_song_play(channel) < 0)
+        return -1;
+    end;
+	
+	// Start song's spectrum analysis
+	fmodex_song_get_spectrum(channel);
+
+    write(0, 320, 240, 4, "Playing on channel "+channel);
+    write(0, 320, 250, 4, "Press esc to quit");
+
+    LOOP
+        retval = fmodex_song_playing(channel);
+        if(retval != 1 || key(_esc))     // Song finished playing
+            break;
+        end;
+        FRAME;
+    end;
+
+    // Stop & unload the song
+	fmodex_stop_spectrum();
+    fmodex_song_stop(channel);*/
+    
+	unload_map(0, pid.graph);
+	signal(pid, S_KILL);
+
+    say("Bye!");
+End;
+
