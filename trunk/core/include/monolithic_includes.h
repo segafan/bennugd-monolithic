@@ -92,6 +92,9 @@
 #ifndef NO_MODMULTI
 #   include <mod_multi_symbols.h>
 #endif
+#ifndef NO_MODFMODEX
+#   include <mod_fmodex_symbols.h>
+#endif
 //#include <mod_sqlite3_symbols.h>
 
 typedef struct
@@ -198,6 +201,9 @@ basic_symbols symbol_list[] =
 #ifndef NO_MODMULTI
     { "mod_multi.fakelib" , mod_multi_modules_dependency, NULL, NULL, NULL, NULL, mod_multi_functions_exports },
 #endif
+#ifndef NO_MODFMODEX
+    { "mod_fmodex.fakelib" , NULL, NULL, NULL, mod_fmodex_globals_def, NULL, mod_fmodex_functions_exports },
+#endif
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -277,6 +283,9 @@ extra_symbols symbol_list_runtime[] =
 #endif
 #ifndef NO_MODMULTI
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, mod_multi_handler_hooks }, //mod_multi
+#endif
+#ifndef NO_MODFMODEX
+    { mod_fmodex_globals_fixup, NULL, mod_fmodex_module_initialize, mod_fmodex_module_finalize, NULL, NULL, NULL, mod_fmodex_handler_hooks } //mod_fmodex
 #endif
 };
 #endif
