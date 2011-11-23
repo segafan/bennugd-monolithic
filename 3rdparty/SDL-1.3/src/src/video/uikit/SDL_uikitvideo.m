@@ -83,6 +83,7 @@ UIKit_CreateDevice(int devindex)
     device->SetDisplayMode = UIKit_SetDisplayMode;
     device->PumpEvents = UIKit_PumpEvents;
     device->CreateWindow = UIKit_CreateWindow;
+    device->SetWindowFullscreen = UIKit_SetWindowFullscreen;
     device->DestroyWindow = UIKit_DestroyWindow;
     device->GetWindowWMInfo = UIKit_GetWindowWMInfo;
 
@@ -200,10 +201,8 @@ UIKit_VideoInit(_THIS)
 {
     _this->gl_config.driver_loaded = 1;
 
-    NSString *reqSysVer = @"3.2";
-    NSString *currSysVer = [[UIDevice currentDevice] systemVersion];
-    if ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending)
-        SDL_UIKit_supports_multiple_displays = YES;
+    // this tells us whether we are running on ios >= 3.2
+    SDL_UIKit_supports_multiple_displays = [UIScreen instancesRespondToSelector:@selector(currentMode)];
 
     // Add the main screen.
     UIScreen *uiscreen = [UIScreen mainScreen];
@@ -237,6 +236,13 @@ UIKit_SetDisplayMode(_THIS, SDL_VideoDisplay * display, SDL_DisplayMode * mode)
     } else {
         UIScreenMode *uimode = (UIScreenMode *) mode->driverdata;
         [uiscreen setCurrentMode:uimode];
+
+        CGSize size = [uimode size];
+        if (size.width >= size.height) {
+            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationLandscapeRight animated:NO];
+        } else {
+            [[UIApplication sharedApplication] setStatusBarOrientation:UIInterfaceOrientationPortrait animated:NO];
+        }
     }
 
     return 0;
