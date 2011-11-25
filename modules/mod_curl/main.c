@@ -43,6 +43,7 @@ typedef struct
 {
     char *src;
     char *dst;
+    int  *id;
     int ( *fn )();
 } bgdata ;
 
@@ -58,8 +59,10 @@ static bgdata *prep( int *params )
     bgdata *t = ( bgdata* )malloc( sizeof( bgdata ) );
     t->src = ( char * )string_get( params[0] );
     t->dst = ( char * )string_get( params[1] );
+    t->id = ( int* )params[2];
     string_discard( params[0] );
     string_discard( params[1] );
+
     return t;
 }
 
@@ -71,29 +74,30 @@ static bgdata *prep( int *params )
 
 static int bgDoLoad( void *d )
 {
-    bgdata *t = ( bgdata* )d;
-    ( *t->fn )( t->src, t->dst );
+    bgdata *t  = ( bgdata* )d;
+    *( t->id ) = -2 ;
+    *( t->id ) = ( *t->fn )( t->src, t->dst );
     free( t );
     return 0;
 }
 
 // Actual transfer function
-void curl_get(char *src, char *dst) {
+int curl_get(char *src, char *dst) {
     CURL *curl;
     FILE *fd;
     
     // First, get the file descriptor for the output file
     fd = fopen(dst, "w");
     // Check file opening
-    if (fd == NULL) {
-        transfer_failed = 1;
-        return;
-    }
-    
-    transfer_in_progress = 1;
+    if (fd == NULL)
+        return -1;
     
     // Set up some download variables
     curl = curl_easy_init();
+
+    if(curl == NULL)
+        return -1;
+
     curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, fd);
     curl_easy_setopt(curl, CURLOPT_URL, src);
@@ -107,7 +111,7 @@ void curl_get(char *src, char *dst) {
     transfer_in_progress = 0;
     transfer_done = 1;
 
-    return;
+    return 0;
 }
 
 // Start a new download in a new thread
@@ -131,27 +135,8 @@ static int bgd_curl_get(INSTANCE * my, int * params) {
     return 0;
 }
 
-// Get info about current download
-// Accepts two parameters to future-proof the API, but only the second
-// one is used
-static int bgd_curl_info(INSTANCE * my, int * params) {
-    switch (params[1]) {
-        case 0:
-            return transfer_in_progress;
-            
-        case 1:
-            return transfer_done;
-            
-        case 2:
-            return transfer_failed;
-    }
-    
-    return -1;
-}
-
 DLSYSFUNCS __bgdexport( mod_curl, functions_exports )[] =
 {
-    { "CURL_GET"            , "SS"  , TYPE_INT,   bgd_curl_get       },
-    { "CURL_INFO"           , "II"  , TYPE_INT,   bgd_curl_info      },
+    { "CURL_GET"            , "SSP" , TYPE_INT,   bgd_curl_get       },
     { 0                     , 0     , 0          , 0}
 };
