@@ -35,6 +35,7 @@ End;
 Process main()
 Private
     int i=0;
+    int status=0;
 Begin
     set_mode(width, height, 16);
     
@@ -46,9 +47,9 @@ Begin
     end;
     
     // Start transfer
-    curl_get("http://forum.bennugd.org", "BennuGD forums.html");
+    curl_get("http://forum.bennugd.org", "BennuGD forums.html", &status);
     
-    while(curl_info(0, 1) == 0)
+    while(status != 0)
         FRAME;
     end;
     
