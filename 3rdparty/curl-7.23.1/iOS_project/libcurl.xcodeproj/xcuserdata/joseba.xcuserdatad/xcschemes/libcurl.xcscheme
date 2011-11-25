@@ -14,7 +14,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9219AC15147F1AE700A7AD83"
-               BuildableName = "liblibcurl.a"
+               BuildableName = "libcurl.a"
                BlueprintName = "libcurl"
                ReferencedContainer = "container:libcurl.xcodeproj">
             </BuildableReference>

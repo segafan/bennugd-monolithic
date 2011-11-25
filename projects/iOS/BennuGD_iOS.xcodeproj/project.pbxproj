@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DEF13A534B200F70BC2 /* mod_chipmunk.c */; };
+		9219AEDE147F23EC00A7AD83 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		921B48181391CE07005F1832 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48171391CE07005F1832 /* UIKit.framework */; };
 		921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48191391CE07005F1832 /* Foundation.framework */; };
 		921B481C1391CE07005F1832 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B481B1391CE07005F1832 /* CoreGraphics.framework */; };
@@ -113,6 +114,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9219AC16147F1AE700A7AD83;
+			remoteInfo = libcurl;
+		};
 		9230C947146A02CE0091196A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9230C93C146A02CD0091196A /* SDLiPhoneOS.xcodeproj */;
@@ -196,6 +204,7 @@
 		92098DEE13A534B200F70BC2 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		92098DEF13A534B200F70BC2 /* mod_chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_chipmunk.c; sourceTree = "<group>"; };
 		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
+		9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcurl.xcodeproj; path = "../../3rdparty/curl-7.23.1/iOS_project/libcurl.xcodeproj"; sourceTree = "<group>"; };
 		921B48131391CE07005F1832 /* iOSBennuGD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSBennuGD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		921B48191391CE07005F1832 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -418,6 +427,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9219AEDE147F23EC00A7AD83 /* libcurl.a in Frameworks */,
 				9230C94D146A03220091196A /* libSDL.a in Frameworks */,
 				92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */,
 				92785844146A07080074BAC3 /* libfmodex_iphonesimulator.a in Frameworks */,
@@ -461,9 +471,18 @@
 			path = mod_chipmunk;
 			sourceTree = "<group>";
 		};
+		9219AED6147F23CF00A7AD83 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9219AEDD147F23CF00A7AD83 /* libcurl.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
+				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
 				9230C93C146A02CD0091196A /* SDLiPhoneOS.xcodeproj */,
 				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
 				92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */,
@@ -1221,6 +1240,10 @@
 					ProjectRef = 92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */;
 				},
 				{
+					ProductGroup = 9219AED6147F23CF00A7AD83 /* Products */;
+					ProjectRef = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
+				},
+				{
 					ProductGroup = 92A6328F13BD2FA500382D60 /* Products */;
 					ProjectRef = 92A6328E13BD2FA500382D60 /* png.xcodeproj */;
 				},
@@ -1245,6 +1268,13 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		9219AEDD147F23CF00A7AD83 /* libcurl.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcurl.a;
+			remoteRef = 9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9230C948146A02CE0091196A /* libSDL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
