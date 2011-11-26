@@ -25,9 +25,9 @@ Begin
     w = width/fmodex_spectrumsize;
 	
 	// Graph used for bar drawing
-    graph = map_new(width, height, 16);
+    graph = map_new(width, height, 32);
     drawing_map(0, graph);
-    drawing_color(rgb(200, 200, 200));
+    drawing_color(rgb(0, 255, 255));
     x = width/2; y = height/2;
 	
 	LOOP
@@ -45,11 +45,11 @@ Private
     string song="";
 
 Begin
-    set_mode(width, height, 16);
+    set_mode(width, height, 32, MODE_FRAMELESS);
     say("Mic section=========================================================");
     retval = fmodex_mic_num();
     if(retval > 0)
-        write(0, width/2, height/2, 4, "Please enter the mic num you want to use with your keyboard");
+        write(0, width/2, height/2, 4, "Here's your mic spectrum, enjoy!");
         // Last microphone should display an error
         for(i=0; i<retval; i++)
             say("Mic "+i+": "+fmodex_mic_name(i));

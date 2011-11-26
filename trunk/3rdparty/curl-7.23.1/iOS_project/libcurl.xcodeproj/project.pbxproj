@@ -57,8 +57,6 @@
 		9219ACC4147F1EA400A7AD83 /* tool_homedir.h in Headers */ = {isa = PBXBuildFile; fileRef = 9219AC6D147F1EA400A7AD83 /* tool_homedir.h */; };
 		9219ACC5147F1EA400A7AD83 /* tool_libinfo.c in Sources */ = {isa = PBXBuildFile; fileRef = 9219AC6E147F1EA400A7AD83 /* tool_libinfo.c */; };
 		9219ACC6147F1EA400A7AD83 /* tool_libinfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 9219AC6F147F1EA400A7AD83 /* tool_libinfo.h */; };
-		9219ACC7147F1EA400A7AD83 /* tool_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 9219AC70147F1EA400A7AD83 /* tool_main.c */; };
-		9219ACC8147F1EA400A7AD83 /* tool_main.h in Headers */ = {isa = PBXBuildFile; fileRef = 9219AC71147F1EA400A7AD83 /* tool_main.h */; };
 		9219ACC9147F1EA400A7AD83 /* tool_mfiles.c in Sources */ = {isa = PBXBuildFile; fileRef = 9219AC72147F1EA400A7AD83 /* tool_mfiles.c */; };
 		9219ACCA147F1EA400A7AD83 /* tool_mfiles.h in Headers */ = {isa = PBXBuildFile; fileRef = 9219AC73147F1EA400A7AD83 /* tool_mfiles.h */; };
 		9219ACCB147F1EA400A7AD83 /* tool_msgs.c in Sources */ = {isa = PBXBuildFile; fileRef = 9219AC74147F1EA400A7AD83 /* tool_msgs.c */; };
@@ -355,8 +353,6 @@
 		9219AC6D147F1EA400A7AD83 /* tool_homedir.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tool_homedir.h; sourceTree = "<group>"; };
 		9219AC6E147F1EA400A7AD83 /* tool_libinfo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tool_libinfo.c; sourceTree = "<group>"; };
 		9219AC6F147F1EA400A7AD83 /* tool_libinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tool_libinfo.h; sourceTree = "<group>"; };
-		9219AC70147F1EA400A7AD83 /* tool_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tool_main.c; sourceTree = "<group>"; };
-		9219AC71147F1EA400A7AD83 /* tool_main.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tool_main.h; sourceTree = "<group>"; };
 		9219AC72147F1EA400A7AD83 /* tool_mfiles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tool_mfiles.c; sourceTree = "<group>"; };
 		9219AC73147F1EA400A7AD83 /* tool_mfiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tool_mfiles.h; sourceTree = "<group>"; };
 		9219AC74147F1EA400A7AD83 /* tool_msgs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tool_msgs.c; sourceTree = "<group>"; };
@@ -707,8 +703,6 @@
 				9219AC6D147F1EA400A7AD83 /* tool_homedir.h */,
 				9219AC6E147F1EA400A7AD83 /* tool_libinfo.c */,
 				9219AC6F147F1EA400A7AD83 /* tool_libinfo.h */,
-				9219AC70147F1EA400A7AD83 /* tool_main.c */,
-				9219AC71147F1EA400A7AD83 /* tool_main.h */,
 				9219AC72147F1EA400A7AD83 /* tool_mfiles.c */,
 				9219AC73147F1EA400A7AD83 /* tool_mfiles.h */,
 				9219AC74147F1EA400A7AD83 /* tool_msgs.c */,
@@ -997,7 +991,6 @@
 				9219ACC2147F1EA400A7AD83 /* tool_helpers.h in Headers */,
 				9219ACC4147F1EA400A7AD83 /* tool_homedir.h in Headers */,
 				9219ACC6147F1EA400A7AD83 /* tool_libinfo.h in Headers */,
-				9219ACC8147F1EA400A7AD83 /* tool_main.h in Headers */,
 				9219ACCA147F1EA400A7AD83 /* tool_mfiles.h in Headers */,
 				9219ACCC147F1EA400A7AD83 /* tool_msgs.h in Headers */,
 				9219ACCE147F1EA400A7AD83 /* tool_operate.h in Headers */,
@@ -1196,7 +1189,6 @@
 				9219ACC1147F1EA400A7AD83 /* tool_helpers.c in Sources */,
 				9219ACC3147F1EA400A7AD83 /* tool_homedir.c in Sources */,
 				9219ACC5147F1EA400A7AD83 /* tool_libinfo.c in Sources */,
-				9219ACC7147F1EA400A7AD83 /* tool_main.c in Sources */,
 				9219ACC9147F1EA400A7AD83 /* tool_mfiles.c in Sources */,
 				9219ACCB147F1EA400A7AD83 /* tool_msgs.c in Sources */,
 				9219ACCD147F1EA400A7AD83 /* tool_operate.c in Sources */,
@@ -1345,7 +1337,7 @@
 					../lib,
 					../src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1368,7 +1360,7 @@
 					../lib,
 					../src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 				VALIDATE_PRODUCT = YES;

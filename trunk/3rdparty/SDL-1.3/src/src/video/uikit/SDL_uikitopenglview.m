@@ -80,8 +80,8 @@
 
         // !!! FIXME: use the screen this is on!
         /* Use the main screen scale (for retina display support) */
-        if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
-            self.contentScaleFactor = [UIScreen mainScreen].scale;
+        /*if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)]) 
+            self.contentScaleFactor = [[UIScreen mainScreen] scale];*/
 
         /* create the buffers */
         glGenFramebuffersOES(1, &viewFramebuffer);
