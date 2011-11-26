@@ -383,15 +383,6 @@ int gr_set_mode( int width, int height, int depth )
     sdl_flags = SDL_WINDOW_SHOWN;
     if ( full_screen ) sdl_flags |= SDL_WINDOW_FULLSCREEN;
     if ( frameless ) sdl_flags   |= SDL_WINDOW_BORDERLESS;
-    
-    // Set a hint for the orientation for iOS devices
-    if(surface_width > surface_height)
-        SDL_SetHint( SDL_HINT_ORIENTATIONS, "LandscapeLeft" );
-    else
-        SDL_SetHint( SDL_HINT_ORIENTATIONS, "Portrait" );
-    
-    const char *hints = SDL_GetHint(SDL_HINT_ORIENTATIONS);
-    _printf("Orientation hints: %s", hints);
 #else
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
@@ -428,7 +419,7 @@ int gr_set_mode( int width, int height, int depth )
         scale_screen = SDL_GetWindowSurface(window);
 
         // Set the screen depth to what SDL gave us
-        // TODO: Check we should actually be using scale_screen and not screen
+        // Set the screen depth to what SDL gave us
         if(scale_screen->format->BitsPerPixel == 16) {
             enable_16bits = 1;
             enable_32bits = 0;    
@@ -445,15 +436,12 @@ int gr_set_mode( int width, int height, int depth )
 #endif
 
         if ( !scale_screen ) return -1;
-        screen = SDL_CreateRGBSurface( sdl_flags,
-                                       width,
-                                       height,
+        screen = SDL_CreateRGBSurface( sdl_flags, surface_width, surface_height,
                                        scale_screen->format->BitsPerPixel,
                                        scale_screen->format->Rmask,
                                        scale_screen->format->Gmask,
                                        scale_screen->format->Bmask,
-                                       scale_screen->format->Amask
-                                     );
+                                       scale_screen->format->Amask);
 
         /* scale tables */
 

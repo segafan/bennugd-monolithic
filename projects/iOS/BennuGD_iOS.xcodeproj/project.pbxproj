@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DEF13A534B200F70BC2 /* mod_chipmunk.c */; };
-		9219AEDE147F23EC00A7AD83 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		921B48181391CE07005F1832 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48171391CE07005F1832 /* UIKit.framework */; };
 		921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48191391CE07005F1832 /* Foundation.framework */; };
 		921B481C1391CE07005F1832 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B481B1391CE07005F1832 /* CoreGraphics.framework */; };
@@ -107,6 +106,7 @@
 		92AC7EA01469F3B5001D7032 /* main.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92AC7E9C1469F3B5001D7032 /* main.prg */; };
 		92AC7EA11469F3B5001D7032 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 92AC7E9D1469F3B5001D7032 /* README */; };
 		92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */; settings = {ATTRIBUTES = (Weak, ); }; };
+		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
 		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
 		92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */; };
@@ -427,7 +427,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9219AEDE147F23EC00A7AD83 /* libcurl.a in Frameworks */,
+				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
 				9230C94D146A03220091196A /* libSDL.a in Frameworks */,
 				92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */,
 				92785844146A07080074BAC3 /* libfmodex_iphonesimulator.a in Frameworks */,
@@ -1467,7 +1467,6 @@
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1491,7 +1490,7 @@
 					../../3rdparty/libpng/src/,
 					../../3rdparty/fmod/iOS/inc/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ../../3rdparty/fmod/iOS/lib/;
 				OTHER_LDFLAGS = (
 					"-lm",
@@ -1511,7 +1510,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_INPUT_FILETYPE = sourcecode.c.objc;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					COLORSPACE_BGR,
 					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
@@ -1534,7 +1532,7 @@
 					../../3rdparty/libpng/src/,
 					../../3rdparty/fmod/iOS/inc/,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = ../../3rdparty/fmod/iOS/lib/;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = (
@@ -1569,6 +1567,7 @@
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
 				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
@@ -1580,7 +1579,7 @@
 					../../3rdparty/fmod/iOS/inc/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1588,9 +1587,9 @@
 					"\"$(SRCROOT)/../../3rdparty/fmod/iOS/lib\"",
 				);
 				OTHER_LDFLAGS = (
+					"-lc++",
 					"-lm",
 					"-lz",
-					"-lstdc++",
 				);
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
@@ -1622,6 +1621,7 @@
 					NO_MODIMAGE,
 					"VERSION='\"1.0.0\"'",
 				);
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
@@ -1633,7 +1633,7 @@
 					../../3rdparty/fmod/iOS/inc/,
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1641,9 +1641,9 @@
 					"\"$(SRCROOT)/../../3rdparty/fmod/iOS/lib\"",
 				);
 				OTHER_LDFLAGS = (
+					"-lc++",
 					"-lm",
 					"-lz",
-					"-lstdc++",
 				);
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
