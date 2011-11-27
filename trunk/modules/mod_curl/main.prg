@@ -55,12 +55,9 @@ Begin
         return;
     end;
     
-    curl_setopt(curl, 43,    1);
-    say(1);
-    curl_setopt(curl, 10001, "BennuGD forums.html");
-    say(2);
-    curl_setopt(curl, 10002, "http://forum.bennugd.org");
-    say(3);
+    curl_setopt(curl, 43,    1);                            //CURLOPT_NOPROGRESS
+    curl_setopt(curl, 10001, "BennuGD forums.html");        //CURLOPT_WRITEDATA
+    curl_setopt(curl, 10002, "http://forum.bennugd.org");   //CURLOPT_URL
     
     curl_perform(curl, &status);
     
