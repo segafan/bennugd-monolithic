@@ -34,9 +34,10 @@ End;
 
 Process main()
 Private
-    int i=0;
-    int status=0;
+    int i=0, status=0, curl=0;
+
 Begin
+    curl_global_init();
     set_mode(width, height, 16);
     
     bouncer();
@@ -46,12 +47,30 @@ Begin
         FRAME;
     end;
     
-    // Start transfer
-    curl_get("http://forum.bennugd.org", "BennuGD forums.html", &status);
+    // Start libcurl, set options, perform transfer
+    curl = curl_init();
+    if(curl == -1)
+        say("Curl initialisation failed, quitting");
+        quit = 1;
+        return;
+    end;
     
+    curl_setopt(curl, 43,    1);
+    say(1);
+    curl_setopt(curl, 10001, "BennuGD forums.html");
+    say(2);
+    curl_setopt(curl, 10002, "http://forum.bennugd.org");
+    say(3);
+    
+    curl_perform(curl, &status);
+    
+    // Wait for the transfer to finish
     while(status != 0)
         FRAME;
     end;
+    
+    curl_cleanup(curl);
+    curl_global_cleanup();
     
     say("Download done!");
 
