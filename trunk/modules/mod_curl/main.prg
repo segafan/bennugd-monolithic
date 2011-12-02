@@ -35,9 +35,9 @@ End;
 Process main()
 Private
     int i=0, status=0, curl=0;
+    string output;
 
 Begin
-    curl_global_init();
     set_mode(width, height, 16);
     
     bouncer();
@@ -55,9 +55,12 @@ Begin
         return;
     end;
     
-    curl_setopt(curl, 43,    1);                            //CURLOPT_NOPROGRESS
-    curl_setopt(curl, 10001, "BennuGD forums.html");        //CURLOPT_WRITEDATA
-    curl_setopt(curl, 10002, "http://forum.bennugd.org");   //CURLOPT_URL
+    curl_setopt(curl, CURLOPT_NOPROGRESS,    1);
+    // Use this to write to a file
+    //curl_setopt(curl, CURLOPT_WRITEDATA, "BennuGD forums.html");
+    // Use this to download to a string
+    curl_setopt(curl, CURLOPT_WRITEDATA, 0);
+    curl_setopt(curl, CURLOPT_URL, "http://forum.bennugd.org");
     
     curl_perform(curl, &status);
     
@@ -66,8 +69,12 @@ Begin
         FRAME;
     end;
     
+    output = curl_fetch(curl);
+    
+    say("BennuGD download:");
+    say(output);
+    
     curl_cleanup(curl);
-    curl_global_cleanup();
     
     say("Download done!");
 
