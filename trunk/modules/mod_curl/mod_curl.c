@@ -161,7 +161,7 @@ int findindex() {
             return i;
         }
     }
-    
+
     return -1;
 }
 
@@ -396,12 +396,12 @@ static int bgd_curl_fetch(INSTANCE * my, int * params) {
 }
 
 // Initialize libcurl
-void __bgdexport( libgrbase, module_initialize )() {
+void __bgdexport( mod_curl, module_initialize )() {
     curl_global_init(CURL_GLOBAL_ALL);
 }
 
 // Finalize libcurl
-void __bgdexport( libgrbase, module_finalize )() {
+void __bgdexport( mod_curl, module_finalize )() {
     curl_global_cleanup();
 }
 

@@ -95,6 +95,9 @@
 #ifndef NO_MODFMODEX
 #   include <mod_fmodex_symbols.h>
 #endif
+#ifndef NO_MODCURL
+#   include <mod_curl_symbols.h>
+#endif
 //#include <mod_sqlite3_symbols.h>
 
 typedef struct
@@ -204,6 +207,9 @@ basic_symbols symbol_list[] =
 #ifndef NO_MODFMODEX
     { "mod_fmodex.fakelib" , NULL, NULL, NULL, mod_fmodex_globals_def, NULL, mod_fmodex_functions_exports },
 #endif
+#ifndef NO_MODCURL
+    { "mod_curl.fakelib" , NULL, mod_curl_constants_def, NULL, NULL, NULL, mod_curl_functions_exports },
+#endif
 	{ NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -285,7 +291,10 @@ extra_symbols symbol_list_runtime[] =
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, mod_multi_handler_hooks }, //mod_multi
 #endif
 #ifndef NO_MODFMODEX
-    { mod_fmodex_globals_fixup, NULL, mod_fmodex_module_initialize, mod_fmodex_module_finalize, NULL, NULL, NULL, mod_fmodex_handler_hooks } //mod_fmodex
+    { mod_fmodex_globals_fixup, NULL, mod_fmodex_module_initialize, mod_fmodex_module_finalize, NULL, NULL, NULL, mod_fmodex_handler_hooks }, //mod_fmodex
+#endif
+#ifndef NO_MODCURL
+    { NULL, NULL, mod_curl_module_initialize, mod_curl_module_finalize, NULL, NULL, NULL, NULL } //mod_curl
 #endif
 };
 #endif
