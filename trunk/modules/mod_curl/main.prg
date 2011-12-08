@@ -4,10 +4,11 @@ import "mod_say"
 import "mod_mouse"
 import "mod_text"
 import "mod_map"
+import "mod_file"
 
 Global
-int width = 640;
-int height = 480;
+int width = 1024;
+int height = 768;
 int quit=0;
 end;
 
@@ -40,7 +41,15 @@ Private
 Begin
     set_mode(width, height, 16);
     
+    // Remove Google logo, if it exists already
+    if(file_exists("../tmp/classicplus.png"))
+        fremove("../tmp/classicplus.png");
+        say("Removed existing logo");
+    end;
+    
     bouncer();
+    
+    say("Starting download");
     
     // Start libcurl, set options, perform transfer
     curl = curl_init();
@@ -52,10 +61,10 @@ Begin
     
     curl_setopt(curl, CURLOPT_NOPROGRESS,    1);
     // Use this to write to a file
-    //curl_setopt(curl, CURLOPT_WRITEDATA, "BennuGD forums.html");
+    curl_setopt(curl, CURLOPT_WRITEDATA, "../tmp/classicplus.png");
     // Use this to download to a string
-    curl_setopt(curl, CURLOPT_WRITEDATA, 0);
-    curl_setopt(curl, CURLOPT_URL, "http://forum.bennugd.org");
+    //curl_setopt(curl, CURLOPT_WRITEDATA, 0);
+    curl_setopt(curl, CURLOPT_URL, "http://www.google.es/logos/classicplus.png");
     
     curl_perform(curl, &status);
     
@@ -64,11 +73,15 @@ Begin
         FRAME;
     end;
     
-    output = curl_fetch(curl);
+    //output = curl_fetch(curl);
     
-    write(0, 0, 0, 0, output);
+    //write(0, 0, 0, 0, output);
     
     curl_cleanup(curl);
+    
+    // Replace the bouncer image by the google logo we just downloaded
+    unload_map(0, son.graph);
+    son.graph = load_png("../tmp/classicplus.png");
     
     say("Download done!");
 
