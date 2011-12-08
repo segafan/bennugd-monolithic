@@ -41,11 +41,6 @@ Begin
     set_mode(width, height, 16);
     
     bouncer();
-
-    write(0, width/2, height/2, 4, "Click on the screen to start download");
-    while(! mouse.left)
-        FRAME;
-    end;
     
     // Start libcurl, set options, perform transfer
     curl = curl_init();
@@ -71,15 +66,12 @@ Begin
     
     output = curl_fetch(curl);
     
-    say("BennuGD download:");
-    say(output);
+    write(0, 0, 0, 0, output);
     
     curl_cleanup(curl);
     
     say("Download done!");
 
-    delete_text(ALL_TEXT);
-    write(0, width/2, height/2, 4, "Rigth Click on the screen again to quit");
     while(! mouse.right)
         FRAME;
     end;

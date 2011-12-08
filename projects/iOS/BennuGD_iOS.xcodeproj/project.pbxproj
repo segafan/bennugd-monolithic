@@ -111,6 +111,7 @@
 		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
 		92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */; };
 		92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */; };
+		92E9FDA01490369E007F890B /* mod_curl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92E9FD9D1490369E007F890B /* mod_curl.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -197,6 +198,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 92098DA113A52B7300F70BC2;
 			remoteInfo = "Chipmunk-iOS";
+		};
+		92E9FDA214903FE0007F890B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 9219AC15147F1AE700A7AD83;
+			remoteInfo = libcurl;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -420,6 +428,8 @@
 		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
 		92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Chipmunk-iOS.xcodeproj"; path = "../../3rdparty/Chipmunk-5.3.4/Chipmunk-iOS/Chipmunk-iOS.xcodeproj"; sourceTree = "<group>"; };
 		92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libChipmunk-iOS.a"; sourceTree = SOURCE_ROOT; };
+		92E9FD9D1490369E007F890B /* mod_curl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_curl.c; sourceTree = "<group>"; };
+		92E9FDA1149036DD007F890B /* mod_curl_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_curl_symbols.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -609,6 +619,7 @@
 				921B49B71391D8A3005F1832 /* libwm */,
 				921B49BA1391D8A3005F1832 /* mod_blendop */,
 				92098DED13A534B200F70BC2 /* mod_chipmunk */,
+				92E9FD9A1490369E007F890B /* mod_curl */,
 				921B49D81391D8A4005F1832 /* mod_dir */,
 				921B49DB1391D8A4005F1832 /* mod_draw */,
 				921B49DE1391D8A4005F1832 /* mod_effects */,
@@ -1191,6 +1202,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		92E9FD9A1490369E007F890B /* mod_curl */ = {
+			isa = PBXGroup;
+			children = (
+				92E9FD9D1490369E007F890B /* mod_curl.c */,
+				92E9FDA1149036DD007F890B /* mod_curl_symbols.h */,
+			);
+			path = mod_curl;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1205,6 +1225,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92E9FDA314903FE0007F890B /* PBXTargetDependency */,
 				9230C94C146A031B0091196A /* PBXTargetDependency */,
 				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
 				92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */,
@@ -1423,6 +1444,7 @@
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
 				92307D481461F1B00011C04E /* mod_multi.c in Sources */,
 				92AC7E9F1469F3B5001D7032 /* mod_fmodex.c in Sources */,
+				92E9FDA01490369E007F890B /* mod_curl.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1453,6 +1475,11 @@
 			isa = PBXTargetDependency;
 			name = "Chipmunk-iOS";
 			targetProxy = 92CD380913BD4221000D5ED7 /* PBXContainerItemProxy */;
+		};
+		92E9FDA314903FE0007F890B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = libcurl;
+			targetProxy = 92E9FDA214903FE0007F890B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1577,6 +1604,7 @@
 					../../3rdparty/libpng/src/,
 					../../3rdparty/SDL_mixer/src/,
 					../../3rdparty/fmod/iOS/inc/,
+					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
@@ -1631,6 +1659,7 @@
 					../../3rdparty/libpng/src/,
 					../../3rdparty/SDL_mixer/src/,
 					../../3rdparty/fmod/iOS/inc/,
+					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
