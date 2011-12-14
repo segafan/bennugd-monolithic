@@ -28,15 +28,13 @@
 
 /* --------------------------------------------------------------------------- */
 
-#ifdef TARGET_MAC
-#include <SDL/SDL.h>
-#else
 #include <SDL.h>
-#endif
 
 #if defined(TARGET_IOS)
 #if SDL_VERSION_ATLEAST(1,3,0)
+#define __LIB_RENDER
 #include <g_video.h>
+#include <librender.h>
 #endif
 #endif
 
@@ -95,6 +93,7 @@ DLVARFIXUP  __bgdexport( libwm, globals_fixup )[] =
 static void wm_events()
 {
     SDL_Event e ;
+    int oldrestore, olddump;
     
     /* Procesa los eventos de ventana pendientes */
 
@@ -114,15 +113,25 @@ static void wm_events()
                 switch (e.window.event) {
 #if defined(TARGET_IOS)
                     case SDL_WINDOWEVENT_RESTORED:
-                        NSLog(@"BennuGD: Got SDL_WINDOWEVENT_RESTORED event on window %d", e.window.windowID);
-                        if(scale_resolution) {
-                                gr_set_mode(scr_width, scr_height,
-                                        screen->format->BitsPerPixel);
+                        // Get the new display surface & clear the old one
+                        if(enable_scale) {
+                            SDL_FreeSurface(scale_screen);
+                            scale_screen = SDL_GetWindowSurface(window);
                         }
                         else {
-                            gr_set_mode(scr_width, scr_height, screen->format->BitsPerPixel);
+                            SDL_FreeSurface(screen);
+                            screen = SDL_GetWindowSurface(window);
                         }
-                        NSLog(@"Automatically setting video mode: %dx%dx%d", scr_width, scr_height, screen->format->BitsPerPixel);
+                        
+                        // Force full screen redraw
+                        olddump    = GLODWORD( librender, DUMPTYPE );
+                        oldrestore = GLODWORD( librender, RESTORETYPE );
+                        GLODWORD( librender, DUMPTYPE )    = 1;
+                        GLODWORD( librender, RESTORETYPE ) = 1;
+                        gr_draw_frame();
+                        GLODWORD( librender, DUMPTYPE )    = olddump;
+                        GLODWORD( librender, RESTORETYPE ) = oldrestore;
+
                         GLODWORD(libwm, FOCUS_STATUS ) = 1;
                         break;
 #endif
@@ -183,6 +192,7 @@ char * __bgdexport( libwm, modules_dependency )[] =
 {
 #if defined(TARGET_IOS)
     "libvideo",
+    "librender",
 #endif
     "libsdlhandler",
     NULL
