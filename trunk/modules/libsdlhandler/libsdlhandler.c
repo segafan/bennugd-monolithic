@@ -26,16 +26,12 @@
 
 #include "bgddl.h"
 
-#ifdef TARGET_MAC
-#include <SDL/SDL.h>
-#else
 #include <SDL.h>
-#endif
 
 /* ----------------------------------------------------------------- */
 /* Public functions                                                  */
 
-static void  dump_new_events()
+static void dump_new_events()
 {
     SDL_Event event;
     /* Remove all pendings events */
@@ -44,13 +40,12 @@ static void  dump_new_events()
 #if SDL_VERSION_ATLEAST(1,3,0)
     // We'll only discard events that no module knows how to handle here...
     // Otherwise some events seem to get discarded
-    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_SYSWMEVENT, SDL_SYSWMEVENT ) > 0 );
-    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_TEXTEDITING, SDL_TEXTINPUT ) > 0 );
-    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_INPUTMOTION, SDL_LASTEVENT ) > 0 );
+    SDL_FlushEvents(SDL_SYSWMEVENT, SDL_SYSWMEVENT);
+    SDL_FlushEvents(SDL_TEXTEDITING, SDL_TEXTINPUT);
+    SDL_FlushEvents(SDL_INPUTMOTION, SDL_LASTEVENT);
 #else
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
 #endif  
-
 
     /* Get new events */
     SDL_PumpEvents();
