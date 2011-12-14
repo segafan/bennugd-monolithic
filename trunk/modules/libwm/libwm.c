@@ -28,7 +28,11 @@
 
 /* --------------------------------------------------------------------------- */
 
+#ifdef TARGET_MAC
+#include <SDL/SDL.h>
+#else
 #include <SDL.h>
+#endif
 
 #if defined(TARGET_IOS)
 #if SDL_VERSION_ATLEAST(1,3,0)
@@ -111,7 +115,13 @@ static void wm_events()
 #if defined(TARGET_IOS)
                     case SDL_WINDOWEVENT_RESTORED:
                         NSLog(@"BennuGD: Got SDL_WINDOWEVENT_RESTORED event on window %d", e.window.windowID);
-                        gr_set_mode(scr_width, scr_height, screen->format->BitsPerPixel);
+                        if(scale_resolution) {
+                                gr_set_mode(scr_width, scr_height,
+                                        screen->format->BitsPerPixel);
+                        }
+                        else {
+                            gr_set_mode(scr_width, scr_height, screen->format->BitsPerPixel);
+                        }
                         NSLog(@"Automatically setting video mode: %dx%dx%d", scr_width, scr_height, screen->format->BitsPerPixel);
                         GLODWORD(libwm, FOCUS_STATUS ) = 1;
                         break;

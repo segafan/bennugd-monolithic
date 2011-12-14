@@ -26,7 +26,11 @@
 
 #include "bgddl.h"
 
+#ifdef TARGET_MAC
+#include <SDL/SDL.h>
+#else
 #include <SDL.h>
+#endif
 
 /* ----------------------------------------------------------------- */
 /* Public functions                                                  */
@@ -42,10 +46,7 @@ static void  dump_new_events()
     // Otherwise some events seem to get discarded
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_SYSWMEVENT, SDL_SYSWMEVENT ) > 0 );
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_TEXTEDITING, SDL_TEXTINPUT ) > 0 );
-    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_INPUTMOTION, SDL_LASTEVENT ) > 0 ) {
-        if(event.type == SDL_FINGERDOWN)
-            _printf("Dropping SDL_FINGERDOWN event!!!\n");
-    }
+    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_INPUTMOTION, SDL_LASTEVENT ) > 0 );
 #else
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
 #endif  

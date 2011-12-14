@@ -392,10 +392,19 @@ int gr_set_mode( int width, int height, int depth )
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
 #endif
     
-    if ( scale_screen ) SDL_FreeSurface( scale_screen ) ;
-    if ( screen ) SDL_FreeSurface( screen ) ;
+    if ( scale_screen ) {
+        SDL_FreeSurface( scale_screen ) ;
+        scale_screen = NULL;
+    }
+    if ( screen ) {
+        SDL_FreeSurface( screen ) ;
+        screen = NULL;
+    }
 #if SDL_VERSION_ATLEAST(1,3,0)
-    if( window ) SDL_DestroyWindow(window);
+    if( window ) {
+        SDL_DestroyWindow(window);
+        window = NULL;
+    }
 #endif
 
     if ( scale_resolution )
