@@ -282,6 +282,7 @@ void gr_refresh_palette()
 
 void gr_draw_frame()
 {
+    if ( ! scr_initialized ) return ;
     if ( jump ) return ;
 
     /* Actualiza paleta */
