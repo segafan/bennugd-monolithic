@@ -686,7 +686,8 @@ void __bgdexport( libvideo, module_initialize )()
     else
         GLODWORD( libvideo, GRAPH_MODE ) = MODE_16BITS;
 
-    gr_init( scr_width, scr_height ) ;
+    // Don't autostart video
+    //gr_init( scr_width, scr_height ) ;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -707,7 +708,8 @@ void __bgdexport( libvideo, module_finalize )()
 #endif
 
 #if SDL_VERSION_ATLEAST(1, 3, 0)
-    SDL_DestroyWindow(window);
+    if(window != NULL)
+        SDL_DestroyWindow(window);
 #endif
 
     if ( SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_QuitSubSystem( SDL_INIT_VIDEO );
