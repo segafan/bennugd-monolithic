@@ -42,8 +42,8 @@ Begin
     set_mode(width, height, 16);
     
     // Remove Google logo, if it exists already
-    if(file_exists("../tmp/classicplus.png"))
-        fremove("../tmp/classicplus.png");
+    if(file_exists("classicplus.png"))
+        fremove("classicplus.png");
         say("Removed existing logo");
     end;
     
@@ -61,10 +61,10 @@ Begin
     
     curl_setopt(curl, CURLOPT_NOPROGRESS,    1);
     // Use this to write to a file
-    curl_setopt(curl, CURLOPT_WRITEDATA, "../tmp/classicplus.png");
+    //curl_setopt(curl, CURLOPT_WRITEDATA, "classicplus.png");
     // Use this to download to a string
-    //curl_setopt(curl, CURLOPT_WRITEDATA, 0);
-    curl_setopt(curl, CURLOPT_URL, "http://www.google.es/logos/classicplus.png");
+    curl_setopt(curl, CURLOPT_WRITEDATA, &output);
+    curl_setopt(curl, CURLOPT_URL, "http://www.google.es/");
     
     curl_perform(curl, &status);
     
@@ -75,13 +75,13 @@ Begin
     
     //output = curl_fetch(curl);
     
-    //write(0, 0, 0, 0, output);
+    write(0, 0, 0, 0, output);
     
     curl_cleanup(curl);
     
     // Replace the bouncer image by the google logo we just downloaded
-    unload_map(0, son.graph);
-    son.graph = load_png("../tmp/classicplus.png");
+    //unload_map(0, son.graph);
+    //son.graph = load_png("classicplus.png");
     
     say("Download done!");
 
