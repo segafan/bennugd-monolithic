@@ -36,6 +36,7 @@ End;
 Process main()
 Private
     int i=0, status=0, curl=0;
+    int tostring=0;     // Switch to 1 to download to a string
     string output;
 
 Begin
@@ -60,11 +61,15 @@ Begin
     end;
     
     curl_setopt(curl, CURLOPT_NOPROGRESS,    1);
-    // Use this to write to a file
-    //curl_setopt(curl, CURLOPT_WRITEDATA, "classicplus.png");
-    // Use this to download to a string
-    curl_setopt(curl, CURLOPT_WRITEDATA, &output);
-    curl_setopt(curl, CURLOPT_URL, "http://www.google.es/");
+    if(tostring == 0)
+        // Use this to write to a file
+        curl_setopt(curl, CURLOPT_WRITEDATA, "classicplus.png");
+        curl_setopt(curl, CURLOPT_URL, "http://www.google.es/logos/classicplus.png");
+    else
+        // Use this to download to a string
+        curl_setopt(curl, CURLOPT_WRITEDATA, &output);
+        curl_setopt(curl, CURLOPT_URL, "http://www.google.es/");
+    end
     
     curl_perform(curl, &status);
     
@@ -73,15 +78,15 @@ Begin
         FRAME;
     end;
     
-    //output = curl_fetch(curl);
-    
-    write(0, 0, 0, 0, output);
+    if(tostring == 0)
+        // Replace the bouncer image by the google logo we just downloaded
+        unload_map(0, son.graph);
+        son.graph = load_png("classicplus.png");
+    else
+        write(0, 0, 0, 0, output);
+    end
     
     curl_cleanup(curl);
-    
-    // Replace the bouncer image by the google logo we just downloaded
-    //unload_map(0, son.graph);
-    //son.graph = load_png("classicplus.png");
     
     say("Download done!");
 
