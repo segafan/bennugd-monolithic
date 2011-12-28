@@ -18,7 +18,6 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_math/ \
 	$(MODULES_PATH)/mod_time/ \
 	$(MODULES_PATH)/mod_file/ \
-	$(MODULES_PATH)/mod_sound/ \
     $(MODULES_PATH)/mod_curl/ \
 	$(MODULES_PATH)/libsdlhandler/ \
 	$(MODULES_PATH)/mod_joy/ \
@@ -66,6 +65,7 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODREGEX \
 	-DNO_MODMEM \
 	-DNO_LIBKEY \
+	-DNO_MODSOUND \
 	-DNO_MODFMODEX \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
@@ -92,7 +92,6 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_mathi/mod_mathi.c \
 	../../../../modules/mod_time/mod_time.c \
 	../../../../modules/mod_file/mod_file.c \
-	../../../../modules/mod_sound/mod_sound.c \
 	../../../../modules/libsdlhandler/libsdlhandler.c \
 	../../../../modules/libjoy/libjoy.c \
 	../../../../modules/mod_joy/mod_joy.c \
@@ -154,7 +153,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_curl/mod_curl.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
-LOCAL_SHARED_LIBRARIES += SDL SDL_mixer png
-LOCAL_STATIC_LIBRARIES += curl
+LOCAL_SHARED_LIBRARIES := SDL SDL_mixer png
+LOCAL_STATIC_LIBRARIES := curl
 
 include $(BUILD_STATIC_LIBRARY)
