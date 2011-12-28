@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <strings.h>
 #include <bgddl.h>
+#include <libvideo.h>
 #include <SDL.h>
 
 #ifndef MAX_POINTERS
@@ -37,9 +38,9 @@
 
 typedef struct {
     SDL_bool active;
-    float x;
-    float y;
-    float pressure;
+    int x;
+    int y;
+    int pressure;
     SDL_FingerID fingerid;
 } multi_pointer;
 
@@ -93,9 +94,9 @@ void parse_input_events() {
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                pointers[n].x = (float)e.tfinger.x / state->xres;
-                pointers[n].y = (float)e.tfinger.y / state->yres;
-                pointers[n].pressure = (float)e.tfinger.pressure / state->pressure_max ;
+                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * scr_width;
+                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * scr_height;
+                pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
                 break;
             
             case SDL_FINGERMOTION:
@@ -108,9 +109,9 @@ void parse_input_events() {
                     break;
 
                 // Update the data about this finger's position
-                pointers[n].x = (float)e.tfinger.x / state->xres;
-                pointers[n].y = (float)e.tfinger.y / state->yres;
-                pointers[n].pressure = (float)e.tfinger.pressure / state->pressure_max ;
+                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * scr_width;
+                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * scr_height;
+                pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
                 break;
 
             case SDL_FINGERUP:
@@ -141,7 +142,7 @@ static int modmulti_numpointers(INSTANCE * my, int * params) {
 }
 
 // Get some info about the given pointer
-static float modmulti_info(INSTANCE * my, int * params) {
+static int modmulti_info(INSTANCE * my, int * params) {
     const unsigned char *info = (unsigned char *) string_get(params[1]);
     int n=params[0];
     
@@ -158,14 +159,14 @@ static float modmulti_info(INSTANCE * my, int * params) {
         return pointers[n].pressure;
     } else if(strncasecmp(info, "active", 6)) {
         if(pointers[n].active == SDL_TRUE)
-            return 1.0;
+            return 1;
         else
-            return 0.0;
+            return 0;
     }
     
     string_discard(params[1]);
 
-    return -1.0;
+    return -1;
 }
 
 /* ----------------------------------------------------------------- */
@@ -173,7 +174,7 @@ static float modmulti_info(INSTANCE * my, int * params) {
 DLSYSFUNCS __bgdexport( mod_multi, functions_exports )[] =
 {
     { "MULTI_NUMPOINTERS" , ""      , TYPE_INT    , modmulti_numpointers },
-    { "MULTI_INFO"        , "IS"    , TYPE_FLOAT  , modmulti_info        },
+    { "MULTI_INFO"        , "IS"    , TYPE_INT    , modmulti_info        },
     {0, 0, 0, 0}
 };
 
