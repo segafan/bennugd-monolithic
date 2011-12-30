@@ -27,8 +27,8 @@ LOCAL_CFLAGS := \
 LOCAL_SRC_FILES := /../../../../3rdparty/SDL-1.3/src/src/main/android/SDL_android_main.cpp \
 	main.c
 
-LOCAL_SHARED_LIBRARIES  += SDL
-LOCAL_STATIC_LIBRARY    += bgdrtm
+LOCAL_SHARED_LIBRARIES  += bgdrtm SDL
+LOCAL_STATIC_LIBRARY    +=
 LOCAL_LDLIBS            += -llog
 
 include $(BUILD_SHARED_LIBRARY)
