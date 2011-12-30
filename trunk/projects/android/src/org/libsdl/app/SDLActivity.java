@@ -40,6 +40,7 @@ public class SDLActivity extends Activity {
         System.loadLibrary("SDL");
         System.loadLibrary("mikmod");
         System.loadLibrary("SDL_mixer");
+        System.loadLibrary("bgdrtm");
         System.loadLibrary("main");
     }
 
