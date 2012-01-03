@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2011 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -69,8 +69,11 @@ static __inline__ void ConvertNSRect(NSRect *r)
     [window setAcceptsMouseMovedEvents:YES];
 
     [view setNextResponder:self];
+
 #if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
-    [view setAcceptsTouchEvents:YES];
+    if ([view respondsToSelector:@selector(setAcceptsTouchEvents:)]) {
+        [view setAcceptsTouchEvents:YES];
+    }
 #endif
 }
 
