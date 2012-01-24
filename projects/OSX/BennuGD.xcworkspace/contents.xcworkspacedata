@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../3rdparty/SDL-1.3/src/Xcode/SDL/SDL.xcodeproj">
+      location = "group:../../3rdparty/SDL2/src/Xcode/SDL/SDL.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:bgdi/bgdi.xcodeproj">
