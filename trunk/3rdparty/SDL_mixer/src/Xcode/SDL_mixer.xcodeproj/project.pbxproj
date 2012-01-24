@@ -279,7 +279,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					"../../../SDL-1.3/src/include/",
+					../../../SDL2/src/include/,
 					../../../libtremor/src/,
 				);
 				LIBRARY_SEARCH_PATHS = (
@@ -328,7 +328,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					"../../../SDL-1.3/src/include/",
+					../../../SDL2/src/include/,
 					../../../libtremor/src/,
 				);
 				LIBRARY_SEARCH_PATHS = (
@@ -374,7 +374,7 @@
 				);
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = (
-					"../../../SDL-1.3/src/include/",
+					../../../SDL2/src/include/,
 					../../../libtremor/src/,
 				);
 				LIBRARY_SEARCH_PATHS = (
