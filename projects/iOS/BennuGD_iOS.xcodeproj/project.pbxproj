@@ -407,7 +407,7 @@
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
 		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
-		9230C93C146A02CD0091196A /* SDLiPhoneOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDLiPhoneOS.xcodeproj; path = "../../3rdparty/SDL-1.3/src/Xcode-iPhoneOS/SDL/SDLiPhoneOS.xcodeproj"; sourceTree = "<group>"; };
+		9230C93C146A02CD0091196A /* SDLiPhoneOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDLiPhoneOS.xcodeproj; path = "../../3rdparty/SDL2/src/Xcode-iPhoneOS/SDL/SDLiPhoneOS.xcodeproj"; sourceTree = "<group>"; };
 		9233FED51412C6F700D99C88 /* 1.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = 1.ogg; path = ../android/assets/1.ogg; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
 		92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodex_iphonesimulator.a; path = ../../3rdparty/fmod/iOS/lib/libfmodex_iphonesimulator.a; sourceTree = "<group>"; };
@@ -1599,7 +1599,7 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/src/include",
+					"../../3rdparty/SDL2/src/include",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 					../../3rdparty/SDL_mixer/src/,
@@ -1654,7 +1654,7 @@
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					"../../3rdparty/SDL-1.3/src/include",
+					"../../3rdparty/SDL2/src/include",
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
 					../../3rdparty/SDL_mixer/src/,
