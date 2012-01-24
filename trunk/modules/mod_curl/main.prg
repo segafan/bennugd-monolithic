@@ -74,9 +74,15 @@ Begin
     curl_perform(curl, &status);
     
     // Wait for the transfer to finish
-    while(status != 0)
+    while(status < 0)
         FRAME;
     end;
+    
+    if(status > 0)
+        say("Transfer failed with status "+status+", quitting");
+        quit=1;
+        return;
+    end
     
     if(tostring == 0)
         // Replace the bouncer image by the google logo we just downloaded
