@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 Joseba García Echebarria. All rights reserved.
+ *  Copyright (c) 2012 Joseba García Echebarria. All rights reserved.
  *
  *  This software is provided 'as-is', without any express or implied
  *  warranty. In no event will the authors be held liable for any damages
@@ -372,8 +372,10 @@ int curl_perform(int id) {
     if(download_info[id].curl == NULL)
         return -1;
     
+    int retval = 0;
+    
     // Perform download, this function won't quit until it's done
-    curl_easy_perform(download_info[id].curl);
+    retval = curl_easy_perform(download_info[id].curl);
     
     // If downloading to a file, close its file descriptor
     if (download_info[id].outfd != NULL) {
@@ -388,7 +390,7 @@ int curl_perform(int id) {
         free(download_info[id].chunk.memory);
     }
     
-    return 0;
+    return retval;
 }
 
 // Map curl_easy_perform
@@ -425,5 +427,6 @@ DLSYSFUNCS __bgdexport( mod_curl, functions_exports )[] =
     { "CURL_SETOPT"         , "IIS"   , TYPE_INT    , bgd_curl_easy_setopt2   },
     { "CURL_SETOPT"         , "IIP"   , TYPE_INT    , bgd_curl_easy_setopt3   },
     { "CURL_PERFORM"        , "IP"    , TYPE_INT    , bgd_curl_easy_perform   },
+//    { "CURL_FETCH"          , "I"     , TYPE_STRING , bgd_curl_fetch          },
     { 0                     , 0       , 0           , 0                       }
 };
