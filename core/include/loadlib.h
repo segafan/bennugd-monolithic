@@ -77,6 +77,7 @@ static int dlibclose( dlibhandle * handle )
 
 static dlibhandle * dlibopen( const char * fname )
 {
+    char *f;
 #ifdef _WIN32
     void * hnd = LoadLibrary( fname );
 #else
@@ -89,7 +90,6 @@ static dlibhandle * dlibopen( const char * fname )
 #else
         __dliberr = dlerror() ;
 #endif
-        printf("%s\n", __dliberr);
         return NULL;
     }
 
@@ -102,7 +102,9 @@ static dlibhandle * dlibopen( const char * fname )
             return NULL;
         }
 
-        dlib->fname = strdup( fname );
+        f = fname + strlen( fname );
+        while ( f > fname && f[-1] != '\\' && f[-1] != '/' ) f-- ;
+        dlib->fname = strdup( f );
         if ( !dlib->fname )
         {
             __dliberr = "Could not load library." ;
@@ -216,7 +218,7 @@ static char * dliberror( void )
 
 static dlibhandle * dlibopen( const char * fname )
 {
-  int i=0;
+    int i=0;
 
     // Fake-load the library
     // What we're really doing is checking if the library name given to us is in the list
@@ -238,8 +240,8 @@ static dlibhandle * dlibopen( const char * fname )
             return ( dlib );
         }
 		
-		    i++;
-	  }
+		i++;
+    }
 
     return NULL;
 }
