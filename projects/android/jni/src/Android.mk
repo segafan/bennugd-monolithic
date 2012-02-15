@@ -5,7 +5,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-SDL_PATH := $(LOCAL_PATH)/../../../../3rdparty/SDL-1.3/src
+SDL_PATH := $(LOCAL_PATH)/../../../../3rdparty/SDL2/src
 
 LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/include \
@@ -24,11 +24,11 @@ LOCAL_CFLAGS := \
 	-DSDL_NO_COMPAT
 
 # Add your application source files here...
-LOCAL_SRC_FILES := /../../../../3rdparty/SDL-1.3/src/src/main/android/SDL_android_main.cpp \
+LOCAL_SRC_FILES := /../../../../3rdparty/SDL2/src/src/main/android/SDL_android_main.cpp \
 	main.c
 
-LOCAL_SHARED_LIBRARIES  += bgdrtm SDL
+LOCAL_SHARED_LIBRARIES  += bgdrtm SDL2
 LOCAL_STATIC_LIBRARY    +=
-LOCAL_LDLIBS            += -llog
+LOCAL_LDLIBS := -lGLESv1_CM -llog
 
 include $(BUILD_SHARED_LIBRARY)

@@ -8,18 +8,18 @@ LOCAL_MODULE := bgdrtm
 
 LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
-	$(LOCAL_PATH)/../../../../3rdparty/SDL-1.3/src/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL2/src/include/ \
 	$(LOCAL_PATH)/../../../../3rdparty/SDL_mixer/src/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libpng/src/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
-    $(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
 	$(MODULES_PATH)/mod_say/ \
 	$(MODULES_PATH)/mod_string/ \
 	$(MODULES_PATH)/mod_math/ \
 	$(MODULES_PATH)/mod_time/ \
 	$(MODULES_PATH)/mod_file/ \
 	$(MODULES_PATH)/mod_sound/ \
-    $(MODULES_PATH)/mod_curl/ \
+	$(MODULES_PATH)/mod_curl/ \
 	$(MODULES_PATH)/libsdlhandler/ \
 	$(MODULES_PATH)/mod_joy/ \
 	$(MODULES_PATH)/libjoy/ \
@@ -154,7 +154,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_curl/mod_curl.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
-LOCAL_SHARED_LIBRARIES += SDL SDL_mixer png
+LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png
 LOCAL_STATIC_LIBRARIES += curl
 
 include $(BUILD_SHARED_LIBRARY)
