@@ -65,13 +65,13 @@ int main( int argc, char *argv[] )
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
     
-    SDL_log ("BennuGD init\n");
+    SDL_Log ("BennuGD init\n");
     
     filename = "main.dcb";
 	if(file_exists("main.dcb"))
-        SDL_log("main.dcb exists in APK\n");
+        SDL_Log("main.dcb exists in APK\n");
     else {
-        SDL_log("main.dcb doesn't exist in APK, quitting\n");
+        SDL_Log("main.dcb doesn't exist in APK, quitting\n");
         return 1;
     }
     
@@ -87,7 +87,7 @@ int main( int argc, char *argv[] )
 	
     strcpy( dcbname, filename ) ;
     
-    SDL_log("Loading main.dcb...\n");
+    SDL_Log("Loading main.dcb...\n");
 	
     /* First try to load directly (we expect myfile.dcb) */
     if ( !dcb_load( dcbname ) )
@@ -105,7 +105,7 @@ int main( int argc, char *argv[] )
         
         if ( !dcbloaded )
         {
-            SDL_log( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
+            SDL_Log( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
             return -1 ;
         }
     }

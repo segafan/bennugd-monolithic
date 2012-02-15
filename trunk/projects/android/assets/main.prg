@@ -14,12 +14,13 @@ import "mod_map"
 import "mod_draw"
 import "mod_say"
 import "mod_multi"
+import "mod_file"
 
 GLOBAL
 // Set to your liking
 width  = 320;
 height = 480;
-sound  = 1;
+sound  = 0;
 quit   = 0;
 
 Process bouncer()
@@ -28,7 +29,9 @@ Private
     int w=0, h=0;
 
 Begin
-    graph = load_png("Icon.png");
+    if(file_exists("Icon.png"))
+        graph = load_png("Icon.png");
+    end
     // Position the graphic onscreen
     w = graphic_info(0, graph, G_WIDTH);
     h = graphic_info(0, graph, G_HEIGHT);
@@ -51,7 +54,7 @@ Private
 int song=0, num_fingers=0, i=0;
 
 Begin
-    //set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
+    set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
     width = graphic_info(0, -1, G_WIDTH);
     height = graphic_info(0, -1, G_HEIGHT);
@@ -68,6 +71,7 @@ Begin
     write_var(0, 0, height, 6, num_fingers);
     drawing_map(0, graph);
     drawing_color(rgb(0, 255, 255));
+    say("Starting loop");
     while(num_fingers != 5)
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
@@ -85,6 +89,7 @@ Begin
 
         frame;
     End;
+    say("Loop done (numfingers: "+num_fingers+")");
 
     unload_map(0, graph);
     if(sound == 1)
@@ -92,4 +97,5 @@ Begin
     end
 
     quit = 1;
+    say("Quitting");
 End;
