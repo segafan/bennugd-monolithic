@@ -145,6 +145,7 @@ typedef struct GLES2_DriverContext
 #include "SDL_gles2funcs.h"
 #undef SDL_PROC
     GLES2_FBOList *framebuffers;
+    GLuint window_framebuffer;
 
     int shader_format_count;
     GLenum *shader_formats;
@@ -210,7 +211,7 @@ GLES2_GetFBO(GLES2_DriverContext *data, Uint32 w, Uint32 h)
        result = SDL_malloc(sizeof(GLES2_FBOList));
        result->w = w;
        result->h = h;
-       glGenFramebuffers(1, &result->FBO);
+       data->glGenFramebuffers(1, &result->FBO);
        result->next = data->framebuffers;
        data->framebuffers = result;
    }
@@ -266,6 +267,10 @@ GLES2_UpdateViewport(SDL_Renderer * renderer)
 
     rdata->glViewport(renderer->viewport.x, renderer->viewport.y,
                renderer->viewport.w, renderer->viewport.h);
+
+    if (rdata->current_program) {
+        GLES2_SetOrthographicProjection(renderer);
+    }
     return 0;
 }
 
@@ -542,7 +547,7 @@ GLES2_SetRenderTarget(SDL_Renderer * renderer, SDL_Texture * texture)
     GLenum status;
 
     if (texture == NULL) {
-        data->glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        data->glBindFramebuffer(GL_FRAMEBUFFER, data->window_framebuffer);
     } else {
         texturedata = (GLES2_TextureData *) texture->driverdata;
         data->glBindFramebuffer(GL_FRAMEBUFFER, texturedata->fbo->FBO);
@@ -554,9 +559,6 @@ GLES2_SetRenderTarget(SDL_Renderer * renderer, SDL_Texture * texture)
             SDL_SetError("glFramebufferTexture2D() failed");
             return -1;
         }
-    }
-    if (data->current_program) {
-        GLES2_SetOrthographicProjection(renderer);
     }
     return 0;
 }
@@ -1393,6 +1395,7 @@ GLES2_CreateRenderer(SDL_Window *window, Uint32 flags)
     GLboolean hasCompiler;
 #endif
     Uint32 windowFlags;
+    GLint window_framebuffer;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
@@ -1484,6 +1487,8 @@ GLES2_CreateRenderer(SDL_Window *window, Uint32 flags)
 #endif /* ZUNE_HD */
 
     rdata->framebuffers = NULL;
+    rdata->glGetIntegerv(GL_FRAMEBUFFER_BINDING, &window_framebuffer);
+    rdata->window_framebuffer = (GLuint)window_framebuffer;
 
     /* Populate the function pointers for the module */
     renderer->WindowEvent         = &GLES2_WindowEvent;
