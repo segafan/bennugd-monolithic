@@ -311,7 +311,7 @@ X11_GL_GetAttributes(_THIS, Display * display, int screen, int * attribs, int si
     int i = 0;
 
     /* assert buffer is large enough to hold all SDL attributes. */ 
-    /* assert(size >= 32);*/
+    SDL_assert(size >= 32);
 
     /* Setup our GLX attributes according to the gl_config. */
     attribs[i++] = GLX_RGBA;
@@ -325,11 +325,6 @@ X11_GL_GetAttributes(_THIS, Display * display, int screen, int * attribs, int si
     if (_this->gl_config.alpha_size) {
         attribs[i++] = GLX_ALPHA_SIZE;
         attribs[i++] = _this->gl_config.alpha_size;
-    }
-
-    if (_this->gl_config.buffer_size) {
-        attribs[i++] = GLX_BUFFER_SIZE;
-        attribs[i++] = _this->gl_config.buffer_size;
     }
 
     if (_this->gl_config.double_buffer) {
