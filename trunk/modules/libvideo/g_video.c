@@ -421,7 +421,7 @@ int gr_set_mode( int width, int height, int depth )
             }
         }
 #if SDL_VERSION_ATLEAST(1,3,0)
-        _printf("Scaling, asked for %dx%d", surface_width, surface_height);
+        SDL_log("Scaling, asked for %dx%d", surface_width, surface_height);
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
 
@@ -439,7 +439,7 @@ int gr_set_mode( int width, int height, int depth )
             depth = 32;
         }
 
-        _printf("Video mode set to %dx%d", scale_screen->w, scale_screen->h);
+        SDL_log("Video mode set to %dx%d", scale_screen->w, scale_screen->h);
 #else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif
@@ -550,7 +550,7 @@ int gr_set_mode( int width, int height, int depth )
     else
     {
 #if SDL_VERSION_ATLEAST(1,3,0)
-        _printf("No scaling, asked for %dx%d", surface_width, surface_height);
+        SDL_log("No scaling, asked for %dx%d", surface_width, surface_height);
         
         window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                   surface_width, surface_height, sdl_flags);
@@ -568,7 +568,7 @@ int gr_set_mode( int width, int height, int depth )
             depth = 32;
         }
 
-        _printf("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
+        SDL_log("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
 #else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 #endif

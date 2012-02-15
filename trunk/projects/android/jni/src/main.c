@@ -35,9 +35,6 @@
 
 #include "bgdrtm.h"
 
-#include <android/log.h>
-#define _printf(...)  __android_log_print(ANDROID_LOG_INFO, "BennuGD", __VA_ARGS__)
-
 /* ---------------------------------------------------------------------- */
 
 static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
@@ -68,13 +65,13 @@ int main( int argc, char *argv[] )
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
     
-    _printf ("BennuGD init\n");
+    SDL_log ("BennuGD init\n");
     
     filename = "main.dcb";
 	if(file_exists("main.dcb"))
-        _printf("main.dcb exists in APK\n");
+        SDL_log("main.dcb exists in APK\n");
     else {
-        _printf("main.dcb doesn't exist in APK, quitting\n");
+        SDL_log("main.dcb doesn't exist in APK, quitting\n");
         return 1;
     }
     
@@ -90,7 +87,7 @@ int main( int argc, char *argv[] )
 	
     strcpy( dcbname, filename ) ;
     
-    _printf("Gonna try to load main.dcb\n");
+    SDL_log("Loading main.dcb...\n");
 	
     /* First try to load directly (we expect myfile.dcb) */
     if ( !dcb_load( dcbname ) )
@@ -108,7 +105,7 @@ int main( int argc, char *argv[] )
         
         if ( !dcbloaded )
         {
-            _printf( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
+            SDL_log( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
             return -1 ;
         }
     }
