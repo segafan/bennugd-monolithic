@@ -642,6 +642,8 @@ int gr_set_mode( int width, int height, int depth )
 
     scr_width = screen->w ;
     scr_height = screen->h ;
+    
+    gr_draw_frame();
 
     regions[0].x  = 0 ;
     regions[0].y  = 0 ;

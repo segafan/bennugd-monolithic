@@ -77,7 +77,7 @@ void parse_input_events() {
     int n=0;
     SDL_Event e;
     SDL_Touch *state;
-
+    
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
         switch ( e.type ) {
             case SDL_FINGERDOWN:
@@ -148,7 +148,7 @@ static int modmulti_info(INSTANCE * my, int * params) {
     
     // Check for failure
     if (n >= MAX_POINTERS || n < 0)
-        return -1.0;
+        return -1;
 
     // Return the info we were asked for
     if(strncasecmp(info, "x", 1)) {

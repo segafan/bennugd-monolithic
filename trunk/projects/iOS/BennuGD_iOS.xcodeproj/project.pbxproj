@@ -136,6 +136,20 @@
 			remoteGlobalIDString = 006E982211955059001DE610;
 			remoteInfo = testsdl;
 		};
+		929FCCB114F45325000741F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE1FA90607AF96B2004B6283;
+			remoteInfo = Framework;
+		};
+		929FCCB314F45325000741F8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE1FA95807AF96B3004B6283;
+			remoteInfo = "Create DMG";
+		};
 		92A6320313BD2BE200382D60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92A631FC13BD2BE200382D60 /* tremor.xcodeproj */;
@@ -1182,7 +1196,9 @@
 		92CD37BA13BD3AFC000D5ED7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				929FCCB214F45325000741F8 /* SDL_mixer.framework */,
 				92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */,
+				929FCCB414F45325000741F8 /* Create DMG */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1302,6 +1318,21 @@
 			remoteRef = 92241D4414CF746D00284244 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		929FCCB214F45325000741F8 /* SDL_mixer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = SDL_mixer.framework;
+			path = SDL2_mixer.framework;
+			remoteRef = 929FCCB114F45325000741F8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		929FCCB414F45325000741F8 /* Create DMG */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = "Create DMG";
+			remoteRef = 929FCCB314F45325000741F8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		92A6320413BD2BE200382D60 /* libtremor.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1319,7 +1350,8 @@
 		92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libSDL_mixer.a;
+			name = libSDL_mixer.a;
+			path = libSDL2_mixer.a;
 			remoteRef = 92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
