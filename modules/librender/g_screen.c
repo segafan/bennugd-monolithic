@@ -179,6 +179,7 @@ int gr_lock_screen()
     {
         if ( !scrbitmap || !( scrbitmap->info_flags & GI_EXTERNAL_DATA ) )
         {
+            SDL_Log("Creating scrbitmap");
             if ( scrbitmap ) bitmap_destroy( scrbitmap ) ;
             scrbitmap = bitmap_new_ex( 0, screen->w, screen->h, screen->format->BitsPerPixel, screen->pixels, screen->pitch );
             bitmap_add_cpoint( scrbitmap, 0, 0 ) ;

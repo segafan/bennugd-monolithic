@@ -8,6 +8,6 @@ wget -c http://www.fmod.org/index.php/release/version/fmodapi44000android.tar.gz
 
 # Extract the things we need from the archive, dump the rest
 tar xvzf fmodapi.tar.gz
-cp -r "fmodapi44000android/api/inc/" .
-cp -r "fmodapi44000android/api/lib/" .
+cp -r "fmodapi44000android/api/inc" .
+cp -r "fmodapi44000android/api/lib" .
 rm -rf fmodapi44000android fmodapi.tar.gz

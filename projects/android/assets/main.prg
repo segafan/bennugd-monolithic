@@ -1,7 +1,6 @@
 /**
- * iOS accelerometer test
- * in iOS, accelerometers are emulated as joysticks
- * Joseba García Etxebarria - (C) 2011
+ * Android test
+ * Joseba García Etxebarria - (C) 2012
  * Use as you wish
  */
 
@@ -13,13 +12,20 @@ import "mod_wm"
 import "mod_map"
 import "mod_draw"
 import "mod_say"
-import "mod_multi"
 import "mod_file"
+import "mod_text"
+
+#ifndef FALSE_MULTITOUCH
+import "mod_multi"
+#else
+#define multi_info(a, b) 0
+#define multi_numpointers() 0
+#endif
 
 GLOBAL
 // Set to your liking
-width  = 320;
-height = 480;
+width  = 100;
+height = 100;
 sound  = 0;
 quit   = 0;
 
@@ -59,6 +65,8 @@ Begin
     width = graphic_info(0, -1, G_WIDTH);
     height = graphic_info(0, -1, G_HEIGHT);
     
+    write(0, 0, 0, 0, "Width: "+width+" Height:"+height);
+    
     graph = map_new(width, height, 16);
     x = width/2; y = height/2;
 
@@ -71,25 +79,24 @@ Begin
     write_var(0, 0, height, 6, num_fingers);
     drawing_map(0, graph);
     drawing_color(rgb(0, 255, 255));
-    say("Starting loop");
+
     while(num_fingers != 5)
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
         
         for(i=0; i<10; i++)
             if(multi_info(i, "ACTIVE") > 0.0)
-                draw_fcircle(multi_info(i, "Y")*(float)width,
-                             multi_info(i, "X")*(float)height, 5);
+                draw_fcircle(multi_info(i, "Y"),
+                             multi_info(i, "X"), 5);
                 say_fast("Drawing fcircle for pointer "+i+" @ "+
-                             multi_info(i, "Y")*(float)width+
-                         "x"+multi_info(i, "X")*(float)height+
+                             multi_info(i, "Y")+
+                         "x"+multi_info(i, "X")+
                          " active:"+multi_info(i, "ACTIVE"));
             end;
         end;
 
         frame;
     End;
-    say("Loop done (numfingers: "+num_fingers+")");
 
     unload_map(0, graph);
     if(sound == 1)
