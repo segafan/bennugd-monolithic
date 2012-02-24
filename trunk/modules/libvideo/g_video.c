@@ -46,10 +46,10 @@
 /* --------------------------------------------------------------------------- */
 
 GRAPH * icon = NULL ;
-#if SDL_VERSION_ATLEAST(1,3,0)
-SDL_Window   * window ;
-SDL_Surface * shadow_screen;
-SDL_Rect * blitting_rect;
+#if SDL_VERSION_ATLEAST(2,0,0)
+SDL_Window  * window = NULL;
+SDL_Surface * shadow_screen = NULL ;
+SDL_Rect    * blitting_rect = NULL ;
 #endif
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
@@ -232,7 +232,7 @@ void gr_wait_vsync()
 
 void gr_set_caption( char * title )
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_SetWindowTitle(window, apptitle = title);
 #else
     SDL_WM_SetCaption( apptitle = title, "" ) ;
@@ -262,7 +262,7 @@ int gr_set_icon( GRAPH * map )
 
             ico = SDL_CreateRGBSurfaceFrom( icon->data, 32, 32, 8, 32, 0x00, 0x00, 0x00, 0x00 ) ;
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_SetPaletteColors(ico->format->palette, palette, 0, 256);
 #else
             SDL_SetPalette( ico, SDL_LOGPAL, palette, 0, 256 );
@@ -272,7 +272,7 @@ int gr_set_icon( GRAPH * map )
         {
             ico = SDL_CreateRGBSurfaceFrom( icon->data, 32, 32, icon->format->depth, icon->pitch, icon->format->Rmask, icon->format->Gmask, icon->format->Bmask, icon->format->Amask ) ;
         }
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
         SDL_SetWindowIcon(window, ico);
 #else
         SDL_SetColorKey( ico, SDL_SRCCOLORKEY, SDL_MapRGB( ico->format, 0, 0, 0 ) ) ;
@@ -347,6 +347,10 @@ int gr_set_mode( int width, int height, int depth )
     if ( scale_screen ) {
         SDL_FreeSurface( scale_screen ) ;
         scale_screen = NULL;
+    }
+    if ( shadow_screen ) {
+        SDL_FreeSurface( shadow_screen ) ;
+        shadow_screen = NULL;
     }
     if ( screen ) {
         SDL_FreeSurface( screen ) ;

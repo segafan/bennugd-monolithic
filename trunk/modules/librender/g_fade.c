@@ -81,13 +81,13 @@ static void activate_vpalette()
             }
 
             if ( scale_screen )
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
                 SDL_SetPaletteColors(scale_screen->format->palette, vpalette, 0, 256);
 #else
                 SDL_SetColors( scale_screen, vpalette, 0, 256 ) ;
 #endif
             else
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
                 SDL_SetPaletteColors(screen->format->palette, vpalette, 0, 256);
 #else
                 SDL_SetColors( screen, vpalette, 0, 256 ) ;

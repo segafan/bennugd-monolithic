@@ -261,13 +261,13 @@ void gr_refresh_palette()
             }
         }
         if ( scale_screen )
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_SetPaletteColors(scale_screen->format->palette, palette, 0, 256);
 #else
             SDL_SetColors( scale_screen, palette, 0, 256 ) ;
 #endif
         else
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_SetPaletteColors(screen->format->palette, palette, 0, 256);
 #else
             SDL_SetColors( screen, palette, 0, 256 ) ;

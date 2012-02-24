@@ -31,7 +31,7 @@
 #include <SDL.h>
 
 #if defined(TARGET_IOS)
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
 #define __LIB_RENDER
 #include <g_video.h>
 #include <librender.h>
@@ -99,7 +99,7 @@ static void wm_events()
 
     GLODWORD( libwm, EXIT_STATUS ) = 0 ;
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUIT, SDL_WINDOWEVENT ) > 0 )
     {
         switch ( e.type )

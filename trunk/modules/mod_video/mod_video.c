@@ -102,7 +102,7 @@ static int modvideo_set_fps( INSTANCE * my, int * params )
 
 static int get_sdl_flags( int flags )
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     int sdl_flags = SDL_WINDOW_SHOWN | SDL_WINDOW_INPUT_FOCUS | SDL_WINDOW_MOUSE_FOCUS;
     sdl_flags |= ( flags & MODE_FULLSCREEN ) ? SDL_WINDOW_FULLSCREEN : 0;
     sdl_flags |= ( flags & MODE_FRAMELESS ) ? SDL_WINDOW_BORDERLESS : 0;

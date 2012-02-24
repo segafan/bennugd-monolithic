@@ -65,7 +65,7 @@ static int bgd_set_icon( INSTANCE * my, int * params )
 
 static int bgd_minimize( INSTANCE * my, int * params )
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_MinimizeWindow(window);
     return 1;
 #else
@@ -80,7 +80,7 @@ static int bgd_move_window( INSTANCE * my, int * params )
     int res = 0;
     if ( full_screen ) return 0;
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_SetWindowPosition(window, params[0], params[1]);
 #else
 
@@ -133,7 +133,7 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 {
     if ( full_screen ) return -1;
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     int x,y;
 
     SDL_GetWindowPosition(window, &x, &y );
@@ -191,7 +191,7 @@ static int bgd_get_window_pos( INSTANCE * my, int * params )
 
 static int bgd_get_window_size( INSTANCE * my, int * params )
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     int w,h;
 
     SDL_GetWindowSize(window, &w, &h );
@@ -267,7 +267,7 @@ static int bgd_get_window_size( INSTANCE * my, int * params )
 
 static int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     int i;
     SDL_DisplayMode mode;
     

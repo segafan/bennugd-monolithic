@@ -37,7 +37,7 @@ static void dump_new_events()
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     // We'll only discard events that no module knows how to handle here...
     // Otherwise some events seem to get discarded
     SDL_FlushEvents(SDL_SYSWMEVENT, SDL_SYSWMEVENT);
@@ -56,7 +56,7 @@ static void dump_new_events()
 
 void __bgdexport( libsdlhandler, module_initialize )()
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     // This is different in SDL 1.3
 #else
     if ( !SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_InitSubSystem( SDL_INIT_EVENTTHREAD );
@@ -67,7 +67,7 @@ void __bgdexport( libsdlhandler, module_initialize )()
 
 void __bgdexport( libsdlhandler, module_finalize )()
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     // This is different in SDL 1.3
 #else
     if ( SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_QuitSubSystem( SDL_INIT_EVENTTHREAD );
