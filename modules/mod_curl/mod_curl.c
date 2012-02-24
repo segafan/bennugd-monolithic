@@ -398,7 +398,7 @@ static int bgd_curl_easy_perform(INSTANCE * my, int * params) {
     bgdata *t = prep( params );
     t->fn = curl_perform;
     
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_CreateThread( bgDoLoad, "CURL perform thread", (void *)t );
 #else
     SDL_CreateThread( bgDoLoad, (void *)t );

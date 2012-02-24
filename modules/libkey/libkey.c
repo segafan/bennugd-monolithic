@@ -77,7 +77,7 @@ unsigned char * keystate = NULL;        /* Pointer to key states */
 
 /* ----------------------------------------------------------------- */
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
 static int sdl_equiv[SDL_NUM_SCANCODES+1] ;
 #else
 static int sdl_equiv[SDLK_LAST+1] ;
@@ -85,7 +85,7 @@ static int sdl_equiv[SDLK_LAST+1] ;
 
 static int equivs[] =
 {
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_SCANCODE_ESCAPE,        1,
     SDL_SCANCODE_1,             2,
     SDL_SCANCODE_KP_1,          2,
@@ -578,7 +578,7 @@ static void process_key_events()
         GLODWORD( libkey,  SCANCODE )  = 0 ;
     }
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_KEYDOWN, SDL_KEYUP ) > 0 )
 #else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_KEYUP) ) > 0 )
@@ -710,7 +710,7 @@ void __bgdexport( libkey, module_initialize )()
         ptr += 2 ;
     }
 
-#if SDL_VERSION_ATLEAST(1,3,0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
 #else
     if ( !keystate ) keystate = SDL_GetKeyState( NULL );
