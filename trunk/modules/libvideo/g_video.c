@@ -48,6 +48,8 @@
 GRAPH * icon = NULL ;
 #if SDL_VERSION_ATLEAST(1,3,0)
 SDL_Window   * window ;
+SDL_Surface * shadow_screen;
+SDL_Rect * blitting_rect;
 #endif
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
@@ -176,7 +178,7 @@ DLVARFIXUP __bgdexport( libvideo, globals_fixup )[] =
 /* --------------------------------------------------------------------------- */
 
 #ifdef _WIN32
-/* Based allegro */
+/* Based on allegro */
 
 LPDIRECTDRAW2 directdraw = NULL;
 DDCAPS ddcaps;
@@ -335,6 +337,67 @@ int gr_set_mode( int width, int height, int depth )
         enable_32bits = 1;
     }
 
+// SDL 2.0 uses a different approach to managing resolutions/windows than SDL1.2
+#if SDL_VERSION_ATLEAST(2,0,0)
+    sdl_flags = SDL_WINDOW_SHOWN;
+    if ( full_screen ) sdl_flags |= SDL_WINDOW_FULLSCREEN;
+    if ( frameless ) sdl_flags   |= SDL_WINDOW_BORDERLESS;
+    
+    // Delete old surfaces, if they're in use
+    if ( scale_screen ) {
+        SDL_FreeSurface( scale_screen ) ;
+        scale_screen = NULL;
+    }
+    if ( screen ) {
+        SDL_FreeSurface( screen ) ;
+        screen = NULL;
+    }
+    
+    // Delete the old window (looks like this crashes in Android)
+    if( window ) {
+        SDL_DestroyWindow(window);
+        window = NULL;
+    }
+    
+    // Create the new window and retrieve its associated surface
+    SDL_Log("No scaling, asked for %dx%d", width, height);
+    
+    window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                              width, height, sdl_flags);
+    if ( !window )
+        return -1;
+    
+    SDL_SetWindowGrab(window, grab_input ? SDL_TRUE : SDL_FALSE);
+    
+    screen = SDL_GetWindowSurface(window);
+    if ( !screen )
+        return -1;
+    
+    // Check the surface we've created matches what the user asked for
+    // Otherwise create a new surface with the given properties
+    // BUT if the given width and/or height is 0, continue happily
+    if( ( screen->format->BitsPerPixel != depth ||
+          screen->w != width || screen->h != height ) &&
+        ( width != 0 && height != 0 ) ) {
+        shadow_screen = screen;
+        screen = SDL_CreateRGBSurface(0, width, height, depth,
+                                             shadow_screen->format->Rmask, 
+                                             shadow_screen->format->Gmask,
+                                             shadow_screen->format->Bmask,
+                                             shadow_screen->format->Amask);
+        if ( !screen )
+            return -1;
+
+        // Define the SDL_Rect where the game's surface should be blitted
+        blitting_rect->x = (screen->w - width) / 2;
+        blitting_rect->y = (screen->h - height) / 2;
+        blitting_rect->w = width;
+        blitting_rect->h = height;
+    }
+    
+    // For debugging purposes
+    SDL_Log("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
+#else
     if ( scale_resolution_table_w )
     {
         free( scale_resolution_table_w );
@@ -378,19 +441,12 @@ int gr_set_mode( int width, int height, int depth )
     }
 
     /* Setup the SDL Video Mode */
-
-#if SDL_VERSION_ATLEAST(1,3,0)
-    sdl_flags = SDL_WINDOW_SHOWN;
-    if ( full_screen ) sdl_flags |= SDL_WINDOW_FULLSCREEN;
-    if ( frameless ) sdl_flags   |= SDL_WINDOW_BORDERLESS;
-#else
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
     if ( full_screen ) sdl_flags |= SDL_FULLSCREEN;
     if ( frameless ) sdl_flags |= SDL_NOFRAME;
 
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
-#endif
     
     if ( scale_screen ) {
         SDL_FreeSurface( scale_screen ) ;
@@ -400,12 +456,6 @@ int gr_set_mode( int width, int height, int depth )
         SDL_FreeSurface( screen ) ;
         screen = NULL;
     }
-#if SDL_VERSION_ATLEAST(1,3,0)
-    if( window ) {
-        SDL_DestroyWindow(window);
-        window = NULL;
-    }
-#endif
 
     if ( scale_resolution )
     {
@@ -420,29 +470,8 @@ int gr_set_mode( int width, int height, int depth )
                     break;
             }
         }
-#if SDL_VERSION_ATLEAST(1,3,0)
-        SDL_Log("Scaling, asked for %dx%d", surface_width, surface_height);
-        window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                  surface_width, surface_height, sdl_flags);
 
-        scale_screen = SDL_GetWindowSurface(window);
-
-        // Set the screen depth to what SDL gave us
-        // Set the screen depth to what SDL gave us
-        if(scale_screen->format->BitsPerPixel == 16) {
-            enable_16bits = 1;
-            enable_32bits = 0;    
-            depth = 16;
-        } else if(scale_screen->format->BitsPerPixel == 32) {
-            enable_16bits = 0;
-            enable_32bits = 1;    
-            depth = 32;
-        }
-
-        SDL_Log("Video mode set to %dx%d", scale_screen->w, scale_screen->h);
-#else
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
-#endif
 
         if ( !scale_screen ) return -1;
         screen = SDL_CreateRGBSurface( sdl_flags, surface_width, surface_height,
@@ -549,36 +578,13 @@ int gr_set_mode( int width, int height, int depth )
     }
     else
     {
-#if SDL_VERSION_ATLEAST(1,3,0)
-        SDL_Log("No scaling, asked for %dx%d", surface_width, surface_height);
-        
-        window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                                  surface_width, surface_height, sdl_flags);
-
-        screen = SDL_GetWindowSurface(window);
-        
-        // Set the screen depth  to what SDL gave us
-        if(screen->format->BitsPerPixel == 16) {
-            enable_16bits = 1;
-            enable_32bits = 0;    
-            depth = 16;
-        } else if(screen->format->BitsPerPixel == 32) {
-            enable_16bits = 0;
-            enable_32bits = 1;    
-            depth = 32;
-        }
-
-        SDL_Log("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
-#else
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
-#endif
     }
     
     if ( !screen ) return -1;
-#if SDL_VERSION_ATLEAST(1,3,0)
-    SDL_SetWindowGrab(window, grab_input ? SDL_TRUE : SDL_FALSE);
-#else
+
     SDL_WM_GrabInput( grab_input ? SDL_GRAB_ON : SDL_GRAB_OFF ) ;
+
 #endif
 
     /* Set window title */
