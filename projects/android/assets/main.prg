@@ -24,8 +24,8 @@ import "mod_multi"
 
 GLOBAL
 // Set to your liking
-width  = 100;
-height = 100;
+width  = 320;
+height = 533;
 sound  = 0;
 quit   = 0;
 
