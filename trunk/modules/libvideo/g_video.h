@@ -65,9 +65,9 @@
 extern GRAPH * icon ;
 
 #if SDL_VERSION_ATLEAST(2,0,0)
-extern SDL_Window * window ;
-extern SDL_Surface * shadow_screen;
-extern SDL_Rect * blitting_rect;
+extern SDL_Window  * window ;
+extern SDL_Surface * shadow_screen ;
+extern SDL_Rect      blitting_rect ;
 #endif
 extern SDL_Surface * screen ;
 extern SDL_Surface * scale_screen ;

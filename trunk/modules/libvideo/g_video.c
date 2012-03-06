@@ -49,7 +49,7 @@ GRAPH * icon = NULL ;
 #if SDL_VERSION_ATLEAST(2,0,0)
 SDL_Window  * window = NULL;
 SDL_Surface * shadow_screen = NULL ;
-SDL_Rect    * blitting_rect = NULL ;
+SDL_Rect      blitting_rect ;
 #endif
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
@@ -365,8 +365,9 @@ int gr_set_mode( int width, int height, int depth )
     
     // Create the new window and retrieve its associated surface
 	// HACK!!!
-	width=0; height=0;
-    SDL_Log("No scaling, asked for %dx%d", width, height);
+	//width=0; height=0;
+    //SDL_Log("HACK! Forcing native resolution for Android devices");
+	SDL_Log("Asked for %dx%d", width, height);
     
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                               width, height, sdl_flags);
@@ -395,10 +396,10 @@ int gr_set_mode( int width, int height, int depth )
             return -1;
 
         // Define the SDL_Rect where the game's surface should be blitted
-        blitting_rect->x = (screen->w - width) / 2;
-        blitting_rect->y = (screen->h - height) / 2;
-        blitting_rect->w = width;
-        blitting_rect->h = height;
+        blitting_rect.x = (screen->w - width) / 2;
+        blitting_rect.y = (screen->h - height) / 2;
+        blitting_rect.w = width;
+        blitting_rect.h = height;
     }
     
     // For debugging purposes
