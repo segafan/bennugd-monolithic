@@ -364,6 +364,8 @@ int gr_set_mode( int width, int height, int depth )
     }
     
     // Create the new window and retrieve its associated surface
+	// HACK!!!
+	width=0; height=0;
     SDL_Log("No scaling, asked for %dx%d", width, height);
     
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
