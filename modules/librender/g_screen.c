@@ -197,6 +197,33 @@ void gr_unlock_screen()
 
     screen_locked = 0 ;
 
+#if SDL_VERSION_ATLEAST(2,0,0)
+	// Blit the graphics to SDL_Surface *screen either completely
+	// or just the dirty rects
+	if ( updaterects_count )
+	{
+		int i;
+
+		for ( i = 0 ; i < updaterects_count ; i++ )
+		{
+			rects[ i ].x = updaterects[ i ].x;
+			rects[ i ].y = updaterects[ i ].y;
+			rects[ i ].w = ( updaterects[ i ].x2 - rects[ i ].x + 1 );
+			rects[ i ].h = ( updaterects[ i ].y2 - rects[ i ].y + 1 );
+		}
+		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
+		if ( waitvsync ) gr_wait_vsync();
+		SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
+	} else {
+		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
+		if ( waitvsync ) gr_wait_vsync();
+		SDL_UpdateWindowSurface( window );
+	}
+	
+	// Now, if needed, blit screen to the shadow (real) window surface
+	if ( shadow_screen )
+		SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);
+#else
     if ( scale_resolution )
     {
         uint8_t  * src8  = screen->pixels, * dst8  = scale_screen->pixels , * pdst = scale_screen->pixels ;
@@ -415,11 +442,7 @@ void gr_unlock_screen()
         if ( SDL_MUSTLOCK( scale_screen ) ) SDL_UnlockSurface( scale_screen ) ;
         if ( waitvsync ) gr_wait_vsync();
 
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-        SDL_UpdateWindowSurface( window );
-#else
         SDL_Flip( scale_screen ) ;
-#endif
     }
     else if ( enable_scale )
     {
@@ -487,11 +510,8 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
         if ( waitvsync ) gr_wait_vsync();
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-        SDL_UpdateWindowSurface( window );
-#else
+
         SDL_Flip( screen ) ;
-#endif
     }
     else if ( scrbitmap->info_flags & GI_EXTERNAL_DATA )
     {
@@ -507,11 +527,8 @@ void gr_unlock_screen()
         {
             if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
             if ( waitvsync ) gr_wait_vsync();
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-            SDL_UpdateWindowSurface( window );
-#else
+
             SDL_Flip( screen ) ;
-#endif
         }
         else
         {
@@ -528,14 +545,12 @@ void gr_unlock_screen()
                 }
                 if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
                 if ( waitvsync ) gr_wait_vsync();
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-                SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
-#else
+
                 SDL_UpdateRects( screen, updaterects_count, rects ) ;
-#endif
             }
         }
     }
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
