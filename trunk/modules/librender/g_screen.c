@@ -154,7 +154,7 @@ int gr_lock_screen()
 
     if ( scale_resolution != 0 )
     {
-        if ( SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
+        if ( scale_screen && SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
     }
     else
     {
@@ -213,16 +213,24 @@ void gr_unlock_screen()
 		}
 		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
 		if ( waitvsync ) gr_wait_vsync();
+
+        // If needed, blit the fake screen into the window surface
+        if ( shadow_screen )
+            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);   
+
+        // And update the screen
 		SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
 	} else {
 		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
 		if ( waitvsync ) gr_wait_vsync();
+
+        // If needed, blit the fake screen into the window surface
+        if ( shadow_screen )
+            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);
+        
+        // And update the screen
 		SDL_UpdateWindowSurface( window );
 	}
-	
-	// Now, if needed, blit screen to the shadow (real) window surface
-	if ( shadow_screen )
-		SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);
 #else
     if ( scale_resolution )
     {

@@ -363,22 +363,32 @@ int gr_set_mode( int width, int height, int depth )
         window = NULL;
     }
     
-    // Create the new window and retrieve its associated surface
-	// HACK!!!
-	//width=0; height=0;
-    //SDL_Log("HACK! Forcing native resolution for Android devices");
-	SDL_Log("Asked for %dx%d", width, height);
+    // If the user asked for scaling, take that into account
+    if(scale_resolution) {
+        surface_width  = scale_resolution / 10000 ;
+        surface_height = scale_resolution % 10000 ;
+        SDL_Log("Scaling requested: Asked for %dx%d faking %dx%d",
+                surface_width, surface_height,
+                width, height);
+    } else {
+        SDL_Log("No scaling requested: Asked for %dx%d", width, height);
+    }
     
+    // Create the new window and retrieve its associated surface
     window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-                              width, height, sdl_flags);
-    if ( !window )
+                              surface_width, surface_height, sdl_flags);
+    if ( !window ) {
+        SDL_Log("Couldn't create window: %s", SDL_GetError());
         return -1;
+    }
     
     SDL_SetWindowGrab(window, grab_input ? SDL_TRUE : SDL_FALSE);
     
     screen = SDL_GetWindowSurface(window);
-    if ( !screen )
+    if ( !screen ) {
+        SDL_Log("Couldn't get window surface: %s", SDL_GetError());
         return -1;
+    }
     
     // Check the surface we've created matches what the user asked for
     // Otherwise create a new surface with the given properties
@@ -392,18 +402,23 @@ int gr_set_mode( int width, int height, int depth )
                                              shadow_screen->format->Gmask,
                                              shadow_screen->format->Bmask,
                                              shadow_screen->format->Amask);
-        if ( !screen )
+        if ( !screen ) {
+            SDL_Log("Couldn't create screen: %s", SDL_GetError());
             return -1;
+        }
 
         // Define the SDL_Rect where the game's surface should be blitted
-        blitting_rect.x = (screen->w - width) / 2;
-        blitting_rect.y = (screen->h - height) / 2;
-        blitting_rect.w = width;
-        blitting_rect.h = height;
+        blitting_rect.x = (shadow_screen->w - width) / 2;
+        blitting_rect.y = (shadow_screen->h - height) / 2;
+        if (scale_resolution) {
+            blitting_rect.w = ( surface_width <= 0 ? shadow_screen->w : surface_width );
+            blitting_rect.h = ( surface_height <= 0 ? shadow_screen->h : surface_height );
+            SDL_Log("%dx%d", blitting_rect.w, blitting_rect.h);
+        } else {
+            blitting_rect.w = width;
+            blitting_rect.h = height;
+        }
     }
-    
-    // For debugging purposes
-    SDL_Log("Video mode set to %dx%dx%d", screen->w, screen->h, depth);
 #else
     if ( scale_resolution_table_w )
     {
@@ -600,6 +615,7 @@ int gr_set_mode( int width, int height, int depth )
     if ( !sys_pixel_format )
     {
         sys_pixel_format = bitmap_create_format( depth );
+        SDL_Log("sys_pixel format didn't exist and it needed to be created");
     }
     else
     {
