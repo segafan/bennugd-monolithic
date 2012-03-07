@@ -106,7 +106,6 @@ static int modmap_graphic_info( INSTANCE * my, int * params )
     GRAPH * map ;
 
     map = bitmap_get( params[0], params[1] ) ;
-    if ( !map ) { SDL_Log("puff"); return 0; }
 
     switch ( params[2] )
     {
