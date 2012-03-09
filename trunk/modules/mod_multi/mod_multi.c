@@ -27,7 +27,10 @@
 #include <bgddl.h>
 #include <libvideo.h>
 #include <g_video.h>
+#include <libmouse.h>
 #include <SDL.h>
+#include "bgddl.h"
+#include "dlvaracc.h"
 
 #ifndef MAX_POINTERS
 #   define MAX_POINTERS 10
@@ -111,6 +114,16 @@ void parse_input_events() {
                 pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
                 pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
                 pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
+                
+                // Fake a mouse click, but only for the first pointer and
+                // if libmouse is imported
+                if (n == 0) {
+                    if ( GLOEXISTS( libmouse, MOUSEX ) ) {
+                        GLOINT32( libmouse, MOUSEX )    = pointers[n].x;
+                        GLOINT32( libmouse, MOUSEY )    = pointers[n].y;
+                        GLODWORD( libmouse, MOUSELEFT ) = 1 ;
+                    }
+                }
                 break;
             
             case SDL_FINGERMOTION:
@@ -126,6 +139,14 @@ void parse_input_events() {
                 pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
                 pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
+
+                // Fake a mouse move, but only if libmouse is imported
+                if (n == 0) {
+                    if ( GLOEXISTS( libmouse, MOUSEX ) ) {
+                        GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
+                        GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
+                    }
+                }
                 break;
 
             case SDL_FINGERUP:
@@ -145,6 +166,16 @@ void parse_input_events() {
                 pointers[n].x = -1.0;
                 pointers[n].y = -1.0;
                 pointers[n].pressure = -1.0;
+                
+                // Fake a mouse release, but only for the first pointer and
+                // if libmouse is imported
+                if (n == 0) {
+                    if ( GLOEXISTS( libmouse, MOUSEX ) ) {
+                        GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
+                        GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
+                        GLODWORD( libmouse, MOUSELEFT ) = 1 ;
+                    }
+                }
                 break;
         }
     }
