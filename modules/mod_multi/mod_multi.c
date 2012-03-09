@@ -26,6 +26,7 @@
 #include <strings.h>
 #include <bgddl.h>
 #include <libvideo.h>
+#include <g_video.h>
 #include <SDL.h>
 
 #ifndef MAX_POINTERS
@@ -74,10 +75,23 @@ int get_sdlfinger_index(SDL_FingerID finger) {
 
 /* Process SDL events looking for multitouch-related ones */
 void parse_input_events() {
-    int n=0;
+    int n=0, width=0, height=0, offset_x=0, offset_y=0;
     SDL_Event e;
     SDL_Touch *state;
     
+    // SDL will give us the touch position relative to the whole window
+    // but we might have set a different virtual resolution
+    width = scr_width;
+    height = scr_height;
+    offset_x = blitting_rect.x;
+    offset_y = blitting_rect.y;
+
+    if ( shadow_screen ) {
+        width    = shadow_screen->w;
+        height   = shadow_screen->h;
+    }
+    
+    // Parse the SDL event
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
         switch ( e.type ) {
             case SDL_FINGERDOWN:
@@ -94,8 +108,8 @@ void parse_input_events() {
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * scr_width;
-                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * scr_height;
+                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
+                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
                 pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
                 break;
             
@@ -109,8 +123,8 @@ void parse_input_events() {
                     break;
 
                 // Update the data about this finger's position
-                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * scr_width;
-                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * scr_height;
+                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
+                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
                 break;
 
