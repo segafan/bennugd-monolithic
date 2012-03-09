@@ -27,7 +27,7 @@
 #include <bgddl.h>
 #include <libvideo.h>
 #include <g_video.h>
-#include <libmouse.h>
+#include <libmouse_symbols.h>
 #include <SDL.h>
 #include "bgddl.h"
 #include "dlvaracc.h"
@@ -51,6 +51,11 @@ typedef struct {
 multi_pointer pointers[MAX_POINTERS];
 
 int numpointers=0;
+
+// Required for mouse emulation
+#define MOUSEX              0
+#define MOUSEY              1
+#define MOUSELEFT           9
 
 /* Return the position of finger in the pointers array, if it's not there,
 return the first unused entry.
