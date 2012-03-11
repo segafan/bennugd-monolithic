@@ -178,7 +178,7 @@ void parse_input_events() {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
-                        GLODWORD( libmouse, MOUSELEFT ) = 1 ;
+                        GLODWORD( libmouse, MOUSELEFT ) = 0 ;
                     }
                 }
                 break;
