@@ -5,7 +5,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := SDL2_mixer
 
 LOCAL_C_INCLUDES := \
-	$(LOCAL_PATH)/../../../projects/android/jni/tremor/ \
+	$(LOCAL_PATH)/../../libtremor/src/ \
+	$(LOCAL_PATH)/../../libtremor/src/ogg/ \
 	$(LOCAL_PATH)/../../SDL2/src/include/ \
 	$(LOCAL_PATH)/../../../projects/android/jni/mikmod/include/ \
 
