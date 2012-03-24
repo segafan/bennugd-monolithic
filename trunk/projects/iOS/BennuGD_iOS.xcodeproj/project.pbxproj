@@ -95,16 +95,11 @@
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		92241D4614CF748900284244 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92241D4314CF746D00284244 /* libSDL.a */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
-		9233FED61412C6F700D99C88 /* 1.ogg in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED51412C6F700D99C88 /* 1.ogg */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
 		92785844146A07080074BAC3 /* libfmodex_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
-		92AC7E9E1469F3B5001D7032 /* COPYING in Resources */ = {isa = PBXBuildFile; fileRef = 92AC7E9A1469F3B5001D7032 /* COPYING */; };
-		92AC7E9F1469F3B5001D7032 /* mod_fmodex.c in Sources */ = {isa = PBXBuildFile; fileRef = 92AC7E9B1469F3B5001D7032 /* mod_fmodex.c */; };
-		92AC7EA01469F3B5001D7032 /* main.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92AC7E9C1469F3B5001D7032 /* main.prg */; };
-		92AC7EA11469F3B5001D7032 /* README in Resources */ = {isa = PBXBuildFile; fileRef = 92AC7E9D1469F3B5001D7032 /* README */; };
 		92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
@@ -136,19 +131,12 @@
 			remoteGlobalIDString = 006E982211955059001DE610;
 			remoteInfo = testsdl;
 		};
-		929FCCB114F45325000741F8 /* PBXContainerItemProxy */ = {
+		9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+			containerPortal = 9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = BE1FA90607AF96B2004B6283;
-			remoteInfo = Framework;
-		};
-		929FCCB314F45325000741F8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BE1FA95807AF96B3004B6283;
-			remoteInfo = "Create DMG";
+			remoteGlobalIDString = BE1FA95407AF96B2004B6283;
+			remoteInfo = "Static Library";
 		};
 		92A6320313BD2BE200382D60 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -177,20 +165,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 92A6326413BD2FA500382D60;
 			remoteInfo = png;
-		};
-		92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BE1FA95407AF96B2004B6283;
-			remoteInfo = "Static Library";
-		};
-		92CD37C313BD3B5E000D5ED7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = BE1FA90707AF96B2004B6283;
-			remoteInfo = "Static Library";
 		};
 		92CD380213BD40EA000D5ED7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -415,23 +389,17 @@
 		92241D3814CF746C00284244 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL2/src/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
 		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
-		9233FED51412C6F700D99C88 /* 1.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = 1.ogg; path = ../android/assets/1.ogg; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
+		9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL2_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
 		92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodex_iphonesimulator.a; path = ../../3rdparty/fmod/iOS/lib/libfmodex_iphonesimulator.a; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A6328E13BD2FA500382D60 /* png.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = png.xcodeproj; path = ../../3rdparty/libpng/src/projects/png/png.xcodeproj; sourceTree = "<group>"; };
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
-		92AC7E9A1469F3B5001D7032 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
-		92AC7E9B1469F3B5001D7032 /* mod_fmodex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_fmodex.c; sourceTree = "<group>"; };
-		92AC7E9C1469F3B5001D7032 /* main.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.prg; sourceTree = "<group>"; };
-		92AC7E9D1469F3B5001D7032 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
-		92AC7EA21469F6A7001D7032 /* mod_fmodex_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_fmodex_symbols.h; sourceTree = "<group>"; };
 		92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodex_iphoneos.a; path = ../../3rdparty/fmod/iOS/lib/libfmodex_iphoneos.a; sourceTree = "<group>"; };
 		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
 		92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD.prg; path = TestData/iOSBennuGD.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = ../../3rdparty/SDL_mixer/src/Xcode/SDL_mixer.xcodeproj; sourceTree = "<group>"; };
 		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
 		92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Chipmunk-iOS.xcodeproj"; path = "../../3rdparty/Chipmunk-5.3.4/Chipmunk-iOS/Chipmunk-iOS.xcodeproj"; sourceTree = "<group>"; };
 		92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libChipmunk-iOS.a"; sourceTree = SOURCE_ROOT; };
@@ -502,8 +470,8 @@
 				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
 				92241D3814CF746C00284244 /* SDL.xcodeproj */,
 				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
-				92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */,
 				92A6328E13BD2FA500382D60 /* png.xcodeproj */,
+				9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */,
 				92A631FC13BD2BE200382D60 /* tremor.xcodeproj */,
 				921B4AE41391E237005F1832 /* common */,
 				921B4AC31391DDFB005F1832 /* bgdi */,
@@ -632,7 +600,6 @@
 				921B49DE1391D8A4005F1832 /* mod_effects */,
 				921B49E51391D8A4005F1832 /* mod_file */,
 				921B49E81391D8A4005F1832 /* mod_flic */,
-				92AC7E991469F3B5001D7032 /* mod_fmodex */,
 				921B49EC1391D8A4005F1832 /* mod_grproc */,
 				921B49F51391D8A4005F1832 /* mod_joy */,
 				921B49FB1391D8A4005F1832 /* mod_m7 */,
@@ -1154,6 +1121,14 @@
 			path = mod_multi;
 			sourceTree = "<group>";
 		};
+		9240F153151E72AC00CA9E0D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9240F15A151E72AD00CA9E0D /* libSDL_mixer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		92A631FD13BD2BE200382D60 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1170,37 +1145,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92AC7E991469F3B5001D7032 /* mod_fmodex */ = {
-			isa = PBXGroup;
-			children = (
-				92AC7E9A1469F3B5001D7032 /* COPYING */,
-				92AC7E9B1469F3B5001D7032 /* mod_fmodex.c */,
-				92AC7EA21469F6A7001D7032 /* mod_fmodex_symbols.h */,
-				92AC7E9C1469F3B5001D7032 /* main.prg */,
-				92AC7E9D1469F3B5001D7032 /* README */,
-			);
-			path = mod_fmodex;
-			sourceTree = "<group>";
-		};
 		92C5D40013BE98FC00CA43D0 /* Game Resources */ = {
 			isa = PBXGroup;
 			children = (
 				92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */,
 				92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */,
-				9233FED51412C6F700D99C88 /* 1.ogg */,
 				9233FED71412D34A00D99C88 /* Icon.png */,
 			);
 			name = "Game Resources";
-			sourceTree = "<group>";
-		};
-		92CD37BA13BD3AFC000D5ED7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				929FCCB214F45325000741F8 /* SDL_mixer.framework */,
-				92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */,
-				929FCCB414F45325000741F8 /* Create DMG */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		92CD37FC13BD40EA000D5ED7 /* Products */ = {
@@ -1236,7 +1188,6 @@
 			dependencies = (
 				92E9FDA314903FE0007F890B /* PBXTargetDependency */,
 				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
-				92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */,
 				92A632B813BD301E00382D60 /* PBXTargetDependency */,
 				92A6320B13BD2D2D00382D60 /* PBXTargetDependency */,
 			);
@@ -1281,8 +1232,8 @@
 					ProjectRef = 92241D3814CF746C00284244 /* SDL.xcodeproj */;
 				},
 				{
-					ProductGroup = 92CD37BA13BD3AFC000D5ED7 /* Products */;
-					ProjectRef = 92CD37B913BD3AFC000D5ED7 /* SDL_mixer.xcodeproj */;
+					ProductGroup = 9240F153151E72AC00CA9E0D /* Products */;
+					ProjectRef = 9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */;
 				},
 				{
 					ProductGroup = 92A631FD13BD2BE200382D60 /* Products */;
@@ -1318,19 +1269,11 @@
 			remoteRef = 92241D4414CF746D00284244 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		929FCCB214F45325000741F8 /* SDL_mixer.framework */ = {
+		9240F15A151E72AD00CA9E0D /* libSDL_mixer.a */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			name = SDL_mixer.framework;
-			path = SDL2_mixer.framework;
-			remoteRef = 929FCCB114F45325000741F8 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		929FCCB414F45325000741F8 /* Create DMG */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = "Create DMG";
-			remoteRef = 929FCCB314F45325000741F8 /* PBXContainerItemProxy */;
+			fileType = archive.ar;
+			path = libSDL_mixer.a;
+			remoteRef = 9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92A6320413BD2BE200382D60 /* libtremor.a */ = {
@@ -1345,14 +1288,6 @@
 			fileType = archive.ar;
 			path = libpng.a;
 			remoteRef = 92A6329313BD2FA600382D60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92CD37C113BD3AFC000D5ED7 /* libSDL_mixer.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			name = libSDL_mixer.a;
-			path = libSDL2_mixer.a;
-			remoteRef = 92CD37C013BD3AFC000D5ED7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92CD380313BD40EA000D5ED7 /* libChipmunk-iOS.a */ = {
@@ -1371,11 +1306,7 @@
 			files = (
 				92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */,
 				92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */,
-				9233FED61412C6F700D99C88 /* 1.ogg in Resources */,
 				9233FED81412D34A00D99C88 /* Icon.png in Resources */,
-				92AC7E9E1469F3B5001D7032 /* COPYING in Resources */,
-				92AC7EA01469F3B5001D7032 /* main.prg in Resources */,
-				92AC7EA11469F3B5001D7032 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1467,7 +1398,6 @@
 				92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */,
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
 				92307D481461F1B00011C04E /* mod_multi.c in Sources */,
-				92AC7E9F1469F3B5001D7032 /* mod_fmodex.c in Sources */,
 				92E9FDA01490369E007F890B /* mod_curl.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1484,11 +1414,6 @@
 			isa = PBXTargetDependency;
 			name = png;
 			targetProxy = 92A632B713BD301E00382D60 /* PBXContainerItemProxy */;
-		};
-		92CD37C413BD3B5E000D5ED7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Static Library";
-			targetProxy = 92CD37C313BD3B5E000D5ED7 /* PBXContainerItemProxy */;
 		};
 		92CD380A13BD4221000D5ED7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1611,6 +1536,7 @@
 					NO_LIBKEY,
 					NO_MODICONV,
 					NO_MODIMAGE,
+					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -1621,7 +1547,7 @@
 					../../3rdparty/SDL2/src/include,
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
-					../../3rdparty/SDL_mixer/src/,
+					../../3rdparty/SDL2_mixer/,
 					../../3rdparty/fmod/iOS/inc/,
 					"../../3rdparty/curl-7.23.1/include/",
 				);
@@ -1666,6 +1592,7 @@
 					NO_LIBKEY,
 					NO_MODICONV,
 					NO_MODIMAGE,
+					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -1676,7 +1603,7 @@
 					../../3rdparty/SDL2/src/include,
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
 					../../3rdparty/libpng/src/,
-					../../3rdparty/SDL_mixer/src/,
+					../../3rdparty/SDL2_mixer/,
 					../../3rdparty/fmod/iOS/inc/,
 					"../../3rdparty/curl-7.23.1/include/",
 				);
