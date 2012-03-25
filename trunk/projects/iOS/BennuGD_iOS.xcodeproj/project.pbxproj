@@ -96,11 +96,9 @@
 		92241D4614CF748900284244 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92241D4314CF746D00284244 /* libSDL.a */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
-		92785844146A07080074BAC3 /* libfmodex_iphonesimulator.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
-		92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */; settings = {ATTRIBUTES = (Weak, ); }; };
 		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
 		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
@@ -391,13 +389,11 @@
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
 		9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL2_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
-		92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodex_iphonesimulator.a; path = ../../3rdparty/fmod/iOS/lib/libfmodex_iphonesimulator.a; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A6328E13BD2FA500382D60 /* png.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = png.xcodeproj; path = ../../3rdparty/libpng/src/projects/png/png.xcodeproj; sourceTree = "<group>"; };
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
-		92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfmodex_iphoneos.a; path = ../../3rdparty/fmod/iOS/lib/libfmodex_iphoneos.a; sourceTree = "<group>"; };
 		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
 		92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD.prg; path = TestData/iOSBennuGD.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
@@ -414,8 +410,6 @@
 			files = (
 				92241D4614CF748900284244 /* libSDL.a in Frameworks */,
 				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
-				92AC7EA91469FC64001D7032 /* libfmodex_iphoneos.a in Frameworks */,
-				92785844146A07080074BAC3 /* libfmodex_iphonesimulator.a in Frameworks */,
 				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
 				92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */,
 				92A632BA13BD302800382D60 /* libpng.a in Frameworks */,
@@ -439,8 +433,6 @@
 				92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */,
 				92A632B913BD302800382D60 /* libpng.a */,
 				92A6320D13BD2E1D00382D60 /* libtremor.a */,
-				92785843146A07080074BAC3 /* libfmodex_iphonesimulator.a */,
-				92AC7EA81469FC64001D7032 /* libfmodex_iphoneos.a */,
 				92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */,
 			);
 			name = "External dependencies";
