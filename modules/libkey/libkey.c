@@ -56,19 +56,6 @@
 #define STAT_CAPS               0x0000200
 #define STAT_SHIFT              0x0000400
 
-/* ---------------------------------------------------------------------- */
-
-typedef struct
-{
-    SDLKey sym;   /* SDL virtual keysym */
-    SDLMod mod;   /* current key modifiers */
-    HOTKEY_CALLBACK callback;
-} hotkey ;
-
-static hotkey * hotkey_list = NULL ;
-static int hotkey_allocated = 0 ;
-static int hotkey_count = 0 ;
-
 /* ----------------------------------------------------------------- */
 
 /* Publicas */
@@ -484,40 +471,12 @@ DLVARFIXUP  __bgdexport( libkey, globals_fixup )[] =
 
 static void add_key_equiv( int equiv, int keyconst )
 {
-    key_equiv * curr = &key_table[keyconst] ;
-
-    if ( curr->next != NULL ) while ( curr->next != NULL ) curr = curr->next ;
-
-    if ( curr->sdlk_equiv != 0 )
-    {
-        curr->next = malloc( sizeof( key_equiv ) ) ;
-        curr = curr->next ;
-        curr->next = NULL ;
-    }
-
-    curr->sdlk_equiv = equiv ;
 }
 
 /* ----------------------------------------------------------------- */
 
 void hotkey_add( int mod, int sym, HOTKEY_CALLBACK callback )
 {
-    if ( hotkey_count >= hotkey_allocated )
-    {
-        hotkey_allocated = hotkey_count + 5;
-        hotkey_list = realloc( hotkey_list, hotkey_allocated * sizeof( hotkey_list[0] ) );
-    }
-
-    if ( !hotkey_list )
-    {
-        fprintf( stderr, "No memory for alloc hotkey\n" );
-        exit( -1 );
-    }
-
-    hotkey_list [hotkey_count].mod = mod;
-    hotkey_list [hotkey_count].sym = sym;
-    hotkey_list [hotkey_count].callback = callback;
-    hotkey_count++;
 }
 
 /* ----------------------------------------------------------------- */
@@ -537,147 +496,6 @@ void hotkey_add( int mod, int sym, HOTKEY_CALLBACK callback )
 
 static void process_key_events()
 {
-    SDL_Event e ;
-    SDLMod m ;
-    int k, asc ;
-    int pressed ;
-    key_equiv * curr ;
-    int keypress ;
-    static struct
-    {
-        int ascii ;
-        int scancode ;
-    }
-    keyring [64] ;
-    static int keyring_start = 0, keyring_tail = 0 ;
-    int ignore_key, n;
-
-    /* Actualizar eventos */
-
-    keypress = 0 ;
-    m = SDL_GetModState() ;
-
-    /* Procesa los eventos pendientes */
-    /* Reset ascii and scancode if last key was released... */
-    /* must check all the linked equivs */
-
-    pressed = 0 ;
-    if ( GLODWORD( libkey,  SCANCODE ) )
-    {
-        curr = &key_table[GLODWORD( libkey,  SCANCODE )] ;
-        while ( curr != NULL && pressed == 0 )
-        {
-            if ( keystate[curr->sdlk_equiv] ) pressed = 1 ;
-            curr = curr->next ;
-        }
-    }
-
-    if ( !pressed )
-    {
-        GLODWORD( libkey,  ASCII )     = 0 ;
-        GLODWORD( libkey,  SCANCODE )  = 0 ;
-    }
-
-#if SDL_VERSION_ATLEAST(2,0,0)
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_KEYDOWN, SDL_KEYUP ) > 0 )
-#else
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_KEYUP) ) > 0 )
-#endif
-    {
-        switch ( e.type )
-        {
-            case SDL_KEYDOWN:
-                ignore_key = 0;
-                /* KeyDown HotKey */
-                if ( hotkey_count )
-                    for ( n = 0; n < hotkey_count; n++ )
-                    {
-                        if ((( hotkey_list[n].mod & e.key.keysym.mod ) == hotkey_list[n].mod ) &&
-                                ( !hotkey_list[n].sym || ( hotkey_list[n].sym == e.key.keysym.sym ) ) )
-                        {
-                            ignore_key = hotkey_list[n].callback( e.key.keysym );
-                        }
-                    }
-                /* KeyDown HotKey */
-
-                if ( ignore_key ) break ;
-
-                /* Almacena la pulsación de la tecla */
-
-                k = sdl_equiv[e.key.keysym.sym];
-
-                m = e.key.keysym.mod ;
-
-                if ( !keypress )
-                {
-                    GLODWORD( libkey,  SCANCODE )  = k ;
-                    if ( e.key.keysym.unicode )
-                    {
-                        asc = win_to_dos[e.key.keysym.unicode & 0xFF] ;
-
-                        /* ascii mayusculas */
-                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )
-                            asc -= 0x20 ;
-                    }
-                    else
-                    {
-                        asc = 0 ; /* NON PRINTABLE */
-                    }
-
-                    GLODWORD( libkey,  ASCII ) = asc ;
-                    keypress = 1 ;
-                }
-                else
-                {
-                    keyring[keyring_tail].scancode = k ;
-                    if ( e.key.keysym.unicode )
-                    {
-                        asc = win_to_dos[e.key.keysym.unicode & 0x7F] ;
-
-                        /*ascii mayusculas */
-                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )
-                            asc -= 0x20 ;
-                    }
-                    else
-                    {
-                        asc = 0 ; /* NON PRINTABLE */
-                    }
-                    keyring[keyring_tail].ascii = asc ;
-                    if ( ++keyring_tail == 64 ) keyring_tail = 0 ;
-                }
-
-                break ;
-
-            case SDL_KEYUP:
-                /* Do nothing, Bennu is key_up unsensitive */
-                break ;
-        }
-    }
-
-    if ( !keypress && keyring_start != keyring_tail )
-    {
-        GLODWORD( libkey,  ASCII )     = keyring[keyring_start].ascii ;
-        GLODWORD( libkey,  SCANCODE )  = keyring[keyring_start].scancode ;
-        if ( ++keyring_start == 64 ) keyring_start = 0 ;
-    }
-
-    /* Now actualized every frame... */
-    GLODWORD( libkey,  SHIFTSTATUS ) =
-        ( ( m & KMOD_RSHIFT ) ? STAT_RSHIFT : 0 ) |
-        ( ( m & KMOD_LSHIFT ) ? STAT_LSHIFT : 0 ) |
-
-        ( ( m & KMOD_CTRL   ) ? STAT_CTRL   : 0 ) |
-        ( ( m & KMOD_ALT    ) ? STAT_ALT    : 0 ) |
-
-        ( ( m & KMOD_RCTRL  ) ? STAT_RCTRL  : 0 ) |
-        ( ( m & KMOD_LCTRL  ) ? STAT_LCTRL  : 0 ) |
-
-        ( ( m & KMOD_RALT   ) ? STAT_RALT   : 0 ) |
-        ( ( m & KMOD_LALT   ) ? STAT_LALT   : 0 ) |
-
-        ( ( m & KMOD_NUM    ) ? STAT_NUM    : 0 ) |
-        ( ( m & KMOD_CAPS   ) ? STAT_CAPS   : 0 ) |
-        ( ( m & KMOD_SHIFT  ) ? STAT_SHIFT  : 0 ) ;
 }
 
 /* ----------------------------------------------------------------- */
@@ -696,54 +514,12 @@ HOOK __bgdexport( libkey, handler_hooks )[] =
 
 void __bgdexport( libkey, module_initialize )()
 {
-    int * ptr = equivs ;
-
-    if ( !SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_InitSubSystem( SDL_INIT_VIDEO );
-
-    memset( sdl_equiv, 0, sizeof( sdl_equiv ) );
-    memset( key_table, 0, sizeof( key_table ) ) ;
-
-    while ( *ptr != -1 )
-    {
-        sdl_equiv[*ptr] = ptr[1] ;
-        add_key_equiv( ptr[0], ptr[1] ) ;
-        ptr += 2 ;
-    }
-
-#if SDL_VERSION_ATLEAST(2,0,0)
-    if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
-#else
-    if ( !keystate ) keystate = SDL_GetKeyState( NULL );
-#endif
-
-    SDL_EnableUNICODE( 1 );
 }
 
 /* ----------------------------------------------------------------- */
 
 void __bgdexport( libkey, module_finalize )()
 {
-    /* FREE used key_equivs... note base 127 equivs are static not allocated... */
-    int i ;
-    key_equiv * aux ;
-    key_equiv * curr = key_table ;
-
-    for ( i = 0;i < 127;i++ )
-    {
-        if ( curr->next != NULL )
-        {
-            curr = curr->next ;
-            while ( curr->next != NULL )
-            {
-                aux = curr ;
-                curr = curr->next;
-                free( aux ) ;
-            }
-            free( curr ) ;
-        }
-    }
-
-    if ( SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_QuitSubSystem( SDL_INIT_VIDEO );
 }
 
 /* ----------------------------------------------------------------- */

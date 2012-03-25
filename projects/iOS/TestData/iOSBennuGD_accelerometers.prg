@@ -16,8 +16,8 @@ import "mod_say"
 
 GLOBAL
 // Set to your liking
-width  = 320;
-height = 480;
+width  = 640;
+height = 960;
 sound  = 1;
 quit   = 0;
 

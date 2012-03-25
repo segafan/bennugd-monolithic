@@ -390,10 +390,14 @@ int gr_set_mode( int width, int height, int depth )
         return -1;
     }
     
+    depth = 32;
+    enable_16bits = 0;
+    enable_32bits = 1;
+    
     // Check the surface we've created matches what the user asked for
     // Otherwise create a new surface with the given properties
     // BUT if the given width and/or height is 0, continue happily
-    if( ( screen->format->BitsPerPixel != depth ||
+    /*if( ( screen->format->BitsPerPixel != depth ||
           screen->w != width || screen->h != height ) &&
         ( width != 0 && height != 0 ) ) {
         shadow_screen = screen;
@@ -418,7 +422,7 @@ int gr_set_mode( int width, int height, int depth )
             blitting_rect.w = width;
             blitting_rect.h = height;
         }
-    }
+    }*/
 #else
     if ( scale_resolution_table_w )
     {
