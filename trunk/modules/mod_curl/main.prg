@@ -7,8 +7,8 @@ import "mod_map"
 import "mod_file"
 
 Global
-int width = 1024;
-int height = 768;
+int width = 800;
+int height = 600;
 int quit=0;
 end;
 
@@ -88,6 +88,8 @@ Begin
         // Replace the bouncer image by the google logo we just downloaded
         unload_map(0, son.graph);
         son.graph = load_png("classicplus.png");
+        son.x = width/2;
+        son.y = height/2;
     else
         write(0, 0, 0, 0, output);
     end
