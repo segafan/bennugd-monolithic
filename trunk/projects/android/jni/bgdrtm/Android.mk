@@ -13,6 +13,7 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(LOCAL_PATH)/../../../../3rdparty/libpng/src/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
+	$(MODULES_PATH)/libbgload/ \
 	$(MODULES_PATH)/mod_say/ \
 	$(MODULES_PATH)/mod_string/ \
 	$(MODULES_PATH)/mod_math/ \
@@ -86,6 +87,7 @@ LOCAL_SRC_FILES := \
 	../../../../core/common/files.c \
 	../../../../core/common/xctype.c \
 	../../../../3rdparty/libglob-bsd/src/glob.c \
+	../../../../modules/libbgload/bgload.c \
 	../../../../modules/mod_say/mod_say.c \
 	../../../../modules/mod_string/mod_string.c \
 	../../../../modules/mod_math/mod_math.c \
