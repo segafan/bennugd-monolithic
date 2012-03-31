@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -39,6 +39,8 @@
 #include "mod_map.h"
 
 #include "librender.h"
+
+#include "bgload.h"
 
 /* --------------------------------------------------------------------------- */
 
@@ -106,6 +108,7 @@ static int modmap_graphic_info( INSTANCE * my, int * params )
     GRAPH * map ;
 
     map = bitmap_get( params[0], params[1] ) ;
+    if ( !map ) return 0 ;
 
     switch ( params[2] )
     {
@@ -268,7 +271,7 @@ static int modmap_map_put( INSTANCE * my, int * params )
 
     if ( !dest || !orig ) return 0 ;
 
-    gr_blit( dest, 0, params[3], params[4], 0, orig ) ;
+    gr_blit( dest, NULL, params[3], params[4], 0, orig ) ;
     return 1 ;
 }
 
@@ -454,18 +457,16 @@ static int modmap_save_map( INSTANCE * my, int * params )
 
 static int modmap_load_pal( INSTANCE * my, int * params )
 {
-    const char * palname = string_get( params[0] ) ;
-    int r = palname ? gr_load_pal( palname ) : 0 ;
+    int r = gr_load_pal( string_get( params[0] ) ) ;
     string_discard( params[0] ) ;
     return r ;
 }
 
-/* --------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
 
 static int modmap_save_pal( INSTANCE * my, int * params )
 {
-    const char * palname = string_get( params[0] );
-    int r = palname ? gr_save_pal( palname, ( PALETTE * )params[1] ) : 0;
+    int r = gr_save_pal( string_get( params[0] ), ( PALETTE * )params[1] );
     string_discard( params[0] );
     return r;
 }
@@ -474,8 +475,7 @@ static int modmap_save_pal( INSTANCE * my, int * params )
 
 static int modmap_save_system_pal( INSTANCE * my, int * params )
 {
-    const char * palname = string_get( params[0] );
-    int r = palname ? gr_save_system_pal( palname ) : 0;
+    int r = gr_save_system_pal( string_get( params[0] ) );
     string_discard( params[0] );
     return r;
 }
@@ -693,7 +693,7 @@ static int modmap_pal_map_getid( INSTANCE * my, int * params )
 
 static int modmap_set_system_pal( INSTANCE * my, int * params )
 {
-    if ( pal_set(( PALETTE * )NULL, 0, 256, ( uint8_t * )(( PALETTE * )params[3])->rgb ) )
+    if ( pal_set(( PALETTE * )NULL, 0, 256, ( uint8_t * )(( PALETTE * )params[0])->rgb ) )
     {
         pal_refresh( sys_pixel_format->palette );
         return 1;
@@ -705,7 +705,7 @@ static int modmap_set_system_pal( INSTANCE * my, int * params )
 
 static int modmap_set_system_pal_raw( INSTANCE * my, int * params )
 {
-    if ( pal_set(( PALETTE * )NULL, 0, 256, ( uint8_t * )params[3] ) )
+    if ( pal_set(( PALETTE * )NULL, 0, 256, ( uint8_t * )params[0] ) )
     {
         pal_refresh( sys_pixel_format->palette );
         return 1;
@@ -714,7 +714,6 @@ static int modmap_set_system_pal_raw( INSTANCE * my, int * params )
 }
 
 /* ---------------------------------------------------------------------- */
-
 
 static int modmap_pal_set( INSTANCE * my, int * params )
 {
@@ -793,62 +792,6 @@ static int modmap_fpg_new( INSTANCE * my, int * params )
 /* --------------------------------------------------------------------------- */
 /* --------------------------------------------------------------------------- */
 
-typedef struct
-{
-    char *file;
-    int *id, ( *fn )();
-} bgdata ;
-
-/* --------------------------------------------------------------------------- */
-
-/**
- * PREP
- * Helper function preparing params
- **/
-
-static bgdata *prep( int *params )
-{
-    bgdata *t = ( bgdata* )malloc( sizeof( bgdata ) );
-    t->file = ( char * )string_get( params[0] );
-    t->id = ( int* )params[1];
-    string_discard( params[0] );
-    return t;
-}
-
-/* --------------------------------------------------------------------------- */
-/**
- * bgDoLoad
- * Helper function executed in the new thread
- **/
-
-static int bgDoLoad( void *d )
-{
-    bgdata *t = ( bgdata* )d;
-    *( t->id ) = -2 ; // WAIT STATUS
-    *( t->id ) = ( *t->fn )( t->file );
-    free( t );
-    return 0;
-}
-
-/* --------------------------------------------------------------------------- */
-/**
-   int LOAD_FPG(STRING FICHERO, INT POINTER VARIABLE)
-   Loads fpg file FICHERO on a separate thread
-   VARIABLE is -2 while waiting, -1 on error, >=0 otherwise
- **/
-
-int modmap_bgload_fpg( INSTANCE * my, int * params )
-{
-    bgdata *t = prep( params );
-    t->fn = gr_load_fpg;
-#if SDL_VERSION_ATLEAST(2,0,0)
-    SDL_CreateThread( bgDoLoad, NULL, ( void * )t );
-#else
-    SDL_CreateThread( bgDoLoad, ( void * )t );
-#endif
-    return 0 ;
-}
-
 /* --------------------------------------------------------------------------- */
 /** LOAD_FNT (STRING FILENAME)
  *  Load a .FNT font from disk (returns the font ID)
@@ -856,11 +799,7 @@ int modmap_bgload_fpg( INSTANCE * my, int * params )
 
 static int modmap_load_fnt( INSTANCE * my, int * params )
 {
-    char * text ;
-    int r ;
-
-    text = ( char * )string_get( params[0] ) ;
-    r = text ? gr_font_load( text ) : 0 ;
+    int r = gr_font_load( ( char * )string_get( params[0] ) );
     string_discard( params[0] ) ;
     return r ;
 }
@@ -876,8 +815,7 @@ static int modmap_load_fnt( INSTANCE * my, int * params )
 
 static int modmap_load_bdf( INSTANCE * my, int * params )
 {
-    char * text = ( char * )string_get( params[0] ) ;
-    int r = text ? gr_load_bdf( text ) : 0 ;
+    int r = gr_load_bdf( ( char * )string_get( params[0] ) ) ;
     string_discard( params[0] ) ;
     return r ;
 }
@@ -938,7 +876,7 @@ static int modmap_get_glyph( INSTANCE * my, int * params )
     GRAPH * map ;
     unsigned char c = params[1];
 
-    if ( font->charset == CHARSET_CP850 ) c = win_to_dos[c];
+    if ( font->charset == /*CHARSET_CP850*/ CHARSET_ISO8859 ) c = win_to_dos[c];
     if ( !font ) return 0;
     if ( !font->glyph[c].bitmap ) return 0;
 
@@ -967,7 +905,7 @@ static int modmap_set_glyph( INSTANCE * my, int * params )
     GRAPH * map  = bitmap_get( params[2], params[3] );
     unsigned char c = params[1];
 
-    if ( font->charset == CHARSET_CP850 ) c = win_to_dos[c];
+    if ( font->charset == /*CHARSET_CP850*/CHARSET_ISO8859 ) c = win_to_dos[c];
 
     if ( font && map )
     {
@@ -1005,13 +943,58 @@ static int modmap_set_glyph( INSTANCE * my, int * params )
 
 static int modmap_save_fnt( INSTANCE * my, int * params )
 {
-    char * text ;
-    int r ;
-
-    text = ( char * )string_get( params[1] ) ;
-    r = text ? gr_font_save( params[0], text ) : 0 ;
+    int r = gr_font_save( params[0], ( char * )string_get( params[1] ) ) ;
     string_discard( params[1] ) ;
     return r ;
+}
+
+/* --------------------------------------------------------------------------- */
+/**
+   int LOAD_FPG(STRING FICHERO, INT POINTER VARIABLE)
+   Loads fpg file FICHERO on a separate thread
+   VARIABLE is -2 while waiting, -1 on error, >=0 otherwise
+ **/
+
+static int modmap_bgload_fpg( INSTANCE * my, int * params )
+{
+    bgload( gr_load_fpg, params );
+    return 0 ;
+}
+
+static int modmap_bgload_map( INSTANCE * my, int * params )
+{
+    bgload( gr_load_map, params ) ;
+    return 0 ;
+}
+
+static int modmap_bgload_png( INSTANCE * my, int * params )
+{
+    bgload( gr_load_png, params ) ;
+    return 0 ;
+}
+
+static int modmap_bgload_pcx( INSTANCE * my, int * params )
+{
+    bgload( gr_load_pcx, params );
+    return 0 ;
+}
+
+static int modmap_bgload_pal( INSTANCE * my, int * params )
+{
+    bgload( gr_load_pal, params ) ;
+    return 0 ;
+}
+
+static int modmap_bgload_fnt( INSTANCE * my, int * params )
+{
+    bgload( gr_font_load, params );
+    return 0 ;
+}
+
+static int modmap_bgload_bdf( INSTANCE * my, int * params )
+{
+    bgload( gr_load_bdf, params ) ;
+    return 0 ;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -1033,6 +1016,7 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "MAP_DEL"             , "II"          , TYPE_INT      , modmap_unload_map         },
     { "MAP_UNLOAD"          , "II"          , TYPE_INT      , modmap_unload_map         },
     { "MAP_LOAD"            , "S"           , TYPE_INT      , modmap_load_map           },
+    { "MAP_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_map         },
     { "MAP_SAVE"            , "IIS"         , TYPE_INT      , modmap_save_map           },
     { "MAP_BUFFER"          , "II"          , TYPE_POINTER  , modmap_map_buffer         },
 
@@ -1065,6 +1049,7 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "PAL_SAVE"            , "S"           , TYPE_INT      , modmap_save_system_pal    },
     { "PAL_SAVE"            , "SI"          , TYPE_INT      , modmap_save_pal           },
     { "PAL_LOAD"            , "S"           , TYPE_INT      , modmap_load_pal           },
+    { "PAL_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_pal         },
 
     { "COLORS_SET"          , "IIP"         , TYPE_INT      , modmap_set_colors         },
     { "COLORS_SET"          , "IIIP"        , TYPE_INT      , modmap_pal_set            },
@@ -1106,6 +1091,7 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
 
     /* Fonts */
     { "FNT_LOAD"            , "S"           , TYPE_INT      , modmap_load_fnt           },
+    { "FNT_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_fnt         },
     { "FNT_UNLOAD"          , "I"           , TYPE_INT      , modmap_unload_fnt         },
     { "FNT_SAVE"            , "IS"          , TYPE_INT      , modmap_save_fnt           },
     { "FNT_NEW"             , "I"           , TYPE_INT      , modmap_fnt_new            },
@@ -1113,13 +1099,16 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "FNT_NEW"             , "IIIIIIII"    , TYPE_INT      , modmap_fnt_new_from_bitmap},
 
     { "BDF_LOAD"            , "S"           , TYPE_INT      , modmap_load_bdf           },
+    { "BDF_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_bdf         },
 
     { "GLYPH_GET"           , "II"          , TYPE_INT      , modmap_get_glyph          },
     { "GLYPH_SET"           , "IIII"        , TYPE_INT      , modmap_set_glyph          },
 
     /* Importacion de archivos graficos */
     { "PNG_LOAD"            , "S"           , TYPE_INT      , modmap_load_png           },
+    { "PNG_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_png         },
     { "PCX_LOAD"            , "S"           , TYPE_INT      , modmap_load_pcx           },
+    { "PCX_LOAD"            , "SP"          , TYPE_INT      , modmap_bgload_pcx         },
 
     /* Exportacion de mapas Graficos */
     { "PNG_SAVE"            , "IIS"         , TYPE_INT      , modmap_save_png           },
@@ -1129,12 +1118,14 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     /* Mapas */
     { "NEW_MAP"             , "III"         , TYPE_INT      , modmap_new_map            },
     { "LOAD_MAP"            , "S"           , TYPE_INT      , modmap_load_map           },
+    { "LOAD_MAP"            , "SP"          , TYPE_INT      , modmap_bgload_map         },
     { "UNLOAD_MAP"          , "II"          , TYPE_INT      , modmap_unload_map         },
     { "SAVE_MAP"            , "IIS"         , TYPE_INT      , modmap_save_map           },
 
     /* Palette */
     { "NEW_PAL"             , ""            , TYPE_INT      , modmap_pal_create         },
     { "LOAD_PAL"            , "S"           , TYPE_INT      , modmap_load_pal           },
+    { "LOAD_PAL"            , "SP"          , TYPE_INT      , modmap_bgload_pal         },
     { "UNLOAD_PAL"          , "I"           , TYPE_INT      , modmap_pal_unload         },
     { "SAVE_PAL"            , "S"           , TYPE_INT      , modmap_save_system_pal    },
     { "SAVE_PAL"            , "SI"          , TYPE_INT      , modmap_save_pal           },
@@ -1167,15 +1158,19 @@ DLSYSFUNCS  __bgdexport( mod_map, functions_exports )[] =
     { "NEW_FNT"             , "II"          , TYPE_INT      , modmap_fnt_new_charset    },
     { "NEW_FNT"             , "IIIIIIII"    , TYPE_INT      , modmap_fnt_new_from_bitmap},
     { "LOAD_FNT"            , "S"           , TYPE_INT      , modmap_load_fnt           },
+    { "LOAD_FNT"            , "SP"          , TYPE_INT      , modmap_bgload_fnt         },
     { "UNLOAD_FNT"          , "I"           , TYPE_INT      , modmap_unload_fnt         },
     { "SAVE_FNT"            , "IS"          , TYPE_INT      , modmap_save_fnt           },
     { "LOAD_BDF"            , "S"           , TYPE_INT      , modmap_load_bdf           },
+    { "LOAD_BDF"            , "SP"          , TYPE_INT      , modmap_bgload_bdf         },
     { "GET_GLYPH"           , "II"          , TYPE_INT      , modmap_get_glyph          },
     { "SET_GLYPH"           , "IIII"        , TYPE_INT      , modmap_set_glyph          },
 
     /* Importacion de archivos graficos */
     { "LOAD_PNG"            , "S"           , TYPE_INT      , modmap_load_png           },
+    { "LOAD_PNG"            , "SP"          , TYPE_INT      , modmap_bgload_png         },
     { "LOAD_PCX"            , "S"           , TYPE_INT      , modmap_load_pcx           },
+    { "LOAD_PCX"            , "SP"          , TYPE_INT      , modmap_bgload_pcx         },
 
     /* Exportacion de mapas Graficos */
     { "SAVE_PNG"            , "IIS"         , TYPE_INT      , modmap_save_png           },
@@ -1195,33 +1190,3 @@ char * __bgdexport( mod_map, modules_dependency )[] =
 };
 
 /* --------------------------------------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
