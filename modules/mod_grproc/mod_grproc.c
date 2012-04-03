@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -82,15 +77,6 @@ enum {
 
 /* ----------------------------------------------------------------- */
 
-char * __bgdexport( mod_grproc, locals_def ) =
-    "STRUCT _mod_grproc_reserved\n"
-    "int type_scan;\n"
-    "int id_scan;\n"
-    "int context;\n"
-    "END\n";
-
-/* ----------------------------------------------------------------- */
-
 DLVARFIXUP __bgdexport( mod_grproc, locals_fixup )[]  =
 {
     /* Nombre de variable local, offset al dato, tamaño del elemento, cantidad de elementos */
@@ -138,7 +124,7 @@ DLVARFIXUP __bgdexport( mod_grproc, globals_fixup )[] =
 /* Funciones del sistema                                                       */
 /* --------------------------------------------------------------------------- */
 
-static int grproc_advance( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_advance( INSTANCE * my, int * params )
 {
     int angle = LOCINT32( mod_grproc, my, ANGLE ) ;
     LOCINT32( mod_grproc, my, COORDX ) += fixtoi( fmul( fcos( angle ), itofix( params[0] ) ) ) ;
@@ -148,7 +134,7 @@ static int grproc_advance( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_xadvance( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_xadvance( INSTANCE * my, int * params )
 {
     int angle = params[0] ;
     LOCINT32( mod_grproc, my, COORDX ) += fixtoi( fmul( fcos( angle ), itofix( params[1] ) ) ) ;
@@ -158,7 +144,7 @@ static int grproc_xadvance( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_get_angle( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_get_angle( INSTANCE * my, int * params )
 {
     INSTANCE * b = instance_get( params[0] ) ;
 
@@ -179,46 +165,7 @@ static int grproc_get_angle( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-#define RESOLXY_RES(x,y,res) \
-    {                                           \
-        if ( res > 0 )                          \
-        {                                       \
-            if ( x < 0 )                        \
-                ( x ) = ( ( x ) - ( res - 1 )) / res ; \
-            else                                \
-                ( x ) /= res ;                  \
-                                                \
-            if ( y < 0 )                        \
-                ( y ) = ( ( y ) - ( res - 1 )) / res ; \
-            else                                \
-                ( y ) /= res ;                  \
-        }                                       \
-        else if ( res < 0 )                     \
-        {                                       \
-            ( x ) *= -res ;                     \
-            ( y ) *= -res ;                     \
-        }                                       \
-    }
-
-/* --------------------------------------------------------------------------- */
-
-static int inline get_distance( int x1, int y1, int r1, int x2, int y2, int r2 )
-{
-    RESOLXY_RES( x1, y1, r1 );
-    RESOLXY_RES( x2, y2, r2 );
-
-    double dx = ( x2 - x1 ) * ( x2 - x1 ) ;
-    double dy = ( y2 - y1 ) * ( y2 - y1 ) ;
-
-    if ( r1 > 0 ) return ( int )sqrt( dx + dy ) * r1 ;
-    else if ( r1 < 0 ) return ( int )sqrt( dx + dy ) / -r1 ;
-
-    return ( int )sqrt( dx + dy ) ;
-}
-
-/* --------------------------------------------------------------------------- */
-
-static int inline get_distance_xy( INSTANCE * a, int x2, int y2, int r2 )
+static int inline get_distance_xy( INSTANCE * a, int x2, int y2 )
 {
     if ( a )
     {
@@ -230,13 +177,13 @@ static int inline get_distance_xy( INSTANCE * a, int x2, int y2, int r2 )
 
         RESOLXY( mod_grproc, a, x1, y1 );
 
-        RESOLXY_RES( x2, y2, r2 );
-
         double dx = ( x2 - x1 ) * ( x2 - x1 ) ;
         double dy = ( y2 - y1 ) * ( y2 - y1 ) ;
 
-        if ( res > 0 ) return ( int )sqrt( dx + dy ) * res ;
-        else if ( res < 0 ) return ( int )sqrt( dx + dy ) / -res ;
+        if ( res > 0 )
+            return ( int )sqrt( dx + dy ) * res ;
+        else if ( res < 0 )
+            return ( int )sqrt( dx + dy ) / - res ;
 
         return ( int )sqrt( dx + dy ) ;
     }
@@ -246,22 +193,22 @@ static int inline get_distance_xy( INSTANCE * a, int x2, int y2, int r2 )
 
 /* --------------------------------------------------------------------------- */
 
-static int get_distance_proc( INSTANCE * a, INSTANCE * b )
+static int get_distance( INSTANCE * a, INSTANCE * b )
 {
-    if ( a && b ) return ( get_distance_xy( a, LOCINT32( mod_grproc, b, COORDX ), LOCINT32( mod_grproc, b, COORDY ), LOCINT32( mod_grproc, b, RESOLUTION ) ) ) ;
+    if ( a && b ) return ( get_distance_xy( a, LOCINT32( mod_grproc, b, COORDX ), LOCINT32( mod_grproc, b, COORDY ) ) ) ;
     return -1 ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_get_dist( INSTANCE * a, int * params )
+CONDITIONALLY_STATIC int grproc_get_dist( INSTANCE * a, int * params )
 {
-    return ( get_distance_proc( a, instance_get( params[0] ) ) );
+    return ( get_distance( a, instance_get( params[0] ) ) );
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_get_real_point( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_get_real_point( INSTANCE * my, int * params )
 {
     GRAPH * b ;
     int x, y, r, centerx, centery, px = 0, py = 0, rx = 0, ry = 0 ;
@@ -427,23 +374,23 @@ static void draw_at( GRAPH * dest, int x, int y, REGION * r, INSTANCE * i )
     {
         if ( LOCDWORD( mod_grproc, i, XGRAPH ) && scalex == 100 && scaley == 100 )
         {
-            gr_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ) & ( B_HMIRROR | B_VMIRROR ), map ) ;
+            gr_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ), map ) ;
         }
         else
         {
             if ( LOCDWORD( mod_grproc, i, XGRAPH ) )
             {
-                gr_rotated_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ) & ( B_HMIRROR | B_VMIRROR ), 0, scalex, scaley, map ) ;
+                gr_rotated_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ), 0, scalex, scaley, map ) ;
             }
             else
             {
-                gr_rotated_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ) & ( B_HMIRROR | B_VMIRROR ), LOCINT32( mod_grproc, i, ANGLE ), scalex, scaley, map ) ;
+                gr_rotated_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ), LOCINT32( mod_grproc, i, ANGLE ), scalex, scaley, map ) ;
             }
         }
     }
     else
     {
-        gr_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ) & ( B_HMIRROR | B_VMIRROR ), map ) ;
+        gr_blit( dest, r, x, y, LOCDWORD( mod_grproc, i, FLAGS ), map ) ;
     }
 }
 
@@ -467,7 +414,7 @@ static int get_bbox( REGION * bbox, INSTANCE * proc )
 
     RESOLXY( mod_grproc, proc, x, y );
 
-    gr_get_bbox( bbox, 0, x, y, LOCDWORD( mod_grproc, proc, FLAGS ) & ( B_HMIRROR | B_VMIRROR ), LOCINT32( mod_grproc, proc, ANGLE ), scalex, scaley, b ) ;
+    gr_get_bbox( bbox, 0, x, y, LOCDWORD( mod_grproc, proc, FLAGS ), LOCINT32( mod_grproc, proc, ANGLE ), scalex, scaley, b ) ;
 
     return 1 ;
 }
@@ -516,12 +463,8 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
 
             case    COLLISION_CIRCLE:
                 {
-                    int cx1, cy1, dx1, dy1;
-
-                    cx1 = bbox2.x + ( dx1 = ( bbox2.x2 - bbox2.x + 1 ) ) / 2 ;
-                    cy1 = bbox2.y + ( dy1 = ( bbox2.y2 - bbox2.y + 1 ) ) / 2 ;
-
-                    if ( get_distance( cx1, cy1, 0, mx, my, 0 ) < ( dx1 + dy1 ) / 4 ) return 1;
+                    int dist = get_distance_xy( proc1, mx, my );
+                    if ( ( bbox2.x2 - bbox2.x ) / 2 >= dist && ( bbox2.y2 - bbox2.y ) / 2 >= dist ) return 1;
                     return 0;
                     break;
                 }
@@ -534,7 +477,7 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
     {
         /* maybe must force this to 32 bits */
         if ( bmp && bmp->format->depth != sys_pixel_format->depth ) { bitmap_destroy( bmp ); bmp = NULL; }
-        if ( !bmp ) bmp = bitmap_new( 0, 2, 1, sys_pixel_format->depth ) ;
+        if ( !bmp ) bmp = bitmap_new( 0, 1, 1, sys_pixel_format->depth ) ;
         if ( !bmp ) return 0 ;
 
         memset( bmp->data, 0, bmp->pitch * bmp->height ) ;
@@ -542,7 +485,7 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
 
     /* Retrieves process information */
 
-    bbox1.x = 0 ; bbox1.x2 = 1 ;
+    bbox1.x = 0 ; bbox1.x2 = 0 ;
     bbox1.y = 0 ; bbox1.y2 = 0 ;
 
     x = LOCINT32( mod_grproc, proc1, COORDX ) ;
@@ -601,12 +544,8 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
 
                         case    COLLISION_CIRCLE:
                             {
-                                int cx1, cy1, dx1, dy1;
-
-                                cx1 = bbox2.x + ( dx1 = ( bbox2.x2 - bbox2.x + 1 ) ) / 2 ;
-                                cy1 = bbox2.y + ( dy1 = ( bbox2.y2 - bbox2.y + 1 ) ) / 2 ;
-
-                                if ( get_distance( cx1, cy1, 0, r->x + mx + scroll->posx0, r->y + my + scroll->posy0, 0 ) < ( dx1 + dy1 ) / 4 ) return 1;
+                                int dist = get_distance_xy( proc1, r->x + mx + scroll->posx0, r->y + my + scroll->posy0 );
+                                if ( ( bbox2.x2 - bbox2.x ) / 2 >= dist && ( bbox2.y2 - bbox2.y ) / 2 >= dist ) return 1;
                                 break;
                             }
                     }
@@ -646,12 +585,8 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
 
         case    COLLISION_CIRCLE:
             {
-                int cx1, cy1, dx1, dy1;
-
-                cx1 = bbox2.x + ( dx1 = ( bbox2.x2 - bbox2.x + 1 ) ) / 2 ;
-                cy1 = bbox2.y + ( dy1 = ( bbox2.y2 - bbox2.y + 1 ) ) / 2 ;
-
-                if ( get_distance( cx1, cy1, 0, mx, my, 0 ) < ( dx1 + dy1 ) / 4 ) return 1;
+                int dist = get_distance_xy( proc1, mx, my );
+                if ( ( bbox2.x2 - bbox2.x ) / 2 >= dist && ( bbox2.y2 - bbox2.y ) / 2 >= dist ) return 1;
                 break;
             }
     }
@@ -661,54 +596,57 @@ static int check_collision_with_mouse( INSTANCE * proc1, int colltype )
 
 /* --------------------------------------------------------------------------- */
 
-static int check_collision_circle( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox1, INSTANCE * proc2 )
+static int check_collision_circle( INSTANCE * proc1, INSTANCE * proc2 )
 {
-    REGION bbox2 ;
-    GRAPH * bmp2 ;
-    int cx1, cy1, cx2, cy2, dx1, dy1, dx2, dy2;
+    REGION bbox1, bbox2 ;
+    int dist ;
+    GRAPH * bmp1;
 
-    bmp2 = instance_graph( proc2 ) ; if ( !bmp2 ) return 0 ;
-    instance_get_bbox( proc2, bmp2, &bbox2 );
+    bmp1 = instance_graph( proc1 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc1, bmp1, &bbox1 );
 
-    cx1 = bbox1->x + ( dx1 = ( bbox1->x2 - bbox1->x + 1 ) ) / 2 ;
-    cy1 = bbox1->y + ( dy1 = ( bbox1->y2 - bbox1->y + 1 ) ) / 2 ;
+    bmp1 = instance_graph( proc2 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc1, bmp1, &bbox2 );
 
-    cx2 = bbox2.x + ( dx2 = ( bbox2.x2 - bbox2.x + 1 ) ) / 2 ;
-    cy2 = bbox2.y + ( dy2 = ( bbox2.y2 - bbox2.y + 1 ) ) / 2 ;
-
-    if ( get_distance( cx1, cy1, 0, cx2, cy2, 0 ) < ( ( dx1 + dy1 ) / 2 + ( dx2 + dy2 ) / 2 ) / 2 ) return 1;
+    if ( ( dist = get_distance( proc1, proc2 ) ) > -1 &&
+           dist < ( ( ( ( bbox1.x2 - bbox1.x + 1 ) + ( bbox1.y2 - bbox1.y + 1 ) ) / 2 ) +
+                    ( ( ( bbox2.x2 - bbox2.x + 1 ) + ( bbox2.y2 - bbox2.y + 1 ) ) / 2 ) ) / 2 ) return 1;
 
     return 0;
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int check_collision_box( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox1, INSTANCE * proc2 )
+static int check_collision_box( INSTANCE * proc1, INSTANCE * proc2 )
 {
-    REGION bbox2 ;
-    GRAPH * bmp2 ;
+    REGION bbox1, bbox2 ;
+    GRAPH * bmp1 ;
 
-    bmp2 = instance_graph( proc2 ) ; if ( !bmp2 ) return 0 ;
-    instance_get_bbox( proc2, bmp2, &bbox2 );
+    bmp1 = instance_graph( proc1 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc1, bmp1, &bbox1 );
 
-    region_union( &bbox2, bbox1 ) ;
-    if ( region_is_empty( &bbox2 ) ) return 0 ;
+    bmp1 = instance_graph( proc2 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc2, bmp1, &bbox2 );
+
+    region_union( &bbox1, &bbox2 ) ;
+    if ( region_is_empty( &bbox1 ) ) return 0 ;
 
     return 1;
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int check_collision( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox3, INSTANCE * proc2 )
+static int check_collision( INSTANCE * proc1, INSTANCE * proc2 )
 {
     REGION bbox1, bbox2 ;
     int x, y, w, h ;
-    GRAPH * bmp2 ;
+    GRAPH * bmp1, * bmp2 ;
 
-    bbox1 = *bbox3;
+    bmp1 = instance_graph( proc1 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc1, bmp1, &bbox1 );
 
-    bmp2 = instance_graph( proc2 ) ; if ( !bmp2 ) return 0 ;
-    instance_get_bbox( proc2, bmp2, &bbox2 );
+    bmp1 = instance_graph( proc2 ) ; if ( !bmp1 ) return 0 ;
+    instance_get_bbox( proc2, bmp1, &bbox2 );
 
     region_union( &bbox1, &bbox2 ) ;
     if ( region_is_empty( &bbox1 ) ) return 0 ;
@@ -774,7 +712,6 @@ static int check_collision( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox3, INST
         }
     }
     else
-    {
         if ( sys_pixel_format->depth == 16 )
         {
             uint16_t * ptr1 = ( uint16_t * ) bmp1->data ;
@@ -821,7 +758,6 @@ static int check_collision( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox3, INST
                 ptr2 = _ptr2 += bmp2->pitch;
             }
         }
-    }
 
     bitmap_destroy( bmp1 ) ;
     bitmap_destroy( bmp2 ) ;
@@ -832,11 +768,9 @@ static int check_collision( INSTANCE * proc1, GRAPH * bmp1, REGION * bbox3, INST
 
 static int __collision( INSTANCE * my, int id, int colltype )
 {
-    INSTANCE * ptr, ** ctx ;
+    INSTANCE * ptr = instance_get( id ), ** ctx ;
     int status, p ;
-    int ( *colfunc )( INSTANCE *, GRAPH *, REGION *, INSTANCE * );
-    REGION bbox1 ;
-    GRAPH * bmp1 ;
+    int ( *colfunc )( INSTANCE *, INSTANCE * );
 
     if ( id == -1 ) return ( check_collision_with_mouse( my, colltype ) ) ? 1 : 0 ;
 
@@ -858,13 +792,8 @@ static int __collision( INSTANCE * my, int id, int colltype )
                 return 0;
     }
 
-    bmp1 = instance_graph( my ) ; if ( !bmp1 ) return 0 ;
-    instance_get_bbox( my, bmp1, &bbox1 );
-
-    int ctype = LOCDWORD( mod_grproc, my, CTYPE );
-
     /* Checks only for a single instance */
-    if ( id >= FIRST_INSTANCE_ID ) return ( ( ( ptr = instance_get( id ) ) && ctype == LOCDWORD( mod_grproc, ptr, CTYPE ) ) ? colfunc( my, bmp1, &bbox1, ptr ) : 0 ) ;
+    if ( id >= FIRST_INSTANCE_ID ) return ( ptr ? colfunc( my, ptr ) : 0 ) ;
 
     /* we must use full list of instances or get types from it */
     ptr = first_instance ;
@@ -881,11 +810,10 @@ static int __collision( INSTANCE * my, int id, int colltype )
         while ( ptr )
         {
             if ( ptr != my &&
-                 ctype == LOCDWORD( mod_grproc, ptr, CTYPE ) &&
                   (
                     ( status = ( LOCDWORD( mod_grproc, ptr, STATUS ) & ~STATUS_WAITING_MASK ) ) == STATUS_RUNNING ||
                     status == STATUS_FROZEN
-                  ) && colfunc( my, bmp1, &bbox1, ptr )
+                  ) && colfunc( my, ptr )
                 )
             {
                 LOCDWORD( mod_grproc, my, GRPROC_ID_SCAN ) = LOCDWORD( mod_grproc, ptr, PROCESS_ID ) ;
@@ -908,12 +836,11 @@ static int __collision( INSTANCE * my, int id, int colltype )
     while ( ( ptr = instance_get_by_type( id, ctx ) ) )
     {
         if ( ptr != my &&
-             ctype == LOCDWORD( mod_grproc, ptr, CTYPE ) &&
              (
                 ( status = ( LOCDWORD( mod_grproc, ptr, STATUS ) & ~STATUS_WAITING_MASK ) ) == STATUS_RUNNING ||
                   status == STATUS_FROZEN
              ) &&
-             colfunc( my, bmp1, &bbox1, ptr )
+             colfunc( my, ptr )
            )
         {
             return LOCDWORD( mod_grproc, ptr, PROCESS_ID ) ;
@@ -925,25 +852,24 @@ static int __collision( INSTANCE * my, int id, int colltype )
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_collision( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_collision( INSTANCE * my, int * params )
 {
     return __collision( my, params[ 0 ], COLLISION_NORMAL );
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int grproc_collision_box( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_collision_box( INSTANCE * my, int * params )
 {
     return __collision( my, params[ 0 ], COLLISION_BOX );
 }
 
 /* ----------------------------------------------------------------- */
 
-static int grproc_collision_circle( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int grproc_collision_circle( INSTANCE * my, int * params )
 {
     return __collision( my, params[ 0 ], COLLISION_CIRCLE );
 }
-
 /* ----------------------------------------------------------------- */
 /* Funciones de inicializacion del modulo/plugin                     */
 
@@ -960,35 +886,5 @@ void __bgdexport( mod_grproc, process_exec_hook )( INSTANCE * r )
     LOCDWORD( mod_grproc, r, GRPROC_TYPE_SCAN ) = 0;
     LOCDWORD( mod_grproc, r, GRPROC_CONTEXT ) = 0;
 }
-
-/* ---------------------------------------------------------------------- */
-
-DLSYSFUNCS  __bgdexport( mod_grproc, functions_exports )[] =
-{
-    { "ADVANCE"             , "I"   , TYPE_INT  , grproc_advance            },
-    { "XADVANCE"            , "II"  , TYPE_INT  , grproc_xadvance           },
-
-    { "GET_ANGLE"           , "I"   , TYPE_INT  , grproc_get_angle          },
-    { "GET_DIST"            , "I"   , TYPE_INT  , grproc_get_dist           },
-    { "COLLISION"           , "I"   , TYPE_INT  , grproc_collision          },
-    { "COLLISION_BOX"       , "I"   , TYPE_INT  , grproc_collision_box      },
-    { "COLLISION_CIRCLE"    , "I"   , TYPE_INT  , grproc_collision_circle   },
-
-    { "GET_REAL_POINT"      , "IPP" , TYPE_INT  , grproc_get_real_point     },
-
-    { 0                     , 0     , 0         , 0                         }
-};
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( mod_grproc, modules_dependency )[] =
-{
-    "libmouse",
-    "libgrbase",
-    "libvideo",
-    "librender",
-    "libblit",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

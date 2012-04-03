@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -43,7 +38,12 @@
 #include "xstrings.h"
 
 #undef STACK_SIZE
-#define STACK_SIZE 16384
+
+#ifdef TARGET_PSP
+	#define STACK_SIZE 8192
+#else
+	#define STACK_SIZE 16384
+#endif
 
 /* ---------------------------------------------------------------------- */
 
@@ -52,14 +52,20 @@
 #define INSTANCE_NORMALIZE_PRIORITY 32768
 
 /* ---------------------------------------------------------------------- */
-/* Módulo de gestión de instancias, con las funciones de incialización y  */
-/* destrucción, duplicado, etc.                                           */
+/* Mï¿½dulo de gestiï¿½n de instancias, con las funciones de incializaciï¿½n y  */
+/* destrucciï¿½n, duplicado, etc.                                           */
 /* ---------------------------------------------------------------------- */
 
 #define HASH(id)            (unsigned int)((id)&0x0000ffff)
 #define HASH_PRIORITY(id)   (unsigned int)(((id) + INSTANCE_NORMALIZE_PRIORITY) & 0x0000ffff)
 #define HASH_INSTANCE(id)   (unsigned int)(((( uint32_t )(id)) >> 2 ) & 0x0000ffff)
-#define HASH_SIZE           65536
+
+#ifdef TARGET_PSP
+	#define HASH_SIZE	        32768 
+#else
+	#define HASH_SIZE		65536
+#endif
+
 
 INSTANCE ** hashed_by_id = NULL;
 INSTANCE ** hashed_by_instance = NULL;
@@ -104,9 +110,13 @@ void instance_add_to_list_by_instance( INSTANCE * r )
     unsigned int hash = HASH_INSTANCE( r );
 
     if ( !hashed_by_instance ) hashed_by_instance = calloc( HASH_SIZE, sizeof( INSTANCE * ) );
-
+	assert( hashed_by_instance );
+	
     r->prev_by_instance = NULL ;
+	
+    fprintf( stderr, "hash: %d\n", hash );
     r->next_by_instance = hashed_by_instance[hash];
+	
     if ( r->next_by_instance ) r->next_by_instance->prev_by_instance = r ;
     hashed_by_instance[hash] = r;
 }
@@ -266,9 +276,16 @@ INSTANCE * instance_get( int id )
 int instance_getid()
 {
     int id = instance_maxid++ ;
+	
+	fprintf( stderr, "running instance_getid()...\n" );
+	fprintf( stderr, "id: %d\n", id );
 
-    if ( !hashed_by_id ) hashed_by_id = calloc( HASH_SIZE, sizeof( INSTANCE * ) );
-
+    if ( !hashed_by_id ) hashed_by_id = calloc( HASH_SIZE, sizeof( INSTANCE * ) );	
+	assert( hashed_by_id );
+	
+	fprintf( stderr, "hashed_by_id: 0x%X\n", (unsigned int)hashed_by_id );	
+	fprintf( stderr, "HASH(id): %d\n", HASH(id) );
+	
     if ( id <= LAST_INSTANCE_ID && !hashed_by_id[ HASH( id ) ] ) return id;
 
     if ( instance_maxid > LAST_INSTANCE_ID )
@@ -349,7 +366,7 @@ INSTANCE * instance_duplicate( INSTANCE * father )
 
     /* Inicializa datos de jerarquia */
 
-    /* Crea el proceso clónico como si lo hubiera llamado el padre */
+    /* Crea el proceso clï¿½nico como si lo hubiera llamado el padre */
 
     type = LOCDWORD( father, PROCESS_TYPE ) ;
     LOCDWORD( r, PROCESS_ID )   = pid ;
@@ -428,10 +445,20 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     INSTANCE * r, * brother;
     int n, pid;
 
-    if ( ( pid = instance_getid() ) == -1 ) return NULL;
+    if ( ( pid = instance_getid() ) == -1 )
+	{
+		fprintf( stderr, "pid = (-1)\n" );
+		return NULL;
+	}
+	
+    fprintf( stderr, "allocating memory for one INSTANCE...\n" );
+
 
     r = ( INSTANCE * ) calloc( 1, sizeof( INSTANCE ) ) ;
     assert( r ) ;
+	
+    fprintf( stderr, "initializing INSTANCE...\n" );
+
 
     r->pridata          = ( int * ) malloc( proc->private_size + 4 ) ;
     r->pubdata          = ( int * ) malloc( proc->public_size + 4 ) ;
@@ -452,12 +479,16 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     r->private_size     = proc->private_size ;
     r->public_size      = proc->public_size ;
     r->first_run        = 1 ;
+	
+	fprintf( stderr, "memcpy'ing data structures...\n" );
 
     if ( proc->private_size > 0 ) memcpy( r->pridata, proc->pridata, proc->private_size ) ;
     if ( proc->public_size > 0 ) memcpy( r->pubdata, proc->pubdata, proc->public_size ) ;
     if ( local_size > 0 ) memcpy( r->locdata, localdata, local_size ) ;
 
-    /* Inicializa datos de jerarquia */
+    /* Hierarchy data initialization */
+    
+	fprintf( stderr, "initializing data...\n" );
 
     LOCDWORD( r, PROCESS_TYPE ) = proc->type ;
     LOCDWORD( r, PROCESS_ID )   = pid ;
@@ -486,6 +517,7 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     }
 
     /* Cuenta los usos de las variables tipo cadena */
+	fprintf( stderr, "counting string vars...\n" );
 
     for ( n = 0; n < proc->string_count; n++ ) string_use( PRIDWORD( r, proc->strings[n] ) ) ;  /* Strings privadas */
     for ( n = 0; n < proc->pubstring_count; n++ ) string_use( PUBDWORD( r, proc->pubstrings[n] ) ) ; /* Strings publicas */
@@ -495,6 +527,8 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
     r->next = first_instance ;
     if ( first_instance ) first_instance->prev = r;
     first_instance = r ;
+	
+	fprintf( stderr, "instance_new(): adding instances...\n");
 
     instance_add_to_list_by_id( r, pid );
     instance_add_to_list_by_instance( r );
@@ -505,18 +539,26 @@ INSTANCE * instance_new( PROCDEF * proc, INSTANCE * father )
      * is waiting for this process to return */
 
     r->called_by = NULL;
-
+    
+	fprintf( stderr, "instance_new(): alocating memory for stack...\n"); 				
+	
     r->stack = malloc( STACK_SIZE );
+	assert(r->stack);
+
     r->stack_ptr = &r->stack[1];
     r->stack[0] = STACK_SIZE;
 
     /* Initialize list pointers */
 
     LOCDWORD( r, STATUS ) = STATUS_RUNNING;
+	
+	fprintf( stderr, "instance_new(): initializing list pointers...\n"); 			
 
     if ( instance_create_hook_count )
         for ( n = 0; n < instance_create_hook_count; n++ )
             instance_create_hook_list[n]( r );
+
+	fprintf( stderr, "instance_new(): exiting...\n");
 
     return r ;
 }
@@ -612,7 +654,7 @@ void instance_destroy( INSTANCE * r )
     for ( n = 0 ; n < r->proc->pubstring_count ; n++ ) string_discard( PUBDWORD( r, r->proc->pubstrings[n] ) ) ; /* Strings publicas */
     for ( n = 0 ; n < local_strings ; n++ ) string_discard( LOCDWORD( r, localstr[n] ) ) ; /* Strings locales */
 
-    /* Actualiza árbol de jerarquias */
+    /* Actualiza ï¿½rbol de jerarquias */
 
     bigbro = instance_get( LOCDWORD( r, BIGBRO ) ) ; /* Tengo hermano mayor? */
     if ( bigbro ) LOCDWORD( bigbro, SMALLBRO ) = LOCDWORD( r, SMALLBRO ) ; /* El hermano menor de mi hermano mayor es mi hermano menor */

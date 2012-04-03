@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -35,6 +30,10 @@
 #include "arrange.h"
 #include "xstrings.h"
 #include "dcb.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_timers_symbols.h"
+#endif
 
 static int keyoffset = 0;
 
@@ -295,7 +294,7 @@ static int sort_variables( void * data, int key_offset, int key_type, int elemen
  *  variable as a key for sorting order.
  **/
 
-static int modsort_sort( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modsort_sort( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -350,7 +349,7 @@ static int modsort_sort( INSTANCE * my, int * params )
  *  Sorts an array of structs, using the given variable as a key
  **/
 
-static int modsort_ksort( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modsort_ksort( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -418,7 +417,7 @@ static int modsort_ksort( INSTANCE * my, int * params )
  *  or a pointer to an array, unlike the simple SORT version.
  **/
 
-static int modsort_sort_n( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modsort_sort_n( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -476,7 +475,7 @@ static int modsort_sort_n( INSTANCE * my, int * params )
  *  single elements, unlike the previous version of KSORT above.
  **/
 
-static int modsort_ksort_n( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modsort_ksort_n( INSTANCE * my, int * params )
 {
     /* Get the description of the data to be sorted */
 
@@ -593,7 +592,7 @@ static void QuickSort( uint8_t *Data, int inf, int sup, int *params )
  *      datatype (int=0, float=1)
  */
 
-static int modsort_quicksort( INSTANCE *my, int *params )
+CONDITIONALLY_STATIC int modsort_quicksort( INSTANCE *my, int *params )
 {
 
     uint8_t *Data = ( uint8_t * )params[0];
@@ -601,15 +600,4 @@ static int modsort_quicksort( INSTANCE *my, int *params )
     return 1 ;
 }
 
-/* ---------------------------------------------------------------------- */
 
-DLSYSFUNCS  __bgdexport( mod_sort, functions_exports )[] =
-{
-    /* Funciones sort */
-    { "QUICKSORT"   , "PIIIBB", TYPE_INT    , modsort_quicksort },
-    { "KSORT"       , "V++V++", TYPE_INT    , modsort_ksort     },
-    { "KSORT"       , "V++V++I", TYPE_INT    , modsort_ksort_n   },
-    { "SORT"        , "V++I"  , TYPE_INT    , modsort_sort_n    },
-    { "SORT"        , "V++"   , TYPE_INT    , modsort_sort      },
-    { 0             , 0       , 0           , 0                 }
-};

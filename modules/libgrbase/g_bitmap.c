@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -40,6 +35,12 @@ uint32_t * map_code_bmp = NULL ;
 int map_code_allocated = 0 ;
 int map_code_last = 0;
 
+/*
+GRAPH * map_first = NULL;
+*/
+
+/* static int free_map_code = 1000 ; */
+
 /* --------------------------------------------------------------------------- */
 
 PIXEL_FORMAT * bitmap_create_format( int bpp )
@@ -50,9 +51,10 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
     format = malloc( sizeof( *format ) );
     if ( !format ) return( NULL );
 
+    memset( format, 0, sizeof( *format ) );
+
     /* Set up the format */
 
-    format->palette = NULL;
     format->depth = bpp;
     format->depthb = ( bpp + 7 ) / 8;
 
@@ -63,17 +65,6 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
         format->Gloss = 0;
         format->Bloss = 0;
 
-#ifdef COLORSPACE_BGR
-        format->Ashift = 0x18;
-        format->Rshift = 0x00;
-        format->Gshift = 0x08;
-        format->Bshift = 0x10;
-
-        format->Amask = 0xFF000000;
-        format->Rmask = 0x000000FF;
-        format->Gmask = 0x0000FF00;
-        format->Bmask = 0x00FF0000;
-#else
         format->Ashift = 24;
         format->Rshift = 16;
         format->Gshift = 8;
@@ -83,7 +74,6 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
         format->Rmask = 0x00FF0000;
         format->Gmask = 0x0000FF00;
         format->Bmask = 0x000000FF;
-#endif
     }
     else if ( bpp > 8 )
     {
@@ -94,15 +84,9 @@ PIXEL_FORMAT * bitmap_create_format( int bpp )
         format->Gloss = 8 - ( bpp / 3 ) - ( bpp % 3 );
         format->Bloss = 8 - ( bpp / 3 );
 
-#ifdef COLORSPACE_BGR
-        format->Rshift = 0;
-        format->Gshift = ( bpp / 3 );
-        format->Bshift = (( bpp / 3 ) + ( bpp % 3 ) ) + ( bpp / 3 );
-#else
         format->Rshift = (( bpp / 3 ) + ( bpp % 3 ) ) + ( bpp / 3 );
         format->Gshift = ( bpp / 3 );
         format->Bshift = 0;
-#endif
 
         format->Rmask = (( 0xFF >> format->Rloss ) << format->Rshift );
         format->Gmask = (( 0xFF >> format->Gloss ) << format->Gshift );
@@ -136,6 +120,8 @@ GRAPH * bitmap_new_ex( int code, int w, int h, int depth, void * data, int pitch
     GRAPH * gr ;
     int wb ;
 
+//    if ( depth != 8 && depth != 16 && depth != 1 ) return NULL; // Profundidad de color no soportada
+
     /* Create and fill the struct */
 
     gr = ( GRAPH * ) malloc( sizeof( GRAPH ) ) ;
@@ -168,7 +154,14 @@ GRAPH * bitmap_new_ex( int code, int w, int h, int depth, void * data, int pitch
 
     gr->modified = 0;
     gr->info_flags = GI_EXTERNAL_DATA ;
+/*
+    gr->next = map_first;
+    gr->prev = NULL;
 
+    if ( map_first ) map_first->prev = gr;
+
+    map_first = gr;
+*/
     return gr ;
 }
 
@@ -178,6 +171,8 @@ GRAPH * bitmap_new( int code, int w, int h, int depth )
 {
     GRAPH * gr ;
     int bytesPerRow, wb ;
+
+//    if ( depth != 8 && depth != 16 && depth != 1 ) return NULL; // Profundidad de color no soportada
 
     /* Create and fill the struct */
 
@@ -219,7 +214,14 @@ GRAPH * bitmap_new( int code, int w, int h, int depth )
 
     gr->modified = 0;
     gr->info_flags = 0;
+/*
+    gr->next = map_first;
+    gr->prev = NULL;
 
+    if ( map_first ) map_first->prev = gr;
+
+    map_first = gr;
+*/
     return gr ;
 }
 
@@ -308,7 +310,11 @@ void bitmap_set_cpoint( GRAPH * map, uint32_t point, int x, int y )
 void bitmap_destroy( GRAPH * map )
 {
     if ( !map ) return ;
-
+/*
+    if ( map->prev ) map->prev->next = map->next;
+    if ( map->next ) map->next->prev = map->prev;
+    if ( map_first == map ) map_first = map->next;
+*/
     if ( map->cpoints ) free( map->cpoints ) ;
 
     if ( map->code > 999 ) bit_clr( map_code_bmp, map->code - 1000 );
@@ -378,6 +384,35 @@ void bitmap_analize( GRAPH * bitmap )
     if ( y < 0 ) bitmap->info_flags |= GI_NOCOLORKEY ;
 }
 
+/* --------------------------------------------------------------------------- */
+/*
+ *  FUNCTION : bitmap_16bits_conversion
+ *
+ *  When 16 bits mode is initialized for the first time, this
+ *  function will convert every 16 bit bitmap in memory to
+ *  the screen format
+ *
+ *  PARAMS :
+ *      None
+ *
+ *  RETURN VALUE :
+ *      None
+ *
+ */
+/*
+void bitmap_16bits_conversion()
+{
+    GRAPH * map = map_first;
+
+    while ( map )
+    {
+        if ( map->format->depth == 16 )
+            gr_convert16_565ToScreen( map->data, map->width * map->height );
+
+        map = map->next;
+    }
+}
+*/
 /* --------------------------------------------------------------------------- */
 /* Returns the code of a new system library graph (1000+). Searchs
    for free slots if the program creates too many system maps */
@@ -456,4 +491,3 @@ GRAPH * bitmap_new_syslib( int w, int h, int depth )
     return gr ;
 }
 
-/* --------------------------------------------------------------------------- */

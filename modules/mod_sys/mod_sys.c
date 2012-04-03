@@ -1,26 +1,21 @@
 /*
- *  Copyright � 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright � 2006-2010 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -32,6 +27,7 @@
 #include "bgddl.h"
 #include "files.h"
 #include "xstrings.h"
+#include "mod_sys_defines.h"
 
 #include <unistd.h>
 
@@ -41,49 +37,17 @@
 #include <process.h>
 #endif
 
-#if defined(TARGET_WII)
-#include <ogc/wiilaunch.h>
+#ifndef __MONOLITHIC__
+#include "mod_sys_symbols.h"
 #endif
 
 /* ---------------------------------------------------------------------- */
 
-#ifndef _P_WAIT
-#define _P_WAIT     0
-#endif
-
-#ifndef _P_NOWAIT
-#define _P_NOWAIT   1
-#endif
-
-/*
-#define _P_OVERLAY  2
-#define _OLD_P_OVERLAY  _P_OVERLAY
-#define _P_NOWAITO  3
-#define _P_DETACH   4
-*/
-
-DLCONSTANT __bgdexport( mod_sys, constants_def )[] =
+CONDITIONALLY_STATIC int modsys_exec( INSTANCE * my, int * params )
 {
-    { "_P_WAIT"     , TYPE_DWORD,  _P_WAIT   },
-    { "_P_NOWAIT"   , TYPE_DWORD,  _P_NOWAIT },
-    { NULL          , 0         ,  0         }
-} ;
-
-/* ---------------------------------------------------------------------- */
-
-static int modsys_exec( INSTANCE * my, int * params )
-{
-#if defined(TARGET_PSP)
-    return 0;
-#elif defined(TARGET_WII)
-    WII_OpenURL(string_get(params[1]));
-    string_discard(params[1]);
-    return 0;
-#elif 0
-    NSURL *myURL = [NSURL URLWithString:@"%s", string_get(params[1])];
-    string_discard(params[1]);
-
-    [[UIApplication sharedApplication] openURL:myURL];
+#if defined TARGET_WII || defined TARGET_PSP
+	#warning NOT IMPLEMENTED FOR PSP or WII!
+	return 0;
 #else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
@@ -139,12 +103,12 @@ static int modsys_exec( INSTANCE * my, int * params )
     if ( argv ) free( argv );
 
     return ( status ) ;
-#endif
+#endif //TARGET_WII
 }
 
 /* ---------------------------------------------------------------------- */
 
-static int modsys_getenv( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modsys_getenv( INSTANCE * my, int * params )
 {
     char *e ;
     int str ;
@@ -162,15 +126,5 @@ static int modsys_getenv( INSTANCE * my, int * params )
     string_use( str ) ;
     return str ;
 }
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
-DLSYSFUNCS __bgdexport( mod_sys, functions_exports )[] =
-{
-    { "GETENV"  , "S"    , TYPE_STRING, modsys_getenv },
-    { "EXEC"    , "ISIP" , TYPE_INT   , modsys_exec   },
-    { 0         , 0      , 0          , 0             }
-};
 
 /* ----------------------------------------------------------------- */

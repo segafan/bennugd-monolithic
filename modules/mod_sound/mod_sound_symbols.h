@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -31,7 +26,42 @@
 
 #include <bgddl.h>
 
-#ifdef __BGDC__
+#ifndef __BGDC__
+extern CONDITIONALLY_STATIC int modsound_load_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_play_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_unload_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_stop_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_pause_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_resume_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_is_playing_song( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_song_volume( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_fade_music_in( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_fade_music_off( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_load_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_play_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_play_wav_channel( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_unload_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_stop_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_pause_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_resume_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_is_playing_wav( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_channel_volume( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_reserve_channels( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_wav_volume( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_panning( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_position( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_distance( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_reverse_stereo( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_set_music_position( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_init( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modsound_close( INSTANCE * my, int * params );
+extern void __bgdexport( mod_sound, module_initialize )();
+extern void __bgdexport( mod_sound, module_finalize )();
+#endif
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)                   */
+
 DLCONSTANT  __bgdexport( mod_sound, constants_def )[] =
 {
     { "MODE_MONO"   , TYPE_INT, 0  },
@@ -40,52 +70,53 @@ DLCONSTANT  __bgdexport( mod_sound, constants_def )[] =
     { NULL          , 0       , 0  }
 } ;
 
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion)           */
+
 char __bgdexport( mod_sound, globals_def )[] =
+#ifdef TARGET_WII
+    "   sound_freq = 32000 ;\n"
+#else
     "   sound_freq = 22050 ;\n"
+#endif
     "   sound_mode = MODE_STEREO ;\n"
     "   sound_channels = 8 ;\n";
 
+extern DLVARFIXUP  __bgdexport( mod_sound, globals_fixup )[];
+
+/* --------------------------------------------------------------------------- */
+
 DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
 {
-    { "SOUND_INIT"          , ""     , TYPE_INT , 0 },
-    { "SOUND_CLOSE"         , ""     , TYPE_INT , 0 },
-    { "LOAD_SONG"           , "S"    , TYPE_INT , 0 },
-    { "PLAY_SONG"           , "II"   , TYPE_INT , 0 },
-    { "UNLOAD_SONG"         , "I"    , TYPE_INT , 0 },
-    { "STOP_SONG"           , ""     , TYPE_INT , 0 },
-    { "PAUSE_SONG"          , ""     , TYPE_INT , 0 },
-    { "RESUME_SONG"         , ""     , TYPE_INT , 0 },
-    { "SET_SONG_VOLUME"     , "I"    , TYPE_INT , 0 },
-    { "IS_PLAYING_SONG"     , ""     , TYPE_INT , 0 },
-    { "LOAD_WAV"            , "S"    , TYPE_INT , 0 },
-    { "PLAY_WAV"            , "II"   , TYPE_INT , 0 },
-    { "UNLOAD_WAV"          , "I"    , TYPE_INT , 0 },
-    { "STOP_WAV"            , "I"    , TYPE_INT , 0 },
-    { "PAUSE_WAV"           , "I"    , TYPE_INT , 0 },
-    { "RESUME_WAV"          , "I"    , TYPE_INT , 0 },
-    { "IS_PLAYING_WAV"      , "I"    , TYPE_INT , 0 },
-    { "SET_WAV_VOLUME"      , "II"   , TYPE_INT , 0 },
-    { "FADE_MUSIC_IN"       , "III"  , TYPE_INT , 0 },
-    { "FADE_MUSIC_OFF"      , "I"    , TYPE_INT , 0 },
-    { "SET_CHANNEL_VOLUME"  , "II"   , TYPE_INT , 0 },
-    { "RESERVE_CHANNELS"    , "I"    , TYPE_INT , 0 },
-    { "SET_PANNING"         , "III"  , TYPE_INT , 0 },
-    { "SET_POSITION"        , "III"  , TYPE_INT , 0 },
-    { "SET_DISTANCE"        , "II"   , TYPE_INT , 0 },
-    { "REVERSE_STEREO"      , "II"   , TYPE_INT , 0 },
-    { "PLAY_WAV"            , "III"  , TYPE_INT , 0 },
-    { "SET_MUSIC_POSITION"  , "F"    , TYPE_INT , 0 },
-    { "UNLOAD_SONG"         , "P"    , TYPE_INT , 0 },
-    { "UNLOAD_WAV"          , "P"    , TYPE_INT , 0 },
-    { 0                     , 0      , 0        , 0 }
+    { "SOUND_INIT"          , ""     , TYPE_INT , SYSMACRO(modsound_init)               },
+    { "SOUND_CLOSE"         , ""     , TYPE_INT , SYSMACRO(modsound_close)              },
+    { "LOAD_SONG"           , "S"    , TYPE_INT , SYSMACRO(modsound_load_song)          },
+    { "PLAY_SONG"           , "II"   , TYPE_INT , SYSMACRO(modsound_play_song)          },
+    { "UNLOAD_SONG"         , "I"    , TYPE_INT , SYSMACRO(modsound_unload_song)        },
+    { "STOP_SONG"           , ""     , TYPE_INT , SYSMACRO(modsound_stop_song)          },
+    { "PAUSE_SONG"          , ""     , TYPE_INT , SYSMACRO(modsound_pause_song)         },
+    { "RESUME_SONG"         , ""     , TYPE_INT , SYSMACRO(modsound_resume_song)        },
+    { "SET_SONG_VOLUME"     , "I"    , TYPE_INT , SYSMACRO(modsound_set_song_volume)    },
+    { "IS_PLAYING_SONG"     , ""     , TYPE_INT , SYSMACRO(modsound_is_playing_song)    },
+    { "LOAD_WAV"            , "S"    , TYPE_INT , SYSMACRO(modsound_load_wav)           },
+    { "PLAY_WAV"            , "II"   , TYPE_INT , SYSMACRO(modsound_play_wav)           },
+    { "UNLOAD_WAV"          , "I"    , TYPE_INT , SYSMACRO(modsound_unload_wav)         },
+    { "STOP_WAV"            , "I"    , TYPE_INT , SYSMACRO(modsound_stop_wav)           },
+    { "PAUSE_WAV"           , "I"    , TYPE_INT , SYSMACRO(modsound_pause_wav)          },
+    { "RESUME_WAV"          , "I"    , TYPE_INT , SYSMACRO(modsound_resume_wav)         },
+    { "IS_PLAYING_WAV"      , "I"    , TYPE_INT , SYSMACRO(modsound_is_playing_wav)     },
+    { "SET_WAV_VOLUME"      , "II"   , TYPE_INT , SYSMACRO(modsound_set_wav_volume)     },
+    { "FADE_MUSIC_IN"       , "III"  , TYPE_INT , SYSMACRO(modsound_fade_music_in)      },
+    { "FADE_MUSIC_OFF"      , "I"    , TYPE_INT , SYSMACRO(modsound_fade_music_off)     },
+    { "SET_CHANNEL_VOLUME"  , "II"   , TYPE_INT , SYSMACRO(modsound_set_channel_volume) },
+    { "RESERVE_CHANNELS"    , "I"    , TYPE_INT , SYSMACRO(modsound_reserve_channels)   },
+    { "SET_PANNING"         , "III"  , TYPE_INT , SYSMACRO(modsound_set_panning)        },
+    { "SET_POSITION"        , "III"  , TYPE_INT , SYSMACRO(modsound_set_position)       },
+    { "SET_DISTANCE"        , "II"   , TYPE_INT , SYSMACRO(modsound_set_distance)       },
+    { "REVERSE_STEREO"      , "II"   , TYPE_INT , SYSMACRO(modsound_reverse_stereo)     },
+    { "PLAY_WAV"            , "III"  , TYPE_INT , SYSMACRO(modsound_play_wav_channel)   },
+	{ "SET_MUSIC_POSITION"  , "F"    , TYPE_INT , SYSMACRO(modsound_set_music_position) },
+    { 0                     , 0      , 0        , 0                           }
 };
-#else
-extern DLCONSTANT  __bgdexport( mod_sound, constants_def )[];
-extern char __bgdexport( mod_sound, globals_def )[];
-extern DLVARFIXUP  __bgdexport( mod_sound, globals_fixup )[];
-extern DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[];
-extern void  __bgdexport( mod_sound, module_initialize )();
-extern void __bgdexport( mod_sound, module_finalize )();
-#endif
 
 #endif

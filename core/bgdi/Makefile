@@ -24,16 +24,16 @@ INCLUDES	:=	include ../include ../bgdrtm/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DWITH_GPL_CODE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-g -O3 -Wall -D__BGDI__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O3 $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := ../../bgdrtm/bgdrtm.a -lchipmunk -lSDL_mixer -lsmpeg -lSDL -lpng \
-        -lvorbisidec -lglob -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard \
-	-lstdc++
+LIBS := ../../bgdrtm/bgdrtm.a -lSDL_mixer -lsmpeg -lSDL -lpng \
+        -lvorbisidec -lglob -lfat -lz -lwiiuse -lwiikeyboard -lbte -logc -lm \
+        -lstdc++
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
@@ -93,7 +93,7 @@ $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
 	make -C $(BUILD) -f $(CURDIR)/Makefile
-	powerpc-eabi-strip $(TARGET).elf
+	#powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
 clean:

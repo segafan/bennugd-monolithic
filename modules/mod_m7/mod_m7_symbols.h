@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -30,9 +25,19 @@
 #define __MODM7_SYMBOLS_H
 
 #include <bgddl.h>
+#include "mod_m7_defines.h"
 
-#ifdef __BGDC__
-#define C_M7        2
+#ifndef __BGDC__
+extern DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[];
+extern DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[];
+extern void __bgdexport( mod_m7, module_initialize )();
+
+extern CONDITIONALLY_STATIC int modm7_start( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int modm7_stop( INSTANCE * my, int * params );
+#endif
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)         */
 
 DLCONSTANT __bgdexport( mod_m7, constants_def )[] =
 {
@@ -64,18 +69,16 @@ char __bgdexport( mod_m7, locals_def )[] =
     "  distance1;\n"
     "END;\n";
 
+/* --------------------------------------------------------------------------- */
+
 DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
 {
-    { "MODE7_START" , "IIIIIIII"    , TYPE_INT , 0 },
-    { "MODE7_START" , "IIIIII"      , TYPE_INT , 0 },
-    { "MODE7_STOP"  , "I"           , TYPE_INT , 0 },
-    
-    { "START_MODE7" , "IIIIIIII"    , TYPE_INT , 0 },
-    { "START_MODE7" , "IIIIII"      , TYPE_INT , 0 },
-    { "STOP_MODE7"  , "I"           , TYPE_INT , 0 },
-    
-    { NULL          , NULL          , 0        , NULL }
-    
+    { "MODE7_START" , "IIIIII", TYPE_INT , SYSMACRO(modm7_start)  },
+    { "MODE7_STOP"  , "I"     , TYPE_INT , SYSMACRO(modm7_stop)   },
+    { "START_MODE7" , "IIIIII", TYPE_INT , SYSMACRO(modm7_start)  },
+    { "STOP_MODE7"  , "I"     , TYPE_INT , SYSMACRO(modm7_stop)   },
+
+    { NULL          , NULL    , 0        , NULL         }
 };
 
 /* --------------------------------------------------------------------------- */
@@ -87,16 +90,5 @@ char * __bgdexport( mod_m7, modules_dependency )[] =
     "librender",
     NULL
 };
-#else
-extern DLCONSTANT __bgdexport( mod_m7, constants_def )[];
-extern char       __bgdexport( mod_m7, globals_def )[];
-extern char       __bgdexport( mod_m7, locals_def )[];
-extern DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[];
-extern DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[];
-extern void __bgdexport( mod_m7, module_initialize )();
-extern DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[];
-extern char * __bgdexport( mod_m7, modules_dependency )[];
-#endif
-
 
 #endif

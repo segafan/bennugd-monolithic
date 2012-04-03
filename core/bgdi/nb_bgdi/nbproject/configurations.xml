@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="69">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <df name="bgdi" root="..">
+      <df name="include" kind="SOURCE_LOGICAL_FOLDER">
+        <in>bgdi.h</in>
+      </df>
+      <df name="nb_bgdi" kind="SOURCE_LOGICAL_FOLDER">
+      </df>
+      <df name="src" kind="SOURCE_LOGICAL_FOLDER">
+        <in>main.c</in>
+        <in>psp.c</in>
+        <in>psp.h</in>
+        <in>resource.h</in>
+      </df>
+    </df>
+    <df name="common" root="../../common">
+      <in>b_crypt.c</in>
+      <in>debug.c</in>
+      <in>files.c</in>
+      <in>xctype.c</in>
+    </df>
+    <df name="include" root="../../include">
+      <in>arrange.h</in>
+      <in>b_crypt.h</in>
+      <in>bgdcore.h</in>
+      <in>bgddl.h</in>
+      <in>commons_defs.h</in>
+      <in>dcb.h</in>
+      <in>dirs.h</in>
+      <in>dlvaracc.h</in>
+      <in>files.h</in>
+      <in>files_st.h</in>
+      <in>fmath.h</in>
+      <in>i_procdef.h</in>
+      <in>i_procdef_st.h</in>
+      <in>instance.h</in>
+      <in>instance_st.h</in>
+      <in>loadlib.h</in>
+      <in>monolithic_includes.h</in>
+      <in>offsets.h</in>
+      <in>pslang.h</in>
+      <in>sysprocs.h</in>
+      <in>sysprocs_st.h</in>
+      <in>typedef.h</in>
+      <in>typedef_st.h</in>
+      <in>varspace_file.h</in>
+      <in>xctype.h</in>
+      <in>xctype_st.h</in>
+      <in>xstrings.h</in>
+    </df>
+    <df name="src" root="../../bgdrtm/src">
+      <in>copy.c</in>
+      <in>dcbr.c</in>
+      <in>dirs.c</in>
+      <in>instance.c</in>
+      <in>interpreter.c</in>
+      <in>misc.c</in>
+      <in>strings.c</in>
+      <in>sysprocs.c</in>
+      <in>varspace_file.c</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Arquivos importantes"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>../Makefile.psp</itemPath>
+      <itemPath>nb_bgdi-Makefile.mk</itemPath>
+    </logicalFolder>
+    <itemPath>../build/build-pbp.bat</itemPath>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>..</Elem>
+    <Elem>../../bgdrtm/include</Elem>
+    <Elem>../../bgdrtm/src</Elem>
+    <Elem>../../common</Elem>
+    <Elem>../../include</Elem>
+  </sourceRootList>
+  <projectmakefile>nb_bgdi-Makefile.mk</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>PSP-SDK|MinGW</compilerSet>
+        <platform>3</platform>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>..</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile.psp</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile.psp clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../include</pElem>
+              <pElem>../src</pElem>
+              <pElem>..</pElem>
+              <pElem>../../bgdrtm/include</pElem>
+              <pElem>../../include</pElem>
+              <pElem>../../../modules/libblit</pElem>
+              <pElem>../../../modules/libdraw</pElem>
+              <pElem>../../../modules/libfont</pElem>
+              <pElem>../../../modules/libgrbase</pElem>
+              <pElem>../../../modules/libjoy</pElem>
+              <pElem>../../../modules/libkey</pElem>
+              <pElem>../../../modules/libmouse</pElem>
+              <pElem>../../../modules/librender</pElem>
+              <pElem>../../../modules/libscroll</pElem>
+              <pElem>../../../modules/libsdlhandler</pElem>
+              <pElem>../../../modules/libtext</pElem>
+              <pElem>../../../modules/libvideo</pElem>
+              <pElem>../../../modules/libwm</pElem>
+              <pElem>../../../modules/mod_blendop</pElem>
+              <pElem>../../../modules/mod_cd</pElem>
+              <pElem>../../../modules/mod_debug</pElem>
+              <pElem>../../../modules/mod_dir</pElem>
+              <pElem>../../../modules/mod_draw</pElem>
+              <pElem>../../../modules/mod_effects</pElem>
+              <pElem>../../../modules/mod_file</pElem>
+              <pElem>../../../modules/mod_flic</pElem>
+              <pElem>../../../modules/mod_grproc</pElem>
+              <pElem>../../../modules/mod_iconv</pElem>
+              <pElem>../../../modules/mod_image</pElem>
+              <pElem>../../../modules/mod_joy</pElem>
+              <pElem>../../../modules/mod_key</pElem>
+              <pElem>../../../modules/mod_m7</pElem>
+              <pElem>../../../modules/mod_map</pElem>
+              <pElem>../../../modules/mod_math</pElem>
+              <pElem>../../../modules/mod_mathi</pElem>
+              <pElem>../../../modules/mod_mem</pElem>
+              <pElem>../../../modules/mod_mouse</pElem>
+              <pElem>../../../modules/mod_path</pElem>
+              <pElem>../../../modules/mod_proc</pElem>
+              <pElem>../../../modules/mod_rand</pElem>
+              <pElem>../../../modules/mod_regex</pElem>
+              <pElem>../../../modules/mod_say</pElem>
+              <pElem>../../../modules/mod_screen</pElem>
+              <pElem>../../../modules/mod_scroll</pElem>
+              <pElem>../../../modules/mod_sort</pElem>
+              <pElem>../../../modules/mod_sound</pElem>
+              <pElem>../../../modules/mod_sqlite3</pElem>
+              <pElem>../../../modules/mod_string</pElem>
+              <pElem>../../../modules/mod_sys</pElem>
+              <pElem>../../../modules/mod_text</pElem>
+              <pElem>../../../modules/mod_time</pElem>
+              <pElem>../../../modules/mod_timers</pElem>
+              <pElem>../../../modules/mod_video</pElem>
+              <pElem>../../../modules/mod_wm</pElem>
+              <pElem>../../../modules/mod_wpad</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>TARGET_PSP</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+        <requiredProjects>
+          <makeArtifact PL="../../../3rdparty/dietlibc-glob/nb_dietlibc-glob"
+                        CT="0"
+                        CN="Default"
+                        AC="true"
+                        BL="false"
+                        WD="../../../3rdparty/dietlibc-glob/nb_dietlibc-glob"
+                        BC="${MAKE}  -f nb_dietlibc-glob-Makefile.mk CONF=Default"
+                        CC="${MAKE}  -f nb_dietlibc-glob-Makefile.mk CONF=Default clean"
+                        OP="">
+          </makeArtifact>
+        </requiredProjects>
+      </makefileType>
+      <packaging>
+        <packType>Zip</packType>
+        <packFileList>
+          <packFileListElem type="File"
+                            to="${PACKAGE_TOP_DIR}bin/${OUTPUT_BASENAME}"
+                            from="${OUTPUT_PATH}"
+                            perm="755"
+                            owner="root"
+                            group="bin"/>
+        </packFileList>
+      </packaging>
+    </conf>
+  </confs>
+</configurationDescriptor>

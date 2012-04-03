@@ -1,5 +1,4 @@
 import "mod_say"
-import "mod_map"
 import "mod_rand"
 
 Local

@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -57,7 +52,6 @@ static int gr_read_lib( file * fp )
     GRAPH * gr ;
     PALETTE * pal = NULL ;
     int st = 0;
-    int len = 0, tempcolor = 0;
 
     libid = grlib_new() ;
     if ( libid < 0 ) return -1 ;
@@ -152,32 +146,10 @@ static int gr_read_lib( file * fp )
             {
                 case    32:
                     st = file_readUint32A( fp, ( uint32_t * ) line, gr->width );
-#ifdef COLORSPACE_BGR
-                    if (st){
-						for (len=0; len<gr->width; len+=4){
-							tempcolor=line[len+1];
-							line[len+1]=line[len+3];
-							line[len+3]=tempcolor;
-						}
-                    }
-#endif
                     break;
 
                 case    16:
                     st = file_readUint16A( fp, ( uint16_t * ) line, gr->width );
-#ifdef COLORSPACE_BGR
-                    if (st){
-                    	uint16_t * line16 = ( uint16_t * ) line;
-                    	uint8_t rgb[3];
-						for (len =0;len<gr->width;len++){
-							rgb[0] = (*line16 & 0x1F);
-							rgb[1] =(*line16 >>5);
-							rgb[2] = (*line16 >>11);
-							*line16=(rgb[0]<<11)|(rgb[1]<<5)|rgb[2];
-							line16 ++;
-						}
-                    }
-#endif
                     break;
 
                 case    8:

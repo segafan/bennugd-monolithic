@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -33,7 +28,6 @@
 #include <stdlib.h>
 
 #include "libgrbase.h"
-#include "g_video.h"
 
 /* --------------------------------------------------------------------------- */
 
@@ -431,9 +425,6 @@ void pal_refresh( PALETTE * pal )
             for ( n = 256; n--; ) pal->colorequiv[ n ] = gr_map_rgb( sys_pixel_format, pal->rgb[ n ].r, pal->rgb[ n ].g, pal->rgb[ n ].b );
         }
     }
-    else
-        if ( !pal || pal == sys_pixel_format->palette ) palette_changed = 1 ;
-
 }
 
 /* --------------------------------------------------------------------------- */
@@ -643,29 +634,16 @@ int gr_rgb( int r, int g, int b )
 
     if ( sys_pixel_format->depth == 32 )
     {
-#ifdef COLORSPACE_BGR
-        return                 0xff000000   |
-                (( b << 16 ) & 0x00ff0000 ) |
-                (( g <<  8 ) & 0x0000ff00 ) |
-                (( r       ) & 0x000000ff ) ;
-#else
         return                 0xff000000   |
                 (( r << 16 ) & 0x00ff0000 ) |
                 (( g <<  8 ) & 0x0000ff00 ) |
                 (( b       ) & 0x000000ff ) ;
-#endif
     }
 
     /* 16 bits */
-#ifdef COLORSPACE_BGR
-    color = (( b >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
-            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
-            (( r >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
-#else
     color = (( r >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
             (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
             (( b >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
-#endif
 
     if ( !color ) return 1 ;
 
@@ -677,33 +655,20 @@ int gr_rgb( int r, int g, int b )
 
 int gr_rgba( int r, int g, int b, int a )
 {
-    int color;
+    int color = 0;
 
     if ( sys_pixel_format->depth == 32 )
     {
-#ifdef COLORSPACE_BGR
-        return  (( a << 24 ) & 0xff000000 ) |
-                (( b << 16 ) & 0x00ff0000 ) |
-                (( g <<  8 ) & 0x0000ff00 ) |
-                (( r       ) & 0x000000ff ) ;
-#else
         return  (( a << 24 ) & 0xff000000 ) |
                 (( r << 16 ) & 0x00ff0000 ) |
                 (( g <<  8 ) & 0x0000ff00 ) |
                 (( b       ) & 0x000000ff ) ;
-#endif
     }
 
     /* 16 bits */
-#ifdef COLORSPACE_BGR
-    color = (( b >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
-            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
-            (( r >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;    
-#else
     color = (( r >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
             (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
             (( b >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
-#endif
 
     if ( !color ) return 1 ;
 
@@ -769,133 +734,6 @@ void gr_get_rgba( int color, int *r, int *g, int *b, int *a )
     {
         ( *a ) = (( color & sys_pixel_format->Amask ) >> sys_pixel_format->Ashift ) << sys_pixel_format->Aloss ;
     }
-}
-
-/* --------------------------------------------------------------------------- */
-/* This functions is used only for 16 and 32 bits                              */
-
-int gr_rgb_depth( int depth, int r, int g, int b )
-{
-    int color ;
-
-    if ( depth == 32 )
-    {
-        return                 0xff000000   |
-                (( r << 16 ) & 0x00ff0000 ) |
-                (( g <<  8 ) & 0x0000ff00 ) |
-                (( b       ) & 0x000000ff ) ;
-    }
-
-    /* 16 bits */
-
-    PIXEL_FORMAT * pf = bitmap_create_format( depth );
-
-    color = (( r >> pf->Rloss ) << pf->Rshift ) |
-            (( g >> pf->Gloss ) << pf->Gshift ) |
-            (( b >> pf->Bloss ) << pf->Bshift ) ;
-
-    free( pf );
-
-    if ( !color ) return 1 ;
-
-    return color ;
-}
-
-/* --------------------------------------------------------------------------- */
-/* This functions is used only for 16 and 32 bits                              */
-
-int gr_rgba_depth( int depth, int r, int g, int b, int a )
-{
-    int color;
-
-    if ( depth == 32 )
-    {
-        return  (( a << 24 ) & 0xff000000 ) |
-                (( r << 16 ) & 0x00ff0000 ) |
-                (( g <<  8 ) & 0x0000ff00 ) |
-                (( b       ) & 0x000000ff ) ;
-    }
-
-    PIXEL_FORMAT * pf = bitmap_create_format( depth );
-
-    color = (( r >> pf->Rloss ) << pf->Rshift ) |
-            (( g >> pf->Gloss ) << pf->Gshift ) |
-            (( b >> pf->Bloss ) << pf->Bshift ) ;
-
-    free( pf );
-
-    if ( !color ) return 1 ;
-
-    return color ;
-}
-
-/* --------------------------------------------------------------------------- */
-
-void gr_get_rgb_depth( int depth, int color, int *r, int *g, int *b )
-{
-    /* 8 bits mode, work with system palette */
-
-    if ( depth < 16 )
-    {
-        rgb_component * rgb ;
-
-        if ( !sys_pixel_format->palette )
-            rgb = ( rgb_component * ) default_palette;
-        else
-            rgb = sys_pixel_format->palette->rgb ;
-
-        color &= 0xFF ;
-        ( *r ) = rgb[ color ].r ;
-        ( *g ) = rgb[ color ].g ;
-        ( *b ) = rgb[ color ].b ;
-
-        return ;
-    }
-
-    PIXEL_FORMAT * pf = bitmap_create_format( depth );
-
-    ( *r ) = (( color & pf->Rmask ) >> pf->Rshift ) << pf->Rloss;
-    ( *g ) = (( color & pf->Gmask ) >> pf->Gshift ) << pf->Gloss;
-    ( *b ) = (( color & pf->Bmask ) >> pf->Bshift ) << pf->Bloss;
-
-    free( pf );
-}
-
-/* --------------------------------------------------------------------------- */
-
-void gr_get_rgba_depth( int depth, int color, int *r, int *g, int *b, int *a )
-{
-    /* 8 bits mode, work with system palette */
-
-    if ( depth < 16 )
-    {
-        rgb_component * rgb ;
-
-        if ( !sys_pixel_format->palette )
-            rgb = ( rgb_component * ) default_palette;
-        else
-            rgb = sys_pixel_format->palette->rgb ;
-
-        color &= 0xFF ;
-        ( *r ) = rgb[ color ].r ;
-        ( *g ) = rgb[ color ].g ;
-        ( *b ) = rgb[ color ].b ;
-
-        return ;
-    }
-
-    PIXEL_FORMAT * pf = bitmap_create_format( depth );
-
-    ( *r ) = (( color & pf->Rmask ) >> pf->Rshift ) << pf->Rloss;
-    ( *g ) = (( color & pf->Gmask ) >> pf->Gshift ) << pf->Gloss;
-    ( *b ) = (( color & pf->Bmask ) >> pf->Bshift ) << pf->Bloss;
-
-    if ( depth == 32 )
-    {
-        ( *a ) = (( color & pf->Amask ) >> pf->Ashift ) << pf->Aloss ;
-    }
-
-    free( pf );
 }
 
 /* --------------------------------------------------------------------------- */

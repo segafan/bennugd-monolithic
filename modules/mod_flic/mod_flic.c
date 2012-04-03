@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -41,6 +36,10 @@
 #include "librender.h"
 
 #include "mod_flic.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_flic_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------- */
 /* Librería para reproducir ficheros FLI directamente desde el disco     */
@@ -61,10 +60,10 @@ static FLIC * flic_do_brun( FLIC * flic ) ;
 static FLIC * flic_do_chunk( FLIC * flic ) ;
 static FLIC * flic_do_frame( FLIC * flic ) ;
 static void flic_reset( FLIC * flic ) ;
-static int modflic_start( INSTANCE * my, int * params ) ;
-static int modflic_reset( INSTANCE * my, int * params ) ;
-static int modflic_end( INSTANCE * my, int * params ) ;
-static int modflic_frame( INSTANCE * my, int * params ) ;
+CONDITIONALLY_STATIC int modflic_start( INSTANCE * my, int * params ) ;
+CONDITIONALLY_STATIC int modflic_reset( INSTANCE * my, int * params ) ;
+CONDITIONALLY_STATIC int modflic_end( INSTANCE * my, int * params ) ;
+CONDITIONALLY_STATIC int modflic_frame( INSTANCE * my, int * params ) ;
 
 /* ----------------------------------------------------------------- */
 
@@ -574,7 +573,7 @@ static void flic_reset( FLIC * flic )
  *
  */
 
-static int modflic_start( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_start( INSTANCE * my, int * params )
 {
     const char * str = string_get( params[0] ) ;
     if ( !str ) return 0 ;
@@ -611,7 +610,7 @@ static int modflic_start( INSTANCE * my, int * params )
  *
  */
 
-static int modflic_reset( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_reset( INSTANCE * my, int * params )
 {
     if ( current_fli ) flic_reset( current_fli ) ;
     return 1 ;
@@ -628,7 +627,7 @@ static int modflic_reset( INSTANCE * my, int * params )
  *
  */
 
-static int modflic_end( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_end( INSTANCE * my, int * params )
 {
     if ( current_fli )
     {
@@ -653,7 +652,7 @@ static int modflic_end( INSTANCE * my, int * params )
  *
  */
 
-static int modflic_frame( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_frame( INSTANCE * my, int * params )
 {
     if ( current_fli ) return current_fli->finished ? 0 : current_fli->current_frame ;
     return 0 ;
@@ -663,7 +662,7 @@ static int modflic_frame( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modflic_startx1( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_startx1( INSTANCE * my, int * params )
 {
     FLIC * flic ;
     const char * str = string_get( params[0] ) ;
@@ -688,7 +687,7 @@ static int modflic_startx1( INSTANCE * my, int * params )
     return 0 ;
 }
 
-static int modflic_startx2( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_startx2( INSTANCE * my, int * params )
 {
     FLIC * flic ;
     const char * str = string_get( params[0] ) ;
@@ -713,24 +712,24 @@ static int modflic_startx2( INSTANCE * my, int * params )
     return 0 ;
 }
 
-static int modflic_resetx( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_resetx( INSTANCE * my, int * params )
 {
     flic_reset(( FLIC * ) params[0] ) ;
     return 1 ;
 }
 
-static int modflic_endx( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_endx( INSTANCE * my, int * params )
 {
     flic_destroy((( FLIC * ) params[0] ) ) ;
     return 1 ;
 }
 
-static int modflic_framex( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_framex( INSTANCE * my, int * params )
 {
     return (( FLIC * ) params[0] )->finished ? 0 : (( FLIC * ) params[0] )->current_frame ;
 }
 
-static int modflic_params( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_params( INSTANCE * my, int * params )
 {
     FLIC * flic = ( FLIC * ) params[0] ;
 
@@ -744,7 +743,7 @@ static int modflic_params( INSTANCE * my, int * params )
     return 1 ;
 }
 
-static int modflic_move( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_move( INSTANCE * my, int * params )
 {
     FLIC * flic = ( FLIC * ) params[0] ;
 
@@ -754,35 +753,35 @@ static int modflic_move( INSTANCE * my, int * params )
     return 1 ;
 }
 
-static int modflic_z( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_z( INSTANCE * my, int * params )
 {
     (( FLIC * ) params[0] )->z = params[1] ;
 
     return 1 ;
 }
 
-static int modflic_angle( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_angle( INSTANCE * my, int * params )
 {
     (( FLIC * ) params[0] )->angle = params[1] ;
 
     return 1 ;
 }
 
-static int modflic_size( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_size( INSTANCE * my, int * params )
 {
     (( FLIC * ) params[0] )->size = params[1] ;
 
     return 1 ;
 }
 
-static int modflic_flags( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_flags( INSTANCE * my, int * params )
 {
     (( FLIC * ) params[0] )->flags = params[1] ;
 
     return 1 ;
 }
 
-static int modflic_getinfo( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modflic_getinfo( INSTANCE * my, int * params )
 {
     FLIC * flic = ( FLIC * ) params[0] ;
 
@@ -798,34 +797,6 @@ static int modflic_getinfo( INSTANCE * my, int * params )
 
     return 1 ;
 }
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
-DLSYSFUNCS  __bgdexport( mod_flic, functions_exports )[] =
-{
-    /* Animaciones FLI */
-    { "START_FLI"       , "SII"         , TYPE_INT , modflic_start        },
-    { "END_FLI"         , ""            , TYPE_INT , modflic_end          },
-    { "FRAME_FLI"       , ""            , TYPE_INT , modflic_frame        },
-    { "RESET_FLI"       , ""            , TYPE_INT , modflic_reset        },
-
-    { "FLI_START"       , "SII"         , TYPE_INT , modflic_startx1      },
-    { "FLI_START"       , "SIIIIII"     , TYPE_INT , modflic_startx2      },
-    { "FLI_END"         , "I"           , TYPE_INT , modflic_endx         },
-    { "FLI_FRAME"       , "I"           , TYPE_INT , modflic_framex       },
-    { "FLI_RESET"       , "I"           , TYPE_INT , modflic_resetx       },
-
-    { "FLI_PARAMS"      , "IIIIIII"     , TYPE_INT , modflic_params       },
-    { "FLI_MOVE"        , "III"         , TYPE_INT , modflic_move         },
-    { "FLI_ANGLE"       , "II"          , TYPE_INT , modflic_angle        },
-    { "FLI_SIZE"        , "II"          , TYPE_INT , modflic_size         },
-    { "FLI_FLAGS"       , "II"          , TYPE_INT , modflic_flags        },
-    { "FLI_Z"           , "II"          , TYPE_INT , modflic_z            },
-    { "FLI_GETINFO"     , "IPPPPPPPPP"  , TYPE_INT , modflic_getinfo      },
-
-    { NULL              , NULL          , 0        , NULL                 }
-};
 
 /* ----------------------------------------------------------------- */
 

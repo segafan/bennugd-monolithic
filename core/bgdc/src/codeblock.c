@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -58,13 +53,13 @@
 void codeblock_postprocess (CODEBLOCK * code)
 {
 	int * ptr = code->data ;
-	PROCDEF * proc, * my = procdef_search_by_codeblock( code ) ;
+	PROCDEF * proc ;
 
 	while (ptr < code->data + code->current)
 	{
-		if ( !libmode && ( *ptr == MN_CALL || *ptr == MN_PROC || *ptr == MN_TYPE ))
+		if (*ptr == MN_CALL || *ptr == MN_PROC || *ptr == MN_TYPE)
 		{
-			proc = procdef_search(ptr[1]) ;
+			proc = procdef_search (ptr[1]) ;
 			if (!proc || !proc->defined)
 			{
 				token.type = IDENTIFIER ;
@@ -74,61 +69,58 @@ void codeblock_postprocess (CODEBLOCK * code)
 				current_file = identifier_file(token.code) ;
 				compile_error (MSG_UNDEFINED_PROC) ;
 			}
-	        ptr[1] = proc->typeid ;
+			ptr[1] = proc->typeid ;
 		}
-		if ( !my->imported )
+		if (*ptr == MN_JUMP      || *ptr == MN_NCALL   ||
+		    *ptr == MN_JFALSE    || *ptr == MN_JTFALSE ||
+		    *ptr == MN_JTRUE     || *ptr == MN_JTTRUE  ||
+		    *ptr == MN_JNOCASE   || *ptr == MN_CLONE   ||
+		    *ptr == MN_EXITHNDLR || *ptr == MN_ERRHNDLR
+		    )
 		{
-    		if (*ptr == MN_JUMP      || *ptr == MN_NCALL   ||
-    		    *ptr == MN_JFALSE    || *ptr == MN_JTFALSE ||
-    		    *ptr == MN_JTRUE     || *ptr == MN_JTTRUE  ||
-    		    *ptr == MN_JNOCASE   || *ptr == MN_CLONE   ||
-    		    *ptr == MN_EXITHNDLR || *ptr == MN_ERRHNDLR
-    		    )
-    		{
-    			ptr++ ;
-    			if (*ptr == -1)
-    			{
-//    			    *ptr = 0;
-    			    ptr++;
-    			    continue;
-    			}
-                if (code->labels[*ptr] == -1)
-    			{
-    				token.type = LABEL ;
-    				token.code = code->labelsextra[*ptr].name ;
-    				/* Patch so linecount gets right */
-    				line_count = code->labelsextra[*ptr].line ;
-    				current_file = code->labelsextra[*ptr].file ;
-    				compile_error ("Undefined label") ;
-    			}
-    			*ptr = code->labels[*ptr] ;
-    			ptr++ ;
-    			continue ;
-    		}
-    		if (*ptr == MN_REFALSE)
-    		{
-    			*ptr++ = MN_JFALSE ;
-    			*ptr = code->loops[*ptr*2] ;
-    			ptr++ ;
-    			continue ;
-    		}
-    		if (*ptr == MN_REPEAT || *ptr == MN_RETRUE)
-    		{
-    			*ptr = (*ptr == MN_REPEAT ? MN_JUMP : MN_JTRUE) ;
-    			ptr++ ;
-    			*ptr = code->loops[*ptr*2] ;
-    			ptr++ ;
-    			continue ;
-    		}
-    		if (*ptr == MN_BREAK || *ptr == MN_BRFALSE)
-    		{
-    			*ptr = (*ptr == MN_BREAK ? MN_JUMP : MN_JFALSE) ;
-    			ptr++ ;
-    			*ptr = code->loops[*ptr*2 + 1] ;
-    			ptr++ ;
-    			continue ;
-    		}
-    	}
+			ptr++ ;
+			if (*ptr == -1 && (*ptr == MN_EXITHNDLR || *ptr == MN_ERRHNDLR))
+			{
+			    *ptr = 0;
+			    ptr++;
+			    continue;
+			}
+            if (code->labels[*ptr] == -1)
+			{
+				token.type = LABEL ;
+				token.code = code->labelsextra[*ptr].name ;
+				/* Patch so linecount gets right */
+				line_count = code->labelsextra[*ptr].line ;
+				current_file = code->labelsextra[*ptr].file ;
+				compile_error ("Undefined label") ;
+			}
+			*ptr = code->labels[*ptr] ;
+			ptr++ ;
+			continue ;
+		}
+		if (*ptr == MN_REFALSE)
+		{
+			*ptr++ = MN_JFALSE ;
+			*ptr = code->loops[*ptr*2] ;
+			ptr++ ;
+			continue ;
+		}
+		if (*ptr == MN_REPEAT || *ptr == MN_RETRUE)
+		{
+			*ptr = (*ptr == MN_REPEAT ? MN_JUMP : MN_JTRUE) ;
+			ptr++ ;
+			*ptr = code->loops[*ptr*2] ;
+			ptr++ ;
+			continue ;
+		}
+		if (*ptr == MN_BREAK || *ptr == MN_BRFALSE)
+		{
+			*ptr = (*ptr == MN_BREAK ? MN_JUMP : MN_JFALSE) ;
+			ptr++ ;
+			*ptr = code->loops[*ptr*2 + 1] ;
+			ptr++ ;
+			continue ;
+		}
 		ptr+=MN_PARAMS(*ptr)+1 ;
 	}
 }
@@ -189,7 +181,7 @@ void codeblock_init(CODEBLOCK * c)
  *      None
  */
 
-void codeblock_alloc (CODEBLOCK * c, int count)
+static void codeblock_alloc (CODEBLOCK * c, int count)
 {
 	c->reserved += count ;
 	c->data = (int *) realloc (c->data, c->reserved * sizeof(int)) ;

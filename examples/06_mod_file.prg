@@ -5,6 +5,7 @@ Process main()
 Private
 	string fname="cancion.txt", line="";
 	int fd=0;
+	int line_count = 1;
 
 Begin
 	say("Going to read file "+fname);
@@ -18,7 +19,8 @@ Begin
 	else
 	    while(!feof(fd))
 	    	line = fgets(fd);
-	    	say(line);
+	    	say(line_count + ": " + line);
+			line_count = line_count + 1;
 	    end;
 	    fclose(fd);
 	end;

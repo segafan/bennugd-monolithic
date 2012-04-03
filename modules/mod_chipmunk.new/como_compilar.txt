@@ -1,3 +1,0 @@
-Copia el contenido de la carpeta codChipmunkAdaptado en el código de la libChipmunk de C, específicamente remplaza el chipmunk_types.h
-
-Compila como siempre lo haz hecho. :)

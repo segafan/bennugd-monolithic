@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -56,7 +51,7 @@ int compile_array_data( VARSPACE * n, segment * data, int size, int subsize, BAS
         {
             token_back();
             break;
-//            compile_error( MSG_TOO_MANY_INIT ) ;
+            compile_error( MSG_TOO_MANY_INIT ) ;
         }
 
         token_next() ;
@@ -147,7 +142,6 @@ int compile_array_data( VARSPACE * n, segment * data, int size, int subsize, BAS
         token_next() ;
         if ( token.type == IDENTIFIER && token.code == identifier_comma )
         {
-            if ( !size && *t == TYPE_CHAR ) compile_error( MSG_TOO_MANY_INIT );
             continue ;
         }
         token_back() ;
@@ -417,7 +411,7 @@ int compile_varspace( VARSPACE * n, segment * data, int additive, int copies, in
     int signed_prefix = 0;
 
     BASETYPE basetype = TYPE_UNDEFINED ;
-    TYPEDEF type, typeaux;
+    TYPEDEF type;
     segment * segm = NULL ;
     PROCDEF * proc = NULL;
 
@@ -627,7 +621,7 @@ int compile_varspace( VARSPACE * n, segment * data, int additive, int copies, in
                 int skip_all_until_semicolon = 0;
                 int skip_equal = 0;
 
-                if ( debug ) compile_warning( 0, MSG_VARIABLE_REDECLARE ) ;
+                compile_warning( MSG_VARIABLE_REDECLARE ) ;
 
                 for ( ;; )
                 {
@@ -697,12 +691,18 @@ int compile_varspace( VARSPACE * n, segment * data, int additive, int copies, in
             }
             token_back() ;
 
-            /* Da la vuelta a los índices [10][5] -> [5][10] */
+            /* Da la vuelta a los índices ([3][2] -> [2][3]) */
 
-            for ( i = 0 ; i < type.depth ; i++ ) if ( type.chunk[i].type != TYPE_ARRAY ) break ;
-            i--;
-            for ( j = 0 ; j <= i ; j++ ) typeaux.chunk[ j ] = type.chunk[ i - j ];
-            for ( j = 0 ; j <= i ; j++ ) type.chunk[ j ]    = typeaux.chunk[ j ];
+            for ( i = 0 ; i < type.depth ; i++ )
+                if ( type.chunk[i].type != TYPE_ARRAY ) break ;
+
+            for ( j = --i ; j > i - j ; j-- )
+            {
+                TYPECHUNK n ;
+                n = type.chunk[j] ;
+                type.chunk[j] = type.chunk[i-j] ;
+                type.chunk[i-j] = n ;
+            }
 
             members = ( VARSPACE * )calloc( 1, sizeof( VARSPACE ) ) ;
             if ( !members )
@@ -775,10 +775,16 @@ int compile_varspace( VARSPACE * n, segment * data, int additive, int copies, in
 
             /* Da la vuelta a los índices [10][5] -> [5][10] */
 
-            for ( i = 0 ; i < type.depth ; i++ ) if ( type.chunk[i].type != TYPE_ARRAY ) break ;
-            i--;
-            for ( j = 0 ; j <= i ; j++ ) typeaux.chunk[ j ] = type.chunk[ i - j ];
-            for ( j = 0 ; j <= i ; j++ ) type.chunk[ j ]    = typeaux.chunk[ j ];
+            for ( i = 0 ; i < type.depth ; i++ )
+                if ( type.chunk[i].type != TYPE_ARRAY ) break ;
+
+            for ( j = --i; j > i - j; j-- )
+            {
+                TYPECHUNK n ;
+                n = type.chunk[j] ;
+                type.chunk[j] = type.chunk[i-j] ;
+                type.chunk[i-j] = n ;
+            }
 
             if ( segm && token.type == IDENTIFIER && token.code == identifier_equal )
             {

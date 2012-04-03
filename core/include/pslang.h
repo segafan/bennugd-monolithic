@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -180,14 +175,10 @@
 #define MN_BOR                  (0x4A| MN_0_PARAMS)
 #define MN_BXOR                 (0x4B| MN_0_PARAMS)
 
-/*** Free 4C, 4D, 4E, 4F ***/
-
 /* Funciones de conversión */
 
 #define MN_INT2FLOAT            (0x50| MN_1_PARAMS)
 #define MN_FLOAT2INT            (0x51| MN_1_PARAMS)
-
-/*** Free 52, 53, 54, 55, 56, 57, 58, 59, 5A, 5B, 5C, 5D, 5E, 5F ****/
 
 #define MN_A2STR                (0x60| MN_1_PARAMS)
 #define MN_STR2A                (0x61| MN_1_PARAMS)
@@ -198,15 +189,11 @@
 /* Funciones de control de flujo */
 #define MN_NCALL                (0x65| MN_1_PARAMS)
 
-/*** Free 66, 67, 68, 69 ****/
-
 /* Handlers */
 #define MN_EXITHNDLR            (0x6A| MN_1_PARAMS)
 #define MN_ERRHNDLR             (0x6B| MN_1_PARAMS)
 #define MN_RESUME               (0x6C| MN_1_PARAMS)
 #define MN_RESUMEGOTO           (0x6D| MN_1_PARAMS)
-
-/*** Free 6E, 6F ****/
 
 /* Mnemónicos inexistentes - usados por el compilador internamente */
 

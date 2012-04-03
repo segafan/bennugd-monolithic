@@ -1,30 +1,25 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
- *
- *  This file is part of Bennu - Game Development
- *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
- *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
- *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
- *
- */
+*  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+*  Copyright © 2002-2006 Fenix Team (Fenix)
+*  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+*
+*  This file is part of Bennu - Game Development
+*
+*  Bennu is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  Bennu is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program; if not, write to the Free Software
+*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*/
 
 #ifndef __TEXT_H
 #define __TEXT_H
@@ -71,15 +66,10 @@ extern int fntcolor ;          /* Color for drawing bitmap text    */
 /* --------------------------------------------------------------------------- */
 
 extern void gr_text_setcolor( int c ) ;
-extern void gr_text_setcolor2( int textid, int c ) ;
 extern int gr_text_getcolor() ;
-extern int gr_text_getcolor2( int textid ) ;
 extern int gr_text_new( int fontid, int x, int y, int centered, const char * text ) ;
-extern int gr_text_new2( int fontid, int x, int y, int z, int centered, const char * text ) ;
 extern int gr_text_new_var( int fontid, int x, int y, int centered, const void * var, int type ) ;
-extern int gr_text_new_var2( int fontid, int x, int y, int z, int centered, const void * var, int type ) ;
 extern void gr_text_move( int textid, int x, int y ) ;
-extern void gr_text_move2( int textid, int x, int y, int z ) ;
 extern void gr_text_destroy( int textid ) ;
 extern int gr_text_margintop( int fontid, const unsigned char * text ) ;
 extern int gr_text_width( int fontid, const unsigned char * text ) ;

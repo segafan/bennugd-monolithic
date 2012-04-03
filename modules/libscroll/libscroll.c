@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -41,6 +36,10 @@
 #include "resolution.h"
 
 #include "libscroll.h"
+
+#ifndef __MONOLITHIC__
+#include "libscroll_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------------- */
 
@@ -72,50 +71,6 @@ scrolldata scrolls[ 10 ] ;
 /* Globals */
 
 #define SCROLLS         0
-
-/* --------------------------------------------------------------------------- */
-
-DLCONSTANT __bgdexport( libscroll, constants_def )[] =
-{
-    { "C_SCROLL",   TYPE_DWORD,     C_SCROLL    },
-
-    { "C_0",        TYPE_DWORD,     0x0001      },
-    { "C_1",        TYPE_DWORD,     0x0002      },
-    { "C_2",        TYPE_DWORD,     0x0004      },
-    { "C_3",        TYPE_DWORD,     0x0008      },
-    { "C_4",        TYPE_DWORD,     0x0010      },
-    { "C_5",        TYPE_DWORD,     0x0020      },
-    { "C_6",        TYPE_DWORD,     0x0040      },
-    { "C_7",        TYPE_DWORD,     0x0080      },
-    { "C_8",        TYPE_DWORD,     0x0100      },
-    { "C_9",        TYPE_DWORD,     0x0200      },
-
-    { NULL,         0,              0           }
-};
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libscroll, locals_def ) =
-    "ctype;\n"
-    "cnumber;\n";
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libscroll, globals_def ) =
-    "STRUCT scroll[9]\n"
-    "x0, y0;\n"
-    "x1, y1;\n"
-    "z = 512;\n"
-    "camera;\n"
-    "ratio = 200;\n"
-    "speed;\n"
-    "region1 = -1;\n"
-    "region2 = -1;\n"
-    "flags1;\n"
-    "flags2;\n"
-    "follow = -1;\n"
-    "reserved[6];\n"
-    "END \n"; /* total size: 20 dwords */
 
 /* --------------------------------------------------------------------------- */
 
@@ -162,7 +117,7 @@ void scroll_region( int n, REGION * r )
 
 /* --------------------------------------------------------------------------- */
 
-void scroll_start( int n, int fileid, int graphid, int backid, int region, int flags, int destfile, int destid )
+void scroll_start( int n, int fileid, int graphid, int backid, int region, int flags )
 {
     SCROLL_EXTRA_DATA * data;
 
@@ -170,18 +125,22 @@ void scroll_start( int n, int fileid, int graphid, int backid, int region, int f
     {
         if ( region < 0 || region > 31 ) region = 0 ;
 
-        scrolls[n].active   = 1 ;
-        scrolls[n].fileid   = fileid ;
-        scrolls[n].graphid  = graphid ;
-        scrolls[n].backid   = backid ;
-        scrolls[n].region   = &regions[region] ;
-        scrolls[n].flags    = flags ;
-        scrolls[n].destfile = destfile;
-        scrolls[n].destid   = destid;
+        scrolls[n].graph = graphid ? bitmap_get( fileid, graphid ) : 0 ;
+        scrolls[n].back  = backid  ? bitmap_get( fileid, backid )  : 0 ;
 
-        data = &(( SCROLL_EXTRA_DATA * ) &GLODWORD( libscroll, SCROLLS ) )[n] ;
+        if ( !graphid || !scrolls[n].graph ) return ; // El fondo de scroll no existe
+        if ( backid && !scrolls[n].back ) return ; // Grafico no existe
 
-        data->reserved[0] = ( int32_t ) &scrolls[n]; /* First reserved dword point to internal scrolldata struct */
+        scrolls[n].active  = 1 ;
+        scrolls[n].fileid  = fileid ;
+        scrolls[n].graphid = graphid ;
+        scrolls[n].backid  = backid ;
+        scrolls[n].region  = &regions[region] ;
+        scrolls[n].flags   = flags ;
+
+        data = &(( SCROLL_EXTRA_DATA * ) & GLODWORD( libscroll, SCROLLS ) )[n] ;
+
+        data->reserved[0] = ( int32_t ) & scrolls[n]; /* First reserved dword point to internal scrolldata struct */
 
         if ( scrolls_objects[n] ) gr_destroy_object( scrolls_objects[n] );
         scrolls_objects[n] = ( int )gr_new_object( 0, info_scroll, draw_scroll, n );
@@ -210,21 +169,15 @@ void scroll_update( int n )
     int x0, y0, x1, y1, cx, cy, w, h, speed ;
 
     REGION bbox;
-    GRAPH * gr, * graph, * back;
+    GRAPH * gr;
 
     SCROLL_EXTRA_DATA * data;
 
     if ( n < 0 || n > 9 ) return ;
 
-    if ( !scrolls[n].active || !scrolls[n].region || !scrolls[n].graphid ) return ;
+    data = &(( SCROLL_EXTRA_DATA * ) & GLODWORD( libscroll, SCROLLS ) )[n] ;
 
-    graph = scrolls[n].graphid ? bitmap_get( scrolls[n].fileid, scrolls[n].graphid ) : 0 ;
-    back  = scrolls[n].backid  ? bitmap_get( scrolls[n].fileid, scrolls[n].backid )  : 0 ;
-
-    if (                        !graph ) return ; // El fondo de scroll no existe
-    if (  scrolls[n].backid  && !back  ) return ; // Grafico no existe
-
-    data = &(( SCROLL_EXTRA_DATA * ) &GLODWORD( libscroll, SCROLLS ) )[n] ;
+    if ( !scrolls[n].active || !scrolls[n].region || !scrolls[n].graph ) return ;
 
     w = scrolls[n].region->x2 - scrolls[n].region->x + 1 ;
     h = scrolls[n].region->y2 - scrolls[n].region->y + 1 ;
@@ -239,12 +192,12 @@ void scroll_update( int n )
     else
         scrolls[n].follows = &scrolls[data->follows] ;
 
-    if ( data->region1 < 0 || data->region1 > 31 )
+    if ( data->region1 < 0  || data->region1 > 31 )
         scrolls[n].region1 = 0 ;
     else
         scrolls[n].region1 = &regions[data->region1] ;
 
-    if ( data->region2 < 0 || data->region2 > 31 )
+    if ( data->region2 < 0  || data->region2 > 31 )
         scrolls[n].region2 = 0 ;
     else
         scrolls[n].region2 = &regions[data->region2] ;
@@ -297,8 +250,8 @@ void scroll_update( int n )
                 {
                     if ( x0 > scrolls[n].region2->x2 ) speed = ( x0 - scrolls[n].region2->x2 );
                     if ( y0 > scrolls[n].region2->y2 ) speed = ( y0 - scrolls[n].region2->y2 );
-                    if ( x1 < scrolls[n].region2->x  ) speed = ( scrolls[n].region2->x - x1  );
-                    if ( y1 < scrolls[n].region2->y  ) speed = ( scrolls[n].region2->y - y1  );
+                    if ( x1 < scrolls[n].region2->x ) speed = ( scrolls[n].region2->x - x1 );
+                    if ( y1 < scrolls[n].region2->y ) speed = ( scrolls[n].region2->y - y1 );
                 }
         }
 
@@ -320,10 +273,10 @@ void scroll_update( int n )
 
     /* Scrolls no cíclicos y posición del background */
 
-    if ( graph )
+    if ( scrolls[n].graph )
     {
-        if ( !( scrolls[n].flags & GRAPH_HWRAP ) ) data->x0 = MAX( 0, MIN( data->x0, ( int )graph->width  - w ) ) ;
-        if ( !( scrolls[n].flags & GRAPH_VWRAP ) ) data->y0 = MAX( 0, MIN( data->y0, ( int )graph->height - h ) ) ;
+        if ( !( scrolls[n].flags & GRAPH_HWRAP ) ) data->x0 = MAX( 0, MIN( data->x0, ( int )scrolls[n].graph->width  - w ) ) ;
+        if ( !( scrolls[n].flags & GRAPH_VWRAP ) ) data->y0 = MAX( 0, MIN( data->y0, ( int )scrolls[n].graph->height - h ) ) ;
     }
 
     if ( scrolls[n].ratio )
@@ -332,28 +285,28 @@ void scroll_update( int n )
         data->y1 = data->y0 * 100 / scrolls[n].ratio ;
     }
 
-    if ( back )
+    if ( scrolls[n].back )
     {
-        if ( !( scrolls[n].flags & BACK_HWRAP ) ) data->x1 = MAX( 0, MIN( data->x1, ( int )back->width  - w ) ) ;
-        if ( !( scrolls[n].flags & BACK_VWRAP ) ) data->y1 = MAX( 0, MIN( data->y1, ( int )back->height - h ) ) ;
+        if ( !( scrolls[n].flags & BACK_HWRAP ) ) data->x1 = MAX( 0, MIN( data->x1, ( int )scrolls[n].back->width  - w ) ) ;
+        if ( !( scrolls[n].flags & BACK_VWRAP ) ) data->y1 = MAX( 0, MIN( data->y1, ( int )scrolls[n].back->height - h ) ) ;
     }
 
     /* Actualiza la posición del scroll según las variables globales */
 
     scrolls[n].posx0 = data->x0 ;
     scrolls[n].posy0 = data->y0 ;
-    scrolls[n].x0 = data->x0 % ( int32_t ) graph->width ;
-    scrolls[n].y0 = data->y0 % ( int32_t ) graph->height ;
+    scrolls[n].x0 = data->x0 % ( int32_t ) scrolls[n].graph->width ;
+    scrolls[n].y0 = data->y0 % ( int32_t ) scrolls[n].graph->height ;
 
-    if ( scrolls[n].x0 < 0 ) scrolls[n].x0 += graph->width ;
-    if ( scrolls[n].y0 < 0 ) scrolls[n].y0 += graph->height ;
+    if ( scrolls[n].x0 < 0 ) scrolls[n].x0 += scrolls[n].graph->width ;
+    if ( scrolls[n].y0 < 0 ) scrolls[n].y0 += scrolls[n].graph->height ;
 
-    if ( back )
+    if ( scrolls[n].back )
     {
-        scrolls[n].x1 = data->x1 % ( int32_t ) back->width ;
-        scrolls[n].y1 = data->y1 % ( int32_t ) back->height ;
-        if ( scrolls[n].x1 < 0 ) scrolls[n].x1 += back->width ;
-        if ( scrolls[n].y1 < 0 ) scrolls[n].y1 += back->height ;
+        scrolls[n].x1 = data->x1 % ( int32_t ) scrolls[n].back->width ;
+        scrolls[n].y1 = data->y1 % ( int32_t ) scrolls[n].back->height ;
+        if ( scrolls[n].x1 < 0 ) scrolls[n].x1 += scrolls[n].back->width ;
+        if ( scrolls[n].y1 < 0 ) scrolls[n].y1 += scrolls[n].back->height ;
     }
 }
 
@@ -381,41 +334,31 @@ void scroll_draw( int n, REGION * clipping )
     REGION r;
     int status;
 
-    GRAPH * graph, * back, * dest = NULL;
-
     SCROLL_EXTRA_DATA * data;
     INSTANCE * i;
 
     if ( n < 0 || n > 9 ) return ;
 
-    if ( !scrolls[n].active || !scrolls[n].region || !scrolls[n].graphid ) return ;
-
-    graph = scrolls[n].graphid ? bitmap_get( scrolls[n].fileid, scrolls[n].graphid ) : NULL ;
-    back  = scrolls[n].backid  ? bitmap_get( scrolls[n].fileid, scrolls[n].backid )  : NULL ;
-
-    if (                        !graph ) return ; // El fondo de scroll no existe
-    if (  scrolls[n].backid  && !back  ) return ; // Grafico no existe
-
-    dest = scrolls[n].destid ? bitmap_get( scrolls[n].destfile, scrolls[n].destid ) : NULL ;
-
     data = &(( SCROLL_EXTRA_DATA * ) & GLODWORD( libscroll, SCROLLS ) )[n] ;
+
+    if ( !scrolls[n].active || !scrolls[n].region || !scrolls[n].graph ) return ;
 
     /* Dibuja el fondo */
 
     r = *scrolls[n].region;
-    if ( !dest && clipping ) region_union( &r, clipping );
+    if ( clipping ) region_union( &r, clipping );
 
-    if ( back )
+    if ( scrolls[n].back )
     {
-        if ( back->ncpoints > 0 && back->cpoints[0].x >= 0 )
+        if ( scrolls[n].back->ncpoints > 0 && scrolls[n].back->cpoints[0].x >= 0 )
         {
-            cx = back->cpoints[0].x ;
-            cy = back->cpoints[0].y ;
+            cx = scrolls[n].back->cpoints[0].x ;
+            cy = scrolls[n].back->cpoints[0].y ;
         }
         else
         {
-            cx = back->width / 2 ;
-            cy = back->height / 2 ;
+            cx = scrolls[n].back->width / 2 ;
+            cy = scrolls[n].back->height / 2 ;
         }
 
         y = scrolls[n].region->y - scrolls[n].y1 ;
@@ -425,24 +368,24 @@ void scroll_draw( int n, REGION * clipping )
             x = scrolls[n].region->x - scrolls[n].x1 ;
             while ( x < scrolls[n].region->x2 )
             {
-                gr_blit( dest, &r, x + cx, y + cy, data->flags2, back ) ;
-                x += back->width ;
+                gr_blit( 0, &r, x + cx, y + cy, data->flags2, scrolls[n].back ) ;
+                x += scrolls[n].back->width ;
             }
-            y += back->height ;
+            y += scrolls[n].back->height ;
         }
     }
 
     /* Dibuja el primer plano */
 
-    if ( graph->ncpoints > 0 && graph->cpoints[0].x >= 0 )
+    if ( scrolls[n].graph->ncpoints > 0 && scrolls[n].graph->cpoints[0].x >= 0 )
     {
-        cx = graph->cpoints[0].x ;
-        cy = graph->cpoints[0].y ;
+        cx = scrolls[n].graph->cpoints[0].x ;
+        cy = scrolls[n].graph->cpoints[0].y ;
     }
     else
     {
-        cx = graph->width / 2 ;
-        cy = graph->height / 2 ;
+        cx = scrolls[n].graph->width / 2 ;
+        cy = scrolls[n].graph->height / 2 ;
     }
 
     y = scrolls[n].region->y - scrolls[n].y0 ;
@@ -451,10 +394,10 @@ void scroll_draw( int n, REGION * clipping )
         x = scrolls[n].region->x - scrolls[n].x0 ;
         while ( x < scrolls[n].region->x2 )
         {
-            gr_blit( dest, &r, x + cx, y + cy, data->flags1, graph ) ;
-            x += graph->width ;
+            gr_blit( 0, &r, x + cx, y + cy, data->flags1, scrolls[n].graph ) ;
+            x += scrolls[n].graph->width ;
         }
-        y += graph->height ;
+        y += scrolls[n].graph->height ;
     }
 
     /* Crea una lista ordenada de instancias a dibujar */
@@ -502,7 +445,7 @@ void scroll_draw( int n, REGION * clipping )
 
             RESOLXY( libscroll, proclist[nproc], x, y );
 
-            draw_instance_at( proclist[nproc], &r, x - scrolls[n].posx0 + scrolls[n].region->x, y - scrolls[n].posy0 + scrolls[n].region->y, dest ) ;
+            draw_instance_at( proclist[nproc], &r, x - scrolls[n].posx0 + scrolls[n].region->x, y - scrolls[n].posy0 + scrolls[n].region->y ) ;
         }
     }
 }
@@ -522,22 +465,7 @@ static int info_scroll( int n, REGION * clip, int * z, int * drawme )
     * drawme = 1;
     * clip = * scrolls[n].region;
     scroll_update( n );
-
-    // Force clean map (need optimization)
-    if ( scrolls[n].destid ) gr_clear_region( bitmap_get( scrolls[n].destfile, scrolls[n].destid ), scrolls[n].region );
-
     return 1;
 }
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libscroll, modules_dependency )[] =
-{
-    "libgrbase",
-    "libblit",
-    "librender",
-    "libvideo",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

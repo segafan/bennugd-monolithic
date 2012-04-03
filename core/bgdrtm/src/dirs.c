@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -212,21 +207,13 @@ __DIR_ST * dir_open( const char * path )
 
 #ifdef _WIN32
     hDir->handle = FindFirstFile( hDir->path, &hDir->data );
-    hDir->eod = ( hDir->handle == INVALID_HANDLE_VALUE );
-
-    if ( !hDir->handle )
-    {
-        free( hDir->path );
-        free( hDir );
-        return NULL;
-    }
+    hDir->eod = ( hDir->handle == INVALID_HANDLE_VALUE ) ;
 #else
-    const char * ptr = hDir->path;
-    char * fptr;
-    int r;
+    char * final_path = malloc( strlen( path ) * 4 );
+    const char * ptr = hDir->path ;
+    char * fptr = final_path ;
 
-    hDir->pattern = malloc( strlen( path ) * 4 );
-    if ( !hDir->pattern )
+    if ( !final_path )
     {
         free ( hDir->path );
         free ( hDir );
@@ -235,7 +222,6 @@ __DIR_ST * dir_open( const char * path )
 
     /* Clean the path creating a case-insensitive match pattern */
 
-    fptr = hDir->pattern;
     while ( *ptr )
     {
         if ( *ptr == '\\' )
@@ -263,21 +249,15 @@ __DIR_ST * dir_open( const char * path )
     *fptr = 0;
 
     /* Convert '*.*' to '*' */
-    if ( fptr > hDir->pattern + 2 && fptr[ -1 ] == '*' && fptr[ -2 ] == '.' && fptr[ -3 ] == '*' ) fptr[ -2 ] = 0;
+    if ( fptr > final_path + 2 && fptr[ -1 ] == '*' && fptr[ -2 ] == '.' && fptr[ -3 ] == '*' ) fptr[ -2 ] = 0;
 
-#if defined(TARGET_MAC) || defined(TARGET_BEOS) || defined(TARGET_WII) || defined(TARGET_PSP) || defined(TARGET_ANDROID)
-    r = glob( hDir->pattern, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
+#if defined(TARGET_MAC) || defined(TARGET_BEOS) || defined(TARGET_WII) || defined(TARGET_PSP)
+    glob( final_path, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
 #else
-    r = glob( hDir->pattern, GLOB_ERR | GLOB_PERIOD | GLOB_NOSORT, NULL, &hDir->globd );
+    glob( final_path, GLOB_ERR | GLOB_PERIOD | GLOB_NOSORT, NULL, &hDir->globd );
 #endif
 
-    if ( r )
-    {
-        free( hDir->pattern );
-        free( hDir->path );
-        free( hDir );
-        return NULL;
-    }
+    free( final_path );
 
     hDir->currFile = 0;
 #endif
@@ -295,7 +275,6 @@ void dir_close ( __DIR_ST * hDir )
     FindClose( hDir->handle );
 #else
     globfree( &hDir->globd );
-    free( hDir->pattern );
 #endif
 
     free ( hDir );
@@ -326,8 +305,6 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
         ptr--;
     }
 
-    memset( &hDir->info, '\0', sizeof( hDir->info ) );
-
     strcat( realpath, hDir->data.cFileName );
     GetFullPathName( realpath, __MAX_PATH, hDir->info.fullpath, &ptr );
     if ( ptr ) * ptr = '\0';
@@ -343,41 +320,28 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
     /* Format and store the creation time */
     FileTimeToSystemTime( &hDir->data.ftCreationTime, &time );
 
-    hDir->info.crtime.tm_sec    = time.wSecond;
-    hDir->info.crtime.tm_min    = time.wMinute;
-    hDir->info.crtime.tm_hour   = time.wHour;
-    hDir->info.crtime.tm_mday   = time.wDay;
-    hDir->info.crtime.tm_mon    = time.wMonth - 1;
-    hDir->info.crtime.tm_year   = time.wYear - 1900;
-    hDir->info.crtime.tm_wday   = time.wDayOfWeek;
-    hDir->info.crtime.tm_yday   = time.wMonth;
-    hDir->info.crtime.tm_isdst  = -1;
+    hDir->info.creation_time.tm_sec      = time.wSecond;
+    hDir->info.creation_time.tm_min      = time.wMinute;
+    hDir->info.creation_time.tm_hour     = time.wHour;
+    hDir->info.creation_time.tm_mday     = time.wDay;
+    hDir->info.creation_time.tm_mon      = time.wMonth - 1;
+    hDir->info.creation_time.tm_year     = time.wYear - 1900;
+    hDir->info.creation_time.tm_wday     = time.wDayOfWeek;
+    hDir->info.creation_time.tm_yday     = time.wMonth;
+    hDir->info.creation_time.tm_isdst    = -1;
 
     /* Format and store the last write time */
     FileTimeToSystemTime( &hDir->data.ftLastWriteTime, &time );
 
-    hDir->info.mtime.tm_sec     = time.wSecond;
-    hDir->info.mtime.tm_min     = time.wMinute;
-    hDir->info.mtime.tm_hour    = time.wHour;
-    hDir->info.mtime.tm_mday    = time.wDay;
-    hDir->info.mtime.tm_mon     = time.wMonth - 1;
-    hDir->info.mtime.tm_year    = time.wYear - 1900;
-    hDir->info.mtime.tm_wday    = time.wDayOfWeek;
-    hDir->info.mtime.tm_yday    = time.wMonth;
-    hDir->info.mtime.tm_isdst   = -1;
-
-    /* Format and store the last access time */
-    FileTimeToSystemTime( &hDir->data.ftLastAccessTime, &time );
-
-    hDir->info.atime.tm_sec     = time.wSecond;
-    hDir->info.atime.tm_min     = time.wMinute;
-    hDir->info.atime.tm_hour    = time.wHour;
-    hDir->info.atime.tm_mday    = time.wDay;
-    hDir->info.atime.tm_mon     = time.wMonth - 1;
-    hDir->info.atime.tm_year    = time.wYear - 1900;
-    hDir->info.atime.tm_wday    = time.wDayOfWeek;
-    hDir->info.atime.tm_yday    = time.wMonth;
-    hDir->info.atime.tm_isdst   = -1;
+    hDir->info.modified_time.tm_sec      = time.wSecond;
+    hDir->info.modified_time.tm_min      = time.wMinute;
+    hDir->info.modified_time.tm_hour     = time.wHour;
+    hDir->info.modified_time.tm_mday     = time.wDay;
+    hDir->info.modified_time.tm_mon      = time.wMonth - 1;
+    hDir->info.modified_time.tm_year     = time.wYear - 1900;
+    hDir->info.modified_time.tm_wday     = time.wDayOfWeek;
+    hDir->info.modified_time.tm_yday     = time.wMonth;
+    hDir->info.modified_time.tm_isdst    = -1;
 
     /* Continue last search */
     if (!FindNextFile( hDir->handle, &hDir->data )) hDir->eod = 1;
@@ -385,8 +349,6 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
     struct stat s;
 
     if ( hDir->currFile == hDir->globd.gl_pathc ) return NULL;
-
-    memset( &hDir->info, '\0', sizeof( hDir->info ) );
 
     stat( hDir->globd.gl_pathv[ hDir->currFile ], &s );
 
@@ -420,9 +382,8 @@ __DIR_FILEINFO_ST * dir_read( __DIR_ST * hDir )
 
     hDir->info.size          = s.st_size;
 
-    hDir->info.mtime    = *localtime( &s.st_mtime ) ;
-    hDir->info.atime    = *localtime( &s.st_atime ) ;
-    hDir->info.ctime    = *localtime( &s.st_ctime ) ;
+    hDir->info.creation_time = *localtime( &s.st_ctime ) ;
+    hDir->info.modified_time = *localtime( &s.st_mtime ) ;
 
     hDir->currFile++;
 

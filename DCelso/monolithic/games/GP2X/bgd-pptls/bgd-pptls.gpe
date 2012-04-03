@@ -1,0 +1,22 @@
+#!/bin/sh
+LD_LIBRARY_PATH_BAK=$LD_LIBRARY_PATH
+PATH_BAK=$PATH
+
+LD_LIBRARY_PATH=../bgd-runtime:$LD_LIBRARY_PATH
+PATH=../bgd-runtime:$PATH
+
+echo 2 > /proc/cpu/alignment
+
+for prg in *.prg; do
+    name=`basename $prg .prg`
+    bgdc $prg 1> bgdc_stdout.txt 2>bgdc_stderr.txt
+    bgdi $name 1> bgdi_stdout.txt 2>bgdi_stderr.txt
+done
+
+sync
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH_BAK
+PATH=$PATH_BAK
+
+cd /usr/gp2x
+exec /usr/gp2x/gp2xmenu

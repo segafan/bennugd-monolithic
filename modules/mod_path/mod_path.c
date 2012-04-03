@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -35,6 +30,10 @@
 #include "bgdrtm.h"
 
 #include "libgrbase.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_path_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------------- */
 
@@ -70,16 +69,6 @@ static int block_if = 1 ;
 
 #define PF_NODIAG       1
 #define PF_REVERSE      2
-
-/* --------------------------------------------------------------------------- */
-
-DLCONSTANT __bgdexport( mod_path, constants_def )[] =
-{
-    { "PF_NODIAG"   , TYPE_INT, PF_NODIAG   }, /* Prohibit the pathfinding from using diagonal paths. */
-    { "PF_REVERSE"  , TYPE_INT, PF_REVERSE  }, /* Return the path found in reverse order.             */
-
-    { NULL          , 0       , 0           }
-} ;
 
 /* --------------------------------------------------------------------------- */
 
@@ -376,7 +365,7 @@ static int path_set_wall( int n )
 /* --------------------------------------------------------------------------- */
 /* Funciones de búsqueda de caminos */
 
-static int modpathfind_path_find( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modpathfind_path_find( INSTANCE * my, int * params )
 {
     GRAPH * gpath = bitmap_get( params[0], params[1] ) ;
     if ( !gpath || !gpath->format || gpath->format->depth != 8 ) return 0;
@@ -385,36 +374,16 @@ static int modpathfind_path_find( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modpathfind_path_getxy( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modpathfind_path_getxy( INSTANCE * my, int * params )
 {
     return path_get(( int * )params[0], ( int * )params[1] ) ;
 }
 
 /* --------------------------------------------------------------------------- */
 
-static int modpathfind_path_wall( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modpathfind_path_wall( INSTANCE * my, int * params )
 {
     return path_set_wall( params[0] ) ;
 }
-
-/* --------------------------------------------------------------------------- */
-
-DLSYSFUNCS __bgdexport( mod_path, functions_exports )[] =
-{
-    /* Búsqueda de caminos*/
-    { "PATH_FIND"   , "IIIIIII", TYPE_INT   , modpathfind_path_find     },
-    { "PATH_GETXY"  , "PP"     , TYPE_INT   , modpathfind_path_getxy    },
-    { "PATH_WALL"   , "I"      , TYPE_INT   , modpathfind_path_wall     },
-
-    { 0             , 0        , 0          , 0                         }
-};
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( mod_path, modules_dependency )[] =
-{
-    "libgrbase",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

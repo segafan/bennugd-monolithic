@@ -32,10 +32,26 @@ Begin
         end;
         if(bb >= 0)
             // Get your weight (in kg) from the Wii Balance Board
-            weight  = wpad_info_bb(bb, WPAD_WTL);
-            weight += wpad_info_bb(bb, WPAD_WTR);
-            weight += wpad_info_bb(bb, WPAD_WBL);
-            weight += wpad_info_bb(bb, WPAD_WBR);
+            if(wpad_info(bb, WPAD_WTL) > 0)
+                weight += wpad_info_bb(bb, WPAD_WTL);
+            else
+                write(0, 0, 0, 0, "Error in WPAD_WTL");
+            end;
+            if(wpad_info(bb, WPAD_WTR) > 0)
+                weight += wpad_info_bb(bb, WPAD_WTR);
+            else
+                write(0, scr_width, 0, 2, "Error in WPAD_WTR");
+            end;
+            if(wpad_info(bb, WPAD_WBL) > 0)
+                weight += wpad_info_bb(bb, WPAD_WBL);
+            else
+                write(0, 0, scr_height, 6, "Error in WPAD_WBL");
+            end;
+            if(wpad_info(bb, WPAD_WBR) > 0)
+                weight += wpad_info_bb(bb, WPAD_WBR);
+            else
+                write(0, scr_width, scr_height, 8, "Error in WPAD_WBR");
+            end;
             write(0, scr_width/2, 3*scr_height/4, 4, "Meassured weight: "+
                 weight );
             // Get the position of your center of gravity

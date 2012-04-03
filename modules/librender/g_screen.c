@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -37,8 +32,8 @@
 static GRAPH * scrbitmap_extra = NULL ;
 
 static int updaterects_count = 0;
-static REGION updaterects[ DIRTYCOLS * DIRTYROWS ];
-static SDL_Rect rects[ DIRTYCOLS * DIRTYROWS ];
+static REGION updaterects[128];
+static SDL_Rect rects[128];
 
 /* --------------------------------------------------------------------------- */
 /*
@@ -154,7 +149,7 @@ int gr_lock_screen()
 
     if ( scale_resolution != 0 )
     {
-        if ( scale_screen && SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
+        if ( SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
     }
     else
     {
@@ -179,7 +174,6 @@ int gr_lock_screen()
     {
         if ( !scrbitmap || !( scrbitmap->info_flags & GI_EXTERNAL_DATA ) )
         {
-            SDL_Log("Creating scrbitmap");
             if ( scrbitmap ) bitmap_destroy( scrbitmap ) ;
             scrbitmap = bitmap_new_ex( 0, screen->w, screen->h, screen->format->BitsPerPixel, screen->pixels, screen->pitch );
             bitmap_add_cpoint( scrbitmap, 0, 0 ) ;
@@ -197,47 +191,13 @@ void gr_unlock_screen()
 
     screen_locked = 0 ;
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-	// Blit the graphics to SDL_Surface *screen either completely
-	// or just the dirty rects
-	if ( updaterects_count )
-	{
-		int i;
-
-		for ( i = 0 ; i < updaterects_count ; i++ )
-		{
-			rects[ i ].x = updaterects[ i ].x;
-			rects[ i ].y = updaterects[ i ].y;
-			rects[ i ].w = ( updaterects[ i ].x2 - rects[ i ].x + 1 );
-			rects[ i ].h = ( updaterects[ i ].y2 - rects[ i ].y + 1 );
-		}
-		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
-		if ( waitvsync ) gr_wait_vsync();
-
-        // If needed, blit the fake screen into the window surface
-        if ( shadow_screen )
-            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);   
-
-        // And update the screen
-		SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
-	} else {
-		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
-		if ( waitvsync ) gr_wait_vsync();
-
-        // If needed, blit the fake screen into the window surface
-        if ( shadow_screen )
-            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);
-        
-        // And update the screen
-		SDL_UpdateWindowSurface( window );
-	}
-#else
     if ( scale_resolution )
     {
         uint8_t  * src8  = screen->pixels, * dst8  = scale_screen->pixels , * pdst = scale_screen->pixels ;
         uint16_t * src16 = screen->pixels, * dst16 = scale_screen->pixels ;
         uint32_t * src32 = screen->pixels, * dst32 = scale_screen->pixels ;
-        int h, w;
+
+        int     h, w;
 
         switch ( scale_screen->format->BitsPerPixel )
         {
@@ -309,7 +269,7 @@ void gr_unlock_screen()
                     break;
 
             case    16:
-                    if ( scale_resolution_orientation == 1 || scale_resolution_orientation == 3 )
+                    if ( scale_resolution_orientation = 1 || scale_resolution_orientation == 3 )
                     {
                         if ( scale_resolution_aspectratio )
                         {
@@ -449,7 +409,6 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( scale_screen ) ) SDL_UnlockSurface( scale_screen ) ;
         if ( waitvsync ) gr_wait_vsync();
-
         SDL_Flip( scale_screen ) ;
     }
     else if ( enable_scale )
@@ -498,11 +457,11 @@ void gr_unlock_screen()
             case SCALE_SCALE2X:
                 scale2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
-#ifdef WITH_GPL_CODE
+
             case SCALE_HQ2X:
                 hq2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
-#endif
+
             case SCALE_SCANLINE2X:
                 scanline2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
@@ -518,7 +477,6 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
         if ( waitvsync ) gr_wait_vsync();
-
         SDL_Flip( screen ) ;
     }
     else if ( scrbitmap->info_flags & GI_EXTERNAL_DATA )
@@ -526,22 +484,22 @@ void gr_unlock_screen()
         if ( double_buffer ||
                 (
                     updaterects_count == 1 &&
-                    updaterects[0].x == 0 &&
-                    updaterects[0].y == 0 &&
-                    updaterects[0].x2 == scr_width - 1 &&
-                    updaterects[0].y2 == scr_height - 1
+                    rects->x == 0 &&
+                    rects->y == 0 &&
+                    rects->w == scr_width - 1 &&
+                    rects->h == scr_height - 1
                 )
            )
         {
             if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
             if ( waitvsync ) gr_wait_vsync();
-
             SDL_Flip( screen ) ;
         }
         else
         {
             if ( updaterects_count )
             {
+                SDL_Rect rects[ 128 ];
                 int i;
 
                 for ( i = 0 ; i < updaterects_count ; i++ )
@@ -553,12 +511,10 @@ void gr_unlock_screen()
                 }
                 if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
                 if ( waitvsync ) gr_wait_vsync();
-
                 SDL_UpdateRects( screen, updaterects_count, rects ) ;
             }
         }
     }
-#endif
 }
 
 /* --------------------------------------------------------------------------- */

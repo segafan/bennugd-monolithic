@@ -1,30 +1,25 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
- *
- *  This file is part of Bennu - Game Development
- *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
- *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
- *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
- *
- */
+*  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+*  Copyright © 2002-2006 Fenix Team (Fenix)
+*  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+*
+*  This file is part of Bennu - Game Development
+*
+*  Bennu is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  Bennu is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program; if not, write to the Free Software
+*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,10 +79,6 @@ void string_dump( void ( *wlog )( const char *fmt, ... ) )
 int string_new( const char * text )
 {
     int len = strlen( text ) + 1 ;
-    int i;
-
-    /* Reuse strings */
-    for ( i = 0; i < string_count; i++ ) if ( !strcmp( text, string_mem + string_offset[ i ] ) ) return i;
 
     if ( string_count == string_max )
     {
@@ -139,7 +130,6 @@ int string_compile( const char ** source )
 {
     char c = *( *source ) ++, conv ;
     const char * ptr ;
-    int string_used_back = string_used;
 
     if ( string_count == string_max )
     {
@@ -207,21 +197,8 @@ int string_compile( const char ** source )
     }
 
     string_mem[ string_used++ ] = 0 ;
-
-    int i;
-
-    /* Reuse strings */
-
-    for ( i = 0; i < string_count; i++ )
-    {
-        if ( !strcmp( string_mem + string_used_back, string_mem + string_offset[ i ] ) )
-        {
-            string_used = string_used_back;
-            return i;
-        }
-    }
-
-    if ( string_used >= string_allocated ) string_alloc( 1024 ) ;
+    if ( string_used >= string_allocated )
+        string_alloc( 1024 ) ;
 
     /* Hack: añade el posible fichero al DCB */
 

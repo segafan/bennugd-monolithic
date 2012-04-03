@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -67,7 +62,6 @@ typedef struct _text
     int last_value ;
     char * text ;           /* Memoria dinámica */
     const void * var  ;  /* CHANGED TO VOID to allow diff. data types */
-    int last_z ;
     /* Internals, for speed up */
     int _x ;
     int _y ;
@@ -89,14 +83,6 @@ int gr_text_widthn( int fontid, const unsigned char * text, int n );
 
 #define TEXTZ           0
 #define TEXT_FLAGS      1
-
-/* --------------------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-
-char * __bgdexport( libtext, globals_def ) =
-    "text_z = -256;\n"
-    "text_flags;\n"
-    ;
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -208,7 +194,6 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
     const char * str = get_text( text );
     REGION prev = *bbox;
     FONT * font;
-    int changed = 0;
 
     * drawme = 0;
 
@@ -233,8 +218,6 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
     }
 
     * drawme = 1;
-
-    * z = text->z;
 
     /* Calculate the text dimensions */
 
@@ -291,6 +274,7 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
 
     /* Fill the bounding box */
 
+
     bbox->x = text->_x;
     bbox->y = text->_y;
     bbox->x2 = text->_x + text->_width - 1;
@@ -298,37 +282,34 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
 
     /* Check if the var has changed since last call */
 
-    changed =
-        text->z != text->last_z ||
+    if (
         bbox->x  != prev.x  || bbox->y  != prev.y ||
-        bbox->x2 != prev.x2 || bbox->y2 != prev.y2;
-
-    text->last_z = text->z;
+        bbox->x2 != prev.x2 || bbox->y2 != prev.y2 ) return 1;
 
     switch ( text->on )
     {
         case TEXT_TEXT:
-            return changed;
+            return 0;
 
         case TEXT_STRING:
         case TEXT_FLOAT:
         case TEXT_INT:
         case TEXT_DWORD:
         case TEXT_POINTER:
-            if ( text->last_value == *( int * )text->var ) return changed;
+            if ( text->last_value == *( int * )text->var ) return 0;
             text->last_value = *( int * )text->var;
             return 1;
 
         case TEXT_BYTE:
         case TEXT_SBYTE:
         case TEXT_CHAR:
-            if ( text->last_value == *( uint8_t * )text->var ) return changed;
+            if ( text->last_value == *( uint8_t * )text->var ) return 0;
             text->last_value = *( uint8_t * )text->var;
             return 1;
 
         case TEXT_WORD:
         case TEXT_SHORT:
-            if ( text->last_value == *( uint16_t * )text->var ) return changed;
+            if ( text->last_value == *( uint16_t * )text->var ) return 0;
             text->last_value = *( uint16_t * )text->var;
             return 1;
 
@@ -336,7 +317,7 @@ static int info_text( TEXT * text, REGION * bbox, int * z, int * drawme )
             return 1;
     }
 
-    return changed;
+    return 0;
 }
 
 /* --------------------------------------------------------------------------- */
@@ -389,22 +370,22 @@ void draw_text( TEXT * text, REGION * clip )
 
 /* --------------------------------------------------------------------------- */
 /*
- *  FUNCTION : gr_text_new2
+ *  FUNCTION : gr_text_new
  *
  *  Create a new text, using a fixed text string
  *
  *  PARAMS :
- *  fontid      Font number
- *  x, y, z     Screen coordinates
- *  alignment   Alignment
- *  text        Pointer to text
+ *  fontid   Font number
+ *  x, y   Screen coordinates
+ *  alignment  Alignment
+ *  text   Pointer to text
  *
  *  RETURN VALUE :
  *      None
  *
  */
 
-int gr_text_new2( int fontid, int x, int y, int z, int alignment, const char * text )
+int gr_text_new( int fontid, int x, int y, int alignment, const char * text )
 {
     int textid = text_nextid ;
 
@@ -424,7 +405,7 @@ int gr_text_new2( int fontid, int x, int y, int z, int alignment, const char * t
     texts[textid].fontid = fontid ;
     texts[textid].x = x ;
     texts[textid].y = y ;
-    texts[textid].z = z ;
+    texts[textid].z = GLOINT32( libtext, TEXTZ ) ;
     texts[textid].alignment = alignment ;
     texts[textid].text = text ? strdup( text ) : 0 ;
     texts[textid].color8 = fntcolor8 ;
@@ -432,31 +413,8 @@ int gr_text_new2( int fontid, int x, int y, int z, int alignment, const char * t
     texts[textid].color32 = fntcolor32 ;
     texts[textid].objectid = gr_new_object( texts[textid].z, info_text, draw_text, &texts[textid] );
     texts[textid].last_value = 0 ;
-    texts[textid].last_z = 0 ;
 
     return textid ;
-}
-
-/* --------------------------------------------------------------------------- */
-/*
- *  FUNCTION : gr_text_new
- *
- *  Create a new text, using a fixed text string
- *
- *  PARAMS :
- *  fontid     Font number
- *  x, y       Screen coordinates
- *  alignment  Alignment
- *  text       Pointer to text
- *
- *  RETURN VALUE :
- *      None
- *
- */
-
-int gr_text_new( int fontid, int x, int y, int alignment, const char * text )
-{
-    return gr_text_new2( fontid, x, y, GLOINT32( libtext, TEXTZ ), alignment, text );
 }
 
 /* --------------------------------------------------------------------------- */
@@ -472,35 +430,12 @@ int gr_text_new_var( int fontid, int x, int y, int alignment, const void * var, 
 
 /* --------------------------------------------------------------------------- */
 
-int gr_text_new_var2( int fontid, int x, int y, int z, int alignment, const void * var, int type )
-{
-    int textid = gr_text_new2( fontid, x, y, z, alignment, 0 ) ;
-    if ( !textid ) return 0 ;
-    texts[textid].on = type ;
-    if ( type > TEXT_TEXT ) texts[textid].var = var ;
-    return textid ;
-}
-
-/* --------------------------------------------------------------------------- */
-
 void gr_text_move( int textid, int x, int y )
 {
     if ( textid > 0 && textid < text_nextid )
     {
         texts[textid].x = x ;
         texts[textid].y = y ;
-    }
-}
-
-/* --------------------------------------------------------------------------- */
-
-void gr_text_move2( int textid, int x, int y, int z )
-{
-    if ( textid > 0 && textid < text_nextid )
-    {
-        texts[textid].x = x ;
-        texts[textid].y = y ;
-        texts[textid].z = z ;
     }
 }
 
@@ -677,7 +612,7 @@ int gr_text_put( GRAPH * dest, REGION * clip, int fontid, int x, int y, const un
 
     if ( fntcolor8 == -1 )
     {
-        gr_setcolor(( dest->format->depth == 8 ) ? gr_find_nearest_color( 255, 255, 255 ) : gr_rgb_depth( dest->format->depth, 255, 255, 255 ) );
+        gr_setcolor(( dest->format->depth == 8 ) ? gr_find_nearest_color( 255, 255, 255 ) : gr_rgb( 255, 255, 255 ) );
     }
     else
     {
@@ -834,49 +769,6 @@ void gr_text_setcolor( int c )
 
 /* --------------------------------------------------------------------------- */
 
-void gr_text_setcolor2( int textid, int c )
-{
-    int r, g, b;
-
-    if ( textid > 0 && textid < text_nextid )
-    {
-        if ( !c )
-        {
-            texts[textid].color8 = 0;
-            texts[textid].color16 = 0;
-            texts[textid].color32 = 0;
-        }
-        else
-        {
-            switch ( sys_pixel_format->depth )
-            {
-                case    8:
-                {
-                    texts[textid].color8 = c ;
-                    break;
-                }
-
-                case    16:
-                {
-                    gr_get_rgb( c, &r, &g, &b );
-                    texts[textid].color8 = gr_find_nearest_color( r, g, b );
-                    texts[textid].color16 = c ;
-                    break;
-                }
-                case    32:
-                {
-                    gr_get_rgb( c, &r, &g, &b );
-                    texts[textid].color8 = gr_find_nearest_color( r, g, b );
-                    texts[textid].color32 = c ;
-                    break;
-                }
-            }
-        }
-    }
-}
-
-/* --------------------------------------------------------------------------- */
-
 int gr_text_getcolor()
 {
     switch ( sys_pixel_format->depth )
@@ -898,43 +790,5 @@ int gr_text_getcolor()
 
     return 0;
 }
-
-/* --------------------------------------------------------------------------- */
-
-int gr_text_getcolor2( int textid )
-{
-    if ( textid > 0 && textid < text_nextid )
-    {
-        switch ( sys_pixel_format->depth )
-        {
-            case    8:
-            {
-                return texts[textid].color8 ;
-            }
-
-            case    16:
-            {
-                return texts[textid].color16 ;
-            }
-            case    32:
-            {
-                return texts[textid].color32 ;
-            }
-        }
-    }
-
-    return 0;
-}
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libtext, modules_dependency )[] =
-{
-    "libgrbase",
-    "libblit",
-    "librender",
-    "libfont",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

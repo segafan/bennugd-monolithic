@@ -1,34 +1,33 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
 /* --------------------------------------------------------------------------- */
 
+#ifdef TARGET_MAC
+#include <SDL/SDL.h>
+#else
 #include <SDL.h>
+#endif
 
 #include "bgddl.h"
 #include "dlvaracc.h"
@@ -39,6 +38,10 @@
 #include "librender.h"
 
 #include "sysprocs_st.h"
+
+#ifndef __MONOLITHIC__
+#include "libmouse_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------------- */
 
@@ -72,22 +75,6 @@ static GRAPH * mouse_map = NULL;
 #define MOUSERIGHT          11
 #define MOUSEWHEELUP        12
 #define MOUSEWHEELDOWN      13
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libmouse, globals_def ) =
-    "STRUCT mouse\n"
-    "x = 99999, y = 99999;\n"
-    "z = -512;\n"
-    "file;\n"
-    "graph;\n"
-    "angle;\n"
-    "size = 100;\n"
-    "flags;\n"
-    "region;\n"
-    "left, middle, right;\n"
-    "wheelup, wheeldown;\n"
-    "END\n";
 
 /* --------------------------------------------------------------------------- */
 
@@ -142,31 +129,17 @@ static void do_mouse_events()
         ( last_mouse_x != -1 && GLOINT32( libmouse, MOUSEX ) != last_mouse_x ) ||
         ( last_mouse_y != -1 && GLOINT32( libmouse, MOUSEY ) != last_mouse_y ) )
     {
-        if ( scale_resolution )
+        if ( scale_resolution != 0 )
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-            SDL_WarpMouseInWindow(window,
-                                  GLOINT32( libmouse, MOUSEX ) / ( (double)screen->w / (double)scale_screen->w ),
-                                  GLOINT32( libmouse, MOUSEY ) / ( (double)screen->h / (double)scale_screen->h ));
-#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ) / ( (double)screen->w / (double)scale_screen->w ), GLOINT32( libmouse, MOUSEY ) / ( (double)screen->h / (double)scale_screen->h ) ) ;
-#endif
         }
         else if ( enable_scale || scale_mode != SCALE_NONE )
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-            SDL_WarpMouseInWindow(window, GLOINT32( libmouse, MOUSEX ) * 2, GLOINT32( libmouse, MOUSEY ) * 2);
-#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ) * 2 , GLOINT32( libmouse, MOUSEY ) * 2 ) ;
-#endif
         }
         else
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-            SDL_WarpMouseInWindow(window, GLOINT32(libmouse, MOUSEX), GLOINT32( libmouse, MOUSEY ));
-#else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ), GLOINT32( libmouse, MOUSEY ) ) ;
-#endif
         }
     }
 
@@ -175,95 +148,15 @@ static void do_mouse_events()
     GLODWORD( libmouse, MOUSEWHEELUP )   = 0 ;
     GLODWORD( libmouse, MOUSEWHEELDOWN ) = 0 ;
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEWHEEL ) > 0 )
-#else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEEVENTMASK ) > 0 )
-#endif
     {
         switch ( e.type )
         {
             case SDL_MOUSEMOTION:
-                if ( scale_resolution )
+                if ( scale_resolution != 0 )
                 {
-                    if ( scale_resolution_aspectratio == SRA_PRESERVE )
-                    {
-                        if ( scale_screen->w > scale_screen->h )
-                        {
-                            switch( scale_resolution_orientation )
-                            {
-                                case    SRO_NORMAL:
-                                        GLOINT32( libmouse, MOUSEX ) = (                           e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = (                           e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        break;
-
-                                case    SRO_LEFT:
-                                        GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->h - e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = (                           e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        break;
-
-                                case    SRO_DOWN:
-                                        GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->w - e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->h - e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        break;
-
-                                case    SRO_RIGHT:
-                                        GLOINT32( libmouse, MOUSEX ) = (                           e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->w - e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        break;
-                            }
-                        }
-                        else
-                        {
-                            switch( scale_resolution_orientation )
-                            {
-                                case    SRO_NORMAL:
-                                        GLOINT32( libmouse, MOUSEX ) = (                           e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = (                           e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        break;
-
-                                case    SRO_LEFT:
-                                        GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->h - e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = (                           e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        break;
-
-                                case    SRO_DOWN:
-                                        GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->w - e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->h - e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        break;
-
-                                case    SRO_RIGHT:
-                                        GLOINT32( libmouse, MOUSEX ) = (                           e.motion.y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                                        GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->w - e.motion.x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                                        break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        switch( scale_resolution_orientation )
-                        {
-                            case    SRO_NORMAL:
-                                    GLOINT32( libmouse, MOUSEX ) = (                           e.motion.x ) * ( (double)screen->w / (double)scale_screen->w );
-                                    GLOINT32( libmouse, MOUSEY ) = (                           e.motion.y ) * ( (double)screen->h / (double)scale_screen->h );
-                                    break;
-
-                            case    SRO_LEFT:
-                                    GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->h - e.motion.y ) * ( (double)screen->w / (double)scale_screen->h );
-                                    GLOINT32( libmouse, MOUSEY ) = (                           e.motion.x ) * ( (double)screen->h / (double)scale_screen->w );
-                                    break;
-
-                            case    SRO_DOWN:
-                                    GLOINT32( libmouse, MOUSEX ) = ( (double)scale_screen->w - e.motion.x ) * ( (double)screen->w / (double)scale_screen->w );
-                                    GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->h - e.motion.y ) * ( (double)screen->h / (double)scale_screen->h );
-                                    break;
-
-                            case    SRO_RIGHT:
-                                    GLOINT32( libmouse, MOUSEX ) = (                           e.motion.y ) * ( (double)screen->w / (double)scale_screen->h );
-                                    GLOINT32( libmouse, MOUSEY ) = ( (double)scale_screen->w - e.motion.x ) * ( (double)screen->h / (double)scale_screen->w );
-                                    break;
-                        }
-                    }
+                    GLOINT32( libmouse, MOUSEX ) = e.motion.x * ( (double)screen->w / (double)scale_screen->w );
+                    GLOINT32( libmouse, MOUSEY ) = e.motion.y * ( (double)screen->h / (double)scale_screen->h );
                 }
                 else if ( enable_scale || scale_mode != SCALE_NONE )
                 {
@@ -281,10 +174,8 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_LEFT )      GLODWORD( libmouse, MOUSELEFT )     = 1 ;
                 if ( e.button.button == SDL_BUTTON_MIDDLE )    GLODWORD( libmouse, MOUSEMIDDLE )   = 1 ;
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )    = 1 ;
-#if !SDL_VERSION_ATLEAST(1, 3, 0)
                 if ( e.button.button == SDL_BUTTON_WHEELUP )   GLODWORD( libmouse, MOUSEWHEELUP )++ ;
                 if ( e.button.button == SDL_BUTTON_WHEELDOWN ) GLODWORD( libmouse, MOUSEWHEELDOWN )++ ;
-#endif
                 break ;
 
             case SDL_MOUSEBUTTONUP:
@@ -292,15 +183,6 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_MIDDLE )    GLODWORD( libmouse, MOUSEMIDDLE )    = 0 ;
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )     = 0 ;
                 break ;
-
-#if SDL_VERSION_ATLEAST(1, 3, 0)
-            case SDL_MOUSEWHEEL:
-                if(e.wheel.y > 0)
-                    GLODWORD(libmouse, MOUSEWHEELUP)++;
-                else if(e.wheel.y < 0)
-                    GLODWORD(libmouse, MOUSEWHEELDOWN)++;
-                break;
-#endif
         }
     }
 
@@ -477,18 +359,6 @@ HOOK __bgdexport( libmouse, handler_hooks )[] =
     { 4800, do_mouse_events },
     { 0, NULL }
 } ;
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( libmouse, modules_dependency )[] =
-{
-    "libsdlhandler",
-    "libgrbase",
-    "libvideo",
-    "libblit",
-    "librender", // Add by Sandman
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */
 

@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -53,9 +48,6 @@ extern PROCDEF * mainproc ;
 extern int procdef_count ;
 
 extern char *appname;
-extern char *appexename;
-extern char *appexepath;
-extern char *appexefullpath;
 
 extern int debug ;          /* 1 if running in debug mode                    */
 
@@ -72,18 +64,16 @@ extern int trace_sentence;
 extern INSTANCE * trace_instance;
 
 /* --------------------------------------------------------------------------- */
-// Some SDKs define strcmpi to strncasecmp, but we want to user our own
+// Devkitpro defines strcmpi to strncascmp, but we don't want that
 
-#if defined(TARGET_WII) || defined(TARGET_PSP)
 #ifdef strncmpi
-#undef strncmpi
-#endif
+  #undef strncmpi
 #endif
 
 extern int strncmpi( char * str1, char * str2, int sz );
 
 extern int dcb_load( const char * filename ) ;
-extern int dcb_load_from( file * fp, char * dcbname, int offset ) ;
+extern int dcb_load_from( file * fp, int offset ) ;
 
 extern char * getid_name( unsigned int code );
 
@@ -108,6 +98,16 @@ extern void bgdrtm_ptimer_init(void);
 extern unsigned long bgdrtm_ptimer_get_ticks_us(void);
 extern void bgdrtm_ptimer_cleanup(void);
 
+#endif
+
+/* --------------------------------------------------------------------------- */
+
+// TODO: Remove this once PSP is working fine, it's for debugging purposes
+//       and produces a lot of junk in the Wii framebuffer.
+#ifdef TARGET_PSP
+#define __PSP_fprintf fprintf
+#else
+#define __PSP_fprintf 
 #endif
 
 /* --------------------------------------------------------------------------- */

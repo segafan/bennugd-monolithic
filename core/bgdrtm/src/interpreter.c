@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -56,7 +51,7 @@ int debug_next = 0 ;
 int trace_sentence  = -1;
 INSTANCE * trace_instance = NULL;
 
-/* ---------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 static INSTANCE * last_instance_run = NULL;
 
@@ -292,10 +287,10 @@ int instance_go( INSTANCE * r )
 
         switch ( *ptr )
         {
-            /* Manipulación de la pila */
+                /* Manipulación de la pila */
+
             case MN_DUP:
-                *r->stack_ptr = r->stack_ptr[-1] ;
-                r->stack_ptr++;
+                *r->stack_ptr++ = r->stack_ptr[-1] ;
                 ptr++ ;
                 break ;
 
@@ -2035,7 +2030,7 @@ int instance_go( INSTANCE * r )
             case MN_CASE_R | MN_STRING:
                 r->stack_ptr -= 2;
                 if ( string_comp( r->switchval_string, r->stack_ptr[0] ) >= 0 &&
-                     string_comp( r->switchval_string, r->stack_ptr[1] ) <= 0 )
+                        string_comp( r->switchval_string, r->stack_ptr[1] ) <= 0 )
                     r->cased = 1;
                 string_discard( r->stack_ptr[0] );
                 string_discard( r->stack_ptr[1] );
@@ -2134,6 +2129,17 @@ int instance_go( INSTANCE * r )
             case MN_SENTENCE:
                 trace_sentence     = ptr[1];
                 trace_instance     = r;
+                /*
+                    if (debug)
+                    {
+                        printf ("%d: ", trace_sentence & 0xFFFFFF);
+                        if (dcb.sourcecount[trace_sentence >> 24]) {
+                            printf (" %s", dcb.sourcelines[trace_sentence >> 24] [(trace_sentence & 0xFFFFFF)-1]) ;
+                        }
+                        printf ("\n");
+                        fflush(stdout) ;
+                    }
+                */
                 ptr += 2 ;
                 break ;
 

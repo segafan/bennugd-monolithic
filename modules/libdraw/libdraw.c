@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -45,7 +40,7 @@ uint32_t drawing_stipple = 0xFFFFFFFF;
 /* --------------------------------------------------------------------------- */
 
 #ifdef __GNUC__
-#define _inline
+#define _inline inline
 #endif
 
 _inline void _HLine8_nostipple( uint8_t * ptr, uint32_t length )
@@ -323,7 +318,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             mask = ( 1 << ( 7 - ( x & 7 ) ) );
             if ( drawing_stipple != 0xFFFFFFFF )
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 )
                     {
@@ -338,7 +333,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             }
             else
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     if ( !pixel_color8 )
                         * ptr &= ~mask;
@@ -355,7 +350,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             ptr += dest->pitch * y + x ;
             if ( drawing_stipple != 0xFFFFFFFF )
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 ) _Pixel8( ptr, pixel_color8 ) ;
                     drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -364,7 +359,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             }
             else
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     _Pixel8( ptr, pixel_color8 ) ;
                     ptr += dest->pitch ;
@@ -380,7 +375,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             ptr += inc * y + x ;
             if ( drawing_stipple != 0xFFFFFFFF )
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 ) _Pixel16( ptr, pixel_color16, pixel_color16_alpha ) ;
                     drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -389,7 +384,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             }
             else
             {
-                while ( h-- >= 0 )
+                while ( h-- > 0 )
                 {
                     _Pixel16( ptr, pixel_color16, pixel_color16_alpha ) ;
                     ptr += inc ;
@@ -407,7 +402,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             {
                 if ( pixel_alpha == 255 && ( pixel_color32 & 0xff000000 ) == 0xff000000 )
                 {
-                    while ( h-- >= 0 )
+                    while ( h-- > 0 )
                     {
                         if ( drawing_stipple & 1 ) * ptr = pixel_color32 ;
                         drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -431,7 +426,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
 
                         _f <<= 24 ;
 
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             if ( drawing_stipple & 1 )
                             {
@@ -455,7 +450,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
                         _c2 = ( pixel_color32 & 0x0000ff00 ) * pixel_alpha ;
                         _c3 = ( pixel_color32 & 0x000000ff ) * pixel_alpha ;
 
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             if ( drawing_stipple & 1 )
                             {
@@ -479,7 +474,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
             {
                 if ( pixel_alpha == 255 && ( pixel_color32 & 0xff000000 ) == 0xff000000 )
                 {
-                    while ( h-- >= 0 )
+                    while ( h-- > 0 )
                     {
                         * ptr = pixel_color32 ;
                         ptr += inc ;
@@ -502,7 +497,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
 
                         _f <<= 24 ;
 
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             r = ( _c1 + (( *ptr & 0x00ff0000 ) * _f2 ) ) >> 8 ;
                             g = ( _c2 + (( *ptr & 0x0000ff00 ) * _f2 ) ) >> 8 ;
@@ -522,7 +517,7 @@ void draw_vline( GRAPH * dest, REGION * clip, int x, int y, int h )
                         _c2 = ( pixel_color32 & 0x0000ff00 ) * pixel_alpha ;
                         _c3 = ( pixel_color32 & 0x000000ff ) * pixel_alpha ;
 
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             r = ( _c1 + (( *ptr & 0x00ff0000 ) * _f2 ) ) >> 8 ;
                             g = ( _c2 + (( *ptr & 0x0000ff00 ) * _f2 ) ) >> 8 ;
@@ -743,7 +738,8 @@ void draw_box( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
             int old_stipple = drawing_stipple;
             drawing_stipple = 0xFFFFFFFF;
 
-            while ( h-- >= 0 ) draw_hline( dest, clip, x, y + h, w );
+            while ( h-- > 0 )
+                draw_hline( dest, clip, x, y + h, w );
 
             drawing_stipple = old_stipple;
         }
@@ -753,7 +749,7 @@ void draw_box( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
         {
             uint8_t * ptr = dest->data ;
             ptr += dest->pitch * y + x ;
-            while ( h-- >= 0 )
+            while ( h-- > 0 )
             {
                 _HLine8_nostipple( ptr, w ) ;
                 ptr += dest->pitch ;
@@ -766,7 +762,7 @@ void draw_box( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
             uint16_t * ptr = dest->data ;
             int inc = dest->pitch >> 1 ;
             ptr += inc * y + x ;
-            while ( h-- >= 0 )
+            while ( h-- > 0 )
             {
                 _HLine16_nostipple( ptr, w ) ;
                 ptr += inc ;
@@ -779,7 +775,7 @@ void draw_box( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
             uint32_t * ptr = dest->data ;
             int inc = dest->pitch >> 2 ;
             ptr += inc * y + x ;
-            while ( h-- >= 0 )
+            while ( h-- > 0 )
             {
                 _HLine32_nostipple( ptr, w ) ;
                 ptr += inc ;
@@ -815,10 +811,10 @@ void draw_rectangle( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
     iw = SGN( w );
     ih = SGN( h );
 
-    draw_hline( dest, clip, x, y, w - iw );
-    if ( h ) draw_vline( dest, clip, x + w, y, h - ih );
-    if ( w && h ) draw_hline( dest, clip, x + w, y + h, -( w - iw ) );
-    if ( h && w ) draw_vline( dest, clip, x, y + h, -( h - ih ) );
+    draw_hline( dest, clip, x , y , w );
+    if ( h ) draw_vline( dest, clip, x + w , y + ih , h - ih );
+    if ( w && h ) draw_hline( dest, clip, x + w - iw, y + h , -( w - iw ) );
+    if ( h && w ) draw_vline( dest, clip, x , y + h - ih, -( h - ih * 2 ) );
 
     drawing_stipple = stipple ;
 }
@@ -1160,7 +1156,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                     }
                     if ( !mask ) mask = rmask, ptr += hinc ;
                 }
-            else while ( h-- >= 0 )
+            else while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 )
                     {
@@ -1208,7 +1204,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                     if ( dd >= 0 ) ptr += vinc, dd += i2 ;
                     else dd += i1 ;
                 }
-            else while ( h-- >= 0 )
+            else while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 ) _Pixel8( ptr, pixel_color8 ) ;
                     drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -1230,7 +1226,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                     if ( dd >= 0 ) ptr += vinc, dd += i2 ;
                     else dd += i1 ;
                 }
-            else while ( h-- >= 0 )
+            else while ( h-- > 0 )
                 {
                     if ( drawing_stipple & 1 ) _Pixel16( ptr, pixel_color16, pixel_color16_alpha ) ;
                     drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -1319,7 +1315,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                 {
                     if ( pixel_alpha == 255 && ( pixel_color32 & 0xff000000 ) == 0xff000000 )
                     {
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             *ptr = pixel_color32 ;
                             ptr += vinc;
@@ -1344,7 +1340,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
 
                             _f <<= 24 ;
 
-                            while ( h-- >= 0 )
+                            while ( h-- > 0 )
                             {
                                 r = ( _c1 + (( *ptr & 0x00ff0000 ) * _f2 ) ) >> 8 ;
                                 g = ( _c2 + (( *ptr & 0x0000ff00 ) * _f2 ) ) >> 8 ;
@@ -1366,7 +1362,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                             _c2 = ( pixel_color32 & 0x0000ff00 ) * pixel_alpha ;
                             _c3 = ( pixel_color32 & 0x000000ff ) * pixel_alpha ;
 
-                            while ( h-- >= 0 )
+                            while ( h-- > 0 )
                             {
                                 r = ( _c1 + (( *ptr & 0x00ff0000 ) * _f2 ) ) >> 8 ;
                                 g = ( _c2 + (( *ptr & 0x0000ff00 ) * _f2 ) ) >> 8 ;
@@ -1469,7 +1465,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                 {
                     if ( pixel_alpha == 255 && ( pixel_color32 & 0xff000000 ) == 0xff000000 )
                     {
-                        while ( h-- >= 0 )
+                        while ( h-- > 0 )
                         {
                             if ( drawing_stipple & 1 ) *ptr = pixel_color32 ;
                             drawing_stipple = (( drawing_stipple << 1 ) | (( drawing_stipple & 0x80000000 ) ? 1 : 0 ) );
@@ -1495,7 +1491,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
 
                             _f <<= 24 ;
 
-                            while ( h-- >= 0 )
+                            while ( h-- > 0 )
                             {
                                 if ( drawing_stipple & 1 )
                                 {
@@ -1521,7 +1517,7 @@ void draw_line( GRAPH * dest, REGION * clip, int x, int y, int w, int h )
                             _c2 = ( pixel_color32 & 0x0000ff00 ) * pixel_alpha ;
                             _c3 = ( pixel_color32 & 0x000000ff ) * pixel_alpha ;
 
-                            while ( h-- >= 0 )
+                            while ( h-- > 0 )
                             {
                                 if ( drawing_stipple & 1 )
                                 {

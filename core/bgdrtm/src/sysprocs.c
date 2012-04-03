@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -44,7 +39,6 @@
 /* Debe existir un header bgdrtm.h */
 extern int bgd_copy_struct( INSTANCE * my, int * params ) ;
 extern int bgd_internal_memcopy( INSTANCE * my, int * params ) ;
-extern int bgd_internal_copy_string_array( INSTANCE * my, int * params ) ;
 
 #include "sysprocs.h"
 #include "sysprocs_p.h"
@@ -383,23 +377,10 @@ void sysproc_add_tab( DLSYSFUNCS * functions_exports )
 
 /* ---------------------------------------------------------------------- */
 
-static char * dlsearchpath[] =
-{
-    "modules",
-    "mod",
-    "mods",
-    "extensions",
-    "plugins",
-    "data",
-    NULL
-};
-
-/* ---------------------------------------------------------------------- */
-
 void sysproc_init()
 {
     SYSPROC       * proc = sysprocs ;
-    void          * library = NULL ;
+    void          * library ;
     const char    * filename ;
     unsigned int    n ;
 
@@ -417,21 +398,23 @@ void sysproc_init()
 
     int             maxcode = 0 ;
 
-    char soname[ __MAX_PATH ], fullsoname[ __MAX_PATH ], **spath ;
+    char soname[__MAX_PATH] ;
 
-#if defined( __MONOLITHIC__ )
-#define DLLEXT      ".fakelib"
-#define SIZEDLLEXT  8
-#elif defined( WIN32 )
+#if defined( WIN32 )
 #define DLLEXT      ".dll"
 #define SIZEDLLEXT  4
 #elif defined(TARGET_MAC)
 #define DLLEXT      ".dylib"
 #define SIZEDLLEXT  6
+#elif defined(TARGET_PSP) //this will change later
+#define DLLEXT		".so"
+#define SIZEDLLEXT  3
 #else
 #define DLLEXT      ".so"
 #define SIZEDLLEXT  3
 #endif
+	fprintf( stderr, "sysproc_init() running\n");
+	fprintf( stderr, "dcb.data.NImports: %d\n", dcb.data.NImports );
 
     for ( n = 0; n < dcb.data.NImports; n++ )
     {
@@ -441,27 +424,17 @@ void sysproc_init()
 
         filename = soname ;
 
-        /* Load library */
-
         if ( debug ) printf ("Loading... %s\n", filename );
 
-        fullsoname[0] = '\0';
-
+        /* Load library */
         library  = dlibopen( filename ) ;
-
-        spath = dlsearchpath;
-        while( !library && spath && *spath )
+        if ( !library )
         {
-            sprintf( fullsoname, "%s%s/%s", appexepath, *spath, filename );
-            library  = dlibopen( fullsoname ) ;
-            spath++;
-        }
-
-        if( !library )
-        {
-            printf( dliberror() ) ;
+            printf( "%s\n", dliberror() ) ;
             exit( 0 );
         }
+		
+		fprintf( stderr, "loading symbols...\n");
 
         globals_fixup     = ( DLVARFIXUP * ) _dlibaddr( library, "globals_fixup" ) ;
         locals_fixup      = ( DLVARFIXUP * ) _dlibaddr( library, "locals_fixup" ) ;
@@ -472,13 +445,15 @@ void sysproc_init()
 
         instance_create_hook       = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_create_hook" ) ;
         instance_destroy_hook      = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_destroy_hook" ) ;
-        instance_pre_execute_hook  = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_pre_execute_hook" ) ;
-        instance_pos_execute_hook  = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_pos_execute_hook" ) ;
+        // instance_pre_execute_hook  = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_pre_execute_hook" ) ;
+        // instance_pos_execute_hook  = ( INSTANCE_HOOK ) _dlibaddr( library, "instance_pos_execute_hook" ) ;
         process_exec_hook          = ( INSTANCE_HOOK ) _dlibaddr( library, "process_exec_hook" ) ;
 
         handler_hooks = ( HOOK * ) _dlibaddr( library, "handler_hooks" ) ;
 
         /* Fixups */
+		
+		fprintf( stderr, "loading fixups...\n");
 
         if ( globals_fixup )
         {
@@ -499,6 +474,8 @@ void sysproc_init()
         }
 
         sysproc_add_tab( functions_exports ) ;
+		
+		fprintf( stderr, "hooking...\n");
 
         if ( module_initialize )
             hook_add( module_initialize, module_initialize_list, module_initialize_allocated, module_initialize_count ) ;
@@ -512,15 +489,15 @@ void sysproc_init()
         if ( instance_destroy_hook )
             hook_add( instance_destroy_hook, instance_destroy_hook_list, instance_destroy_hook_allocated, instance_destroy_hook_count ) ;
 
-        if ( instance_pre_execute_hook )
-            hook_add( instance_pre_execute_hook, instance_pre_execute_hook_list, instance_pre_execute_hook_allocated, instance_pre_execute_hook_count ) ;
+        // if ( instance_pre_execute_hook )
+            // hook_add( instance_pre_execute_hook, instance_pre_execute_hook_list, instance_pre_execute_hook_allocated, instance_pre_execute_hook_count ) ;
 
-        if ( instance_pos_execute_hook )
-            hook_add( instance_pos_execute_hook, instance_pos_execute_hook_list, instance_pos_execute_hook_allocated, instance_pos_execute_hook_count ) ;
+        // if ( instance_pos_execute_hook )
+            // hook_add( instance_pos_execute_hook, instance_pos_execute_hook_list, instance_pos_execute_hook_allocated, instance_pos_execute_hook_count ) ;
 
         if ( process_exec_hook )
             hook_add( process_exec_hook, process_exec_hook_list, process_exec_hook_allocated, process_exec_hook_count ) ;
-
+		
         while ( handler_hooks && handler_hooks->hook )
         {
             hook_add( *handler_hooks, handler_hook_list, handler_hook_allocated, handler_hook_count ) ;
@@ -531,6 +508,7 @@ void sysproc_init()
     if ( debug ) printf ("\n");
 
     /* System Procs FixUp */
+	fprintf( stderr, "sysprocs_fixup()...\n");	
 
     sysprocs_fixup();
 
@@ -551,13 +529,22 @@ void sysproc_init()
     }
 
     /* Sort handler_hooks */
+	fprintf( stderr, "sorting handler hooks...\n" );
+
     if ( handler_hook_list )
         qsort( handler_hook_list, handler_hook_count, sizeof( handler_hook_list[0] ), ( int ( * )( const void *, const void * ) ) compare_priority ) ;
+
+	fprintf( stderr, "initializing modules...\n" );
 
     /* Initialize all modules */
     if ( module_initialize_count )
         for ( n = 0; n < module_initialize_count; n++ )
+		{
             module_initialize_list[n]();
+			fprintf( stderr, "initializing module[%i]\n", n);
+		}
+	fprintf( stderr, "exiting sysproc_init()\n" );
+
 }
 
 /* ---------------------------------------------------------------------- */

@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -134,7 +129,7 @@ void instance_get_bbox( INSTANCE * i, GRAPH * gr, REGION * dest )
 
 /* ---------------------------------------------------------------------- */
 
-void draw_instance_at( INSTANCE * i, REGION * region, int x, int y, GRAPH * dest )
+void draw_instance_at( INSTANCE * i, REGION * region, int x, int y )
 {
     GRAPH * map ;
     int16_t * blend_table = NULL ;
@@ -177,11 +172,11 @@ void draw_instance_at( INSTANCE * i, REGION * region, int x, int y, GRAPH * dest
        WARNING: don't remove "scalex != 100 || scaley != 100 ||" from begin the next condition */
     if ( scalex != 100 || scaley != 100 || ( LOCINT32( librender, i, ANGLE ) && !LOCDWORD( librender, i, XGRAPH ) ) )
     {
-        gr_rotated_blit( dest, region, x, y, flags, LOCDWORD( librender, i, XGRAPH ) ? 0 : LOCINT32( librender, i, ANGLE ), scalex, scaley, map ) ;
+        gr_rotated_blit( 0, region, x, y, flags, LOCDWORD( librender, i, XGRAPH ) ? 0 : LOCINT32( librender, i, ANGLE ), scalex, scaley, map ) ;
     }
     else
     {
-        gr_blit( dest, region, x, y, flags, map ) ;
+        gr_blit( 0, region, x, y, flags, map ) ;
     }
 
     if ( paletteid ) map->format->palette = palette;
@@ -213,6 +208,13 @@ void draw_instance( INSTANCE * i, REGION * clip )
     if ( !map ) return ;
 
     flags = ( LOCDWORD( librender, i, FLAGS ) ^ LOCDWORD( librender, i, XGRAPH_FLAGS ) );
+
+    if (( alpha = LOCDWORD( librender, i, ALPHA ) ) != 255 )
+    {
+        if ( alpha <= 0 ) return ;
+        else if ( alpha < 255 )
+            flags |= B_ALPHA | ( alpha << B_ALPHA_SHIFT );
+    }
 
     if (( alpha = LOCDWORD( librender, i, ALPHA ) ) != 255 )
     {

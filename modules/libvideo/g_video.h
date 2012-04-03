@@ -1,35 +1,34 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
 #ifndef __G_VIDEO_H
 #define __G_VIDEO_H
 
-#include <SDL.h>
+#ifdef TARGET_MAC
+#include <SDL/SDL.h>
+#else
+#include <SDL/SDL.h>
+#endif
 
 #include "libgrbase.h"
 
@@ -50,25 +49,10 @@
 #define SCALE_NONE          0x0000
 #define SCALE_SCALE2X       0x0001
 
-/* Scale resolution orientation */
-#define SRO_NORMAL          0
-#define SRO_LEFT            1
-#define SRO_DOWN            2
-#define SRO_RIGHT           3
-
-/* Scale resolution aspectratio */
-#define SRA_STRETCH         0
-#define SRA_PRESERVE        1
-
 /* --------------------------------------------------------------------------- */
 
 extern GRAPH * icon ;
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-extern SDL_Window  * window ;
-extern SDL_Surface * shadow_screen ;
-extern SDL_Rect      blitting_rect ;
-#endif
 extern SDL_Surface * screen ;
 extern SDL_Surface * scale_screen ;
 
@@ -96,9 +80,6 @@ extern int * scale_resolution_table_h;
 
 extern int scale_resolution_aspectratio;
 extern int scale_resolution_orientation;
-
-extern int scale_resolution_aspectratio_offx;
-extern int scale_resolution_aspectratio_offy;
 
 /* --------------------------------------------------------------------------- */
 

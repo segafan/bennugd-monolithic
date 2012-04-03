@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -79,7 +74,6 @@ PROCDEF * procdef_new (int typeid, int id)
     proc->declared  = 0 ;
     proc->type      = TYPE_DWORD ;
     proc->flags     = 0 ;
-    proc->imported  = 0 ;
 
     proc->sentence_count = 0 ;
     proc->sentences      = 0 ;
@@ -160,33 +154,7 @@ void procdef_destroy (PROCDEF * proc)
 void program_postprocess ()
 {
     int n ;
-    for (n = 0; n <= procdef_maxid; n++) codeblock_postprocess (&procs[n]->code) ;
-}
 
-void program_dumpprocesses()
-{
-    int n;
-    for (n = 0; n <= procdef_maxid; n++) procdef_dump( procs[n] );
-}
-
-void procdef_dump( PROCDEF * proc )
-{
-    printf( "\n\n---------- Process %d (%s)\n\n", proc->typeid, identifier_name( proc->identifier ) ) ;
-
-    if ( proc->privars->count )
-    {
-        printf( "---- Private variables\n" ) ;
-        varspace_dump( proc->privars, 0 ) ;
-        printf( "\n" ) ;
-    }
-
-    if ( proc->pubvars->count )
-    {
-        printf( "---- Public variables\n" ) ;
-        varspace_dump( proc->pubvars, 0 ) ;
-        printf( "\n" ) ;
-    }
-
-    /* segment_dump  (proc->pridata) ; */
-    codeblock_dump( &proc->code ) ;
+    for (n = 0 ; n <= procdef_maxid ; n++)
+        codeblock_postprocess (&procs[n]->code) ;
 }

@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -35,6 +30,12 @@
 #include <windows.h>
 #endif
 
+
+#ifdef TARGET_WII
+#include <fat.h>
+#include <SDL.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,17 +44,9 @@
 #include "bgdi.h"
 #include "bgdrtm.h"
 #include "xstrings.h"
-#include "dirs.h"
 
-#if defined(TARGET_IOS)
-#include <SDL.h>
-#elif defined(TARGET_WII)
-#include <SDL.h>
-#include <fat.h>
-#elif defined(TARGET_PSP)
-#include "psp.h"
-#elif defined(TARGET_ANDROID)
-#include <SDL.h>
+#ifdef TARGET_PSP
+    #include "psp.h"
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -63,12 +56,14 @@ static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
 static int standalone  = 0;  /* 1 only if this is an standalone interpreter   */
 static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
 
-/* ---------------------------------------------------------------------- */
+int running = 1;
+int global_ret = 0;
 
+/* ---------------------------------------------------------------------- */
 /*
  *  FUNCTION : main
  *
- *  Main function
+ *  BennuGD PSP port main function (based on ScummVM PSP Port) 
  *
  *  PARAMS:
  *      INT n: ERROR LEVEL to return to OS
@@ -77,75 +72,65 @@ static int embedded    = 0;  /* 1 only if this is a stub with an embedded DCB */
  *      No value
  *
  */
-
-int main( int argc, char *argv[] )
+#ifdef TARGET_PSP
+int main(void)
 {
-    char * filename = NULL, dcbname[ __MAX_PATH ], *ptr ;
-    int i, j, ret = -1;
+	int res;
+        
+	SetupCallbacks();
+
+	static char *argv[] = { "bgdi", NULL };
+	static int argc = ( sizeof(argv) / (sizeof(char *)-1) );
+        //static int argc = 1; //we don't parse any cmdline in here
+
+	res = bgdi_main(argc, argv);
+	sceKernelSleepThread();
+	return res;
+}
+
+int bgdi_main( int argc, char *argv[] )
+#else
+int main(int argc, char **argv)
+#endif
+{
+    char * filename = 0 ;
+    char dcbname[__MAX_PATH] ;
+    INSTANCE * mainproc_running ;
+    int i, j ;
+    char * ptr ;
     file * fp = NULL;
-    INSTANCE * mainproc_running;
+    int ret = -1;
+
     dcb_signature dcb_signature;
-
-    /* get my executable name */
-    ptr = argv[0] + strlen( argv[0] );
-    while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
-    appexename = strdup( ptr );
-
-    /* get executable full pathname  */
-    appexefullpath = getfullpath( argv[0] );
-    if ( ( !strchr( argv[0], '\\' ) && !strchr( argv[0], '/' ) ) && !file_exists( appexefullpath ) )
-    {
-        char *p = whereis( appexename );
-        if ( p )
-        {
-            char * tmp = calloc( 1, strlen( p ) + strlen( appexename ) + 2 );
-            free( appexefullpath );
-            sprintf( tmp, "%s/%s", p, appexename );
-            appexefullpath = getfullpath( tmp );
-            free( tmp );
-        }
-    }
-
-    /* get pathname of executable */
-    ptr = strstr( appexefullpath, appexename );
-    appexepath = calloc( 1, ptr - appexefullpath + 1 );
-    strncpy( appexepath, appexefullpath, ptr - appexefullpath );
-
-#ifdef _WIN32
-    appname = calloc( 1, strlen( appexename ) - 3 );
-    strncpy( appname, appexename, strlen( appexename ) - 4 );
-#else
-    appname = strdup( appexename );
-#endif
-
+	
 #ifdef TARGET_PSP
-    PSP_HEAP_SIZE_MAX ();
+    pspDebugScreenSetBackColor(0x00000000);
+    pspDebugScreenSetTextColor(0xFFFFFFFF);
     pspDebugScreenInit();
-    SetupCallbacks();
 #endif
-
-#ifdef TARGET_PSP
-    standalone = ( strncmpi( appexename, "EBOOT", 4 ) == 0 ) ;
-#else
-    standalone = ( strncmpi( appexename, "bgdi", 4 ) == 0 ) ;
-#endif
-
-    /* add binary path */
-    file_addp( appexepath );
-
+    
 #ifdef TARGET_WII
     // Initialize the Wii FAT filesystem, check stuff
     if (!fatInitDefault()) {
         printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
-        exit(1);
+		exit(1);
     }
 #endif
+
+#ifndef TARGET_PSP
+    /* Find out if we are calling bgdi.exe or whatever.exe */
+
+    ptr = argv[0] + strlen( argv[0] ) ;
+    while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
+    standalone = ( strncmpi( ptr, "bgdi", 4 ) == 0 ) ;
 
     if ( !standalone )
     {
         /* Hand-made interpreter: search for DCB at EOF */
-        fp = file_open( argv[0], "rb0" );
-        if ( fp )
+
+        if ( file_exists( argv[0] ) ) fp = file_open( argv[0], "rb0" );
+
+        if ( fp != NULL )
         {
             file_seek( fp, -( int )sizeof( dcb_signature ), SEEK_END );
             file_read( fp, &dcb_signature, sizeof( dcb_signature ) );
@@ -153,25 +138,26 @@ int main( int argc, char *argv[] )
             if ( strcmp( dcb_signature.magic, DCB_STUB_MAGIC ) == 0 )
             {
                 ARRANGE_DWORD( &dcb_signature.dcb_offset );
+
+                filename = argv[0];
                 embedded = 1;
             }
         }
 
-        filename = appname;
+        if ( !embedded )
+        {
+            /* No embedded DCB; search for a DCB with similar name */
+
+            filename = ptr ;
+            while ( *ptr ) ptr++ ; ptr--;
+            while ( ptr > filename && *ptr != '.' ) ptr-- ;
+            if ( *ptr == '.' ) * ptr = 0 ;
+        }
     }
 
     if ( standalone )
     {
         /* Calling BGDI.EXE so we must get all command line params */
-#ifdef TARGET_PSP
-    	filename="EBOOT.dcb";
-    	glob_t globbuf;
-    	glob("*.dcb", 0, NULL, &globbuf);
-    	if (globbuf.gl_pathc>0){
-    		filename=globbuf.gl_pathv[0];
-    		filename[strlen(filename)-4]=0;
-    	}
-#endif
 
         for ( i = 1 ; i < argc ; i++ )
         {
@@ -194,7 +180,7 @@ int main( int argc, char *argv[] )
                             i++ ;
                             break ;
                         }
-                        file_addp( &argv[i][j + 1] ) ;
+                        file_addp( argv[i] + j + 1 ) ;
                         break ;
                     }
                     j++ ;
@@ -214,51 +200,26 @@ int main( int argc, char *argv[] )
 
         if ( !filename )
         {
-            printf( BGDI_VERSION "\n"
-                    "Copyright (c) 2006-2011 SplinterGU (Fenix/BennuGD)\n"
+            fprintf( stderr, BGDI_VERSION "\n"
+                    "Copyright (c) 2006-2010 SplinterGU (Fenix/BennuGD)\n"
                     "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
-                    "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
+                    "Copyright (c) 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)\n"
                     "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
                     "see COPYING for details\n\n"
                     "Usage: %s [options] <data code block file>[.dcb]\n\n"
                     "   -d       Activate DEBUG mode\n"
                     "   -i dir   Adds the directory to the PATH\n"
-                    "\n"
-                    "This software is provided 'as-is', without any express or implied\n"
-                    "warranty. In no event will the authors be held liable for any damages\n"
-                    "arising from the use of this software.\n"
-                    "\n"
-                    "Permission is granted to anyone to use this software for any purpose,\n"
-                    "including commercial applications, and to alter it and redistribute it\n"
-                    "freely, subject to the following restrictions:\n"
-                    "\n"
-                    "   1. The origin of this software must not be misrepresented; you must not\n"
-                    "   claim that you wrote the original software. If you use this software\n"
-                    "   in a product, an acknowledgment in the product documentation would be\n"
-                    "   appreciated but is not required.\n"
-                    "\n"
-                    "   2. Altered source versions must be plainly marked as such, and must not be\n"
-                    "   misrepresented as being the original software.\n"
-                    "\n"
-                    "   3. This notice may not be removed or altered from any source\n"
-                    "   distribution.\n",
+                    "\nThis program is free software distributed under.\n\n"
+                    "GNU General Public License published by Free Software Foundation.\n"
+                    "Permission granted to distribute and/or modify as stated in the license\n"
+                    "agreement (GNU GPL version 2 or later).\n"
+                    "See COPYING for license details.\n",
                     argv[0] ) ;
             return -1 ;
         }
     }
-
-#ifdef TARGET_ANDROID
-    filename = "main.dcb";
-	if (!file_exists(filename)) {
-	    printf("%s doesn't exist, quitting\n", filename);
-	    return -1;
-	}
-    printf("%s exists\n", filename);
-    
-    // Remember to compile DCB with debug (bgdc -g) info!
-    debug = 1;
 #endif
-
+    
     /* Initialization (modules needed before dcb_load) */
 
     string_init() ;
@@ -266,13 +227,19 @@ int main( int argc, char *argv[] )
 
     /* Init application title for windowed modes */
 
-    strcpy( dcbname, filename ) ;
-
-    if ( appname && filename != appname )
+#ifdef TARGET_PSP
+    fprintf(stderr, "\n\nbgdi_main(): %s\n", BGDI_VERSION);
+    strcpy(dcbname, "game.dcb");
+    fprintf(stderr, "bgdi_main(): loading: %s\n", dcbname);
+    if(! dcb_load( dcbname ) )
     {
-        free( appname );
-        appname = strdup( filename ) ;
+        fprintf( stderr, "bgdi_main(): failed to load: %s\n", dcbname );
+        while(running);
+        goto finish;
     }
+#else
+    strcpy( dcbname, filename ) ;
+    appname = strdup( filename ) ;
 
     if ( !embedded )
     {
@@ -298,9 +265,8 @@ int main( int argc, char *argv[] )
         }
     }
     else
-    {
-        dcb_load_from( fp, dcbname, dcb_signature.dcb_offset );
-    }
+        dcb_load_from( fp, dcb_signature.dcb_offset );
+#endif
 
     /* If the dcb is not in debug mode */
 
@@ -317,26 +283,30 @@ int main( int argc, char *argv[] )
     if ( dwProcessId == GetCurrentProcessId() ) ShowWindow( hWnd, SW_HIDE );
 #endif
 
-    argv[0] = filename;
+#ifdef TARGET_WII
+    // Delete stdout.txt if it exists (we'll overwrite it)
+    FILE *fd;
+
+    if( (fd = fopen("stdout.txt", "a")) != NULL ) {
+        fclose(fd);
+        unlink("stdout.txt");
+    }
+#endif
+
+    argv[1] = dcbname;
     bgdrtm_entry( argc, argv );
 
     if ( mainproc )
     {
-        mainproc_running = instance_new( mainproc, NULL ) ;
+        mainproc_running = instance_new( mainproc, 0 ) ;
         ret = instance_go_all() ;
+        global_ret = ret;
+        fprintf( stderr, "execution ended! waiting for user to terminate...\n");
+        while(running); // fprintf( stderr, "running: %d\n", running );
     }
 
-#ifdef TARGET_PSP
-    sceKernelExitGame();
-#endif
-
+finish:
     bgdrtm_exit( ret );
-
-    free( appexename        );
-    free( appexepath        );
-    free( appexefullpath    );
-    free( appname           );
-
     return ret;
 }
 

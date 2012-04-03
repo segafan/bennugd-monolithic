@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright ï¿½ 2006-2010 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2002-2006 Fenix Team (Fenix)
+ *  Copyright ï¿½ 1999-2002 Josï¿½ Luis Cebriï¿½n Pagï¿½e (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -30,9 +25,9 @@
 #include <stdlib.h>
 #include <string.h>
 #ifndef WIN32
-#include <unistd.h>
+    #include <unistd.h>
 #else
-#include <direct.h>
+    #include <direct.h>
 #endif
 #include "bgdrtm.h"
 #include "dcb.h"
@@ -179,6 +174,37 @@ int dcb_load( const char * filename )
     /* check for existence of the DCB FILE */
     if ( !file_exists( filename ) ) return 0 ;
 
+	#ifdef TARGET_PSP
+	
+		fprintf( stderr, "dcb_load trying to load %s\n", filename );
+		
+		if( !file_exists( filename ) )
+		{
+			fprintf(stderr, "file_exists from dcb_load failed!\n");
+			return 0;
+		}
+		fp = file_open( filename , "rb0" );
+		if( !fp )
+		{
+			fprintf( stderr, "ERROR: Runtime error - Could not open file (%s)\n", filename );
+			exit( 1 );
+		}
+
+		return dcb_load_from( fp, 0 );	
+		
+	#else
+    if ( !file_exists( filename ) ) return 0 ;
+	
+    if( !file_exists( filename ) )
+    {
+        #ifdef TARGET_PSP
+		fprintf(stderr, "file_exists from dcb_load failed!\n");
+        return 0;
+		}
+		#else
+		if ( !file_exists( filename ) ) return 0 ;
+		#endif
+
     fp = file_open( filename, "rb0" ) ;
     if ( !fp )
     {
@@ -186,7 +212,8 @@ int dcb_load( const char * filename )
         exit( 1 );
     }
 
-    return dcb_load_from( fp, filename, 0 );
+    return dcb_load_from( fp, 0 );
+	#endif
 }
 
 /* ---------------------------------------------------------------------- */
@@ -210,13 +237,47 @@ DCB_VAR * read_and_arrange_varspace( file * fp, int count )
 
 /* ---------------------------------------------------------------------- */
 
-int dcb_load_from( file * fp, char * filename, int offset )
+int dcb_load_from( file * fp, int offset )
 {
     unsigned int n ;
+    char *path, *ptr ;
     uint32_t size;
+
+#ifdef WIN32
+    int base_drive ;
+#endif
+
+    fprintf( stderr, "running dcb_load_from()...\n" );
+
+    /* Cambia al directorio del DCB con chdir */
+    path = dir_path_convert( fp->name ) ;
+
+    fprintf( stderr, "dcb_load_from(): path: %s\n", path);
+
+    for ( ptr = path + strlen( path ) ; ptr >= path ; ptr-- )
+        if ( *ptr == '/' || *ptr == '\\' ) break ;
+    ptr[1] = 0 ;
+    fprintf( stderr, "path: %s\n", path );
+    chdir( path ) ;
+
+    /* En WIN32, cambia a la unidad del DCB */
+
+#ifdef WIN32
+    if ( path[0] && path[1] == ':' )
+    {
+        if ( path[0] >= 'A' && path[0] <= 'Z' )
+            base_drive = path[0] - 'A' + 1 ;
+
+        if ( path[0] >= 'a' && path[0] <= 'z' )
+            base_drive = path[0] - 'a' + 1 ;
+
+        _chdrive( base_drive );
+    }
+#endif
 
     /* Lee el contenido del fichero */
 
+    fprintf ( stderr, "loading DCB headers...\n" );
     file_seek( fp, offset, SEEK_SET );
     file_read( fp, &dcb, sizeof( DCB_HEADER_DATA ) ) ;
 
@@ -255,19 +316,28 @@ int dcb_load_from( file * fp, char * filename, int offset )
     ARRANGE_DWORD( &dcb.data.OSourceFiles );
     ARRANGE_DWORD( &dcb.data.OSysProcsCodes );
 
-    if ( memcmp( dcb.data.Header, DCB_MAGIC, sizeof( DCB_MAGIC ) - 1 ) != 0 || dcb.data.Version < 0x0700 ) return 0 ;
+    fprintf ( stderr, "validating header...\n" );
+
+    if ( memcmp( dcb.data.Header, DCB_MAGIC, sizeof( DCB_MAGIC ) ) != 0 || ( dcb.data.Version & 0xFF00 ) != ( DCB_VERSION & 0xFF00 ) ) return 0 ;
+
+    fprintf ( stderr, "allocating memory for data...\n" );
 
     globaldata = calloc( dcb.data.SGlobal + 4, 1 ) ;
     localdata  = calloc( dcb.data.SLocal + 4, 1 ) ;
     localstr   = ( int * ) calloc( dcb.data.NLocStrings + 4, sizeof( int ) ) ;
     dcb.proc   = ( DCB_PROC * ) calloc(( 1 + dcb.data.NProcs ), sizeof( DCB_PROC ) ) ;
     procs      = ( PROCDEF * ) calloc(( 1 + dcb.data.NProcs ), sizeof( PROCDEF ) ) ;
+    mainproc   = procs ;
+
+    fprintf ( stderr, "initializing variables...\n" );
 
     procdef_count = dcb.data.NProcs ;
     local_size    = dcb.data.SLocal ;
     local_strings = dcb.data.NLocStrings ;
 
     /* Recupera las zonas de datos globales */
+
+    fprintf ( stderr, "loading global DATA...\n" );
 
     file_seek( fp, offset + dcb.data.OGlobal, SEEK_SET ) ;
     file_read( fp, globaldata, dcb.data.SGlobal ) ;         /* **** */
@@ -326,7 +396,7 @@ int dcb_load_from( file * fp, char * filename, int offset )
 
     string_load( fp, dcb.data.OStrings, dcb.data.OText, dcb.data.NStrings, dcb.data.SText );
 
-    /* Recupera los ficheros incluídos */
+    /* Recupera los ficheros incluï¿½dos */
 
     if ( dcb.data.NFiles )
     {
@@ -344,7 +414,7 @@ int dcb_load_from( file * fp, char * filename, int offset )
             ARRANGE_DWORD( &dcbfile.OFile );
 
             file_read( fp, &fname, dcbfile.SName ) ;
-            file_add_xfile( fp, filename, offset + dcbfile.OFile, fname, dcbfile.SFile ) ;
+            file_add_xfile( fp, offset + dcbfile.OFile, fname, dcbfile.SFile ) ;
         }
     }
 
@@ -358,10 +428,18 @@ int dcb_load_from( file * fp, char * filename, int offset )
     }
 
     /* Recupera los datos de depurado */
-
+    fprintf ( stderr, "loading debug info...\n" );
     if ( dcb.data.NID )
     {
+        fprintf ( stderr, "allocating memory for DCB_IDs...\n" );
         dcb.id = ( DCB_ID * ) calloc( dcb.data.NID, sizeof( DCB_ID ) ) ;
+        if( dcb.id == NULL )
+        {
+            fprintf ( stderr, "error allocating memory for DCB_IDs...\n" );
+            fprintf ( stderr, "exiting dcb_load_from()...\n" );
+            return 0;
+        }
+
         file_seek( fp, offset + dcb.data.OID, SEEK_SET ) ;
 
         for ( n = 0; n < dcb.data.NID; n++ )
@@ -370,6 +448,8 @@ int dcb_load_from( file * fp, char * filename, int offset )
             ARRANGE_DWORD( &dcb.id[n].Code );
         }
     }
+
+    fprintf ( stderr, "loading global vars...\n" );
 
     if ( dcb.data.NGloVars )
     {
@@ -405,9 +485,10 @@ int dcb_load_from( file * fp, char * filename, int offset )
         }
     }
 
+    fprintf ( stderr, "loading sourcefiles...\n" );
     if ( dcb.data.NSourceFiles )
     {
-        char fname[__MAX_PATH] ;
+        char filename[__MAX_PATH] ;
 
         dcb.sourcecount = ( uint32_t * ) calloc( dcb.data.NSourceFiles, sizeof( uint32_t ) ) ;
         dcb.sourcelines = ( uint8_t *** ) calloc( dcb.data.NSourceFiles, sizeof( char ** ) ) ;
@@ -416,15 +497,15 @@ int dcb_load_from( file * fp, char * filename, int offset )
         for ( n = 0; n < dcb.data.NSourceFiles; n++ )
         {
             file_readUint32( fp, &size ) ;
-            file_read( fp, fname, size ) ;
-            if ( !load_file( fname, n ) ) fprintf( stdout, "WARNING: Runtime warning - file not found (%s)\n", fname ) ;
+            file_read( fp, filename, size ) ;
+            if ( !load_file( filename, n ) ) fprintf( stdout, "WARNING: Runtime warning - file not found (%s)\n", filename ) ;
         }
     }
 
     /* ZZZZZZZZZZZZZZZZZZZZZZZZZZ */
 
     /* Recupera los procesos */
-
+    fprintf ( stderr, "loading processes...\n" );
     for ( n = 0 ; n < dcb.data.NProcs ; n++ )
     {
         procs[n].params             = dcb.proc[n].data.NParams ;
@@ -499,6 +580,8 @@ int dcb_load_from( file * fp, char * filename, int offset )
 
     /* Recupero tabla de fixup de sysprocs */
 
+    fprintf ( stderr, "loading sysproc table...\n" );
+
     sysproc_code_ref = calloc( dcb.data.NSysProcsCodes, sizeof( DCB_SYSPROC_CODE2 ) ) ;
     file_seek( fp, offset + dcb.data.OSysProcsCodes, SEEK_SET ) ;
     for ( n = 0; n < dcb.data.NSysProcsCodes; n++ )
@@ -520,8 +603,6 @@ int dcb_load_from( file * fp, char * filename, int offset )
     }
 
     sysprocs_fixup();
-
-    mainproc = procdef_get_by_name( "MAIN" );
 
     return 1 ;
 }

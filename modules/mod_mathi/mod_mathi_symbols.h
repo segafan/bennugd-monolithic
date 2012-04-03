@@ -1,68 +1,88 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
-#ifndef __MODMATHI_H
-#define __MODMATHI_H
+#ifndef __MODMATHI_SYMBOLS_H
+#define __MODMATHI_SYMBOLS_H
 
 #include <bgddl.h>
 
-#ifdef __BGDC__
+#ifndef __BGDC__
+extern CONDITIONALLY_STATIC int math_abs( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_pow( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_sqrt( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_cos( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_sin( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_tan( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_acos( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_asin( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_atan( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_atan2( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_isinf( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_isnan( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_finite( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_get_disty( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_fget_angle( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_fget_dist( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_near_angle( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int math_get_distx( INSTANCE * my, int * params );
+#endif
+
+/* --------------------------------------------------------------------------- */
+
 DLCONSTANT __bgdexport( mod_mathi, constants_def )[] =
 {
     { "PI"  , TYPE_INT  , 180000    },
     { NULL  , 0         , 0         }
 } ;
 
+/* --------------------------------------------------------------------------- */
+/* Declaracion de funciones                                                    */
+
 DLSYSFUNCS __bgdexport( mod_mathi, functions_exports )[] =
 {
-    { "ABS"         , "F"       , TYPE_FLOAT    , 0 },
-    { "POW"         , "FF"      , TYPE_FLOAT    , 0 },
-    { "SQRT"        , "F"       , TYPE_FLOAT    , 0 },
-    { "COS"         , "F"       , TYPE_FLOAT    , 0 },
-    { "SIN"         , "F"       , TYPE_FLOAT    , 0 },
-    { "TAN"         , "F"       , TYPE_FLOAT    , 0 },
-    { "ACOS"        , "F"       , TYPE_FLOAT    , 0 },
-    { "ASIN"        , "F"       , TYPE_FLOAT    , 0 },
-    { "ATAN"        , "F"       , TYPE_FLOAT    , 0 },
-    { "ATAN2"       , "FF"      , TYPE_FLOAT    , 0 },
-    { "ISINF"       , "F"       , TYPE_INT      , 0 },
-    { "ISNAN"       , "F"       , TYPE_INT      , 0 },
-    { "FINITE"      , "F"       , TYPE_INT      , 0 },
-    { "FGET_ANGLE"  , "IIII"    , TYPE_INT      , 0 },
-    { "FGET_DIST"   , "IIII"    , TYPE_INT      , 0 },
-    { "NEAR_ANGLE"  , "III"     , TYPE_INT      , 0 },
-    { "GET_DISTX"   , "II"      , TYPE_INT      , 0 },
-    { "GET_DISTY"   , "II"      , TYPE_INT      , 0 },
-    { 0             , 0         , 0             , 0 }
+    { "ABS"         , "F"       , TYPE_FLOAT    , SYSMACRO(math_abs)          },
+    { "POW"         , "FF"      , TYPE_FLOAT    , SYSMACRO(math_pow)          },
+    { "SQRT"        , "F"       , TYPE_FLOAT    , SYSMACRO(math_sqrt)         },
+	
+    { "COS"         , "I"       , TYPE_FLOAT    , SYSMACRO(math_cos)          },
+    { "SIN"         , "I"       , TYPE_FLOAT    , SYSMACRO(math_sin)          },
+    { "TAN"         , "I"       , TYPE_FLOAT    , SYSMACRO(math_tan)          },
+    { "ACOS"        , "I"       , TYPE_FLOAT    , SYSMACRO(math_acos)         },
+    { "ASIN"        , "I"       , TYPE_FLOAT    , SYSMACRO(math_asin)         },
+    { "ATAN"        , "I"       , TYPE_FLOAT    , SYSMACRO(math_atan)         },
+    { "ATAN2"       , "II"      , TYPE_FLOAT    , SYSMACRO(math_atan2)        },
+	
+    { "ISINF"       , "F"       , TYPE_INT      , SYSMACRO(math_isinf)        },
+    { "ISNAN"       , "F"       , TYPE_INT      , SYSMACRO(math_isnan)        },
+    { "FINITE"      , "F"       , TYPE_INT      , SYSMACRO(math_finite)       },
+	
+    { "FGET_ANGLE"  , "IIII"    , TYPE_INT      , SYSMACRO(math_fget_angle)   },
+    { "FGET_DIST"   , "IIII"    , TYPE_INT      , SYSMACRO(math_fget_dist)    },
+    { "NEAR_ANGLE"  , "III"     , TYPE_INT      , SYSMACRO(math_near_angle)   },
+    { "GET_DISTX"   , "II"      , TYPE_INT      , SYSMACRO(math_get_distx)    },
+    { "GET_DISTY"   , "II"      , TYPE_INT      , SYSMACRO(math_get_disty)    },
+	
+    { 0             , 0         , 0             , 0                 }
 };
-#else
-extern DLCONSTANT __bgdexport( mod_mathi, constants_def )[];
-extern DLSYSFUNCS __bgdexport( mod_mathi, functions_exports )[];
-#endif
 
 #endif

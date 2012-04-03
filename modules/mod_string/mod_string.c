@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -35,13 +30,17 @@
 #include "files.h"
 #include "xstrings.h"
 
+#ifndef __MONOLITHIC__
+#include "mod_string_symbols.h"
+#endif
+
 /* STRINGS */
 
 /** LEN (STRING SOURCE)
  *  Returns the size of a string
  */
 
-static int modstring_strlen( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strlen( INSTANCE * my, int * params )
 {
     const char * str = string_get( params[0] ) ;
     int r = str ? strlen( str ) : 0 ;
@@ -53,7 +52,7 @@ static int modstring_strlen( INSTANCE * my, int * params )
  *  Converts a string to upper-case
  */
 
-static int modstring_strupper( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strupper( INSTANCE * my, int * params )
 {
     int r = string_ucase( params[0] ) ;
     string_discard( params[0] ) ;
@@ -65,7 +64,7 @@ static int modstring_strupper( INSTANCE * my, int * params )
  *  Converts a string to lower-case
  */
 
-static int modstring_strlower( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strlower( INSTANCE * my, int * params )
 {
     int r = string_lcase( params[0] ) ;
     string_discard( params[0] ) ;
@@ -77,7 +76,7 @@ static int modstring_strlower( INSTANCE * my, int * params )
  *  Compares two strings, case-insensitive
  */
 
-static int modstring_strcasecmp( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strcasecmp( INSTANCE * my, int * params )
 {
     int r = string_casecmp( params[0], params[1] ) ;
     string_discard( params[0] ) ;
@@ -90,7 +89,7 @@ static int modstring_strcasecmp( INSTANCE * my, int * params )
  *  and returning a string limited to COUNT characters
  */
 
-static int modstring_substr( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_substr( INSTANCE * my, int * params )
 {
     int r = string_substr( params[0], params[1], ( params[2] < 0 ) ? ( params[2] - 1 ) : params[2] ) ;
     string_discard( params[0] ) ;
@@ -102,7 +101,7 @@ static int modstring_substr( INSTANCE * my, int * params )
  *  Returns a substring, from the character given to the end of the source string
  */
 
-static int modstring_substr2( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_substr2( INSTANCE * my, int * params )
 {
     int r = string_substr( params[0], params[1], -1 ) ;
     string_discard( params[0] ) ;
@@ -114,7 +113,7 @@ static int modstring_substr2( INSTANCE * my, int * params )
  *  Searchs a substring in a string, and returns its position
  */
 
-static int modstring_strfind( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strfind( INSTANCE * my, int * params )
 {
     int r = string_find( params[0], params[1], 0 ) ;
     string_discard( params[0] ) ;
@@ -126,7 +125,7 @@ static int modstring_strfind( INSTANCE * my, int * params )
  *  Searchs a substring in a string, starting from the given position, and returns its position
  */
 
-static int modstring_strfindSSI( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strfindSSI( INSTANCE * my, int * params )
 {
     int r = string_find( params[0], params[1], params[2] ) ;
     string_discard( params[0] ) ;
@@ -138,7 +137,7 @@ static int modstring_strfindSSI( INSTANCE * my, int * params )
  *  Expands the string up to the given length, adding spaces at the left
  */
 
-static int modstring_lpad( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_lpad( INSTANCE * my, int * params )
 {
     int r = string_pad( params[0], params[1], 0 );
     string_discard( params[0] );
@@ -150,7 +149,7 @@ static int modstring_lpad( INSTANCE * my, int * params )
  *  Expands the string up to the given length, adding spaces at the right
  */
 
-static int modstring_rpad( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_rpad( INSTANCE * my, int * params )
 {
     int r = string_pad( params[0], params[1], 1 );
     string_discard( params[0] );
@@ -162,7 +161,7 @@ static int modstring_rpad( INSTANCE * my, int * params )
  *  Converts an integer to string
  */
 
-static int modstring_itos( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_itos( INSTANCE * my, int * params )
 {
     int r = string_itoa( params[0] ) ;
     string_use( r ) ;
@@ -173,7 +172,7 @@ static int modstring_itos( INSTANCE * my, int * params )
  *  Converts a floating-point number to string
  */
 
-static int modstring_ftos( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_ftos( INSTANCE * my, int * params )
 {
     int r = string_ftoa( *( float * ) & params[0] ) ;
     string_use( r ) ;
@@ -184,7 +183,7 @@ static int modstring_ftos( INSTANCE * my, int * params )
  *  Converts a string to integer
  */
 
-static int modstring_stoi( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_stoi( INSTANCE * my, int * params )
 {
     const char * str = string_get( params[0] ) ;
     int r = str ? atoi( str ) : 0 ;
@@ -196,7 +195,7 @@ static int modstring_stoi( INSTANCE * my, int * params )
  *  Converts a string to floating-point number
  */
 
-static int modstring_stof( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_stof( INSTANCE * my, int * params )
 {
     const char * str = string_get( params[0] ) ;
     float res = ( float )( str ? atof( str ) : 0 );
@@ -208,7 +207,7 @@ static int modstring_stof( INSTANCE * my, int * params )
  *  Return the ASCII code of the first character at the string
  */
 
-static int modstring_asc( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_asc( INSTANCE * my, int * params )
 {
     const unsigned char * str = ( unsigned char * ) string_get( params[0] ) ;
     int r = str ? *str : '\0' ;
@@ -220,7 +219,7 @@ static int modstring_asc( INSTANCE * my, int * params )
  *  Returns a string of length 1, with the character of the given ASCII code
  */
 
-static int modstring_chr( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_chr( INSTANCE * my, int * params )
 {
     unsigned char buffer[2] = " " ; int r ;
     buffer[0] = ( unsigned char ) params[0] ;
@@ -233,7 +232,7 @@ static int modstring_chr( INSTANCE * my, int * params )
  *  Returns the given string, stripping any space characters at the beginning or the end
  */
 
-static int modstring_trim( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_trim( INSTANCE * my, int * params )
 {
     int r = string_strip( params[0] ) ;
     string_discard( params[0] ) ;
@@ -265,7 +264,7 @@ static char * strrev( char * str )
  *  Returns the reverse of the source string
  */
 
-static int modstring_strrev( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_strrev( INSTANCE * my, int * params )
 {
     int r = string_new( string_get( params[0] ) );
     string_discard( params[0] ) ;
@@ -278,7 +277,7 @@ static int modstring_strrev( INSTANCE * my, int * params )
  *  Converts a given integer value to string form
  */
 
-static int modstring_formatI( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_formatI( INSTANCE * my, int * params )
 {
     int r = string_format( params[0], 0, '.', ',' );
     string_use( r ) ;
@@ -289,7 +288,7 @@ static int modstring_formatI( INSTANCE * my, int * params )
  *  Converts a given value to string form
  */
 
-static int modstring_formatF( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_formatF( INSTANCE * my, int * params )
 {
     int r = string_format( *( float * ) & params[0], -1, '.', ',' );
     string_use( r ) ;
@@ -301,39 +300,9 @@ static int modstring_formatF( INSTANCE * my, int * params )
  *  of decimals, as given with the second parameter.
  */
 
-static int modstring_formatFI( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modstring_formatFI( INSTANCE * my, int * params )
 {
     int r = string_format( *( float * ) & params[0], params[1], '.', ',' );
     string_use( r ) ;
     return r;
 }
-
-/* ----------------------------------------------------------------- */
-/* Declaracion de funciones                                          */
-
-DLSYSFUNCS  __bgdexport( mod_string, functions_exports )[] =
-{
-    { "STRLEN"     , "S"   , TYPE_INT   , modstring_strlen     },
-    { "LEN"        , "S"   , TYPE_INT   , modstring_strlen     },
-    { "UCASE"      , "S"   , TYPE_STRING, modstring_strupper   },
-    { "LCASE"      , "S"   , TYPE_STRING, modstring_strlower   },
-    { "STRCASECMP" , "SS"  , TYPE_INT   , modstring_strcasecmp },
-    { "SUBSTR"     , "SII" , TYPE_STRING, modstring_substr     },
-    { "SUBSTR"     , "SI"  , TYPE_STRING, modstring_substr2    },
-    { "FIND"       , "SS"  , TYPE_INT   , modstring_strfind    },
-    { "FIND"       , "SSI" , TYPE_INT   , modstring_strfindSSI },
-    { "LPAD"       , "SI"  , TYPE_STRING, modstring_lpad       },
-    { "RPAD"       , "SI"  , TYPE_STRING, modstring_rpad       },
-    { "ITOA"       , "I"   , TYPE_STRING, modstring_itos       },
-    { "FTOA"       , "F"   , TYPE_STRING, modstring_ftos       },
-    { "ATOI"       , "S"   , TYPE_INT   , modstring_stoi       },
-    { "ATOF"       , "S"   , TYPE_FLOAT , modstring_stof       },
-    { "ASC"        , "S"   , TYPE_BYTE  , modstring_asc        },
-    { "CHR"        , "I"   , TYPE_STRING, modstring_chr        },
-    { "TRIM"       , "S"   , TYPE_STRING, modstring_trim       },
-    { "STRREV"     , "S"   , TYPE_STRING, modstring_strrev     },
-    { "FORMAT"     , "I"   , TYPE_STRING, modstring_formatI    },
-    { "FORMAT"     , "F"   , TYPE_STRING, modstring_formatF    },
-    { "FORMAT"     , "FI"  , TYPE_STRING, modstring_formatFI   },
-    { 0            , 0     , 0          , 0                    }
-};

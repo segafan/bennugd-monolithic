@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -31,20 +26,33 @@
 
 #include <bgddl.h>
 
-#ifdef __BGDC__
+#ifndef __BGDC__
+extern CONDITIONALLY_STATIC int bgd_set_title( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_set_icon( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_minimize( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_move_window( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_get_window_pos( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_get_window_size( INSTANCE * my, int * params );
+extern CONDITIONALLY_STATIC int bgd_get_desktop_size( INSTANCE * my, int * params );
+#endif
+
+/* --------------------------------------------------------------------------- */
+
 DLSYSFUNCS __bgdexport( mod_wm, functions_exports )[] =
 {
     /* Funciones de ventana */
-    { "SET_TITLE"           , "S"   , TYPE_INT , 0 },
-    { "SET_ICON"            , "II"  , TYPE_INT , 0 },
-    { "MINIMIZE"            , ""    , TYPE_INT , 0 },
-    { "MOVE_WINDOW"         , "II"  , TYPE_INT , 0 },
-    { "SET_WINDOW_POS"      , "II"  , TYPE_INT , 0 },
-    { "GET_WINDOW_POS"      , "PP"  , TYPE_INT , 0 },
-    { "GET_WINDOW_SIZE"     , "PPPP", TYPE_INT , 0 },
-    { "GET_DESKTOP_SIZE"    , "PP"  , TYPE_INT , 0 },
-    { 0                     , 0     , 0        , 0 }
+    { "SET_TITLE"           , "S"   , TYPE_INT , SYSMACRO(bgd_set_title)          },
+    { "SET_ICON"            , "II"  , TYPE_INT , SYSMACRO(bgd_set_icon)           },
+    { "MINIMIZE"            , ""    , TYPE_INT , SYSMACRO(bgd_minimize)           },
+    { "MOVE_WINDOW"         , "II"  , TYPE_INT , SYSMACRO(bgd_move_window)        },
+    { "SET_WINDOW_POS"      , "II"  , TYPE_INT , SYSMACRO(bgd_move_window)        },
+    { "GET_WINDOW_POS"      , "PP"  , TYPE_INT , SYSMACRO(bgd_get_window_pos)     },
+    { "GET_WINDOW_SIZE"     , "PPPP", TYPE_INT , SYSMACRO(bgd_get_window_size)    },
+    { "GET_DESKTOP_SIZE"    , "PP"  , TYPE_INT , SYSMACRO(bgd_get_desktop_size)   },
+    { 0                     , 0     , 0        , 0                      }
 };
+
+/* --------------------------------------------------------------------------- */
 
 char * __bgdexport( mod_wm, modules_dependency )[] =
 {
@@ -53,9 +61,5 @@ char * __bgdexport( mod_wm, modules_dependency )[] =
     "libwm",
     NULL
 };
-#else
-extern DLSYSFUNCS __bgdexport( mod_wm, functions_exports )[];
-extern char * __bgdexport( mod_wm, modules_dependency )[];
-#endif
 
 #endif

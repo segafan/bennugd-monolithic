@@ -1,21 +1,14 @@
-/*
- *  Copyright © 2011 Joseba García Etxebarria <joseba.gar@gmail.com>
- *
- *  mod_iconv is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  mod_iconv is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- *
- */
+/* ************************************************************************** */
+/* *                                                                        * */
+/* *            Copyright (c) 2008-2010 - Joseba García Etxebarria          * */
+/* *                                                                        * */
+/* *                   This is a BennuGD interface to iconv                 * */
+/* *                                                                        * */
+/* *            Under the terms of the GNU GPL version 2 license            * */
+/* *                                                                        * */
+/* *                         See LICENSE for details                        * */
+/* *                                                                        * */
+/* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,12 +19,15 @@
 #include <bgddl.h>
 #include <errno.h>
 #include <sysprocs_st.h>
+
+#ifndef __MONOLITHIC__
 #include "iconv_symbols.h"
+#endif
 
 //Convert the charset of the string.
 //Acceptable params are:
 //string fromcharset, string tocharset, string translate_string
-int bgd_iconv(INSTANCE * my, int * params) {
+CONDITIONALLY_STATIC int bgd_iconv(INSTANCE * my, int * params) {
   size_t inbytesleft, outbytesleft, retval;
   SDL_iconv_t cd;
   const char *inchar = string_get( params[2] );
@@ -40,11 +36,14 @@ int bgd_iconv(INSTANCE * my, int * params) {
   int strid=0, close_retval=0;
 
   //Conversion descriptor
-  cd = SDL_iconv_open( string_get(params[0]), string_get(params[1]) );
+//  printf("fromcode: %s.\n", string_get(params[1]));
+//  printf("tocode  : %s.\n", string_get(params[0]));
+  cd = SDL_iconv_open( string_get(params[1]), string_get(params[0]) );
   string_discard(params[0]);
   string_discard(params[1]);
   string_discard(params[2]);
   if(cd == (SDL_iconv_t)(-1)) {
+    printf("FATAL: couldn't start libiconv, errno: ");
     if(errno == EINVAL) printf("EINVAL (Translation not supported).\n");
     return errno;
   }
@@ -100,9 +99,3 @@ int bgd_iconv(INSTANCE * my, int * params) {
   free(outchar);
   return strid;
 }
-
-DLSYSFUNCS __bgdexport( mod_iconv, functions_exports )[] =
-{
-	{ "ICONV"            , "SSS"  , TYPE_STRING, bgd_iconv       },
-	{ 0                  , 0      , 0          , 0               }
-};

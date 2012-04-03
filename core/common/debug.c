@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -34,10 +29,10 @@
 
 #ifndef __BGDRTM__
 #include "bgdc.h"
-#include "identifiers.h"
-#else
+#endif
+
+#ifdef __BGDRTM__
 #include "sysprocs_p.h"
-#include "i_procdef.h"
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -176,6 +171,7 @@ mnemonics[] =
 } ;
 
 /* ---------------------------------------------------------------------- */
+
 static int mnemonics_inited = 0;
 
 struct
@@ -244,29 +240,13 @@ void mnemonic_dump( int i, int param )
         {
             printf( "%-8s (%d)", sysproc_name( param ), param ) ;
         }
-        else if ( i == MN_CALL || i == MN_PROC || i == MN_TYPE )
-        {
-#ifndef __BGDRTM__
-            if ( libmode )
-                printf( "%-8s (%d)", identifier_name( (procdef_search(param))->identifier ), param ) ;
-            else
-                printf( "%-8s (%d)", identifier_name( (procdef_get(param))->identifier ), param ) ;
-#else
-            printf( "%-8s (%d)", procdef_get(param)->name, param ) ;
-#endif
-        }
         else if ( i == MN_SENTENCE )
         {
 #ifdef __BGDRTM__
             if ( dcb.sourcecount[param >> 24] )
-            {
-                if ( dcb.data.Version == 0x0700 )
-                    printf( "%s:%d -> %s", dcb.sourcefiles[param >> 24], param & 0xFFFFFF, dcb.sourcelines[param >> 24] [( param & 0xFFFFFF )-1] ) ;
-                else
-                    printf( "%s:%d -> %s", dcb.sourcefiles[param >> 20], param & 0xFFFFF , dcb.sourcelines[param >> 20] [( param & 0xFFFFF  )-1] ) ;
-            }
+                printf( "%s:%d -> %s", dcb.sourcefiles[param >> 24], param & 0xFFFFFF, dcb.sourcelines[param >> 24] [( param & 0xFFFFFF )-1] ) ;
 #else
-            printf( "%s:%d", files[param>>20], param&(( 1 << 20 ) - 1 ) ) ;
+            printf( "%s:%d", files[param>>24], param&(( 1 << 24 ) - 1 ) ) ;
 #endif
         }
         else if ( i == ( MN_PUSH | MN_FLOAT ) )

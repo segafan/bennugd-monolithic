@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -59,21 +54,14 @@ extern void import_files( char * filename );
 extern void add_simple_define( char * macro, char *text );
 extern int dcb_options;
 
-extern int dcb_load_lib( const char * filename );
-
 /* --------------------------------------------------------------------------- */
 
 char langinfo[64];
 
 extern int debug;
 int autodeclare = 1;
-int libmode = 0;
 
 char * main_path = NULL;
-
-char * appexename       = NULL;
-char * appexepath       = NULL;
-char * appexefullpath   = NULL;
 
 /* --------------------------------------------------------------------------- */
 
@@ -82,12 +70,9 @@ static char _tmp[128];
 
 /* --------------------------------------------------------------------------- */
 
-#if defined(TARGET_PSP)
-int SDL_main( int argc, char *argv[] )
-#else
-int main( int argc, char *argv[] )
-#endif
+int main( int argc, char **argv )
 {
+    FILE *fd;
     time_t curtime;
     struct tm *loctime;
     int value, code;
@@ -100,7 +85,6 @@ int main( int argc, char *argv[] )
     char importname[__MAX_PATH] = "";
     char compilerimport[__MAX_PATH] = "";
     int i, j;
-    char *ptr;
     
 /* The following code has been stolen from devkitpro project's wii-examples */
 #ifdef TARGET_WII
@@ -140,34 +124,9 @@ int main( int argc, char *argv[] )
     VIDEO_WaitVSync();
     if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
 #endif
-    
-    /* get my executable name */
-    ptr = argv[0] + strlen( argv[0] );
-    while ( ptr > argv[0] && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
-    appexename = strdup( ptr );
-
-    /* get executable full pathname  */
-    appexefullpath = getfullpath( argv[0] );
-    if ( ( !strchr( argv[0], '\\' ) && !strchr( argv[0], '/' ) ) && !file_exists( appexefullpath ) )
-    {
-        char *p = whereis( appexename );
-        if ( p )
-        {
-            char * tmp = calloc( 1, strlen( p ) + strlen( appexename ) + 2 );
-            free( appexefullpath );
-            sprintf( tmp, "%s/%s", p, appexename );
-            appexefullpath = getfullpath( tmp );
-            free( tmp );
-        }
-    }
-
-    /* get pathname of executable */
-    ptr = strstr( appexefullpath, appexename );
-    appexepath = calloc( 1, ptr - appexefullpath + 1 );
-    strncpy( appexepath, appexefullpath, ptr - appexefullpath );
 
     printf( BGDC_VERSION "\n"
-            "Copyright © 2006-2011 SplinterGU (Fenix/BennuGD)\n"
+            "Copyright © 2006-2010 SplinterGU (Fenix/BennuGD)\n"
             "Copyright © 2002-2006 Fenix Team (Fenix)\n"
             "Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
             "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
@@ -204,52 +163,7 @@ int main( int argc, char *argv[] )
     string_init();
     compile_init();
 
-    mainproc = procdef_new( procdef_getid(), identifier_search_or_add( "MAIN" ) ) ;
-
-    /* Init vars */
-
-    char tmp_version[ 32 ];
-    sprintf( tmp_version, "\"%s\"", VERSION );
-    add_simple_define( "COMPILER_VERSION", tmp_version );
-    add_simple_define( "__VERSION__", tmp_version );
-
-    curtime = time( NULL ); /* Get the current time. */
-    loctime = localtime( &curtime ); /* Convert it to local time representation. */
-
-    strftime( timebuff, sizeof( timebuff ), "%Y/%m/%d", loctime );
-    value = string_new( timebuff );
-    code = identifier_search_or_add( "__DATE__" ) ;
-    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-
-    strftime( timebuff, sizeof( timebuff ), "%H:%M:%S", loctime );
-    value = string_new( timebuff );
-    code = identifier_search_or_add( "__TIME__" ) ;
-    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-/*
-    value = string_new( VERSION );
-    code = identifier_search_or_add( "__VERSION__" ) ;
-    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-    code = identifier_search_or_add( "COMPILER_VERSION" ) ;
-    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
-*/
-    strcpy( _tmp, VERSION );
-                d = strchr( _tmp, '.' ); *d = '\0'; add_simple_define( "__BGD__", _tmp );
-    d1 = d + 1; d = strchr(   d1, '.' ); *d = '\0'; add_simple_define( "__BGD_MINOR__", d1 );
-    d1 = d + 1;                                     add_simple_define( "__BGD_PATCHLEVEL__", d1 );
-
-    memset( &dcb, 0, sizeof( dcb ) );
-
-    core_init();
-    sysproc_init();
-
     /* Get command line parameters */
-#ifdef TARGET_PSP
-    	if (argc<2){
-    		char* newargv[2]={argv[0],"EBOOT.prg"};
-    		argc = 2;
-    	    argv=newargv;
-    	}
-#endif
 
     for ( i = 1 ; i < argc ; i++ )
     {
@@ -258,12 +172,6 @@ int main( int argc, char *argv[] )
             if ( !strcmp( argv[i], "--pedantic" ) )
             {
                 autodeclare = 0 ;
-                continue;
-            }
-
-            if ( !strcmp( argv[i], "--libmode" ) )
-            {
-                libmode = 1 ;
                 continue;
             }
 
@@ -315,7 +223,7 @@ int main( int argc, char *argv[] )
                     /* -f "file": Embed a file to the DCB */
 
                     if ( argv[i][j + 1] )
-                        dcb_add_file( &argv[i][j + 1] );
+                        dcb_add_file( argv[i + j] + 1 );
                     else while ( argv[i + 1] )
                         {
                             if ( argv[i + 1][0] == '-' ) break;
@@ -340,7 +248,7 @@ int main( int argc, char *argv[] )
                         i++;
                         break;
                     }
-                    file_addp( &argv[i][j + 1] );
+                    file_addp( argv[i] + j + 1 );
                     break;
                 }
 
@@ -357,7 +265,7 @@ int main( int argc, char *argv[] )
                         i++;
                         break;
                     }
-                    strcpy( langinfo, &argv[i][j + 1] );
+                    strcpy( langinfo, argv[i] + j + 1 );
                     break;
                 }
 
@@ -400,43 +308,17 @@ int main( int argc, char *argv[] )
                     break;
                 }
 
-                if ( argv[i][j] == 'L' )
-                {
-                    int r = 1;
-                    char * f;
-                    if ( argv[i][j + 1] )
-                        r = dcb_load_lib( ( f = &argv[i][j + 1] ) );
-                    else if ( argv[i + 1] && argv[i + 1][0] != '-' )
-                    {
-                        r = dcb_load_lib( ( f = argv[i + 1] ) );
-                        i++;
-                    }
-
-                    switch ( r )
-                    {
-                        case    0:
-                                printf( "ERROR: %s doesn't exist or isn't version DCB compatible\n", f ) ;
-                                exit( -1 );
-
-                        case    -1:
-                                printf( "ERROR: %s isn't 7.10 DCB version, you need a 7.10 version or greater for use this feature\n", f ) ;
-                                exit( -1 );
-                    }
-                    break;
-                }
-
                 j++;
             }
         }
         else
         {
-/*
             if ( sourcefile )
             {
                 printf( MSG_TOO_MANY_FILES "\n" );
                 return 0;
             }
-*/
+
             char * p, * pathend = NULL;
 
             sourcefile = argv[i];
@@ -457,49 +339,90 @@ int main( int argc, char *argv[] )
                 main_path = getcwd(malloc(__MAX_PATH), __MAX_PATH);
                 strcat(main_path, PATH_SEP);
             }
-
-            /* Files names */
-
-            strcpy( basepathname, sourcefile );
-            REMOVE_EXT( basepathname );
-
-            /* Default compiler imports */
-            strcpy( compilerimport, argv[0] );
-#ifdef WIN32
-            REMOVE_EXT( compilerimport );
-#endif
-            strcat( compilerimport, ".imp" );
-            import_files( compilerimport );
-            strcat( compilerimport, "ort" ); /* name.import */
-            import_files( compilerimport );
-
-            /* Project imports */
-            strcpy( importname, basepathname ); strcat( importname, ".imp" );
-            import_files( importname );
-
-            strcat( importname, "ort" ); /* name.import */
-            import_files( importname );
-
-            /* Load Main Source File */
-            load_file( sourcefile );
-
-            if ( !dcbname[0] )
-            {
-                strcpy( dcbname, basepathname ); strcat( dcbname, !libmode ? ".dcb" : ".dcl" );
-            }
         }
     }
 
     if ( !sourcefile )
     {
-        printf( MSG_USING
+        if( (fd = fopen("boot.prg", "r")) != NULL )  // Check if boot.prg exists
+        {
+            fclose(fd);
+            sourcefile = "boot.prg";
+        } else {
+            printf( MSG_USING
                 MSG_OPTION_D
                 MSG_OPTIONS
                 MSG_LICENSE, argv[0] );
-        return 0;
+            
+            return 0;
+        }
     }
 
+    char tmp_version[ 32 ];
+    sprintf( tmp_version, "\"%s\"", VERSION );
+    add_simple_define( "COMPILER_VERSION", tmp_version );
+    add_simple_define( "__VERSION__", tmp_version );
+
+    curtime = time( NULL ); /* Get the current time. */
+    loctime = localtime( &curtime ); /* Convert it to local time representation. */
+
+    strftime( timebuff, sizeof( timebuff ), "%Y/%m/%d", loctime );
+    value = string_new( timebuff );
+    code = identifier_search_or_add( "__DATE__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+
+    strftime( timebuff, sizeof( timebuff ), "%H:%M:%S", loctime );
+    value = string_new( timebuff );
+    code = identifier_search_or_add( "__TIME__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+/*
+    value = string_new( VERSION );
+    code = identifier_search_or_add( "__VERSION__" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+    code = identifier_search_or_add( "COMPILER_VERSION" ) ;
+    constants_add( code, typedef_new( TYPE_STRING ), value ) ;
+*/
+    strcpy( _tmp, VERSION );
+                d = strchr( _tmp, '.' ); *d = '\0'; add_simple_define( "__BGD__", _tmp );
+    d1 = d + 1; d = strchr(   d1, '.' ); *d = '\0'; add_simple_define( "__BGD_MINOR__", d1 );
+    d1 = d + 1;                                     add_simple_define( "__BGD_PATCHLEVEL__", d1 );
+
+    memset( &dcb, 0, sizeof( dcb ) );
+
+    core_init();
+    sysproc_init();
+
+    /* Files names */
+
+    strcpy( basepathname, sourcefile );
+    REMOVE_EXT( basepathname );
+
+    /* Default compiler imports */
+    strcpy( compilerimport, argv[0] );
+#ifdef WIN32
+    REMOVE_EXT( compilerimport );
+#endif
+    strcat( compilerimport, ".imp" );
+    import_files( compilerimport );
+    strcat( compilerimport, "ort" ); /* name.import */
+    import_files( compilerimport );
+
+    /* Project imports */
+    strcpy( importname, basepathname ); strcat( importname, ".imp" );
+    import_files( importname );
+
+    strcat( importname, "ort" ); /* name.import */
+    import_files( importname );
+
+    /* Load Main Source File */
+    load_file( sourcefile );
+
     compile_program();
+
+    if ( !dcbname[0] )
+    {
+        strcpy( dcbname, basepathname ); strcat( dcbname, ".dcb" );
+    }
 
     if ( stubname[0] != 0 )
     {

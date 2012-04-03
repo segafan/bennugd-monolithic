@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -44,16 +39,16 @@
 
 #include "resolution.h"
 
+#include "mod_m7_defines.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_m7_symbols.h"
+#endif
+
 /* --------------------------------------------------------------------------- */
 
 extern uint8_t trans_table[256][256] ;
 extern int trans_table_updated ;
-
-/* --------------------------------------------------------------------------- */
-
-// #define FOCAL_DIST  128
-
-#define C_M7        2
 
 /* --------------------------------------------------------------------------- */
 
@@ -103,7 +98,6 @@ typedef struct _mode7
     REGION * region ;
     GRAPH * indoor ;
     GRAPH * outdoor ;
-    GRAPH * dest ;
 }
 MODE7 ;
 
@@ -146,39 +140,6 @@ static MODE7 mode7_inf[10] = { { 0 } } ;
 #define RESOLUTION  9
 
 /* --------------------------------------------------------------------------- */
-/* Definicion de constantes (usada en tiempo de compilacion)         */
-
-DLCONSTANT __bgdexport( mod_m7, constants_def )[] =
-{
-    { "C_M7", TYPE_INT, C_M7 },
-    { NULL  , 0       , 0 }
-} ;
-
-/* --------------------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-char * __bgdexport( mod_m7, globals_def ) =
-    "STRUCT m7[9]\n"
-    "camera;\n"
-    "height = 32;\n"
-    "distance = 64;\n"
-    "horizon = 0;\n"
-    "focus = 256;\n"
-    "z = 256;\n"
-    "color = 0;\n"
-    "flags = 0;\n"
-    "END\n" ;
-
-/* --------------------------------------------------------------------------- */
-/* Definicion de variables locales (usada en tiempo de compilacion)  */
-char * __bgdexport( mod_m7, locals_def ) =
-    "ctype;\n"
-    "cnumber;\n"
-    "height;\n"
-    "STRUCT _m7_reserved\n"
-    "  distance1;\n"
-    "END;\n";
-
-/* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -193,7 +154,7 @@ DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[] =
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
-DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[]  =
+DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[] =
 {
     /* Nombre de variable local, offset al dato, tamaño del elemento, cantidad de elementos */
     { "angle"                   , NULL, -1, -1 },
@@ -222,246 +183,6 @@ static int compare_by_distance( const void * ptr1, const void * ptr2 )
 
 /* --------------------------------------------------------------------------- */
 
-#define M7_8bpp() \
-                baseline = ptr ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        c = (( uint8_t* )indoor->data )[indoor->pitch*sy + sx] ; \
-                        if ( c > 0 ) *ptr   = c ; \
-                        ptr++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) c = (( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + ( sx & outdoor_hmask )] ; \
-                        else           c = dat->color ; \
-                        if ( c > 0 ) *ptr   = c ; \
-                        ptr++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr = baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ;
-
-
-#define M7_16bpp() \
-                baseline = ( uint8_t * ) ptr16 ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        c16 = *( uint16_t* )&((( uint8_t* )indoor->data )[indoor->pitch*sy + (sx<<1)]) ; \
-                        if ( c16 > 0 ) *ptr16 = c16 ; \
-                        ptr16++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) c16 = *( uint16_t* )&((( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + (( sx & outdoor_hmask ) << 1)]) ; \
-                        else           c16 = dat->color ; \
-                        if ( c16 > 0 ) *ptr16 = c16 ; \
-                        ptr16++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr16 = ( uint16_t * ) ( baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) );
-
-
-#define M7_32bpp() \
-                baseline = ( uint8_t * ) ptr32 ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        c32 = *( uint32_t* )&((( uint8_t* )indoor->data )[indoor->pitch*sy + (sx<<2)]) ; \
-                        if ( c32 > 0 ) *ptr32 = c32 ; \
-                        ptr32++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) c32 = *( uint32_t* )&((( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + (( sx & outdoor_hmask ) << 2)]) ; \
-                        else           c32 = dat->color ; \
-                        if ( c32 > 0 ) *ptr32 = c32 ; \
-                        ptr32++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr32 = ( uint32_t * ) ( baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) );
-
-
-#define M7_t8bpp() \
-                baseline = ptr ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        *ptr = trans_table[(( uint8_t* )indoor->data )[indoor->pitch*sy + sx]][*ptr] ; \
-                        ptr++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) *ptr = trans_table[(( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + ( sx & outdoor_hmask )]][*ptr] ; \
-                        else           *ptr = trans_table[dat->color][*ptr] ; \
-                        ptr++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr = baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ;
-
-
-#define M7_t16bpp() \
-                baseline = ( uint8_t * ) ptr16 ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        *ptr16 = colorghost[*ptr16]+colorghost[*( uint16_t* )&((( uint8_t* )indoor->data )[indoor->pitch*sy + (sx<<1)])]; \
-                        ptr16++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) *ptr16 = colorghost[*ptr16]+colorghost[*( uint16_t* )&((( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + ((sx& outdoor_hmask)<<1)])]; \
-                        else           *ptr16 = colorghost[*ptr16]+colorghost[dat->color]; \
-                        ptr16++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr16 = ( uint16_t * ) ( baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ); \
-
-
-#define M7_t32bpp() \
-                baseline = ( uint8_t * ) ptr32 ; \
- \
-                for ( x = 0 ; x < width ; x++ ) \
-                { \
-                    sx = fixtoi( bmp_x ) ; \
-                    sy = fixtoi( bmp_y ) ; \
- \
-                    if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height ) \
-                    { \
-                        c32 = *( uint32_t* )&((( uint8_t* )indoor->data )[indoor->pitch*sy + (sx<<2)]); \
-                        _f = c32 & 0xff000000; \
-                        if ( _f != 0xff000000 ) \
-                        { \
-                            _f = ( _f >> 24 ) * 128 / 255 ; \
-                            _f2 = 255 - _f ; \
- \
-                            r = ((( c32 & 0x00ff0000 ) * _f ) + (( *ptr32 & 0x00ff0000 ) * _f2 ) ) >> 8 ; \
-                            g = ((( c32 & 0x0000ff00 ) * _f ) + (( *ptr32 & 0x0000ff00 ) * _f2 ) ) >> 8 ; \
-                            b = ((( c32 & 0x000000ff ) * _f ) + (( *ptr32 & 0x000000ff ) * _f2 ) ) >> 8 ; \
-                        } \
-                        else \
-                        { \
-                            r = ((( c32 & 0x00ff0000 ) * 128 ) + (( *ptr32 & 0x00ff0000 ) * 128 ) ) >> 8 ; \
-                            g = ((( c32 & 0x0000ff00 ) * 128 ) + (( *ptr32 & 0x0000ff00 ) * 128 ) ) >> 8 ; \
-                            b = ((( c32 & 0x000000ff ) * 128 ) + (( *ptr32 & 0x000000ff ) * 128 ) ) >> 8 ; \
-                        } \
- \
-                        if ( r > 0x00ff0000 ) r = 0x00ff0000 ; else r &= 0x00ff0000 ; \
-                        if ( g > 0x0000ff00 ) g = 0x0000ff00 ; else g &= 0x0000ff00 ; \
-                        if ( b > 0x000000ff ) b = 0x000000ff ; else b &= 0x000000ff ; \
- \
-                        *ptr32 = ( MAX( c32 & 0xff000000, *ptr32 & 0xff000000 ) ) | r | g | b ; \
-                        ptr32++ ; \
-                    } \
-                    else \
-                    { \
-                        if ( outdoor ) \
-                        { \
-                            c32 = *( uint32_t* )&((( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + (( sx & outdoor_hmask ) << 2)]) ; \
-                            _f = c32 & 0xff000000; \
-                            if ( _f != 0xff000000 ) \
-                            { \
-                                _f = ( _f >> 24 ) * 128 / 255 ; \
-                                _f2 = 255 - _f ; \
- \
-                                r = ((( c32 & 0x00ff0000 ) * _f ) + (( *ptr32 & 0x00ff0000 ) * _f2 ) ) >> 8 ; \
-                                g = ((( c32 & 0x0000ff00 ) * _f ) + (( *ptr32 & 0x0000ff00 ) * _f2 ) ) >> 8 ; \
-                                b = ((( c32 & 0x000000ff ) * _f ) + (( *ptr32 & 0x000000ff ) * _f2 ) ) >> 8 ; \
-                            } \
-                            else \
-                            { \
-                                r = ((( c32 & 0x00ff0000 ) * 128 ) + (( *ptr32 & 0x00ff0000 ) * 128 ) ) >> 8 ; \
-                                g = ((( c32 & 0x0000ff00 ) * 128 ) + (( *ptr32 & 0x0000ff00 ) * 128 ) ) >> 8 ; \
-                                b = ((( c32 & 0x000000ff ) * 128 ) + (( *ptr32 & 0x000000ff ) * 128 ) ) >> 8 ; \
-                            } \
- \
-                            if ( r > 0x00ff0000 ) r = 0x00ff0000 ; else r &= 0x00ff0000 ; \
-                            if ( g > 0x0000ff00 ) g = 0x0000ff00 ; else g &= 0x0000ff00 ; \
-                            if ( b > 0x000000ff ) b = 0x000000ff ; else b &= 0x000000ff ; \
- \
-                            *ptr32 = ( MAX( c32 & 0xff000000, *ptr32 & 0xff000000 ) ) | r | g | b ; \
-                        } \
-                        else \
-                        { \
-                            c32 = dat->color ; \
-                            _f = c32 & 0xff000000; \
-                            if ( _f != 0xff000000 ) \
-                            { \
-                                _f = ( _f >> 24 ) * 128 / 255 ; \
-                                _f2 = 255 - _f ; \
- \
-                                r = ((( c32 & 0x00ff0000 ) * _f ) + (( *ptr32 & 0x00ff0000 ) * _f2 ) ) >> 8 ; \
-                                g = ((( c32 & 0x0000ff00 ) * _f ) + (( *ptr32 & 0x0000ff00 ) * _f2 ) ) >> 8 ; \
-                                b = ((( c32 & 0x000000ff ) * _f ) + (( *ptr32 & 0x000000ff ) * _f2 ) ) >> 8 ; \
-                            } \
-                            else \
-                            { \
-                                r = ((( c32 & 0x00ff0000 ) * 128 ) + (( *ptr32 & 0x00ff0000 ) * 128 ) ) >> 8 ; \
-                                g = ((( c32 & 0x0000ff00 ) * 128 ) + (( *ptr32 & 0x0000ff00 ) * 128 ) ) >> 8 ; \
-                                b = ((( c32 & 0x000000ff ) * 128 ) + (( *ptr32 & 0x000000ff ) * 128 ) ) >> 8 ; \
-                            } \
- \
-                            if ( r > 0x00ff0000 ) r = 0x00ff0000 ; else r &= 0x00ff0000 ; \
-                            if ( g > 0x0000ff00 ) g = 0x0000ff00 ; else g &= 0x0000ff00 ; \
-                            if ( b > 0x000000ff ) b = 0x000000ff ; else b &= 0x000000ff ; \
- \
-                            *ptr32 = ( MAX( c32 & 0xff000000, *ptr32 & 0xff000000 ) ) | r | g | b ; \
-                        } \
-                        ptr32++ ; \
-                    } \
- \
-                    bmp_x += hinc ; \
-                    bmp_y += vinc ; \
-                } \
- \
-                ptr32 = ( uint32_t * ) ( baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ); \
-
-
 static void draw_mode7( int n, REGION * clip )
 {
     fixed   bmp_x, bmp_y ;
@@ -473,10 +194,7 @@ static void draw_mode7( int n, REGION * clip )
     fixed   hinc, vinc ;
 
     if ( n < 0 || n > 9 ) return ;
-
-    MODE7 * mode7 = &mode7_inf[n];
-
-    if ( !mode7->id ) return ;
+    if ( !mode7_inf[n].id ) return ;
 
     int horizon_y   = -1;
     int jump ;
@@ -486,13 +204,12 @@ static void draw_mode7( int n, REGION * clip )
 
     uint32_t  sx, sy ;
     int x, y, z, height, width ;
-    uint8_t  * ptr  , * baseline  , c ;
-    uint16_t * ptr16,               c16 ;
-    uint32_t * ptr32,               c32 ;
+    uint8_t * ptr, * baseline, c ;
 
+    MODE7 * mode7   = &mode7_inf[n] ;
     GRAPH * indoor  = mode7->indoor ;
     GRAPH * outdoor = mode7->outdoor ;
-    GRAPH * dest ;
+    GRAPH * dest    = scrbitmap ;
     GRAPH * pgr ;
 
     MODE7_INFO * dat  = &(( MODE7_INFO * ) & GLODWORD( mod_m7, M7STRUCTS ) )[n] ;
@@ -505,11 +222,10 @@ static void draw_mode7( int n, REGION * clip )
 
     INSTANCE * i ;
 
-    dest = mode7->dest ? mode7->dest : scrbitmap ;
-
-    /* only if scr_depth == outdoor depth == indoor_depth */
-    if ( ( outdoor && outdoor->format->depth != dest->format->depth ) ||
-         (  indoor &&  indoor->format->depth != dest->format->depth ) ) return;
+    /* 8 bits only */
+    if ( dest->format->depth != 8 ) return; // gr_error ("Profundidad de color no soportada\n(mode7, dest)") ;
+    if ( outdoor && outdoor->format->depth != 8 ) return; // gr_error ("Profundidad de color no soportada\n(mode7, out)") ;
+    if ( indoor && indoor->format->depth != 8 ) return; // gr_error ("Profundidad de color no soportada\n(mode7, in)") ;
 
     /* Averigua la posición inicial de dibujo */
 
@@ -596,7 +312,7 @@ static void draw_mode7( int n, REGION * clip )
     if ( horizon_y == -1 ) return ;
 
     y = horizon_y ;
-    ptr32 = ( uint32_t * ) ( ptr16 = ( uint16_t * ) ( ptr = ( uint8_t * )dest->data + dest->pitch * y + mode7->region->x ) ) ;
+    ptr = ( uint8_t * )dest->data + dest->pitch * y + mode7->region->x ;
 
     if ( outdoor )
     {
@@ -608,189 +324,106 @@ static void draw_mode7( int n, REGION * clip )
     }
 
     jump = ( camera_z < 0 ) ? -1 : 1 ;
-    ptr32 = ( uint32_t * ) ( ptr16 = ( uint16_t * ) ( ptr += (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ) ) ;
+    ptr += (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ;
     y   += jump ;
 
     if ( !( dat->flags & B_TRANSLUCENT ) )
-    {
-        if ( dat->flags & B_HMIRROR )
+        for ( ; y < height && y >= 0 ; y += jump )
         {
-            switch( dest->format->depth )
+            if ( dat->flags & B_HMIRROR )
             {
-                case    8:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
-
-                            M7_8bpp();
-                        }
-                        break;
-
-                case    16:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
-
-                            M7_16bpp();
-                        }
-                        break;
-
-                case    32:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
-
-                            M7_32bpp();
-                        }
-                        break;
+                bmp_x = lines[y].right_bmp_x ;
+                bmp_y = lines[y].right_bmp_y ;
+                hinc  = -lines[y].hinc ;
+                vinc  = -lines[y].vinc ;
             }
-        }
-        else
-        {
-            switch( dest->format->depth )
+            else
             {
-                case    8:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_8bpp();
-                        }
-                        break;
-
-                case    16:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_16bpp();
-                        }
-                        break;
-
-                case    32:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_32bpp();
-                        }
-                        break;
+                bmp_x = lines[y].left_bmp_x ;
+                bmp_y = lines[y].left_bmp_y ;
+                hinc  = lines[y].hinc ;
+                vinc  = lines[y].vinc ;
             }
-        }
-    }
-    else /* translucent */
-    {
-        if ( dat->flags & B_HMIRROR )
-        {
-            switch( dest->format->depth )
+
+            baseline = ptr ;
+
+            for ( x = 0 ; x < width ; x++ )
             {
-                case    8:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
+                sx = fixtoi( bmp_x ) ;
+                sy = fixtoi( bmp_y ) ;
 
-                            M7_t8bpp();
-                        }
-                        break;
+                if ( indoor &&
+                        sx >= 0 && sx < indoor->width &&
+                        sy >= 0 && sy < indoor->height )
+                {
+                    c = (( uint8_t* )indoor->data )[indoor->pitch*sy + sx] ;
+                    if ( c > 0 ) *ptr   = c ;
+                    ptr++ ;
+                }
+                else
+                {
+                    if ( outdoor ) c = (( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + ( sx & outdoor_hmask )] ;
+                    else           c = dat->color ;
+                    if ( c > 0 ) *ptr   = c ;
+                    ptr++ ;
+                }
 
-                case    16:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
+                bmp_x += hinc ;
+                bmp_y += vinc ;
+            }
 
-                            M7_t16bpp();
-                        }
-                        break;
+            ptr = baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ;
+        }
+    else
+        for ( ; y < height && y >= 0 ; y += jump )
+        {
+            if ( dat->flags & B_HMIRROR )
+            {
+                bmp_x = lines[y].right_bmp_x ;
+                bmp_y = lines[y].right_bmp_y ;
+                hinc  = -lines[y].hinc ;
+                vinc  = -lines[y].vinc ;
+            }
+            else
+            {
+                bmp_x = lines[y].left_bmp_x ;
+                bmp_y = lines[y].left_bmp_y ;
+                hinc  = lines[y].hinc ;
+                vinc  = lines[y].vinc ;
+            }
 
-                case    32:
+            baseline = ptr ;
+
+            for ( x = 0 ; x < width ; x++ )
+            {
+                sx = fixtoi( bmp_x ) ;
+                sy = fixtoi( bmp_y ) ;
+
+                if ( indoor && sx >= 0 && sx < indoor->width && sy >= 0 && sy < indoor->height )
+                {
+                    *ptr = trans_table[(( uint8_t* )indoor->data )[indoor->pitch*sy + sx]][*ptr] ;
+                    ptr++;
+                }
+                else
+                {
+                    if ( outdoor )
                     {
-                        unsigned int _f, _f2;
-                        int r, g, b;
-
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].right_bmp_x ;
-                            bmp_y = lines[y].right_bmp_y ;
-                            hinc  = -lines[y].hinc ;
-                            vinc  = -lines[y].vinc ;
-
-                            M7_t32bpp();
-                        }
-                        break;
+                        *ptr = trans_table[(( uint8_t* )outdoor->data )[outdoor->pitch*( sy & outdoor_vmask ) + ( sx & outdoor_hmask )]][*ptr] ;
+                        ptr++;
                     }
-            }
-        }
-        else
-        {
-            switch( dest->format->depth )
-            {
-                case    8:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_t8bpp();
-                        }
-                        break;
-
-                case    16:
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_t16bpp();
-                        }
-                        break;
-
-                case    32:
+                    else
                     {
-                        unsigned int _f, _f2;
-                        int r, g, b;
-
-                        for ( ; y < height && y >= 0 ; y += jump )
-                        {
-                            bmp_x = lines[y].left_bmp_x ;
-                            bmp_y = lines[y].left_bmp_y ;
-                            hinc  = lines[y].hinc ;
-                            vinc  = lines[y].vinc ;
-
-                            M7_t32bpp();
-                        }
-                        break;
+                        *ptr = trans_table[dat->color][*ptr] ;
+                        ptr++;
                     }
+                }
+
+                bmp_x += hinc ;
+                bmp_y += vinc ;
             }
+
+            ptr = baseline + (( jump > 0 ) ? dest->pitch : -( int )dest->pitch ) ;
         }
-    }
 
     /* Crea una lista ordenada de instancias a dibujar */
 
@@ -870,7 +503,7 @@ static void draw_mode7( int n, REGION * clip )
 
             x = LOCINT32( mod_m7, proclist[nproc], GRAPHSIZE ) ;
             LOCINT32( mod_m7, proclist[nproc], GRAPHSIZE ) = dat->focus * 8 / fixtof( LOCDWORD( mod_m7, proclist[nproc], DISTANCE_1 ) ) ;
-            draw_instance_at( proclist[nproc], mode7->region, mode7->region->x + width / 2  + bmp_x, mode7->region->y + height / 2 + bmp_y, mode7->dest ) ;
+            draw_instance_at( proclist[nproc], mode7->region, mode7->region->x + width / 2  + bmp_x, mode7->region->y + height / 2 + bmp_y ) ;
             LOCINT32( mod_m7, proclist[nproc], GRAPHSIZE ) = x ;
         }
     }
@@ -880,14 +513,11 @@ static void draw_mode7( int n, REGION * clip )
 
 static int info_mode7( int n, REGION * clip, int * z, int * drawme )
 {
-    MODE7_INFO * dat   = &(( MODE7_INFO * ) & GLODWORD( mod_m7, M7STRUCTS ) )[n];
+    MODE7_INFO * dat = &(( MODE7_INFO * ) & GLODWORD( mod_m7, M7STRUCTS ) )[n];
 
     * z = dat->z;
     * drawme = 1;
     * clip = * mode7_inf[n].region;
-
-    // Force clean map (need optimization)
-    if ( mode7_inf[n].dest /*&& !( mode7_inf[n].dest->info_flags & GI_CLEAN )*/ ) gr_clear_region( mode7_inf[n].dest, mode7_inf[n].region );
 
     return 1;
 }
@@ -895,9 +525,16 @@ static int info_mode7( int n, REGION * clip, int * z, int * drawme )
 /* --------------------------------------------------------------------------- */
 /* Mode 7                                                            */
 
-static int __m7_start( int n, int fileid, int inid, int outid, int region, int horizon, int destfile, int destid )
+CONDITIONALLY_STATIC int modm7_start( INSTANCE * my, int * params )
 {
     MODE7_INFO * dat ;
+
+    int n       = params[0];
+    int fileid  = params[1];
+    int inid    = params[2];
+    int outid   = params[3];
+    int region  = params[4];
+    int horizon = params[5];
 
     if ( n < 0 || n > 9 ) return 0;
 
@@ -911,9 +548,8 @@ static int __m7_start( int n, int fileid, int inid, int outid, int region, int h
     dat->color      = 0;
     dat->flags      = 0;
 
-    mode7_inf[n].dest    = destid ? bitmap_get( destfile, destid ) : NULL ;
-    mode7_inf[n].indoor  = inid ? bitmap_get( fileid, inid ) : NULL ;
-    mode7_inf[n].outdoor = outid ? bitmap_get( fileid, outid ) : NULL ;
+    mode7_inf[n].indoor  = bitmap_get( fileid, inid ) ;
+    mode7_inf[n].outdoor = bitmap_get( fileid, outid ) ;
     mode7_inf[n].region  = region_get( region ) ;
 
     if ( mode7_inf[n].id ) gr_destroy_object( mode7_inf[n].id );
@@ -922,19 +558,9 @@ static int __m7_start( int n, int fileid, int inid, int outid, int region, int h
     return 1;
 }
 
-static int modm7_start( INSTANCE * my, int * params )
-{
-    return __m7_start( params[0], params[1], params[2], params[3], params[4], params[5], 0, 0 );
-}
-
-static int modm7_start2( INSTANCE * my, int * params )
-{
-    return __m7_start( params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7] );
-}
-
 /* --------------------------------------------------------------------------- */
 
-static int modm7_stop( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modm7_stop( INSTANCE * my, int * params )
 {
     int n = params[0];
 
@@ -957,30 +583,5 @@ void __bgdexport( mod_m7, module_initialize )()
 {
     init_cos_tables() ;
 }
-
-/* --------------------------------------------------------------------------- */
-
-DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
-{
-    { "MODE7_START" , "IIIIIIII"    , TYPE_INT , modm7_start2 },
-    { "MODE7_START" , "IIIIII"      , TYPE_INT , modm7_start  },
-    { "MODE7_STOP"  , "I"           , TYPE_INT , modm7_stop   },
-
-    { "START_MODE7" , "IIIIIIII"    , TYPE_INT , modm7_start2 },
-    { "START_MODE7" , "IIIIII"      , TYPE_INT , modm7_start  },
-    { "STOP_MODE7"  , "I"           , TYPE_INT , modm7_stop   },
-
-    { NULL          , NULL          , 0        , NULL         }
-};
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( mod_m7, modules_dependency )[] =
-{
-    "libgrbase",
-    "libvideo",
-    "librender",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

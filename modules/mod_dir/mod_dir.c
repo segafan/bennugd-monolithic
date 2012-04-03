@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -41,6 +36,11 @@
 #include <windef.h>
 #else
 #include <unistd.h>
+#ifndef TARGET_WII
+	#ifndef TARGET_PSP
+		#include <sys/utsname.h>
+	#endif
+#endif
 /* BeOS INCLUDES */
 #ifdef TARGET_BEOS
 #include <sys/types.h>
@@ -54,6 +54,10 @@
 #include "files.h"
 #include "xstrings.h"
 
+#ifndef __MONOLITHIC__
+#include "mod_dir_symbols.h"
+#endif
+
 /* ----------------------------------------------------------------- */
 
 enum
@@ -65,27 +69,8 @@ enum
     FILE_READONLY,
     FILE_SIZE,
     FILE_CREATED,
-    FILE_MODIFIED,
-    FILE_ACCESSED,
-    FILE_STATECHG
+    FILE_MODIFIED
 } ;
-
-/* ----------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-
-char * __bgdexport( mod_dir, globals_def )=
-    "STRUCT fileinfo\n"
-    "    STRING path;\n"
-    "    STRING name;\n"
-    "    directory;\n"
-    "    hidden;\n"
-    "    readonly;\n"
-    "    size;\n"
-    "    STRING created;\n"
-    "    STRING modified;\n"
-    "    STRING accessed;\n"
-    "    STRING statechg;\n"
-    "END\n";
 
 /* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -103,15 +88,13 @@ DLVARFIXUP __bgdexport( mod_dir, globals_fixup)[] =
         { "fileinfo.size" , NULL, -1, -1 },
         { "fileinfo.created" , NULL, -1, -1 },
         { "fileinfo.modified" , NULL, -1, -1 },
-        { "fileinfo.accessed" , NULL, -1, -1 },
-        { "fileinfo.statechg" , NULL, -1, -1 },
         { NULL, NULL, -1, -1 }
     };
 
 /* ----------------------------------------------------------------- */
 /* DIRECTORY FUNCTIONS */
 
-static int moddir_cd( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_cd( INSTANCE * my, int * params )
 {
     char * d = dir_current() ;
     int r = string_new( d ) ;
@@ -120,7 +103,7 @@ static int moddir_cd( INSTANCE * my, int * params )
     return r ;
 }
 
-static int moddir_chdir( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_chdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_change( d ) ;
@@ -128,7 +111,7 @@ static int moddir_chdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-static int moddir_mkdir( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_mkdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_create( d ) ;
@@ -136,7 +119,7 @@ static int moddir_mkdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-static int moddir_rmdir( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_rmdir( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_delete( d );
@@ -144,7 +127,7 @@ static int moddir_rmdir( INSTANCE * my, int * params )
     return ( ret ) ;
 }
 
-static int moddir_rm( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_rm( INSTANCE * my, int * params )
 {
     const char * d = string_get( params[ 0 ] ) ;
     int ret = dir_deletefile( d );
@@ -171,8 +154,6 @@ static int __moddir_read(__DIR_ST * dh )
     string_discard( GLODWORD( mod_dir, FILE_PATH ) );
     string_discard( GLODWORD( mod_dir, FILE_CREATED ) );
     string_discard( GLODWORD( mod_dir, FILE_MODIFIED ) );
-    string_discard( GLODWORD( mod_dir, FILE_ACCESSED ) );
-    string_discard( GLODWORD( mod_dir, FILE_STATECHG ) );
 
     GLODWORD( mod_dir, FILE_NAME        ) = string_new( dif->filename ); string_use( GLODWORD( mod_dir, FILE_NAME ) );
     GLODWORD( mod_dir, FILE_PATH        ) = string_new( dif->fullpath ); string_use( GLODWORD( mod_dir, FILE_PATH ) );
@@ -183,25 +164,11 @@ static int __moddir_read(__DIR_ST * dh )
     GLODWORD( mod_dir, FILE_SIZE        ) = dif->size;
 
     /* Store file times */
-#ifdef _WIN32
-    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->mtime );
+    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->modified_time );
     GLODWORD( mod_dir, FILE_CREATED     ) = string_new( buffer ); string_use( GLODWORD( mod_dir, FILE_CREATED  ) );
-#else
-    GLODWORD( mod_dir, FILE_CREATED     ) = string_new( "" ); string_use( GLODWORD( mod_dir, FILE_CREATED  ) );
-#endif
 
-    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->crtime );
+    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->creation_time );
     GLODWORD( mod_dir, FILE_MODIFIED    ) = string_new( buffer ); string_use( GLODWORD( mod_dir, FILE_MODIFIED ) );
-
-    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->atime );
-    GLODWORD( mod_dir, FILE_ACCESSED    ) = string_new( buffer ); string_use( GLODWORD( mod_dir, FILE_ACCESSED ) );
-
-#ifndef _WIN32
-    strftime( buffer, 20, "%d/%m/%Y %H:%M:S", &dif->ctime );
-    GLODWORD( mod_dir, FILE_STATECHG    ) = string_new( buffer ); string_use( GLODWORD( mod_dir, FILE_STATECHG ) );
-#else
-    GLODWORD( mod_dir, FILE_STATECHG    ) = string_new( "" ); string_use( GLODWORD( mod_dir, FILE_STATECHG ) );
-#endif
 
     /* Return */
     result = GLODWORD( mod_dir, FILE_NAME );
@@ -216,7 +183,7 @@ static int __moddir_read(__DIR_ST * dh )
  *  until no more files exists. It then returns NIL.
  */
 
-static int moddir_glob( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_glob( INSTANCE * my, int * params )
 {
     const char * path = string_get( params[ 0 ] );
     static __DIR_ST * dh = NULL;
@@ -248,7 +215,7 @@ static int moddir_glob( INSTANCE * my, int * params )
  *  return 0 if fail.
  */
 
-static int moddir_open( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_open( INSTANCE * my, int * params )
 {
     int result = ( int ) dir_open( string_get( params[ 0 ] ) );
     string_discard( params[ 0 ] );
@@ -258,7 +225,7 @@ static int moddir_open( INSTANCE * my, int * params )
 /*  int DIRCLOSE (INT handle)
  */
 
-static int moddir_close( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_close( INSTANCE * my, int * params )
 {
     if ( params[ 0 ] ) dir_close ( ( __DIR_ST * ) params[ 0 ] ) ;
     return 1;
@@ -271,29 +238,9 @@ static int moddir_close( INSTANCE * my, int * params )
  *  until no more files exists. It then returns NIL.
  */
 
-static int moddir_read( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int moddir_read( INSTANCE * my, int * params )
 {
     return ( __moddir_read((__DIR_ST *) params[ 0 ] ) ) ;
 }
-
-/* ---------------------------------------------------------------------- */
-
-DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[] =
-    {
-        /* Archivos y directorios */
-        { "CD"      , ""  , TYPE_STRING , moddir_cd     },
-        { "CHDIR"   , "S" , TYPE_INT    , moddir_chdir  },
-        { "MKDIR"   , "S" , TYPE_INT    , moddir_mkdir  },
-        { "RMDIR"   , "S" , TYPE_INT    , moddir_rmdir  },
-        { "GLOB"    , "S" , TYPE_STRING , moddir_glob   },
-        { "CD"      , "S" , TYPE_STRING , moddir_chdir  },
-        { "RM"      , "S" , TYPE_INT    , moddir_rm     },
-
-        { "DIROPEN" , "S" , TYPE_INT    , moddir_open   },
-        { "DIRCLOSE", "I" , TYPE_INT    , moddir_close  },
-        { "DIRREAD" , "I" , TYPE_STRING , moddir_read   },
-
-        { 0         , 0   , 0           , 0             }
-    };
 
 /* ---------------------------------------------------------------------- */

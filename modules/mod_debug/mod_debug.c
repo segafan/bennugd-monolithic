@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -54,6 +49,10 @@
 #include "libkey.h"
 #include "libgrbase.h"
 #include "librender.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_debug_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------------- */
 
@@ -2631,27 +2630,13 @@ static void console_draw( INSTANCE * i, REGION * clip )
 
     if ( console_showing && trace_sentence != -1 )
     {
-        if ( dcb.data.Version < 0x0710 )
+        if ( trace_instance && instance_exists( trace_instance ) && dcb.sourcecount[trace_sentence >> 24] )
         {
-            if ( trace_instance && instance_exists( trace_instance ) && dcb.sourcecount[trace_sentence >> 24] )
-            {
-                console_printf( "¬07[%s(%d):%d]\n¬14%s¬07\n\n",
-                        trace_instance->proc->name,
-                        LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
-                        trace_sentence & 0xFFFFFF,
-                        dcb.sourcelines [trace_sentence >> 24] [( trace_sentence & 0xFFFFFF )-1] ) ;
-            }
-        }
-        else
-        {
-            if ( trace_instance && instance_exists( trace_instance ) && dcb.sourcecount[trace_sentence >> 20] )
-            {
-                console_printf( "¬07[%s(%d):%d]\n¬14%s¬07\n\n",
-                        trace_instance->proc->name,
-                        LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
-                        trace_sentence & 0xFFFFF,
-                        dcb.sourcelines [trace_sentence >> 20] [( trace_sentence & 0xFFFFF )-1] ) ;
-            }
+            console_printf( "¬07[%s(%d):%d]\n¬14%s¬07\n\n",
+                    trace_instance->proc->name,
+                    LOCDWORD( mod_debug, trace_instance, PROCESS_ID ),
+                    trace_sentence & 0xFFFFFF,
+                    dcb.sourcelines [trace_sentence >> 24] [( trace_sentence & 0xFFFFFF )-1] ) ;
         }
         debug_on_frame = 0;
         force_debug = 0;
@@ -2758,14 +2743,5 @@ void __bgdexport( mod_debug, module_initialize )()
 void __bgdexport( mod_debug, module_finalize )()
 {
 }
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( mod_debug, modules_dependency )[] =
-{
-    "libkey",
-    "librender",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

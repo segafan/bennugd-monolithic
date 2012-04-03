@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -94,11 +89,7 @@ GRAPH * gr_read_png( const char * filename )
 
     /* Rutina de error */
 
-#if (PNG_LIBPNG_VER>=10500)
-    if ( setjmp( png_jmpbuf( png_ptr ) ) )
-#else
     if ( setjmp( png_ptr->jmpbuf ) )
-#endif
     {
         png_destroy_read_struct( &png_ptr, &info_ptr, &end_info ) ;
         file_close( png ) ;
@@ -130,7 +121,7 @@ GRAPH * gr_read_png( const char * filename )
 
     /* Configura los distintos modos disponibles */
 
-    if ( color == PNG_COLOR_TYPE_GRAY || color == PNG_COLOR_TYPE_GRAY_ALPHA )
+    if ( color == PNG_COLOR_TYPE_GRAY /*|| color == PNG_COLOR_TYPE_GRAY_ALPHA*/ )
     {
         png_set_gray_to_rgb( png_ptr );
         if ( color == PNG_COLOR_TYPE_GRAY ) png_set_filler( png_ptr, 0xFF, PNG_FILLER_AFTER ) ;
@@ -145,7 +136,7 @@ GRAPH * gr_read_png( const char * filename )
     /* Recupera el fichero, convirtiendo a 16 bits si es preciso */
 
     rowbytes = png_get_rowbytes( png_ptr, info_ptr ) ;
-    bitmap = bitmap_new( 0, width, height, ( color == PNG_COLOR_TYPE_GRAY )  ? 1 : ( color == PNG_COLOR_TYPE_PALETTE ) ? 8 : ( sys_pixel_format->depth == 16 ? 16 : 32 ) ) ;
+    bitmap = bitmap_new( 0, width, height, ( color == PNG_COLOR_TYPE_PALETTE ) ? 8 : ( sys_pixel_format->depth == 16 ? 16 : 32 ) ) ;
     if ( !bitmap )
     {
         png_destroy_read_struct( &png_ptr, &info_ptr, &end_info ) ;
@@ -155,15 +146,7 @@ GRAPH * gr_read_png( const char * filename )
         return NULL;
     }
 
-    if ( color == PNG_COLOR_TYPE_GRAY )
-    {
-        for ( n = 0 ; n < height ; n++ )
-        {
-            rowpointers[0] = ( void * )(( uint8_t * )bitmap->data ) + n * bitmap->pitch ;
-            png_read_rows( png_ptr, rowpointers, 0, 1 ) ;
-        }
-    }
-    else if ( color == PNG_COLOR_TYPE_PALETTE )
+    if ( color == PNG_COLOR_TYPE_PALETTE )
     {
         /* Read the color palette */
 
@@ -182,15 +165,9 @@ GRAPH * gr_read_png( const char * filename )
 
         for ( n = 0; n < 256 ; n++ )
         {
-#ifdef COLORSPACE_BGR
-            * p++ = png_palette[n].blue;
-            * p++ = png_palette[n].green;
-            * p++ = png_palette[n].red;
-#else
             * p++ = png_palette[n].red;
             * p++ = png_palette[n].green;
             * p++ = png_palette[n].blue;
-#endif
         }
 
         bitmap->format->palette = pal_new_rgb(( uint8_t * )colors );
@@ -259,11 +236,6 @@ GRAPH * gr_read_png( const char * filename )
     }
     else if ( depth == 8 && sys_pixel_format->depth != 16 )
     {
-#if (PNG_LIBPNG_VER>=10500)
-        png_color_16p trans_color = 0;
-        png_get_tRNS( png_ptr, info_ptr, 0, 0, &trans_color);
-#endif
-
         for ( n = 0 ; n < height ; n++ )
         {
             rowpointers[0] = ( void * )row ;
@@ -275,51 +247,12 @@ GRAPH * gr_read_png( const char * filename )
             {
                 ARRANGE_DWORD( orig );
                 *ptr32 = *orig ;
-                
-#ifdef COLORSPACE_BGR
-                ((uint8_t *)ptr32)[0] = ((uint8_t *)orig)[2];
-                ((uint8_t *)ptr32)[2] = ((uint8_t *)orig)[0];
-#endif
-
-                /* DCelso */
-#if (PNG_LIBPNG_VER>=10500)
-                if (( color == PNG_COLOR_TYPE_RGB ) && ( png_get_bit_depth(png_ptr, info_ptr) == 24 ) && ( png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS) ))
-#else
-                if (( color == PNG_COLOR_TYPE_RGB ) && ( info_ptr->pixel_depth == 24 ) && ( info_ptr->valid & PNG_INFO_tRNS ))
-#endif
-                {
-                	uint8_t * ptr8 = (uint8_t *)orig;
-        			if (
-#if (PNG_LIBPNG_VER>=10500)
-        			    ( ptr8[0] == trans_color->red   ) &&
-        				( ptr8[1] == trans_color->green ) &&
-        				( ptr8[2] == trans_color->blue  )
-#else
-        			    #ifdef TARGET_PSP
-						( ptr8[0] == info_ptr->trans_color.red   ) &&
-        				( ptr8[1] == info_ptr->trans_color.green ) &&
-        				( ptr8[2] == info_ptr->trans_color.blue  )
-						
-						#else
-						( ptr8[0] == info_ptr->trans_values.red   ) &&
-        				( ptr8[1] == info_ptr->trans_values.green ) &&
-        				( ptr8[2] == info_ptr->trans_values.blue  )
-						#endif
-#endif
-        			   )
-        				*ptr32 = 0;
-                }
                 ptr32++, orig++ ;
             }
         }
     }
     else
     {
-#if (PNG_LIBPNG_VER>=10500)
-        png_color_16p trans_color = 0;
-        png_get_tRNS( png_ptr, info_ptr, 0, 0, &trans_color);
-#endif
-
         Rshift = 8;
         Gshift = 5;
         Bshift = 3;
@@ -346,42 +279,6 @@ GRAPH * gr_read_png( const char * filename )
                 }
                 else
                     *ptr = 0 ;
-
-                /* DCelso */
-#if (PNG_LIBPNG_VER>=10500)
-                if (( color == PNG_COLOR_TYPE_RGB ) && ( png_get_bit_depth(png_ptr, info_ptr) == 24 ) && ( png_get_valid(png_ptr, info_ptr, PNG_INFO_tRNS) ))
-#else
-                if (( color == PNG_COLOR_TYPE_RGB ) && ( info_ptr->pixel_depth == 24 ) && ( info_ptr->valid & PNG_INFO_tRNS ))
-#endif
-                {
-                	uint8_t * ptr8 = (uint8_t *)orig;
-        			if (
-#if (PNG_LIBPNG_VER>=10500)
-        			    ( ptr8[0] == trans_color->red   ) &&
-        				( ptr8[1] == trans_color->green ) &&
-        				( ptr8[2] == trans_color->blue  )
-#else
-        			    #ifdef COLORSPACE_BGR
-						( ptr8[0] == info_ptr->trans_color.red   ) &&
-        				( ptr8[1] == info_ptr->trans_color.green ) &&
-        				( ptr8[2] == info_ptr->trans_color.blue  )
-						#else
-						( ptr8[0] == info_ptr->trans_values.red   ) &&
-        				( ptr8[1] == info_ptr->trans_values.green ) &&
-        				( ptr8[2] == info_ptr->trans_values.blue  )
-						#endif
-#endif
-        			   )
-        				*ptr = 0;
-                }
-#ifdef COLORSPACE_BGR
-				uint16_t * dest = (uint8_t *)ptr;
-				uint8_t red,green,blue;
-				red = (*dest & 0x1F);
-				green = (*dest >>5) & 0x1F;
-				blue = (*dest >>11)& 0x1F;
-				*dest = (red<<11)|(green<<5)|blue;
-#endif
                 ptr++, orig++ ;
             }
         }
@@ -389,17 +286,11 @@ GRAPH * gr_read_png( const char * filename )
 
     /* Fin */
 
-#if (PNG_LIBPNG_VER>=10500)
-    if ( !setjmp( png_jmpbuf( png_ptr ) ) )
-#else
-    if ( !setjmp( png_ptr->jmpbuf ) )
-#endif
-        png_read_end( png_ptr, 0 ) ;
+    if ( !setjmp( png_ptr->jmpbuf ) ) png_read_end( png_ptr, 0 ) ;
 
     bitmap->modified = 1 ;
 
     png_destroy_read_struct( &png_ptr, &info_ptr, &end_info ) ;
-
     free( rowpointers ) ;
     free( row ) ;
     file_close( png ) ;
@@ -429,7 +320,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
     FILE * file = fopen( filename, "wb" ) ;
     png_structp png_ptr ;
     png_infop info_ptr ;
-    int k, i ;
+    png_uint_32 k, i ;
     png_bytep * rowpointers ;
     png_colorp pal ;
     uint32_t * data, * ptr ;
@@ -465,11 +356,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
 
     /* Error handling... */
 
-#if (PNG_LIBPNG_VER>=10500)
-    if ( setjmp( png_jmpbuf( png_ptr ) ) )
-#else
     if ( setjmp( png_ptr->jmpbuf ) )
-#endif
     {
         png_destroy_write_struct( &png_ptr, NULL ) ;
         free( rowpointers ) ;
@@ -479,21 +366,6 @@ int gr_save_png( GRAPH * gr, const char * filename )
 
     png_init_io( png_ptr, file ) ;
 
-    if ( gr->format->depth == 1 )
-    {
-        png_set_IHDR( png_ptr, info_ptr, gr->width,
-                gr->height, 1, PNG_COLOR_TYPE_GRAY,
-                PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
-                PNG_FILTER_TYPE_BASE ) ;
-
-        png_write_info( png_ptr, info_ptr ) ;
-
-        for ( k = 0 ; k < ( unsigned )gr->height ; k++ )
-            rowpointers[k] = ( uint8_t * )gr->data + gr->pitch * k ;
-
-        png_write_image( png_ptr, rowpointers ) ;
-    }
-    else
     if ( gr->format->depth == 8 )
     {
         /* 8 bits PNG file */
@@ -502,48 +374,6 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE ) ;
 
-
-#if (PNG_LIBPNG_VER>=10500)
-        if (!( gr->info_flags & GI_NOCOLORKEY ))
-        {
-            /* this need test */
-            png_color_16 trans_color;
-            png_byte trans = 1;
-
-            trans_color.red = 0;
-            trans_color.green = 0;
-            trans_color.blue = 0;
-            trans_color.gray = 0;
-
-            png_set_tRNS( png_ptr, info_ptr, &trans, 1, &trans_color );
-        }
-#else
-		#ifdef TARGET_PSP
-		if (!( gr->info_flags & GI_NOCOLORKEY ))
-        {
-            /* this need test */
-            png_color_16 trans_color;
-            png_byte trans = 1;
-
-            trans_color.red = 0;
-            trans_color.green = 0;
-            trans_color.blue = 0;
-            trans_color.gray = 0;
-
-            png_set_tRNS( png_ptr, info_ptr, &trans, 1, &trans_color );
-        }		
-		#else
-        /* DCelso */
-        if (!( gr->info_flags & GI_NOCOLORKEY ))
-        {
-            uint8_t trans = 1;
-			info_ptr->num_trans = 1;
-			info_ptr->trans = &trans;
-			info_ptr->valid = info_ptr->valid | PNG_INFO_tRNS;
-        }
-        /* DCelso */
-		#endif
-#endif
         pal = ( png_colorp ) png_malloc( png_ptr, 256 * sizeof( png_color ) ) ;
         if ( !pal )
         {
@@ -577,7 +407,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
 
         /* Free allocated palette... */
         png_free( png_ptr, ( png_voidp ) pal ) ;
-//        info_ptr->palette = NULL ;
+        info_ptr->palette = NULL ;
     }
     else
     {
@@ -585,7 +415,6 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 gr->height, 8, PNG_COLOR_TYPE_RGB_ALPHA,
                 PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_BASE,
                 PNG_FILTER_TYPE_BASE ) ;
-
         png_write_info( png_ptr, info_ptr ) ;
 
         data = malloc( gr->width * gr->height * 4 ) ;
@@ -610,19 +439,11 @@ int gr_save_png( GRAPH * gr, const char * filename )
                         *ptr = 0x00000000 ;
                     else
                     {
-#ifdef COLORSPACE_BGR
-                        *ptr =
-                            (( *orig & 0xf800 ) << 8 ) |
-                            (( *orig & 0x07e0 ) << 5 ) |
-                            (( *orig & 0x001f ) << 3 ) |
-                            0xFF000000 ;
-#else
                         *ptr =
                             (( *orig & 0xf800 ) >> 8 ) |
                             (( *orig & 0x07e0 ) << 5 ) |
                             (( *orig & 0x001f ) << 19 ) |
                             0xFF000000 ;
-#endif
                         /* Rearrange data */
                         ARRANGE_DWORD( ptr ) ;
                     }
@@ -640,11 +461,22 @@ int gr_save_png( GRAPH * gr, const char * filename )
                 rowpointers[k] = ( uint8_t * )ptr ;
                 for ( i = 0 ; i < ( unsigned )gr->width ; i++ )
                 {
-                    *ptr =
-                        (( *orig32 & 0xff000000 ) ) |
-                        (( *orig32 & 0x00ff0000 ) >> 16 ) |
-                        (( *orig32 & 0x0000ff00 ) ) |
-                        (( *orig32 & 0x000000ff ) << 16 ) ;
+/*
+                    if ( !*orig32 && !( gr->info_flags & GI_NOCOLORKEY ) )
+                        *ptr = 0 ;
+                    else if ( !( *orig32 & 0xff000000 ) )
+                        *ptr =
+                            0xff000000 |
+                            (( *orig32 & 0x00ff0000 ) >> 16 ) |
+                            (( *orig32 & 0x0000ff00 ) ) |
+                            (( *orig32 & 0x000000ff ) << 16 ) ;
+                    else
+*/
+                        *ptr =
+                            (( *orig32 & 0xff000000 ) ) |
+                            (( *orig32 & 0x00ff0000 ) >> 16 ) |
+                            (( *orig32 & 0x0000ff00 ) ) |
+                            (( *orig32 & 0x000000ff ) << 16 ) ;
 
                     /* Rearrange data */
                     ARRANGE_DWORD( ptr ) ;
@@ -659,9 +491,9 @@ int gr_save_png( GRAPH * gr, const char * filename )
     }
 
     png_write_end( png_ptr, info_ptr ) ;
+    fclose( file ) ;
     png_destroy_write_struct( &png_ptr, NULL ) ;
     free( rowpointers ) ;
-    fclose( file ) ;
     return ( 1 ) ;
 }
 

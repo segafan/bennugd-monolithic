@@ -1,11 +1,11 @@
 import "mod_say";
 import "mod_sound";
-import "mod_mouse";
+//import "mod_joy";
 
 Process main()
 Private
 	int song=0, fd=0;
-	string fname="game.mp3";
+	string fname="game.s3m";
 Begin
 	say("Going to play "+fname+", hope you like it :)");
 	say("Press (A) in you Wiimote to quit.");
@@ -14,7 +14,7 @@ Begin
 	play_song(song, 0);
 	say("Playback started");
 //	say("Playing sound @ "+SOUND_FREQ+"Hz");
-	while(is_playing_song() && ! mouse.left)
+	while(is_playing_song())
 		FRAME;
 	end;
 	say("Done looping");

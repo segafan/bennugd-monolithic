@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -41,6 +36,10 @@
 #include "libblit.h"
 
 #include "libscroll.h"
+
+#ifndef __MONOLITHIC__
+#include "mod_screen_symbols.h"
+#endif
 
 /* --------------------------------------------------------------------------- */
 
@@ -70,7 +69,7 @@ DLVARFIXUP __bgdexport( mod_screen, globals_fixup )[] =
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_define_region( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_define_region( INSTANCE * my, int * params )
 {
     REGION * orig = region_get( params[0] );
 
@@ -82,7 +81,7 @@ static int modscreen_define_region( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_out_region( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_out_region( INSTANCE * my, int * params )
 {
     INSTANCE * proc = instance_get( params[0] ) ;
     int region = params[1] ;
@@ -130,7 +129,7 @@ static int modscreen_out_region( INSTANCE * my, int * params )
 /* --------------------------------------------------------------------------- */
 /* Funciones gráficas */
 
-static int modscreen_put( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_put( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
 
@@ -143,7 +142,7 @@ static int modscreen_put( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_xput( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_xput( INSTANCE * my, int * params )
 {
     int r ;
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
@@ -162,7 +161,7 @@ static int modscreen_xput( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_put_screen( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_put_screen( INSTANCE * my, int * params )
 {
     int     x, y ;
     GRAPH * map = bitmap_get( params[0], params[1] ) ;
@@ -186,7 +185,7 @@ static int modscreen_put_screen( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_clear_screen( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_clear_screen( INSTANCE * my, int * params )
 {
     gr_clear( background ) ;
     return 1 ;
@@ -194,7 +193,7 @@ static int modscreen_clear_screen( INSTANCE * my, int * params )
 
 /* --------------------------------------------------------------------------- */
 
-static int modscreen_get_screen( INSTANCE * my, int * params )
+CONDITIONALLY_STATIC int modscreen_get_screen( INSTANCE * my, int * params )
 {
     GRAPH * map = bitmap_clone( bitmap_get( 0, -1 ) );
 
@@ -207,49 +206,5 @@ static int modscreen_get_screen( INSTANCE * my, int * params )
 
     return map->code ;
 }
-
-/* --------------------------------------------------------------------------- */
-
-DLSYSFUNCS  __bgdexport( mod_screen, functions_exports )[] =
-{
-    /* Regiones */
-    { "REGION_DEFINE"        , "IIIII"      , TYPE_INT      , modscreen_define_region   },
-    { "REGION_OUT"           , "II"         , TYPE_INT      , modscreen_out_region      },
-
-    /* Fondo de pantalla */
-    { "PUT"                  , "IIII"       , TYPE_INT      , modscreen_put             },
-    { "XPUT"                 , "IIIIIIII"   , TYPE_INT      , modscreen_xput            },
-    { "SCREEN_PUT"           , "II"         , TYPE_INT      , modscreen_put_screen      },
-    { "SCREEN_CLEAR"         , ""           , TYPE_INT      , modscreen_clear_screen    },
-
-    /* Video */
-    { "SCREEN_GET"           , ""           , TYPE_INT      , modscreen_get_screen      },
-
-    /* ------------ Compatibility ------------ */
-
-    /* Regiones */
-    { "DEFINE_REGION"        , "IIIII"      , TYPE_INT      , modscreen_define_region   },
-    { "OUT_REGION"           , "II"         , TYPE_INT      , modscreen_out_region      },
-
-    /* Fondo de pantalla */
-    { "PUT_SCREEN"           , "II"         , TYPE_INT      , modscreen_put_screen      },
-    { "CLEAR_SCREEN"         , ""           , TYPE_INT      , modscreen_clear_screen    },
-
-    /* Video */
-    { "GET_SCREEN"           , ""           , TYPE_INT      , modscreen_get_screen      },
-
-    { 0                     , 0             , 0             , 0                         }
-};
-
-/* --------------------------------------------------------------------------- */
-
-char * __bgdexport( mod_screen, modules_dependency )[] =
-{
-    "libgrbase",
-    "libvideo",
-    "libblit",
-    "librender",
-    NULL
-};
 
 /* --------------------------------------------------------------------------- */

@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -412,9 +407,8 @@ expresion_result compile_sublvalue( VARSPACE * from, int base_offset, VARSPACE *
     }
 
     /* Un acceso a un array es un acceso a su primer elemento */
-/*
     res.count = 1;
-    if ( reduce_arrays == 1 && typedef_is_array( res.type ) )
+    if ( typedef_is_array( res.type ) && reduce_arrays == 1 )
     {
         if ( res.type.chunk[1].type != TYPE_CHAR )
         {
@@ -425,7 +419,6 @@ expresion_result compile_sublvalue( VARSPACE * from, int base_offset, VARSPACE *
             }
         }
     }
-*/
 
     token_back() ;
 
@@ -482,7 +475,7 @@ int compile_sizeof( VARSPACE * here, int * content_size, char * content_type, in
 
     if ( base )
     {
-          token_next() ;
+        token_next() ;
         if ( token.type == IDENTIFIER && token.code != identifier_point )
         {
             token_back() ;
@@ -718,12 +711,6 @@ SYSPROC * compile_bestproc( SYSPROC ** procs )
     int min_params = 0 ;
     const char * proc_name = procs[0]->name ;
 
-    int param_diff, params = 0;
-    CODEBLOCK_POS code_pos_code;
-    tok_pos token_save;
-
-    /* --------------------------------------------------- */
-
     while ( procs[proc_count] ) proc_count++ ;
 
     /* Get the minimum number of parameters */
@@ -731,61 +718,6 @@ SYSPROC * compile_bestproc( SYSPROC ** procs )
     for ( n = 0 ; n < proc_count ; n++ )
         if ( procs[n]->params > min_params )
             min_params = procs[n]->params ;
-
-    /* --------------------------------------------------- */
-
-    /* count function params */
-
-    code_pos_code = codeblock_pos( code );
-    token_save = token_pos();
-
-    params = 0;
-
-    for ( ;; )
-    {
-        token_next() ;
-        if ( token.type == IDENTIFIER && token.code == identifier_rightp ) /* ")" */
-        {
-            token_back() ;
-            break ;
-        }
-        token_back() ;
-
-        params++ ;
-
-        res = compile_expresion( 0, 0, 0, TYPE_UNDEFINED ) ;
-
-        token_next() ;
-        if ( token.type != IDENTIFIER || token.code != identifier_comma ) /* "," */
-        {
-            token_back() ;
-            break ;
-        }
-    }
-
-    codeblock_setpos(code, code_pos_code);
-    token_set_pos(token_save);
-
-    /* Eliminate any process that has not as many parameters */
-
-    param_diff = 0;
-    for ( n = 0 ; n < proc_count ; n++ )
-    {
-        char * p = procs[n]->paramtypes;
-
-        param_diff = 0;
-
-        while( ( *p ) ) if ( *(p++) == '+' ) param_diff++;
-
-        if ( procs[n]->params - param_diff != params )
-        {
-            memmove( &procs[n], &procs[n+1], sizeof( SYSPROC* ) *( proc_count - n ) ) ;
-            proc_count-- ;
-            n-- ;
-        }
-    }
-
-    count = 0;
 
     for ( ;; )
     {
@@ -800,7 +732,7 @@ SYSPROC * compile_bestproc( SYSPROC ** procs )
         count++ ;
 
         /* Eliminate any process that has not as many parameters */
-/*
+
         for ( n = 0 ; n < proc_count ; n++ )
         {
             if ( procs[n]->params < count )
@@ -810,7 +742,7 @@ SYSPROC * compile_bestproc( SYSPROC ** procs )
                 n-- ;
             }
         }
-*/
+
         if ( proc_count == 0 ) compile_error( MSG_INCORRECT_PARAMC, proc_name, min_params ) ;
 
         /* Find all the available types */
@@ -953,8 +885,6 @@ SYSPROC * compile_bestproc( SYSPROC ** procs )
                     n-- ;
                 }
             }
-
-            if ( strlen( validtypes ) > 1 ) continue ;
 
             /* Convert the result to the appropiate type, if needed */
 
@@ -1786,11 +1716,6 @@ expresion_result compile_factor()
         {
             if ( token.code == identifier_point ) /* "." */ /* Operador "." */
             {
-                if ( typedef_is_array( part.type ) )
-                {
-                    while ( typedef_is_array ( part.type = typedef_reduce( part.type ) ) ) ;
-                }
-
                 if ( typedef_is_pointer( part.type ) )
                 {
                     part.type = typedef_reduce( part.type ) ;
@@ -1858,7 +1783,6 @@ expresion_result compile_factor()
                 part.lvalue = 1 ;
 
                 token_next() ;
-
                 if ( token.type != IDENTIFIER || token.code != identifier_rightb ) compile_error( MSG_EXPECTED, "]" ) ; /* "]" */
                 continue ;
             }
@@ -1886,7 +1810,6 @@ expresion_result compile_factor()
     }
 
     token_back() ;
-
     return part ;
 }
 
@@ -2118,7 +2041,6 @@ expresion_result compile_operation()
         token_back() ;
         break ;
     }
-
     return left ;
 }
 
@@ -2667,12 +2589,10 @@ expresion_result compile_subexpresion()
                 right = compile_expresion( 0, 0, 0, TYPE_UNDEFINED ) ;
                 if ( typedef_is_integer( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (INTEGER to CHAR[])" );
                     codeblock_add( code, MN_INT2STR | mntype( right.type, 0 ), 0 ) ;
                 }
                 else if ( typedef_is_float( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to CHAR[])" );
                     codeblock_add( code, MN_FLOAT2STR, 0 ) ;
                 }
                 else if ( !typedef_is_string( right.type ) )
@@ -2701,7 +2621,6 @@ expresion_result compile_subexpresion()
 
                 if ( typedef_base( right.type ) == TYPE_FLOAT )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to POINTER)" );
                     codeblock_add( code, MN_FLOAT2INT, 0 );
                     right.type = base.type;
                 }
@@ -2730,12 +2649,10 @@ expresion_result compile_subexpresion()
 
                 if ( typedef_is_string( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (STRING to CHAR)" );
                     codeblock_add( code, MN_STR2CHR, 0 ) ;
                 }
                 else if ( typedef_base( right.type ) == TYPE_FLOAT )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to CHAR)" );
                     codeblock_add( code, MN_FLOAT2INT, 0 ) ;
                 }
                 else if ( !typedef_is_numeric( right.type ) )
@@ -2763,22 +2680,18 @@ expresion_result compile_subexpresion()
 
                 if ( typedef_base( right.type ) == TYPE_CHAR )
                 {
-                    compile_warning( 1, "implicit conversion (CHAR to STRING)" );
                     codeblock_add( code, MN_CHR2STR, 0 ) ;
                 }
                 else if ( typedef_is_integer( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (INTEGER to STRING)" );
                     codeblock_add( code, MN_INT2STR | mntype( right.type, 0 ), 0 ) ;
                 }
                 else if ( typedef_is_float( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to STRING)" );
                     codeblock_add( code, MN_FLOAT2STR, 0 ) ;
                 }
                 else if ( typedef_is_pointer( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (POINTER to STRING)" );
                     codeblock_add( code, MN_POINTER2STR, 0 ) ;
                 }
                 else if ( !typedef_is_string( right.type ) )
@@ -2836,17 +2749,14 @@ expresion_result compile_subexpresion()
                 right = compile_expresion( 0, 0, 0, TYPE_UNDEFINED ) ;
                 if ( typedef_is_integer( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (INTEGER to CHAR[])" );
                     codeblock_add( code, MN_INT2STR | mntype( right.type, 0 ), 0 ) ;
                 }
                 else if ( typedef_is_float( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to CHAR[])" );
                     codeblock_add( code, MN_FLOAT2STR, 0 ) ;
                 }
                 else if ( typedef_base( right.type ) == TYPE_CHAR )
                 {
-                    compile_warning( 1, "implicit conversion (CHAR to CHAR[])" );
                     codeblock_add( code, MN_CHR2STR, 0 );
                 }
                 else if ( !typedef_is_string( right.type ) )
@@ -2865,17 +2775,14 @@ expresion_result compile_subexpresion()
                 right = compile_expresion( 0, 0, 0, TYPE_UNDEFINED ) ;
                 if ( typedef_is_integer( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (INTEGER to STRING)" );
                     codeblock_add( code, MN_INT2STR | mntype( right.type, 0 ), 0 ) ;
                 }
                 else if ( typedef_is_float( right.type ) )
                 {
-                    compile_warning( 1, "implicit conversion (FLOAT to STRING)" );
                     codeblock_add( code, MN_FLOAT2STR, 0 ) ;
                 }
                 else if ( typedef_base( right.type ) == TYPE_CHAR )
                 {
-                    compile_warning( 1, "implicit conversion (CHAR to STRING)" );
                     codeblock_add( code, MN_CHR2STR, 0 );
                 }
                 else if ( !typedef_is_string( right.type ) )
@@ -2897,28 +2804,28 @@ expresion_result compile_subexpresion()
 
         /* Otra posible combinación(for not string/char[]/pointers) */
 
-        if (    token.code == identifier_plusequal      /* "+=" */
-            ||  token.code == identifier_minusequal     /* "-=" */
-            ||  token.code == identifier_multequal      /* "*=" */
-            ||  token.code == identifier_divequal       /* "/=" */
-            ||  token.code == identifier_modequal       /* "%=" */
-            ||  token.code == identifier_andequal       /* "&=" */
-            ||  token.code == identifier_xorequal       /* "^=" */
-            ||  token.code == identifier_orequal        /* "|=" */
-            ||  token.code == identifier_rolequal       /* "<<=" */
-            ||  token.code == identifier_rorequal       /* ">>=" */
-            ||  token.code == identifier_equal )        /* "=" */
+        if ( token.code == identifier_plusequal         /* "+=" */
+                ||  token.code == identifier_minusequal    /* "-=" */
+                ||  token.code == identifier_multequal     /* "*=" */
+                ||  token.code == identifier_divequal      /* "/=" */
+                ||  token.code == identifier_modequal      /* "%=" */
+                ||  token.code == identifier_andequal      /* "&=" */
+                ||  token.code == identifier_xorequal      /* "^=" */
+                ||  token.code == identifier_orequal       /* "|=" */
+                ||  token.code == identifier_rolequal      /* "<<=" */
+                ||  token.code == identifier_rorequal      /* ">>=" */
+                ||  token.code == identifier_equal )       /* "=" */
         {
             SYSPROC * proc_copy = sysproc_get( identifier_search_or_add( "#COPY#" ) );
             SYSPROC * proc_memcopy = sysproc_get( identifier_search_or_add( "#MEMCOPY#" ) );
-            SYSPROC * proc_copy_string_array = sysproc_get( identifier_search_or_add( "#COPYSTRA#" ) );
             int size, nvar;
 
             op = token.code ;
 
-            /* Assignation to struct: struct copy */
             if ( typedef_is_struct( base.type ) )
             {
+                /* Assignation to struct: struct copy */
+
                 if ( token.code != identifier_equal ) compile_error( MSG_EXPECTED, "=" ) ; /* "=" */
 
                 right = compile_expresion( 0, 0, 0, TYPE_UNDEFINED );
@@ -2984,46 +2891,11 @@ expresion_result compile_subexpresion()
                 return base;
             }
 
-            if ( op != identifier_equal && typedef_is_array( base.type ) ) compile_error( MSG_EXPECTED, "[" ) ;
+            if ( typedef_is_array( base.type ) ) compile_error( MSG_EXPECTED, "[" ) ;
 
             if ( !base.lvalue ) compile_error( MSG_VARIABLE_REQUIRED ) ;
+
             right = compile_expresion( 0, 0, 0, typedef_base( base.type ) ) ;
-
-            /* Array copy */
-            if ( op == identifier_equal && typedef_is_array( base.type ) && typedef_is_array( right.type ) )
-            {
-                int size;
-
-                if ( !typedef_is_equal( base.type, right.type ) ) compile_error( MSG_TYPES_NOT_THE_SAME );
-
-                size = typedef_size( base.type );
-
-                while ( typedef_is_array( base.type ) )
-                {
-                    base.type = typedef_reduce( base.type ) ;
-                    right.type = typedef_reduce( right.type ) ;
-                }
-
-                /* Optimized fast memcopy version */
-                if ( typedef_is_string( base.type ) )
-                {
-                    codeblock_add( code, MN_PUSH, size / sizeof( int ) );
-                    codeblock_add( code, MN_SYSCALL, proc_copy_string_array->code );
-                }
-                else
-                {
-                    codeblock_add( code, MN_PUSH, size );
-                    codeblock_add( code, MN_SYSCALL, proc_memcopy->code );
-                }
-
-                base.type = right.type;
-                base.constant = 0;
-                base.lvalue = 0;
-                base.call = 1;
-
-                return base;
-            }
-
             if ( right.lvalue ) codeblock_add( code, mntype( right.type, 0 ) | MN_PTR, 0 ) ;
 
             type = check_numeric_types( &base, &right ) ;
@@ -3103,7 +2975,7 @@ expresion_result compile_expresion( int need_constant, int need_lvalue, int disc
 
     /* Quita los lvalue */
 
-    if ( !need_lvalue && res.lvalue && !typedef_is_array( res.type ) )
+    if ( !need_lvalue && res.lvalue )
     {
         res.lvalue = 0 ;
         codeblock_add( code, mntype( res.type, 0 ) | MN_PTR, 0 ) ;
@@ -3448,7 +3320,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_continue )  /* "CONTINUE" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 if ( !code->loop_active ) compile_error( MSG_NO_LOOP ) ;
 
@@ -3459,7 +3331,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_break ) /* "BREAK" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 if ( !code->loop_active ) compile_error( MSG_NO_LOOP ) ;
 
@@ -3473,7 +3345,7 @@ void compile_block( PROCDEF * p )
                 if ( proc->type != TYPE_INT && proc->type != TYPE_DWORD )
                     if ( !( proc->flags & PROC_FUNCTION ) ) compile_error( MSG_FRAME_REQUIRES_INT );
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next() ;
                 if ( token.type != IDENTIFIER || token.code != identifier_semicolon ) /* ";" */
@@ -3494,7 +3366,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_debug ) /* "DEBUG" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 codeblock_add( code, MN_DEBUG, 0 ) ;
                 compile_sentence_end() ;
@@ -3503,7 +3375,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_return )  /* "RETURN" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next() ;
                 if ( token.type != IDENTIFIER || token.code != identifier_semicolon ) /* ";" */
@@ -3522,7 +3394,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_clone ) /* "CLONE" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 et1 = codeblock_label_add( code, -1 ) ;
                 codeblock_add( code, MN_CLONE, et1 ) ;
@@ -3537,7 +3409,7 @@ void compile_block( PROCDEF * p )
                 /* Label at the end of a IF/ELSEIF/ELSEIF/ELSE chain */
                 int end_of_chain = -1;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 for ( ;; )
                 {
@@ -3572,7 +3444,7 @@ void compile_block( PROCDEF * p )
                     }
                     else if ( token.type == IDENTIFIER && token.code == identifier_elseif ) /* "ELSEIF" */
                     {
-                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
                         if ( end_of_chain == -1 ) end_of_chain = codeblock_label_add( code, -1 ) ;
                         codeblock_add( code, MN_JUMP, end_of_chain );
                         codeblock_label_set( code, et1, code->current ) ;
@@ -3590,7 +3462,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_for ) /* "FOR" */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 loop = codeblock_loop_add( code ) ;
                 et1 = codeblock_label_add( code, -1 ) ;
@@ -3623,7 +3495,7 @@ void compile_block( PROCDEF * p )
                 token_next() ;
                 if ( token.type != IDENTIFIER || token.code != identifier_semicolon ) /* ";" */
                 {
-                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
                     token_back() ;
                     do
                     {
@@ -3645,7 +3517,7 @@ void compile_block( PROCDEF * p )
                 token_next() ;
                 if ( token.type != IDENTIFIER || token.code != identifier_rightp )  /* ")" */
                 {
-                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
                     token_back() ;
                     do
                     {
@@ -3669,7 +3541,7 @@ void compile_block( PROCDEF * p )
                 compile_block( p ) ;
                 code->loop_active = last_loop ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 codeblock_add( code, MN_REPEAT, loop ) ;
                 codeblock_loop_end( code, loop, code->current ) ;
@@ -3681,7 +3553,7 @@ void compile_block( PROCDEF * p )
                 BASETYPE switch_type = TYPE_UNDEFINED;
                 expresion_result switch_exp ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next() ;
                 if ( token.type != IDENTIFIER || token.code != identifier_leftp ) /* "(" */
@@ -3720,7 +3592,7 @@ void compile_block( PROCDEF * p )
                     token_next() ;
                     if ( token.type == IDENTIFIER && token.code == identifier_case )  /* "CASE" */
                     {
-                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                         for ( ;; )
                         {
@@ -3772,7 +3644,7 @@ void compile_block( PROCDEF * p )
                     }
                     else if ( token.type == IDENTIFIER && token.code == identifier_default ) /* "DEFAULT" */
                     {
-                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                         token_next() ;
 
@@ -3797,14 +3669,14 @@ void compile_block( PROCDEF * p )
                 loop = codeblock_loop_add( code ) ;
                 codeblock_loop_start( code, loop, code->current ) ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 last_loop = code->loop_active ;
                 code->loop_active = loop ;
                 compile_block( p ) ;
                 code->loop_active = last_loop ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 codeblock_add( code, MN_REPEAT, loop ) ;
                 codeblock_loop_end( code, loop, code->current ) ;
@@ -3828,7 +3700,7 @@ void compile_block( PROCDEF * p )
 
                 loop = codeblock_loop_add( code ) ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 var_pos = codeblock_pos( code );
 
@@ -3917,7 +3789,7 @@ void compile_block( PROCDEF * p )
                 if ( token.type != IDENTIFIER || token.code != identifier_semicolon ) /* ";" */
                     compile_error( MSG_EXPECTED, ";" ) ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 codeblock_add( code, MN_BRFALSE, loop ) ;
 
@@ -3965,7 +3837,7 @@ void compile_block( PROCDEF * p )
                 codeblock_add( code, MN_JUMP, et2 ) ;
                 codeblock_label_set( code, et1, code->current ) ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 last_loop = code->loop_active ;
                 code->loop_active = loop ;
@@ -3974,7 +3846,7 @@ void compile_block( PROCDEF * p )
 
                 codeblock_label_set( code, et2, code->current ) ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 if ( token.type != IDENTIFIER || token.code != identifier_until ) /* "UNTIL" */
                     compile_error( MSG_EXPECTED, "UNTIL" ) ;
@@ -4011,7 +3883,7 @@ void compile_block( PROCDEF * p )
                     loop = codeblock_loop_add( code ) ;
                     codeblock_loop_start( code, loop, code->current ) ;
 
-                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                     compile_expresion( 0, 0, 0, TYPE_DWORD ) ;
                     token_next() ;
@@ -4023,7 +3895,7 @@ void compile_block( PROCDEF * p )
                     loop = codeblock_loop_add( code ) ;
                     codeblock_loop_start( code, loop, code->current ) ;
 
-                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                    if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                     compile_expresion( 0, 0, 0, TYPE_DWORD ) ;
                     token_next() ;
@@ -4038,7 +3910,7 @@ void compile_block( PROCDEF * p )
                 compile_block( p ) ;
                 code->loop_active = last_loop ;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 codeblock_add( code, MN_REPEAT, loop ) ;
                 codeblock_loop_end( code, loop, code->current ) ;
@@ -4047,7 +3919,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_jmp ) /* JMP */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next();
 
@@ -4065,7 +3937,7 @@ void compile_block( PROCDEF * p )
 
             if ( token.code == identifier_call ) /* CALL */
             {
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next();
 
@@ -4085,7 +3957,7 @@ void compile_block( PROCDEF * p )
             {
                 int on_req = 0;
 
-                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+                if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
                 token_next();
 
@@ -4144,7 +4016,7 @@ void compile_block( PROCDEF * p )
 
         if ( token.type != IDENTIFIER ) /* || token.code < reserved_words) */ compile_error( MSG_INVALID_SENTENCE ) ;
 
-        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 20 ) ) ;
+        if ( dcb_options & DCB_DEBUG ) codeblock_add( code, MN_SENTENCE, line_count + ( current_file << 24 ) ) ;
 
         token_back() ;
 

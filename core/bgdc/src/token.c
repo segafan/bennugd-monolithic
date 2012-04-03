@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -192,7 +187,6 @@ static int token_endfile();
 
 int n_files = 0;                        /* Includes */
 char files[MAX_SOURCES][__MAX_PATH];    /* Includes */
-char *source_data[MAX_SOURCES];             /* Includes */
 
 /* ---------------------------------------------------------------------- */
 
@@ -200,28 +194,24 @@ int load_file( char * filename )
 {
     long   size;
     file * fp = file_open( filename, "rb0" );
-    int n;
+    char * source;
 
-    for( n = 0; n < n_files; n++ ) if ( !strcmp( files[n], filename ) ) break;
+    if ( n_files == MAX_SOURCES ) compile_error( MSG_TOO_MANY_FILES );
+    strcpy( files[n_files++], filename );
 
-    if ( n >= n_files )
-    {
-        if ( n_files == MAX_SOURCES ) compile_error( MSG_TOO_MANY_FILES );
-        strcpy( files[n_files], filename );
-        if ( !fp ) compile_error( MSG_FILE_NOT_FOUND, filename );
-        size = file_size( fp );
-        source_data[n_files] = ( char * ) calloc( size + 1, sizeof( char ) );
-        if ( !source_data[n_files] ) compile_error( MSG_FILE_TOO_BIG, filename );
-        if ( size == 0 ) compile_error( MSG_FILE_EMPTY, filename );
-        if ( !file_read( fp, source_data[n_files], size ) ) compile_error( MSG_READ_ERROR, filename );
+    if ( !fp ) compile_error( MSG_FILE_NOT_FOUND, filename );
 
-        source_data[n_files][size] = 0;
-        file_close( fp );
-        n = n_files++;
-    }
+    size = file_size( fp );
+    source = ( char * ) calloc( size + 1, sizeof( char ) );
+    if ( !source ) compile_error( MSG_FILE_TOO_BIG, filename );
+    if ( size == 0 ) compile_error( MSG_FILE_EMPTY, filename );
+    if ( !file_read( fp, source, size ) ) compile_error( MSG_READ_ERROR, filename );
 
-    token_init( source_data[n], n );
-    return n;
+    source[size] = 0;
+    file_close( fp );
+
+    token_init( source, n_files - 1 );
+    return n_files -1;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -257,7 +247,7 @@ void include_file( int bprepro )
         {
             if ( bprepro )
             {
-                compile_warning( 0,"extra tokens at end of #include directive" );
+                compile_warning( "extra tokens at end of #include directive" );
                 SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
                 if ( *source_ptr == '\n' ) line_count--;
             }
@@ -738,8 +728,8 @@ void preprocessor()
         SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
         if ( *source_ptr && *source_ptr != '\n' )
         {
-            if ( ifdef ) compile_warning( 0,"extra tokens at end of #ifdef directive" );
-            else compile_warning( 0,"extra tokens at end of #ifndef directive" );
+            if ( ifdef ) compile_warning( "extra tokens at end of #ifdef directive" );
+            else compile_warning( "extra tokens at end of #ifndef directive" );
             SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
         }
 
@@ -761,8 +751,8 @@ void preprocessor()
         SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
         if ( *source_ptr && *source_ptr != '\n' )
         {
-            if ( token.code == id_else ) compile_warning( 0,"extra tokens at end of #else directive" );
-            else if ( token.code == id_endif ) compile_warning( 0,"extra tokens at end of #endif directive" );
+            if ( token.code == id_else ) compile_warning( "extra tokens at end of #else directive" );
+            else if ( token.code == id_endif ) compile_warning( "extra tokens at end of #endif directive" );
             SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
         }
         if ( *source_ptr == '\n' ) line_count--;
@@ -822,7 +812,7 @@ void preprocessor()
         SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
         if ( *source_ptr && *source_ptr != '\n' )
         {
-            compile_warning( 0,"extra tokens at end of #if directive" );
+            compile_warning( "extra tokens at end of #if directive" );
             SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
         }
         if ( *source_ptr == '\n' ) line_count--;
@@ -836,8 +826,8 @@ void preprocessor()
             SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
             if ( *source_ptr && *source_ptr != '\n' )
             {
-                if ( token.code == id_else ) compile_warning( 0,"extra tokens at end of #else directive" );
-                else if ( token.code == id_endif ) compile_warning( 0,"extra tokens at end of #endif directive" );
+                if ( token.code == id_else ) compile_warning( "extra tokens at end of #else directive" );
+                else if ( token.code == id_endif ) compile_warning( "extra tokens at end of #endif directive" );
                 SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
             }
             if ( *source_ptr == '\n' ) line_count--;
@@ -876,7 +866,7 @@ void preprocessor()
         SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
         if ( *source_ptr && *source_ptr != '\n' )
         {
-            compile_warning( 0,"extra tokens at end of #else directive" );
+            compile_warning( "extra tokens at end of #else directive" );
             SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
         }
         if ( *source_ptr == '\n' ) line_count--;
@@ -886,7 +876,7 @@ void preprocessor()
         SKIP_SPACES_UNTIL_LF_AND_COUNT_LINES;
         if ( *source_ptr && *source_ptr != '\n' )
         {
-            compile_warning( 0,"extra tokens at end of #endif directive" );
+            compile_warning( "extra tokens at end of #endif directive" );
             SKIP_ALL_UNTIL_LF_AND_COUNT_LINES;
         }
         if ( *source_ptr == '\n' ) line_count--;
@@ -990,13 +980,15 @@ int token_endfile()
 
 void token_dump()
 {
+    fprintf( stdout, "(" );
     if ( token.type == NUMBER ) fprintf( stdout, "%d", token.code );
     else if ( token.type == FLOAT ) fprintf( stdout, "%f", token.value );
     else if ( token.type == STRING ) fprintf( stdout, "\"%s\"", string_get( token.code ) );
     else if ( token.type == IDENTIFIER ) fprintf( stdout, "\"%s\"", identifier_name( token.code ) );
     else if ( token.type == LABEL ) fprintf( stdout, "\"%s\"", identifier_name( token.code ) );
     else if ( token.type == NOTOKEN ) fprintf( stdout, "EOF" );
-    else fprintf( stdout, "unknown" );
+    else fprintf( stdout, "unknown\n" );
+    fprintf( stdout, ")\n" );
 }
 
 extern int c_type_initialized;
@@ -1395,30 +1387,3 @@ void token_back()
 
     use_saved = 1;
 }
-
-tok_pos token_pos()
-{
-    tok_pos tp;
-
-    tp.use_saved    = use_saved;
-    tp.token_saved  = token_saved;
-    tp.token        = token;
-    tp.line_count   = line_count;
-    tp.current_file = current_file;
-    tp.token_prev   = token_prev;
-    tp.source_ptr   = source_ptr;
-
-    return tp;
-}
-
-void token_set_pos( tok_pos tp )
-{
-    use_saved       = tp.use_saved;
-    token_saved     = tp.token_saved;
-    token           = tp.token;
-    line_count      = tp.line_count;
-    current_file    = tp.current_file;
-    token_prev      = tp.token_prev;
-    source_ptr      = tp.source_ptr;
-}
-

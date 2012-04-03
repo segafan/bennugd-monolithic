@@ -36,32 +36,31 @@ BGDRTM_SRCS = $(BGDRTM_DIR)/src
 BGDRTM_INCLUDE = $(BGDRTM_DIR)/include
 
 # BennuGD libs
-BENNU_LIBS  = libblit libdraw libfont libgrbase libjoy libkey librender libscroll
+BENNU_LIBS  = libblit libdraw libfont libgrbase libjoy libkey librender libscroll 
 BENNU_LIBS += libsdlhandler libtext libvideo libwm
 BENNU_LIBS += libmouse
 
 # BennuGD modules
 BENNU_MODULES  = mod_blendop mod_cd mod_debug mod_dir mod_draw mod_effects mod_file mod_flic
-BENNU_MODULES += mod_grproc mod_joy mod_key mod_m7 mod_map mod_math mod_mem
+BENNU_MODULES += mod_grproc mod_joy mod_key mod_m7 mod_map mod_math mod_mem 
 BENNU_MODULES += mod_path mod_proc mod_rand mod_regex mod_say mod_screen mod_scroll mod_sort
 BENNU_MODULES += mod_sound mod_string mod_sys mod_text mod_time mod_timers mod_video mod_wm
-BENNU_MODULES += mod_mouse mod_mathi mod_chipmunk
-# mod_iconv mod_wiiuse mod_mathi
+BENNU_MODULES += mod_mouse 
+# mod_iconv mod_wiiuse mod_mathi 
 
 #
 # I don't have ninja makefile skills, so we setup OBJS, etc manually
-#
+# 
 
 BGDC_C_FILES  = c_code.c c_data.c c_debug.c c_main.c codeblock.c constants.c dcbw.c
 BGDC_C_FILES += error.c identifier.c main.c main_core.c procedure.c segment.c strings.c
 BGDC_C_FILES += sysstub.c token.c typedef.c varspace.c
 
-BGDI_C_FILES = main.c
-# BGDI_C_FILES = psp.c
+BGDI_C_FILES = main.c psp.c
 
 BGDRTM_C_FILES = copy.c dcbr.c dirs.c instance.c interpreter.c misc.c strings.c sysprocs.c varspace_file.c
 
-COMMON_C_FILES = debug.c files.c xctype.c extra.c
+COMMON_C_FILES = debug.c files.c xctype.c
 
 # libs
 LIBBLIT_C_FILES 		= g_blit.c g_pixel.c libblit.c
@@ -78,7 +77,7 @@ LIBRENDER_C_FILES 		+= scaler_scanline.c
 LIBSCROLL_C_FILES  	= libscroll.c
 LIBSDLHANDLER_C_FILES 	= libsdlhandler.c
 LIBTEXT_C_FILES 		= libtext.c
-LIBVIDEO_C_FILES 		= g_regions.c g_video.c
+LIBVIDEO_C_FILES 		= g_regions.c g_video.c 
 LIBWM_C_FILES 			= libwm.c
 
 # modules
@@ -92,14 +91,14 @@ MOD_FLIC_C_FILES 		= mod_flic.c
 MOD_GRPROC_C_FILES 	= mod_grproc.c
 
 #MOD_ICONV_C_FILES 		= mod_iconv.c			# i'm not sure if PSP has this
-															# but we leave it for now
+															# but we leave it for now			
 
 MOD_JOY_C_FILES 		= mod_joy.c
 MOD_KEY_C_FILES 		= mod_key.c
 MOD_M7_C_FILES 			= mod_m7.c
 MOD_MAP_C_FILES 		= mod_map.c file_png.c file_pcx.c file_pal.c file_map.c file_fpg.c file_fnt.c
 MOD_MATH_C_FILES 		= mod_math.c
-MOD_MATHI_C_FILES 		= mod_mathi.c
+# MOD_MATHI_C_FILES 		= mod_mathi.c
 MOD_MEM_C_FILES 		= mod_mem.c
 MOD_PATH_C_FILES 		= mod_path.c
 MOD_PROC_C_FILES 		= mod_proc.c
@@ -119,12 +118,11 @@ MOD_VIDEO_C_FILES 		= mod_video.c
 # MOD_WIIUSE_C_FILES		= mod_wiiuse.c
 MOD_WM_C_FILES 			= mod_wm.c
 MOD_EFFECTS_C_FILES   = mod_effects.c
-MOD_SQLITE3_C_FILES	= mod_sqlite3.c
-MOD_CHIPMUNK_C_FILES = mod_chipmunk.c
+# MOD_SQLITE3_C_FILES	= mod_sqlite3.c
 
 
 # objects to be compiled
-BGDC_OBJS = $(BGDC_C_FILES:.c=.o)
+BGDC_OBJS = $(BGDC_C_FILES:.c=.o) 
 BGDI_OBJS = $(BGDI_C_FILES:.c=.o)
 BGDRTM_OBJS = $(BGDRTM_C_FILES:.c=.o)
 COMMON_C_FILES_OBJS = $(COMMON_C_FILES:.c=.o)
@@ -160,7 +158,7 @@ MOD_KEY_OBJS 		= $(MOD_KEY_C_FILES:.c=.o)
 MOD_M7_OBJS 			= $(MOD_M7_C_FILES:.c=.o)
 MOD_MAP_OBJS 		= $(MOD_MAP_C_FILES:.c=.o)
 MOD_MATH_OBJS 		= $(MOD_MATH_C_FILES:.c=.o)
-MOD_MATHI_OBJS 		= $(MOD_MATHI_C_FILES:.c=.o)
+# MOD_MATHI_OBJS 		= $(MOD_MATHI_C_FILES:.c=.o)
 MOD_MEM_OBJS 		= $(MOD_MEM_C_FILES:.c=.o)
 MOD_PATH_OBJS 		= $(MOD_PATH_C_FILES:.c=.o)
 MOD_PROC_OBJS 		= $(MOD_PROC_C_FILES:.c=.o)
@@ -179,8 +177,7 @@ MOD_TIMERS_OBJS		= $(MOD_TIMERS_C_FILES:.c=.o)
 MOD_VIDEO_OBJS 		= $(MOD_VIDEO_C_FILES:.c=.o)
 # MOD_WIIUSE_OBJS		= $(MOD_WII_C_FILES:.c=.o)
 MOD_WM_OBJS 			= $(MOD_WM_C_FILES:.c=.o)
-MOD_SQLITE3_OBJS 	= $(MOD_SQLITE3_C_FILES:.c=.o)
-MOD_CHIPMUNK_OBJS   = $(MOD_CHIPMUNK_C_FILES:.c=.o)
+# MOD_SQLITE3_OBJS 	= $(MOD_SQLITE3_C_FILES:.c=.o)
 
 
 # PSPSDK relies on $(OBJS) to compile things
@@ -221,7 +218,7 @@ OBJS += $(foreach obj, $(MOD_KEY_OBJS),  			$(MODULES_DIR)/mod_key/$(obj))
 OBJS += $(foreach obj, $(MOD_M7_OBJS),  			$(MODULES_DIR)/mod_m7/$(obj))
 OBJS += $(foreach obj, $(MOD_MAP_OBJS),  			$(MODULES_DIR)/mod_map/$(obj))
 OBJS += $(foreach obj, $(MOD_MATH_OBJS),  		$(MODULES_DIR)/mod_math/$(obj))
-OBJS += $(foreach obj, $(MOD_MATHI_OBJS),  		$(MODULES_DIR)/mod_mathi/$(obj))
+# OBJS += $(foreach obj, $(MOD_MATHI_OBJS),  		$(MODULES_DIR)/mod_mathi/$(obj))
 OBJS += $(foreach obj, $(MOD_MEM_OBJS),  			$(MODULES_DIR)/mod_mem/$(obj))
 OBJS += $(foreach obj, $(MOD_PATH_OBJS),  		$(MODULES_DIR)/mod_path/$(obj))
 OBJS += $(foreach obj, $(MOD_PROC_OBJS),  		$(MODULES_DIR)/mod_proc/$(obj))
@@ -241,30 +238,26 @@ OBJS += $(foreach obj, $(MOD_VIDEO_OBJS),  		$(MODULES_DIR)/mod_video/$(obj))
 # OBJS += $(foreach obj, $(MOD_WIIUSE_OBJS),  	$(MODULES_DIR)/mod_wiiuse/$(obj))
 OBJS += $(foreach obj, $(MOD_WM_OBJS),  			$(MODULES_DIR)/mod_wm/$(obj))
 # OBJS += $(foreach obj, $(MOD_SQLITE3_OBJS),  	$(MODULES_DIR)/mod_sqlite3/$(obj))
-OBJS += $(foreach obj, $(MOD_CHIPMUNK_OBJS),  			$(MODULES_DIR)/mod_chipmunk/$(obj))
 
 #
 # OMFG, ordering is important for the linker (does anyone else fell this is stupid?)
 #
-LIBS  = -lz -lm -lchipmunk -lSDL_image -lSDL_gfx -lSDL -lpng -lpspgu -lpspaudio -lpspirkeyb -lpspmath
+LIBS  = -lz -lm -lSDL_image -lSDL_gfx -lSDL -lpng -lpspgu -lpspaudio -lpspirkeyb -lpspmath
 LIBS += -lGL -lpsphprm -lvorbis -lvorbisidec -lpspvfpu -lpsprtc -lpsppower
-LIBS += -ldietglob
+LIBS += -ldietglob 
 # -lsqlite3
 
-BENNU_LIBS_INCLUDES = $(foreach lib, $(BENNU_LIBS),  -I$(MODULES_DIR)/$(lib))
-BENNU_MODULES_INCLUDES = $(foreach mod, $(BENNU_MODULES),  -I$(MODULES_DIR)/$(mod))
+BENNU_LIBS_INCLUDES = $(foreach lib, $(BENNU_LIBS),  -I$(MODULES_DIR)/$(lib)) 
+BENNU_MODULES_INCLUDES = $(foreach mod, $(BENNU_MODULES),  -I$(MODULES_DIR)/$(mod)) 
 
 INCLUDES  = -I$(BGDI_INCLUDE) -I$(BGDRTM_INCLUDE) -I$(INCLUDE_DIR) -I$(PSPSDK_INCLUDES_DIR)
 INCLUDES += $(BENNU_LIBS_INCLUDES) $(BENNU_MODULES_INCLUDES) -I$(PSPSDK_SDL_INCLUDE_DIR)
 INCLUDES += -I$(BGDC_INCLUDE)
 
-CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' -DNO_MODICONV -DNO_MODIMAGE -DNO_MODMULTI
-CFLAGS += -D__MONOLITHIC__ -D__BGDRTM__ $(INCLUDES) -D__BGDI__ -DHAVE_STRING_H
-CFLAGS += -L$(3RDPARTY_DIR)/dietlibc-glob -L$(3RDPARTY_DIR)/Chipmunk-5.3.4
-CFLAGS += -DNO_MODSOUND -I$(3RDPARTY_DIR)/Chipmunk-5.3.4/include/chipmunk
-CFLAGS += -I$(3RDPARTY_DIR)/Chipmunk-5.3.4/include/chipmunk/constraints
+CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' -g
+CFLAGS += -D__MONOLITHIC__ -D__BGDRTM__ $(INCLUDES) -D__BGDI__ -L$(3RDPARTY_DIR)/dietlibc-glob
 
-CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti 
 ASFLAGS = $(CFLAGS)
 
 EXTRA_TARGETS = EBOOT.PBP
@@ -279,8 +272,10 @@ PSP_FW_VERSION = 500
 BUILD_PRX = 0
 USE_USER_LIBS = 1
 
+PSP_EBOOT_ICON = logo.png
+
 PSPSDK_INCLUDES_DIR = $(PSPSDK)/include
-PSPSDK_SDL_INCLUDE_DIR = $(PSPSDK)/../include/SDL
+PSPSDK_SDL_INCLUDE_DIR = $(PSPSDK)/../include/SDL 
 
 # this is the last thing we put in the makefile
 include $(PSPSDK)/lib/build.mak

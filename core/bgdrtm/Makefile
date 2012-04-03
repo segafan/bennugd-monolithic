@@ -31,18 +31,18 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
                 ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
                 ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
                 ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
-                ../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
-                ../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
-                ../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wpad/ \
-                ../../modules/mod_image/ ../../modules/mod_sqlite3/ ../../modules/mod_chipmunk/
+				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
+				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_mathi/ \
+				../../modules/mod_debug/ ../../modules/mod_iconv/ ../../modules/mod_wpad/ \
+				../../modules/mod_image/ ../../modules/mod_sqlite3/
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-O3 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DWITH_GPL_CODE -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
+CFLAGS		=	-g -O3 -Wall -D__BGDRTM__ -D__MONOLITHIC__ -DTARGET_WII -DVERSION='"1.0.0"' -DSTDC_HEADERS $(MACHDEP) $(INCLUDE) -finline-functions -fno-strict-aliasing
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
-LDFLAGS		=	-O3 $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -70,14 +70,13 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               interpreter.c varspace_file.c \
-              ../../../3rdparty/libc_additions/realpath.c \
               ../../common/debug.c \
               ../../common/files.c \
               ../../common/xctype.c \
               ../../../modules/mod_say/mod_say.c \
               ../../../modules/mod_string/mod_string.c \
               ../../../modules/mod_math/mod_math.c \
-              ../../../modules/mod_mathi/mod_mathi.c \
+			  ../../../modules/mod_mathi/mod_mathi.c \
               ../../../modules/mod_time/mod_time.c \
               ../../../modules/mod_file/mod_file.c \
               ../../../modules/mod_sound/mod_sound.c \
@@ -138,14 +137,13 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               ../../../modules/mod_effects/mod_effects.c \
               ../../../modules/mod_blendop/mod_blendop.c \
               ../../../modules/mod_m7/mod_m7.c \
-              ../../../modules/libwm/libwm.c \
-              ../../../modules/mod_wm/mod_wm.c \
-              ../../../modules/mod_sys/mod_sys.c \
-              ../../../modules/mod_mem/mod_mem.c \
-              ../../../modules/mod_flic/mod_flic.c \
-              ../../../modules/mod_iconv/iconv.c \
-              ../../../modules/mod_wpad/mod_wpad.c \
-              ../../../modules/mod_chipmunk/mod_chipmunk.c
+			  ../../../modules/libwm/libwm.c \
+			  ../../../modules/mod_wm/mod_wm.c \
+			  ../../../modules/mod_sys/mod_sys.c \
+			  ../../../modules/mod_mem/mod_mem.c \
+			  ../../../modules/mod_flic/mod_flic.c \
+			  ../../../modules/mod_iconv/iconv.c \
+			  ../../../modules/mod_wpad/mod_wpad.c
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -161,9 +159,7 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
-					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL \
-					-I$(LIBOGC_INC)/chipmunk/ \
-					-I$(PORTLIBS)/include/chipmunk/
+					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL
 
 #---------------------------------------------------------------------------------
 # build a list of library paths

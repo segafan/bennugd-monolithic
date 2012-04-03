@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="69">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <df name="dietlibc-glob" root="..">
+      <df name="nb_dietlibc-glob" kind="SOURCE_LOGICAL_FOLDER">
+      </df>
+      <in>diet-fnmatch.c</in>
+      <in>diet-fnmatch.h</in>
+      <in>diet-glob.c</in>
+      <in>diet-glob.h</in>
+      <in>dietfeatures.h</in>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Arquivos importantes"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>../Makefile.psp</itemPath>
+      <itemPath>nb_dietlibc-glob-Makefile.mk</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>..</Elem>
+  </sourceRootList>
+  <projectmakefile>nb_dietlibc-glob-Makefile.mk</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>localhost</developmentServer>
+        <compilerSet>PSP-SDK|MinGW</compilerSet>
+        <platform>3</platform>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>..</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile.psp</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile.psp clean</cleanCommand>
+          <executablePath></executablePath>
+          <cTool>
+            <incDir>
+              <pElem>../../../../../../../pspsdk/psp/sdk/include</pElem>
+              <pElem>..</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>TARGET_PSP</Elem>
+            </preprocessorList>
+          </cTool>
+        </makeTool>
+      </makefileType>
+    </conf>
+  </confs>
+</configurationDescriptor>

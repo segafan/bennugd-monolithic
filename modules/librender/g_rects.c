@@ -1,30 +1,25 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
- *
- *  This file is part of Bennu - Game Development
- *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
- *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
- *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
- *
- */
+*  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
+*  Copyright © 2002-2006 Fenix Team (Fenix)
+*  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+*
+*  This file is part of Bennu - Game Development
+*
+*  Bennu is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 2 of the License, or
+*  (at your option) any later version.
+*
+*  Bennu is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with this program; if not, write to the Free Software
+*  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+*
+*/
 
 #define __LIB_RENDER
 #include "librender.h"
@@ -32,12 +27,7 @@
 
 /* --------------------------------------------------------------------------- */
 
-//uint8_t zonearray[ 128 / 8 ];
-#ifdef __USE_BIT_MASK
-static uint32_t zonearray[ /* DIRTYROWS * */ DIRTYCOLS ];
-#else
-static uint32_t zonearray[ DIRTYROWS ][ DIRTYCOLS ];
-#endif
+uint8_t zonearray[ 128 / 8 ];
 
 /* --------------------------------------------------------------------------- */
 
@@ -63,13 +53,12 @@ void gr_rects_clear()
 
 void gr_mark_rect( int x, int y, int width, int height )
 {
-#ifdef __USE_BIT_MASK
     int cx, cy;
     int w, h;
     int iy, lx, ly;
 
-    w = scr_width / DIRTYCOLS;
-    h = scr_height / DIRTYROWS;
+    w = scr_width / 16;
+    h = scr_height / 8;
 
     width = ABS( width ) - 1;
     height = ABS( height ) - 1;
@@ -79,38 +68,12 @@ void gr_mark_rect( int x, int y, int width, int height )
 
     iy = MAX( y / h, 0 );
 
-    lx = MIN(( x + width ) / w, DIRTYCOLS - 1 );
-    ly = MIN(( y + height ) / h, DIRTYROWS - 1 );
+    lx = MIN(( x + width ) / w, 15 );
+    ly = MIN(( y + height ) / h, 7 );
 
     for ( cx = MAX( x / w, 0 ); cx <= lx; cx++ )
         for ( cy = iy; cy <= ly; cy++ )
             zonearray[ cx ] |= ( 1 << cy );
-#else
-    int cx, cy;
-    int w, h;
-    int iy, lx, ly;
-
-    w = scr_width / DIRTYCOLS;
-    h = scr_height / DIRTYROWS;
-
-    if ( w * DIRTYCOLS != scr_width ) w++;
-    if ( h * DIRTYROWS != scr_height ) h++;
-
-    width = ABS( width ) - 1;
-    height = ABS( height ) - 1;
-
-    x = MIN( x, x + width );
-    y = MIN( y, y + height );
-
-    iy = MAX( y / h, 0 );
-
-    lx = MIN(( x + width ) / w, DIRTYCOLS - 1 );
-    ly = MIN(( y + height ) / h, DIRTYROWS - 1 );
-
-    for ( cx = MAX( x / w, 0 ); cx <= lx; cx++ )
-        for ( cy = iy; cy <= ly; cy++ )
-            zonearray[ cy ][ cx ] = 1;
-#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -132,76 +95,42 @@ int gr_mark_rects( REGION * rects )
     int count = 0, x, y;
     int w, h, cw, ch, x2;
 
-    w = scr_width / DIRTYCOLS;
-    h = scr_height / DIRTYROWS;
+    w = scr_width / 16;
+    h = scr_height / 8;
 
-    if ( w * DIRTYCOLS != scr_width ) w++;
-    if ( h * DIRTYROWS != scr_height ) h++;
-
-    for ( x = 0; x < DIRTYCOLS; x++ )
+    for ( x = 0 ; x < 16 ; x++ )
     {
-#ifdef __USE_BIT_MASK
         if ( zonearray[ x ] )
         {
-            for ( y = 0; y < DIRTYROWS; y++ )
+            for ( y = 0 ; y < 8 ; y++ )
             {
                 if ( zonearray[ x ] & ( 1 << y ) )
                 {
                     zonearray[ x ] &= ~( 1 << y );
-                    for ( cw = x + 1; ( cw < DIRTYCOLS ) && ( zonearray[ cw ] & ( 1 << y ) ); cw++ )
+                    for ( cw = x + 1; ( cw < 16 ) && ( zonearray[ cw ] & ( 1 << y ) ); cw++ )
                         zonearray[ cw ] &= ~( 1 << y );
 
-                    for ( ch = y + 1; ch < DIRTYROWS; ch++ )
+                    for ( ch = y + 1 ; ch < 8 ; ch++ )
                     {
                         /* Si hay algun hueco en el ancho de las siguiente lineas, corto aca,
                            y deja esta linea para otra recta */
-                        for ( x2 = x; ( x2 < cw ) && ( zonearray[ x2 ] & ( 1 << ch ) ); x2++ );
+                        for ( x2 = x ; ( x2 < cw ) && ( zonearray[ x2 ] & ( 1 << ch ) ) ; x2++ ) ;
 
                         if ( x2 < cw ) break;
 
                         /* Limpio bitmap de la recta actual */
-                        for ( x2 = x; x2 < cw; x2++ )
+                        for ( x2 = x ; x2 < cw ; x2++ )
                             zonearray[ x2 ] &= ~( 1 << ch );
                     }
-                    rects[ count ].x = w * x;
-                    rects[ count ].y = h * y;
+                    rects[ count ].x = w * x ;
+                    rects[ count ].y = h * y ;
                     rects[ count ].x2 = w * cw - 1 /* + rects[ count ].x */;
                     rects[ count ].y2 = h * ch - 1 /* + rects[ count ].y */;
                     count++;
                 }
             }
         }
-#else
-        for ( y = 0; y < DIRTYROWS; y++ )
-        {
-            if ( zonearray[ y ][ x ] )
-            {
-                zonearray[ y ][ x ] = 0;
-                for ( cw = x + 1; ( cw < DIRTYCOLS ) && ( zonearray[ y ][ cw ] ); cw++ ) zonearray[ y ][ cw ] = 0;
-
-                for ( ch = y + 1; ch < DIRTYROWS; ch++ )
-                {
-                    /* Si hay algun hueco en el ancho de las siguiente lineas, corto aca,
-                       y deja esta linea para otra recta */
-                    for ( x2 = x; ( x2 < cw ) && ( zonearray[ ch ][ x2 ] ); x2++ );
-
-                    if ( x2 < cw ) break;
-
-                    /* Limpio bitmap de la recta actual */
-                    for ( x2 = x; x2 < cw; x2++ ) zonearray[ ch ][ x2 ] = 0;
-                }
-
-                rects[ count ].x = w * x;
-                rects[ count ].y = h * y;
-                rects[ count ].x2 = MIN( w * cw - 1, scr_width - 1 );
-                rects[ count ].y2 = MIN( h * ch - 1, scr_height - 1 );
-
-                count++;
-            }
-        }
-#endif
     }
-
     return count;
 }
 

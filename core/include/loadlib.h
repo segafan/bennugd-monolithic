@@ -1,54 +1,59 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright � 2006-2010 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation; either version 3 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
 #ifndef _LOADLIB_H
 #define _LOADLIB_H
 
-#ifdef _WIN32
-#include <windows.h>
-#include <winbase.h>
-#else
-#define _GNU_SOURCE
-#ifndef __MONOLITHIC__
-#include <dlfcn.h>
-#else
-#include <monolithic_includes.h>
-#endif
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-#define __stdcall
-#define __dllexport
-#define __dllimport
+#ifdef TARGET_PSP
+    #define __MONOLITHIC__
 #endif
 
 #ifdef _WIN32
-#define dlclose(a)
+
+	#include <windows.h>
+	#include <winbase.h>
+#else
+	#define _GNU_SOURCE
+	
+	#ifndef __MONOLITHIC__
+		#include <dlfcn.h>
+	#else
+		#include <monolithic_includes.h>
+	#endif
+	
+	#include <unistd.h>
+	#include <stdlib.h>
+	#include <stdio.h>
+	#include <string.h>
+
+	#define __stdcall
+	#define __dllexport
+	#define __dllimport
+
+#endif
+
+#ifdef _WIN32
+
+	#define dlclose(a)
+
 #endif
 
 // This first part handles systems where dynamic library opening is posible
@@ -77,7 +82,6 @@ static int dlibclose( dlibhandle * handle )
 
 static dlibhandle * dlibopen( const char * fname )
 {
-    char *f;
 #ifdef _WIN32
     void * hnd = LoadLibrary( fname );
 #else
@@ -90,6 +94,7 @@ static dlibhandle * dlibopen( const char * fname )
 #else
         __dliberr = dlerror() ;
 #endif
+        printf("%s\n", __dliberr);
         return NULL;
     }
 
@@ -102,9 +107,7 @@ static dlibhandle * dlibopen( const char * fname )
             return NULL;
         }
 
-        f = fname + strlen( fname );
-        while ( f > fname && f[-1] != '\\' && f[-1] != '/' ) f-- ;
-        dlib->fname = strdup( f );
+        dlib->fname = strdup( fname );
         if ( !dlib->fname )
         {
             __dliberr = "Could not load library." ;
@@ -216,38 +219,46 @@ static char * dliberror( void )
     return __dliberr;
 }
 
+static int dlibclose( dlibhandle * handle )
+{
+    handle->index=0;
+    return 0;
+}
+
 static dlibhandle * dlibopen( const char * fname )
 {
-    int i=0;
+    int i = 0;
 
     // Fake-load the library
     // What we're really doing is checking if the library name given to us is in the list
     // of supported modules, and return its place in the symbols array.
-
-    while (symbol_list[i].module_name != NULL) {
-        if(strncmp(fname, symbol_list[i].module_name,
-          strlen(symbol_list[i].module_name)) == 0) {
+    fprintf(stderr, "dlibopenning: %s\n", fname );
+    while (symbol_list[i].module_name != NULL)
+    {
+        //fprintf( stderr, "comparing %s to %s\n", fname, symbol_list[i].module_name );
+        if(strncmp(fname, symbol_list[i].module_name, strlen(symbol_list[i].module_name)) == 0)
+        {
             dlibhandle * dlib = (dlibhandle*) malloc( sizeof( dlibhandle ) );
             if ( !dlib )
             {
-                printf("Couldn't allocate resources for fake-loading the module %s :(\n",
-                       __dliberr);
-				        return NULL;
-			      }
-			
-      			dlib->index = i;
-      			
+                printf("Couldn't allocate resources for fake-loading the module %s :(\n", __dliberr);
+                return NULL;
+            }
+
+            dlib->index = i;
+            fprintf( stderr, "dlibopen exiting...\n" );
             return ( dlib );
         }
-		
-		i++;
+        i++;
     }
-
     return NULL;
 }
 
 static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 {
+	// Only for debugging purposes
+	// fprintf(stderr, "Asked for symbol \"%s\" from library %s.\n", symbol, symbol_list[handle->index].module_name);
+	
     // Return the symbol they asked us for, or NULL
     if(strncmp(symbol, "modules_dependency", strlen("modules_dependency")) == 0)
         return symbol_list[handle->index].modules_dependency;
@@ -286,14 +297,21 @@ static void * _dlibaddr( dlibhandle * handle, const char * symbol )
     if(strncmp(symbol, "instance_destroy_hook", strlen("instance_destroy_hook")) == 0)
         return symbol_list_runtime[handle->index].instance_destroy_hook;
 	
-    if(strncmp(symbol, "process_exec_hook", strlen("process_exec_hook")) == 0)
-        return symbol_list_runtime[handle->index].process_exec_hook;
+	// if(strncmp(symbol, "instance_pre_execute_hook", strlen("instance_pre_execute_hook")) == 0)
+		// return symbol_list_runtime[handle->index].instance_pre_execute_hook;
+
+	// if(strncmp(symbol, "instance_pos_execute_hook", strlen("instance_pos_execute_hook")) == 0)
+		// return symbol_list_runtime[handle->index].instance_pos_execute_hook;
+	
+	if(strncmp(symbol, "process_exec_hook", strlen("process_exec_hook")) == 0)
+		return symbol_list_runtime[handle->index].process_exec_hook;
 	
     if(strncmp(symbol, "handler_hooks", strlen("handler_hooks")) == 0)
         return symbol_list_runtime[handle->index].handler_hooks;
 	
-    // Unknown symbol, much probably an error in this implementation or a
-    // change in the BennuGD ABI
+	// Unknown symbol, much probably an error in this implementation or a change in the BennuGD ABI
+	fprintf(stderr, "Symbol %s is unknown to me, this is most likely a bug\n contact the author.\n", symbol);
+
 #endif
 
     return NULL;

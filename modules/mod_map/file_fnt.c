@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -171,11 +166,7 @@ static int gr_font_loadfrom( file * fp )
 
     /* Create the font */
 
-    if ( header[2] == 'x' )
-        id = gr_font_new( types, header[7] ) ;
-    else
-        id = gr_font_new( CHARSET_CP850, 8 ) ;
-
+    id = gr_font_new() ;
     if ( id == -1 )
     {
         pal_destroy( pal );
@@ -188,6 +179,17 @@ static int gr_font_loadfrom( file * fp )
         gr_font_destroy( id );
         pal_destroy( pal );
         return -1 ;
+    }
+
+    if ( header[2] == 'x' )
+    {
+        f->bpp = header[7];
+        f->charset = types;
+    }
+    else
+    {
+        f->bpp = 8;
+        f->charset = CHARSET_CP850;
     }
 
     /* Load the character bitmaps */
@@ -217,12 +219,13 @@ static int gr_font_loadfrom( file * fp )
         gr->format->palette = pal;
         pal_use( pal );
 
-        for ( y = 0, ptr = gr->data; y < gr->height; y++, ptr += gr->pitch )
+        for ( y = 0, ptr = gr->data ; y < gr->height ; y++, ptr += gr->pitch )
         {
             if ( !file_read( fp, ptr, gr->widthb ) ) break ;
 
             if ( gr->format->depth == 16 )
             {
+/*                gr_convert16_565ToScreen(( uint16_t * )ptr, gr->width ); */
                 ARRANGE_WORDS( ptr, ( int )gr->width );
             }
             else if ( gr->format->depth == 32 )
@@ -233,7 +236,7 @@ static int gr_font_loadfrom( file * fp )
 
         f->glyph[i].yoffset = chardata[i].yoffset ;
     }
-    if ( f->glyph[32].xadvance == 0 ) f->glyph[32].xadvance = f->glyph['j'].xadvance ;
+    if ( f->glyph[32].xadvance == 0 ) f->glyph[32].xadvance = 4 ;
 
     pal_destroy( pal ); // Elimino la instancia inicial
 
@@ -387,7 +390,7 @@ int gr_font_save( int fontid, const char * filename )
                     }
                     else if ( gr->format->depth == 32 )
                     {
-                        file_writeUint32A( file, ( uint32_t * ) block, gr->width );
+                        file_writeUint32A( file, block, gr->width );
                     }
                 }
                 else
@@ -469,9 +472,11 @@ int gr_load_bdf( const char * filename )
     fp = file_open( filename, "r" );
     if ( !fp ) return -1;
 
-    id = gr_font_new( CHARSET_ISO8859, 1 );
+    id = gr_font_new();
     if ( id < 0 ) return -1;
     font = fonts[id];
+    font->bpp = 1;
+    font->charset = CHARSET_ISO8859;
     font->maxwidth = 0;
     font->maxheight = 0;
 
@@ -575,7 +580,6 @@ int gr_load_bdf( const char * filename )
 
     if ( error )
     {
-        gr_font_destroy( id );
         return -1;
     }
 
@@ -585,8 +589,8 @@ int gr_load_bdf( const char * filename )
 
     if ( font->glyph[32].xadvance == 0 ) font->glyph[32].xadvance = font->glyph['j'].xadvance;
 
-//    fonts[font_count] = font ;
-    return id /* font_count++ */ ;
+    fonts[font_count] = font ;
+    return font_count++ ;
 }
 
 /* --------------------------------------------------------------------------- */

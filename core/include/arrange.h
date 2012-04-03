@@ -1,28 +1,23 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2010 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
- *  This software is provided 'as-is', without any express or implied
- *  warranty. In no event will the authors be held liable for any damages
- *  arising from the use of this software.
+ *  Bennu is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
  *
- *  Permission is granted to anyone to use this software for any purpose,
- *  including commercial applications, and to alter it and redistribute it
- *  freely, subject to the following restrictions:
+ *  Bennu is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- *     1. The origin of this software must not be misrepresented; you must not
- *     claim that you wrote the original software. If you use this software
- *     in a product, an acknowledgment in the product documentation would be
- *     appreciated but is not required.
- *
- *     2. Altered source versions must be plainly marked as such, and must not be
- *     misrepresented as being the original software.
- *
- *     3. This notice may not be removed or altered from any source
- *     distribution.
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
 
@@ -42,7 +37,8 @@
         defined(__ppc__) || \
         defined(__POWERPC__) || \
         defined(_M_PPC) || \
-        defined(__sparc__)
+        defined(__sparc__) || \
+        defined(GEKKO)
         #define __BYTEORDER  __BIG_ENDIAN
     #else
         #define __BYTEORDER  __LIL_ENDIAN
@@ -59,13 +55,36 @@
         #define ARRANGE_DWORDS(x,c)
         #define ARRANGE_WORDS(x,c)
     #else
-        static __inline__ void DO_Swap16(uint16_t * D) {
-            *D = ((*D<<8)|(*D>>8));
-        }
+        #if defined(__GNUC__) && ( defined(__powerpc__) || defined(__ppc__) || defined(GEKKO) )
+            /* PowerPC optimized assembly code */
+            static __inline__ void DO_Swap16(uint16_t * D)
+            {
+                uint16_t result;
+	            __asm__("rlwimi %0,%2,8,16,23" : "=&r" (result) : "0" (*D >> 8), "r" (*D));
 
-        static __inline__ void DO_Swap32(uint32_t * D) {
-            *D = ((*D<<24)|((*D<<8)&0x00FF0000)|((*D>>8)&0x0000FF00)|(*D>>24));
-        }
+	            *D = result;
+            }
+
+            static __inline__ void DO_Swap32(uint32_t * D)
+            {
+                uint32_t result;
+
+	            __asm__("rlwimi %0,%2,24,16,23" : "=&r" (result) : "0" (*D>>24), "r" (*D));
+	            __asm__("rlwimi %0,%2,8,8,15"   : "=&r" (result) : "0" (result),    "r" (*D));
+	            __asm__("rlwimi %0,%2,24,0,7"   : "=&r" (result) : "0" (result),    "r" (*D));
+
+	            *D = result;
+            }
+        #else
+            static __inline__ void DO_Swap16(uint16_t * D) {
+                *D = ((*D<<8)|(*D>>8));
+            }
+
+            static __inline__ void DO_Swap32(uint32_t * D) {
+                *D = ((*D<<24)|((*D<<8)&0x00FF0000)|((*D>>8)&0x0000FF00)|(*D>>24));
+            }
+        #endif
+
 
         #define ARRANGE_DWORD(x)    DO_Swap32(x)
         #define ARRANGE_WORD(x)     DO_Swap16(x)

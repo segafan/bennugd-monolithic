@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2011 Joseba García Etxebarria <joseba.gar@gmail.com>
+ *  Copyright © 2010 Joseba García Etxebarria <joseba.gar@gmail.com>
  *
  *  mod_wpad is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -288,15 +288,3 @@ int modwpad_rumble( INSTANCE * my, int * params)
 }
 
 /* ----------------------------------------------------------------- */
-/* Function declarations                                             */
-DLSYSFUNCS  __bgdexport( mod_wpad, functions_exports )[] =
-{
-    { "WPAD_IS_READY"          , "I" , TYPE_INT      , modwpad_is_ready     },
-    { "WPAD_INFO"              , "II", TYPE_INT      , modwpad_info         },
-    { "WPAD_INFO_NUNCHUK"      , "II", TYPE_INT      , modwpad_info_nunchuk },
-    { "WPAD_INFO_CLASSIC"      , "II", TYPE_INT      , modwpad_info_classic },
-    { "WPAD_INFO_GUITAR"       , "II", TYPE_INT      , modwpad_info_guitar  },
-    { "WPAD_INFO_BB"           , "II", TYPE_INT      , modwpad_info_bb      },
-    { "WPAD_RUMBLE"            , "II", TYPE_INT      , modwpad_rumble       },
-    { 0                        , 0   , 0             , 0                    }
-};
