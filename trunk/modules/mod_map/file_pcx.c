@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -53,10 +53,6 @@ typedef struct
     int16_t VscreenSize;
     uint8_t Filler[54];
 } PCXheader ;
-
-/* --------------------------------------------------------------------------- */
-
-static uint8_t colors[256 * 3] ;
 
 /* --------------------------------------------------------------------------- */
 
@@ -149,6 +145,7 @@ GRAPH * gr_read_pcx( const char * filename )
 
         if ( file_read( file, &ch, 1 ) == 1 && ch == 0x0c )
         {
+            uint8_t colors[256 * 3] ;
             if ( file_read( file, colors, sizeof( colors ) ) )
             {
                 bitmap->format->palette = pal_new_rgb(( uint8_t * )colors );

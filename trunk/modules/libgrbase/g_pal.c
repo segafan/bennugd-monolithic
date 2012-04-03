@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -456,7 +456,7 @@ int pal_discard( PALETTE * pal )
 
 PALETTE * pal_new( PALETTE * basepal )
 {
-    PALETTE * pal = malloc( sizeof( PALETTE ) );
+    PALETTE * pal = calloc( 1, sizeof( PALETTE ) );
     if ( !pal ) return NULL ;
 
     if ( basepal )
@@ -526,7 +526,7 @@ void pal_destroy( PALETTE * pal )
 
 int pal_get( PALETTE * spal, int color, int num, uint8_t * pal )
 {
-    if ( !spal || num < 1 || color < 0 || color > 255 ) return 0;
+    if ( num < 1 || color < 0 || color > 255 ) return 0;
     if ( color + num > 256 ) num = 256 - color ;
 
     if ( !spal )
@@ -548,7 +548,7 @@ int pal_get( PALETTE * spal, int color, int num, uint8_t * pal )
 
 int pal_set( PALETTE * spal, int color, int num, uint8_t * pal )
 {
-    if ( !spal || num < 1 || color < 0 || color > 255 ) return 0;
+    if ( num < 1 || color < 0 || color > 255 ) return 0;
     if ( color + num > 256 ) num = 256 - color ;
 
     if ( !spal )
@@ -950,11 +950,17 @@ void gr_make_trans_table()
 void gr_set_rgb( int color, int r, int g, int b )
 {
     if ( color < 0 || color > 255 ) return ;
-
+    
+    if ( !sys_pixel_format->palette )
+    {
+        sys_pixel_format->palette = pal_new( NULL );
+        memset ( sys_pixel_format->palette->rgb, '\0', sizeof( sys_pixel_format->palette->rgb ) );
+    }
+    
     sys_pixel_format->palette->rgb[ color ].r = r << 2;
     sys_pixel_format->palette->rgb[ color ].g = g << 2;
     sys_pixel_format->palette->rgb[ color ].b = b << 2;
-
+    
     palette_changed = 1 ;
 }
 
@@ -969,9 +975,9 @@ void gr_get_colors( int color, int num, uint8_t * pal )
 
     while ( num-- )
     {
-        *pal++ = sys_pixel_format->palette->rgb[ color ].r ;
-        *pal++ = sys_pixel_format->palette->rgb[ color ].g ;
-        *pal++ = sys_pixel_format->palette->rgb[ color++ ].b ;
+        *pal++ = rgb[ color ].r ;
+        *pal++ = rgb[ color ].g ;
+        *pal++ = rgb[ color++ ].b ;
     }
 }
 
@@ -981,6 +987,12 @@ void gr_set_colors( int color, int num, uint8_t * pal )
 {
     if ( num < 1 || color < 0 || color > 255 ) return ;
     if ( color + num > 256 ) num = 256 - color ;
+
+    if ( !sys_pixel_format->palette )
+    {
+        sys_pixel_format->palette = pal_new( NULL );
+        memset ( sys_pixel_format->palette->rgb, '\0', sizeof( sys_pixel_format->palette->rgb ) );
+    }
 
     while ( num-- )
     {

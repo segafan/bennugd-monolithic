@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -66,10 +66,15 @@ int gr_font_load( char * filename )
     file * fp ;
     int result;
 
+    if ( !filename ) return -1;
+
     fp = file_open( filename, "rb" ) ;
     if ( !fp ) return -1 ;
+
     result = gr_font_loadfrom( fp );
+
     file_close( fp );
+
     return result;
 }
 
@@ -257,6 +262,8 @@ static int gr_font_loadfrom( file * fp )
 
 int gr_font_save( int fontid, const char * filename )
 {
+    if ( !filename ) return 0;
+
     file * file;
     int n;
     uint32_t y;
@@ -423,6 +430,8 @@ int gr_font_save( int fontid, const char * filename )
 
 int gr_load_bdf( const char * filename )
 {
+    if ( !filename ) return -1;
+
     file * fp;
     char line[2048];
     uint8_t * ptr, * optr;
