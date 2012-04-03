@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DEF13A534B200F70BC2 /* mod_chipmunk.c */; };
+		920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06A6152BBF0C001BDE54 /* libpng.a */; };
 		921B48181391CE07005F1832 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48171391CE07005F1832 /* UIKit.framework */; };
 		921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48191391CE07005F1832 /* Foundation.framework */; };
 		921B481C1391CE07005F1832 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B481B1391CE07005F1832 /* CoreGraphics.framework */; };
@@ -93,12 +94,10 @@
 		921B4AED1391E237005F1832 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE61391E237005F1832 /* debug.c */; };
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
-		92241D4614CF748900284244 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92241D4314CF746D00284244 /* libSDL.a */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
-		92A632BA13BD302800382D60 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632B913BD302800382D60 /* libpng.a */; };
 		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
 		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
@@ -108,26 +107,33 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		920C06A5152BBF0C001BDE54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920C069E152BBF0B001BDE54 /* libpng.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 920C066F152BBE27001BDE54;
+			remoteInfo = libpng;
+		};
+		920C06B2152BC041001BDE54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
+			remoteInfo = libSDL;
+		};
+		920C06B4152BC041001BDE54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 006E982211955059001DE610;
+			remoteInfo = testsdl;
+		};
 		9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 9219AC16147F1AE700A7AD83;
 			remoteInfo = libcurl;
-		};
-		92241D4214CF746D00284244 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92241D3814CF746C00284244 /* SDL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
-			remoteInfo = libSDL;
-		};
-		92241D4414CF746D00284244 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92241D3814CF746C00284244 /* SDL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 006E982211955059001DE610;
-			remoteInfo = testsdl;
 		};
 		9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -149,20 +155,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9232A5B21396D47300058FDB;
 			remoteInfo = tremor;
-		};
-		92A6329313BD2FA600382D60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92A6328E13BD2FA500382D60 /* png.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92A6326513BD2FA500382D60;
-			remoteInfo = png;
-		};
-		92A632B713BD301E00382D60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92A6328E13BD2FA500382D60 /* png.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 92A6326413BD2FA500382D60;
-			remoteInfo = png;
 		};
 		92CD380213BD40EA000D5ED7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -191,6 +183,10 @@
 		92098DEE13A534B200F70BC2 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
 		92098DEF13A534B200F70BC2 /* mod_chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_chipmunk.c; sourceTree = "<group>"; };
 		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
+		920C069E152BBF0B001BDE54 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../../3rdparty/libpng/projects/iOS/libpng.xcodeproj; sourceTree = "<group>"; };
+		920C06A8152BC040001BDE54 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL2/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
+		920C06B6152BC114001BDE54 /* g_compat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = g_compat.c; sourceTree = "<group>"; };
+		920C06B7152BC114001BDE54 /* g_compat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = g_compat.h; sourceTree = "<group>"; };
 		9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcurl.xcodeproj; path = "../../3rdparty/curl-7.23.1/iOS_project/libcurl.xcodeproj"; sourceTree = "<group>"; };
 		921B48131391CE07005F1832 /* iOSBennuGD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSBennuGD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -384,7 +380,6 @@
 		921B4AE61391E237005F1832 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		921B4AE71391E237005F1832 /* files.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = files.c; sourceTree = "<group>"; };
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
-		92241D3814CF746C00284244 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL2/src/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
 		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
@@ -392,7 +387,6 @@
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
 		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		92A6328E13BD2FA500382D60 /* png.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = png.xcodeproj; path = ../../3rdparty/libpng/src/projects/png/png.xcodeproj; sourceTree = "<group>"; };
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
 		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
 		92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD.prg; path = TestData/iOSBennuGD.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -408,11 +402,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92241D4614CF748900284244 /* libSDL.a in Frameworks */,
+				920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */,
 				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
 				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
 				92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */,
-				92A632BA13BD302800382D60 /* libpng.a in Frameworks */,
 				92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */,
 				921B48181391CE07005F1832 /* UIKit.framework in Frameworks */,
 				921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */,
@@ -448,6 +441,23 @@
 			path = mod_chipmunk;
 			sourceTree = "<group>";
 		};
+		920C069F152BBF0B001BDE54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				920C06A6152BBF0C001BDE54 /* libpng.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		920C06A9152BC040001BDE54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				920C06B3152BC041001BDE54 /* libSDL.a */,
+				920C06B5152BC041001BDE54 /* testsdl.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9219AED6147F23CF00A7AD83 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -459,11 +469,11 @@
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
-				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
-				92241D3814CF746C00284244 /* SDL.xcodeproj */,
-				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
-				92A6328E13BD2FA500382D60 /* png.xcodeproj */,
+				920C06A8152BC040001BDE54 /* SDL.xcodeproj */,
 				9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */,
+				920C069E152BBF0B001BDE54 /* libpng.xcodeproj */,
+				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
+				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
 				92A631FC13BD2BE200382D60 /* tremor.xcodeproj */,
 				921B4AE41391E237005F1832 /* common */,
 				921B4AC31391DDFB005F1832 /* bgdi */,
@@ -760,6 +770,8 @@
 		921B49B01391D8A3005F1832 /* libvideo */ = {
 			isa = PBXGroup;
 			children = (
+				920C06B6152BC114001BDE54 /* g_compat.c */,
+				920C06B7152BC114001BDE54 /* g_compat.h */,
 				921B49B11391D8A3005F1832 /* g_regions.c */,
 				921B49B21391D8A3005F1832 /* g_regions.h */,
 				921B49B31391D8A3005F1832 /* g_video.c */,
@@ -1095,15 +1107,6 @@
 			path = ../../core/common;
 			sourceTree = "<group>";
 		};
-		92241D3914CF746C00284244 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92241D4314CF746D00284244 /* libSDL.a */,
-				92241D4514CF746D00284244 /* testsdl.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		92307D451461F1B00011C04E /* mod_multi */ = {
 			isa = PBXGroup;
 			children = (
@@ -1125,14 +1128,6 @@
 			isa = PBXGroup;
 			children = (
 				92A6320413BD2BE200382D60 /* libtremor.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		92A6328F13BD2FA500382D60 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92A6329413BD2FA600382D60 /* libpng.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1180,7 +1175,6 @@
 			dependencies = (
 				92E9FDA314903FE0007F890B /* PBXTargetDependency */,
 				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
-				92A632B813BD301E00382D60 /* PBXTargetDependency */,
 				92A6320B13BD2D2D00382D60 /* PBXTargetDependency */,
 			);
 			name = BennuGD_iOS;
@@ -1216,12 +1210,12 @@
 					ProjectRef = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
 				},
 				{
-					ProductGroup = 92A6328F13BD2FA500382D60 /* Products */;
-					ProjectRef = 92A6328E13BD2FA500382D60 /* png.xcodeproj */;
+					ProductGroup = 920C069F152BBF0B001BDE54 /* Products */;
+					ProjectRef = 920C069E152BBF0B001BDE54 /* libpng.xcodeproj */;
 				},
 				{
-					ProductGroup = 92241D3914CF746C00284244 /* Products */;
-					ProjectRef = 92241D3814CF746C00284244 /* SDL.xcodeproj */;
+					ProductGroup = 920C06A9152BC040001BDE54 /* Products */;
+					ProjectRef = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
 				},
 				{
 					ProductGroup = 9240F153151E72AC00CA9E0D /* Products */;
@@ -1240,25 +1234,32 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		920C06A6152BBF0C001BDE54 /* libpng.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libpng.a;
+			remoteRef = 920C06A5152BBF0C001BDE54 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920C06B3152BC041001BDE54 /* libSDL.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL.a;
+			remoteRef = 920C06B2152BC041001BDE54 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920C06B5152BC041001BDE54 /* testsdl.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = testsdl.app;
+			remoteRef = 920C06B4152BC041001BDE54 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		9219AEDD147F23CF00A7AD83 /* libcurl.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libcurl.a;
 			remoteRef = 9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92241D4314CF746D00284244 /* libSDL.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDL.a;
-			remoteRef = 92241D4214CF746D00284244 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92241D4514CF746D00284244 /* testsdl.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = testsdl.app;
-			remoteRef = 92241D4414CF746D00284244 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		9240F15A151E72AD00CA9E0D /* libSDL_mixer.a */ = {
@@ -1273,13 +1274,6 @@
 			fileType = archive.ar;
 			path = libtremor.a;
 			remoteRef = 92A6320313BD2BE200382D60 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92A6329413BD2FA600382D60 /* libpng.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libpng.a;
-			remoteRef = 92A6329313BD2FA600382D60 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92CD380313BD40EA000D5ED7 /* libChipmunk-iOS.a */ = {
@@ -1401,11 +1395,6 @@
 			isa = PBXTargetDependency;
 			name = tremor;
 			targetProxy = 92A6320A13BD2D2D00382D60 /* PBXContainerItemProxy */;
-		};
-		92A632B813BD301E00382D60 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = png;
-			targetProxy = 92A632B713BD301E00382D60 /* PBXContainerItemProxy */;
 		};
 		92CD380A13BD4221000D5ED7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

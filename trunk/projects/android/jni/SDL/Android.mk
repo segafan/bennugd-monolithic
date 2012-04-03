@@ -1,4 +1,4 @@
-LOCAL_PATH := $(call my-dir)/../../../../3rdparty/SDL2/src/
+LOCAL_PATH := $(call my-dir)/../../../../3rdparty/SDL2/
 
 ###########################
 #
