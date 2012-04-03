@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -144,7 +144,7 @@ static void do_mouse_events()
     {
         if ( scale_resolution )
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_WarpMouseInWindow(window,
                                   GLOINT32( libmouse, MOUSEX ) / ( (double)screen->w / (double)scale_screen->w ),
                                   GLOINT32( libmouse, MOUSEY ) / ( (double)screen->h / (double)scale_screen->h ));
@@ -154,7 +154,7 @@ static void do_mouse_events()
         }
         else if ( enable_scale || scale_mode != SCALE_NONE )
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_WarpMouseInWindow(window, GLOINT32( libmouse, MOUSEX ) * 2, GLOINT32( libmouse, MOUSEY ) * 2);
 #else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ) * 2 , GLOINT32( libmouse, MOUSEY ) * 2 ) ;
@@ -162,7 +162,7 @@ static void do_mouse_events()
         }
         else
         {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             SDL_WarpMouseInWindow(window, GLOINT32(libmouse, MOUSEX), GLOINT32( libmouse, MOUSEY ));
 #else
             SDL_WarpMouse( GLOINT32( libmouse, MOUSEX ), GLOINT32( libmouse, MOUSEY ) ) ;
@@ -281,7 +281,7 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_LEFT )      GLODWORD( libmouse, MOUSELEFT )     = 1 ;
                 if ( e.button.button == SDL_BUTTON_MIDDLE )    GLODWORD( libmouse, MOUSEMIDDLE )   = 1 ;
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )    = 1 ;
-#if !SDL_VERSION_ATLEAST(1, 3, 0)
+#if !SDL_VERSION_ATLEAST(2,0,0)
                 if ( e.button.button == SDL_BUTTON_WHEELUP )   GLODWORD( libmouse, MOUSEWHEELUP )++ ;
                 if ( e.button.button == SDL_BUTTON_WHEELDOWN ) GLODWORD( libmouse, MOUSEWHEELDOWN )++ ;
 #endif
@@ -293,7 +293,7 @@ static void do_mouse_events()
                 if ( e.button.button == SDL_BUTTON_RIGHT )     GLODWORD( libmouse, MOUSERIGHT )     = 0 ;
                 break ;
 
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
             case SDL_MOUSEWHEEL:
                 if(e.wheel.y > 0)
                     GLODWORD(libmouse, MOUSEWHEELUP)++;

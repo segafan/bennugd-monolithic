@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -50,6 +50,7 @@ DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
     { "SOUND_INIT"          , ""     , TYPE_INT , 0 },
     { "SOUND_CLOSE"         , ""     , TYPE_INT , 0 },
     { "LOAD_SONG"           , "S"    , TYPE_INT , 0 },
+    { "LOAD_SONG"           , "SP"   , TYPE_INT , 0 },
     { "PLAY_SONG"           , "II"   , TYPE_INT , 0 },
     { "UNLOAD_SONG"         , "I"    , TYPE_INT , 0 },
     { "STOP_SONG"           , ""     , TYPE_INT , 0 },
@@ -58,6 +59,7 @@ DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[] =
     { "SET_SONG_VOLUME"     , "I"    , TYPE_INT , 0 },
     { "IS_PLAYING_SONG"     , ""     , TYPE_INT , 0 },
     { "LOAD_WAV"            , "S"    , TYPE_INT , 0 },
+    { "LOAD_WAV"            , "SP"   , TYPE_INT , 0 },
     { "PLAY_WAV"            , "II"   , TYPE_INT , 0 },
     { "UNLOAD_WAV"          , "I"    , TYPE_INT , 0 },
     { "STOP_WAV"            , "I"    , TYPE_INT , 0 },

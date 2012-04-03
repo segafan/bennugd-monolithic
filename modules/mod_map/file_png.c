@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -34,20 +34,9 @@
 
 /* --------------------------------------------------------------------------- */
 
-/*
- *  GLOBAL VARIABLES
- */
-
-/* --------------------------------------------------------------------------- */
-
-static uint8_t colors[256 * 3] ;
-
-static file * png ;
-
-/* --------------------------------------------------------------------------- */
-
 static void user_read_data( png_structp png_ptr, png_bytep data, png_size_t length )
 {
+    file * png = (file *)png_get_io_ptr( png_ptr );
     file_read( png, data, length ) ;
 }
 
@@ -71,7 +60,7 @@ GRAPH * gr_read_png( const char * filename )
 
     /* Abre el fichero y se asegura de que screen está inicializada */
 
-    png = file_open( filename, "rb" ) ;
+    file * png = file_open( filename, "rb" ) ;
     if ( !png ) return NULL;
 
     /* Prepara las estructuras internas */
@@ -107,7 +96,7 @@ GRAPH * gr_read_png( const char * filename )
 
     /* Recupera información sobre el PNG */
 
-    png_set_read_fn( png_ptr, 0, user_read_data ) ;
+    png_set_read_fn( png_ptr, png, user_read_data ) ;
     png_read_info( png_ptr, info_ptr ) ;
     png_get_IHDR( png_ptr, info_ptr, &width, &height, &depth, &color, 0, 0, 0 ) ;
 
@@ -178,6 +167,7 @@ GRAPH * gr_read_png( const char * filename )
         }
         png_get_PLTE( png_ptr, info_ptr, &png_palette, ( int * ) &n ) ;
 
+        uint8_t colors[256 * 3];
         uint8_t * p = colors;
 
         for ( n = 0; n < 256 ; n++ )
@@ -295,11 +285,10 @@ GRAPH * gr_read_png( const char * filename )
         				( ptr8[1] == trans_color->green ) &&
         				( ptr8[2] == trans_color->blue  )
 #else
-        			    #ifdef TARGET_PSP
+        			    #ifdef COLORSPACE_BGR
 						( ptr8[0] == info_ptr->trans_color.red   ) &&
         				( ptr8[1] == info_ptr->trans_color.green ) &&
         				( ptr8[2] == info_ptr->trans_color.blue  )
-						
 						#else
 						( ptr8[0] == info_ptr->trans_values.red   ) &&
         				( ptr8[1] == info_ptr->trans_values.green ) &&
@@ -518,7 +507,7 @@ int gr_save_png( GRAPH * gr, const char * filename )
             png_set_tRNS( png_ptr, info_ptr, &trans, 1, &trans_color );
         }
 #else
-		#ifdef TARGET_PSP
+		#ifdef COLORSPACE_BGR
 		if (!( gr->info_flags & GI_NOCOLORKEY ))
         {
             /* this need test */
