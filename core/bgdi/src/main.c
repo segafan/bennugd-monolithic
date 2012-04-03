@@ -52,8 +52,6 @@
 #include <fat.h>
 #elif defined(TARGET_PSP)
 #include "psp.h"
-#elif defined(TARGET_ANDROID)
-#include <SDL.h>
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -246,18 +244,6 @@ int main( int argc, char *argv[] )
             return -1 ;
         }
     }
-
-#ifdef TARGET_ANDROID
-    filename = "main.dcb";
-	if (!file_exists(filename)) {
-	    printf("%s doesn't exist, quitting\n", filename);
-	    return -1;
-	}
-    printf("%s exists\n", filename);
-    
-    // Remember to compile DCB with debug (bgdc -g) info!
-    debug = 1;
-#endif
 
     /* Initialization (modules needed before dcb_load) */
 

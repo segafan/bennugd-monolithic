@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2011 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *  Copyright © 2002-2006 Fenix Team (Fenix)
  *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
@@ -88,7 +88,7 @@ int  c_type_initialized = 0 ;
 
 unsigned char convert (unsigned char c)
 {
-    return dos_chars ? c:win_to_dos[c] ;
+    return dos_chars ? c : win_to_dos[c] ;
 }
 
 static void set_c_range (int first, int last, int type)
