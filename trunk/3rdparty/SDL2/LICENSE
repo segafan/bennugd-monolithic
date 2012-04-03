@@ -1,6 +1,0 @@
-The files found here are the result of direct compilation of the SDL2
-development version code, which can be downloaded as follows:
-hg clone http://hg.libsdl.org/SDL
-It's licensed under the zlib license, and you can read their license at
-http://hg.libsdl.org/SDL/file/a4be1e781020/COPYING
-
