@@ -1,0 +1,350 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		92098DA613A52B7300F70BC2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92098DA513A52B7300F70BC2 /* Foundation.framework */; };
+		92098DBE13A52D9D00F70BC2 /* chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DAF13A52D9D00F70BC2 /* chipmunk.c */; };
+		92098DBF13A52D9D00F70BC2 /* cpArbiter.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB013A52D9D00F70BC2 /* cpArbiter.c */; };
+		92098DC013A52D9D00F70BC2 /* cpArray.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB113A52D9D00F70BC2 /* cpArray.c */; };
+		92098DC113A52D9D00F70BC2 /* cpBB.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB213A52D9D00F70BC2 /* cpBB.c */; };
+		92098DC213A52D9D00F70BC2 /* cpBody.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB313A52D9D00F70BC2 /* cpBody.c */; };
+		92098DC313A52D9D00F70BC2 /* cpCollision.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB413A52D9D00F70BC2 /* cpCollision.c */; };
+		92098DC413A52D9D00F70BC2 /* cpHashSet.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB513A52D9D00F70BC2 /* cpHashSet.c */; };
+		92098DC513A52D9D00F70BC2 /* cpPolyShape.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB613A52D9D00F70BC2 /* cpPolyShape.c */; };
+		92098DC613A52D9D00F70BC2 /* cpShape.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB713A52D9D00F70BC2 /* cpShape.c */; };
+		92098DC713A52D9D00F70BC2 /* cpSpace.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB813A52D9D00F70BC2 /* cpSpace.c */; };
+		92098DC813A52D9D00F70BC2 /* cpSpaceComponent.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DB913A52D9D00F70BC2 /* cpSpaceComponent.c */; };
+		92098DC913A52D9D00F70BC2 /* cpSpaceHash.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DBA13A52D9D00F70BC2 /* cpSpaceHash.c */; };
+		92098DCA13A52D9D00F70BC2 /* cpSpaceQuery.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DBB13A52D9D00F70BC2 /* cpSpaceQuery.c */; };
+		92098DCB13A52D9D00F70BC2 /* cpSpaceStep.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DBC13A52D9D00F70BC2 /* cpSpaceStep.c */; };
+		92098DCC13A52D9D00F70BC2 /* cpVect.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DBD13A52D9D00F70BC2 /* cpVect.c */; };
+		92098DD913A52DC600F70BC2 /* cpConstraint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DCE13A52DC600F70BC2 /* cpConstraint.c */; };
+		92098DDA13A52DC600F70BC2 /* cpDampedRotarySpring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DCF13A52DC600F70BC2 /* cpDampedRotarySpring.c */; };
+		92098DDB13A52DC600F70BC2 /* cpDampedSpring.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD013A52DC600F70BC2 /* cpDampedSpring.c */; };
+		92098DDC13A52DC600F70BC2 /* cpGearJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD113A52DC600F70BC2 /* cpGearJoint.c */; };
+		92098DDD13A52DC600F70BC2 /* cpGrooveJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD213A52DC600F70BC2 /* cpGrooveJoint.c */; };
+		92098DDE13A52DC600F70BC2 /* cpPinJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD313A52DC600F70BC2 /* cpPinJoint.c */; };
+		92098DDF13A52DC600F70BC2 /* cpPivotJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD413A52DC600F70BC2 /* cpPivotJoint.c */; };
+		92098DE013A52DC600F70BC2 /* cpRatchetJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD513A52DC600F70BC2 /* cpRatchetJoint.c */; };
+		92098DE113A52DC600F70BC2 /* cpRotaryLimitJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD613A52DC600F70BC2 /* cpRotaryLimitJoint.c */; };
+		92098DE213A52DC600F70BC2 /* cpSimpleMotor.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD713A52DC600F70BC2 /* cpSimpleMotor.c */; };
+		92098DE313A52DC600F70BC2 /* cpSlideJoint.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DD813A52DC600F70BC2 /* cpSlideJoint.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		92098DA213A52B7300F70BC2 /* libChipmunk-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libChipmunk-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92098DA513A52B7300F70BC2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		92098DA913A52B7300F70BC2 /* Chipmunk-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chipmunk-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		92098DAF13A52D9D00F70BC2 /* chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = chipmunk.c; path = ../../src/chipmunk.c; sourceTree = "<group>"; };
+		92098DB013A52D9D00F70BC2 /* cpArbiter.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpArbiter.c; path = ../../src/cpArbiter.c; sourceTree = "<group>"; };
+		92098DB113A52D9D00F70BC2 /* cpArray.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpArray.c; path = ../../src/cpArray.c; sourceTree = "<group>"; };
+		92098DB213A52D9D00F70BC2 /* cpBB.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpBB.c; path = ../../src/cpBB.c; sourceTree = "<group>"; };
+		92098DB313A52D9D00F70BC2 /* cpBody.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpBody.c; path = ../../src/cpBody.c; sourceTree = "<group>"; };
+		92098DB413A52D9D00F70BC2 /* cpCollision.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpCollision.c; path = ../../src/cpCollision.c; sourceTree = "<group>"; };
+		92098DB513A52D9D00F70BC2 /* cpHashSet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpHashSet.c; path = ../../src/cpHashSet.c; sourceTree = "<group>"; };
+		92098DB613A52D9D00F70BC2 /* cpPolyShape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpPolyShape.c; path = ../../src/cpPolyShape.c; sourceTree = "<group>"; };
+		92098DB713A52D9D00F70BC2 /* cpShape.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpShape.c; path = ../../src/cpShape.c; sourceTree = "<group>"; };
+		92098DB813A52D9D00F70BC2 /* cpSpace.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSpace.c; path = ../../src/cpSpace.c; sourceTree = "<group>"; };
+		92098DB913A52D9D00F70BC2 /* cpSpaceComponent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSpaceComponent.c; path = ../../src/cpSpaceComponent.c; sourceTree = "<group>"; };
+		92098DBA13A52D9D00F70BC2 /* cpSpaceHash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSpaceHash.c; path = ../../src/cpSpaceHash.c; sourceTree = "<group>"; };
+		92098DBB13A52D9D00F70BC2 /* cpSpaceQuery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSpaceQuery.c; path = ../../src/cpSpaceQuery.c; sourceTree = "<group>"; };
+		92098DBC13A52D9D00F70BC2 /* cpSpaceStep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSpaceStep.c; path = ../../src/cpSpaceStep.c; sourceTree = "<group>"; };
+		92098DBD13A52D9D00F70BC2 /* cpVect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpVect.c; path = ../../src/cpVect.c; sourceTree = "<group>"; };
+		92098DCE13A52DC600F70BC2 /* cpConstraint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpConstraint.c; path = ../../src/constraints/cpConstraint.c; sourceTree = "<group>"; };
+		92098DCF13A52DC600F70BC2 /* cpDampedRotarySpring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpDampedRotarySpring.c; path = ../../src/constraints/cpDampedRotarySpring.c; sourceTree = "<group>"; };
+		92098DD013A52DC600F70BC2 /* cpDampedSpring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpDampedSpring.c; path = ../../src/constraints/cpDampedSpring.c; sourceTree = "<group>"; };
+		92098DD113A52DC600F70BC2 /* cpGearJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpGearJoint.c; path = ../../src/constraints/cpGearJoint.c; sourceTree = "<group>"; };
+		92098DD213A52DC600F70BC2 /* cpGrooveJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpGrooveJoint.c; path = ../../src/constraints/cpGrooveJoint.c; sourceTree = "<group>"; };
+		92098DD313A52DC600F70BC2 /* cpPinJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpPinJoint.c; path = ../../src/constraints/cpPinJoint.c; sourceTree = "<group>"; };
+		92098DD413A52DC600F70BC2 /* cpPivotJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpPivotJoint.c; path = ../../src/constraints/cpPivotJoint.c; sourceTree = "<group>"; };
+		92098DD513A52DC600F70BC2 /* cpRatchetJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpRatchetJoint.c; path = ../../src/constraints/cpRatchetJoint.c; sourceTree = "<group>"; };
+		92098DD613A52DC600F70BC2 /* cpRotaryLimitJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpRotaryLimitJoint.c; path = ../../src/constraints/cpRotaryLimitJoint.c; sourceTree = "<group>"; };
+		92098DD713A52DC600F70BC2 /* cpSimpleMotor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSimpleMotor.c; path = ../../src/constraints/cpSimpleMotor.c; sourceTree = "<group>"; };
+		92098DD813A52DC600F70BC2 /* cpSlideJoint.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cpSlideJoint.c; path = ../../src/constraints/cpSlideJoint.c; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		92098D9F13A52B7300F70BC2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92098DA613A52B7300F70BC2 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		92098D9713A52B7100F70BC2 = {
+			isa = PBXGroup;
+			children = (
+				92098DA713A52B7300F70BC2 /* Chipmunk-iOS */,
+				92098DA413A52B7300F70BC2 /* Frameworks */,
+				92098DA313A52B7300F70BC2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		92098DA313A52B7300F70BC2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92098DA213A52B7300F70BC2 /* libChipmunk-iOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92098DA413A52B7300F70BC2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92098DA513A52B7300F70BC2 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		92098DA713A52B7300F70BC2 /* Chipmunk-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				92098DAF13A52D9D00F70BC2 /* chipmunk.c */,
+				92098DB013A52D9D00F70BC2 /* cpArbiter.c */,
+				92098DB113A52D9D00F70BC2 /* cpArray.c */,
+				92098DB213A52D9D00F70BC2 /* cpBB.c */,
+				92098DB313A52D9D00F70BC2 /* cpBody.c */,
+				92098DB413A52D9D00F70BC2 /* cpCollision.c */,
+				92098DB513A52D9D00F70BC2 /* cpHashSet.c */,
+				92098DB613A52D9D00F70BC2 /* cpPolyShape.c */,
+				92098DB713A52D9D00F70BC2 /* cpShape.c */,
+				92098DB813A52D9D00F70BC2 /* cpSpace.c */,
+				92098DB913A52D9D00F70BC2 /* cpSpaceComponent.c */,
+				92098DBA13A52D9D00F70BC2 /* cpSpaceHash.c */,
+				92098DBB13A52D9D00F70BC2 /* cpSpaceQuery.c */,
+				92098DBC13A52D9D00F70BC2 /* cpSpaceStep.c */,
+				92098DBD13A52D9D00F70BC2 /* cpVect.c */,
+				92098DCD13A52DA700F70BC2 /* Constraints */,
+				92098DA813A52B7300F70BC2 /* Supporting Files */,
+			);
+			path = "Chipmunk-iOS";
+			sourceTree = "<group>";
+		};
+		92098DA813A52B7300F70BC2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				92098DA913A52B7300F70BC2 /* Chipmunk-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		92098DCD13A52DA700F70BC2 /* Constraints */ = {
+			isa = PBXGroup;
+			children = (
+				92098DCE13A52DC600F70BC2 /* cpConstraint.c */,
+				92098DCF13A52DC600F70BC2 /* cpDampedRotarySpring.c */,
+				92098DD013A52DC600F70BC2 /* cpDampedSpring.c */,
+				92098DD113A52DC600F70BC2 /* cpGearJoint.c */,
+				92098DD213A52DC600F70BC2 /* cpGrooveJoint.c */,
+				92098DD313A52DC600F70BC2 /* cpPinJoint.c */,
+				92098DD413A52DC600F70BC2 /* cpPivotJoint.c */,
+				92098DD513A52DC600F70BC2 /* cpRatchetJoint.c */,
+				92098DD613A52DC600F70BC2 /* cpRotaryLimitJoint.c */,
+				92098DD713A52DC600F70BC2 /* cpSimpleMotor.c */,
+				92098DD813A52DC600F70BC2 /* cpSlideJoint.c */,
+			);
+			name = Constraints;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		92098DA013A52B7300F70BC2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		92098DA113A52B7300F70BC2 /* Chipmunk-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92098DAC13A52B7300F70BC2 /* Build configuration list for PBXNativeTarget "Chipmunk-iOS" */;
+			buildPhases = (
+				92098D9E13A52B7300F70BC2 /* Sources */,
+				92098D9F13A52B7300F70BC2 /* Frameworks */,
+				92098DA013A52B7300F70BC2 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Chipmunk-iOS";
+			productName = "Chipmunk-iOS";
+			productReference = 92098DA213A52B7300F70BC2 /* libChipmunk-iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		92098D9913A52B7200F70BC2 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 92098D9C13A52B7200F70BC2 /* Build configuration list for PBXProject "Chipmunk-iOS" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 92098D9713A52B7100F70BC2;
+			productRefGroup = 92098DA313A52B7300F70BC2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				92098DA113A52B7300F70BC2 /* Chipmunk-iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		92098D9E13A52B7300F70BC2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92098DBE13A52D9D00F70BC2 /* chipmunk.c in Sources */,
+				92098DBF13A52D9D00F70BC2 /* cpArbiter.c in Sources */,
+				92098DC013A52D9D00F70BC2 /* cpArray.c in Sources */,
+				92098DC113A52D9D00F70BC2 /* cpBB.c in Sources */,
+				92098DC213A52D9D00F70BC2 /* cpBody.c in Sources */,
+				92098DC313A52D9D00F70BC2 /* cpCollision.c in Sources */,
+				92098DC413A52D9D00F70BC2 /* cpHashSet.c in Sources */,
+				92098DC513A52D9D00F70BC2 /* cpPolyShape.c in Sources */,
+				92098DC613A52D9D00F70BC2 /* cpShape.c in Sources */,
+				92098DC713A52D9D00F70BC2 /* cpSpace.c in Sources */,
+				92098DC813A52D9D00F70BC2 /* cpSpaceComponent.c in Sources */,
+				92098DC913A52D9D00F70BC2 /* cpSpaceHash.c in Sources */,
+				92098DCA13A52D9D00F70BC2 /* cpSpaceQuery.c in Sources */,
+				92098DCB13A52D9D00F70BC2 /* cpSpaceStep.c in Sources */,
+				92098DCC13A52D9D00F70BC2 /* cpVect.c in Sources */,
+				92098DD913A52DC600F70BC2 /* cpConstraint.c in Sources */,
+				92098DDA13A52DC600F70BC2 /* cpDampedRotarySpring.c in Sources */,
+				92098DDB13A52DC600F70BC2 /* cpDampedSpring.c in Sources */,
+				92098DDC13A52DC600F70BC2 /* cpGearJoint.c in Sources */,
+				92098DDD13A52DC600F70BC2 /* cpGrooveJoint.c in Sources */,
+				92098DDE13A52DC600F70BC2 /* cpPinJoint.c in Sources */,
+				92098DDF13A52DC600F70BC2 /* cpPivotJoint.c in Sources */,
+				92098DE013A52DC600F70BC2 /* cpRatchetJoint.c in Sources */,
+				92098DE113A52DC600F70BC2 /* cpRotaryLimitJoint.c in Sources */,
+				92098DE213A52DC600F70BC2 /* cpSimpleMotor.c in Sources */,
+				92098DE313A52DC600F70BC2 /* cpSlideJoint.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		92098DAA13A52B7300F70BC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../include/chipmunk;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		92098DAB13A52B7300F70BC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					armv6,
+					armv7,
+				);
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../include/chipmunk;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		92098DAD13A52B7300F70BC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Chipmunk_iOS.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chipmunk-iOS/Chipmunk-iOS-Prefix.pch";
+				GCC_VERSION = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		92098DAE13A52B7300F70BC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/Chipmunk_iOS.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chipmunk-iOS/Chipmunk-iOS-Prefix.pch";
+				GCC_VERSION = "";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		92098D9C13A52B7200F70BC2 /* Build configuration list for PBXProject "Chipmunk-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92098DAA13A52B7300F70BC2 /* Debug */,
+				92098DAB13A52B7300F70BC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92098DAC13A52B7300F70BC2 /* Build configuration list for PBXNativeTarget "Chipmunk-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92098DAD13A52B7300F70BC2 /* Debug */,
+				92098DAE13A52B7300F70BC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 92098D9913A52B7200F70BC2 /* Project object */;
+}
