@@ -36,7 +36,7 @@
 #   define MAX_POINTERS 10
 #endif
 
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
+#if !SDL_VERSION_ATLEAST(2,0,0)
 #    error This module needs SDL 1.3, refusing to compile
 #endif
 
@@ -91,13 +91,6 @@ void parse_input_events() {
     // but we might have set a different virtual resolution
     width = scr_width;
     height = scr_height;
-    offset_x = blitting_rect.x;
-    offset_y = blitting_rect.y;
-
-    if ( shadow_screen ) {
-        width    = shadow_screen->w;
-        height   = shadow_screen->h;
-    }
     
     // Parse the SDL event
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        

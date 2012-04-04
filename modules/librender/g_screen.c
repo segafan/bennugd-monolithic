@@ -179,7 +179,6 @@ int gr_lock_screen()
     {
         if ( !scrbitmap || !( scrbitmap->info_flags & GI_EXTERNAL_DATA ) )
         {
-            SDL_Log("Creating scrbitmap");
             if ( scrbitmap ) bitmap_destroy( scrbitmap ) ;
             scrbitmap = bitmap_new_ex( 0, screen->w, screen->h, screen->format->BitsPerPixel, screen->pixels, screen->pitch );
             bitmap_add_cpoint( scrbitmap, 0, 0 ) ;
@@ -197,41 +196,6 @@ void gr_unlock_screen()
 
     screen_locked = 0 ;
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-	// Blit the graphics to SDL_Surface *screen either completely
-	// or just the dirty rects
-	if ( updaterects_count )
-	{
-		int i;
-
-		for ( i = 0 ; i < updaterects_count ; i++ )
-		{
-			rects[ i ].x = updaterects[ i ].x;
-			rects[ i ].y = updaterects[ i ].y;
-			rects[ i ].w = ( updaterects[ i ].x2 - rects[ i ].x + 1 );
-			rects[ i ].h = ( updaterects[ i ].y2 - rects[ i ].y + 1 );
-		}
-		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
-		if ( waitvsync ) gr_wait_vsync();
-
-        // If needed, blit the fake screen into the window surface
-        if ( shadow_screen )
-            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);   
-
-        // And update the screen
-		SDL_UpdateWindowSurfaceRects(window, rects, updaterects_count);
-	} else {
-		if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
-		if ( waitvsync ) gr_wait_vsync();
-
-        // If needed, blit the fake screen into the window surface
-        if ( shadow_screen )
-            SDL_BlitSurface(screen, NULL, shadow_screen, &blitting_rect);
-        
-        // And update the screen
-		SDL_UpdateWindowSurface( window );
-	}
-#else
     if ( scale_resolution )
     {
         uint8_t  * src8  = screen->pixels, * dst8  = scale_screen->pixels , * pdst = scale_screen->pixels ;
@@ -495,12 +459,19 @@ void gr_unlock_screen()
         /* Esto podria ir en un modulo aparte */
         switch ( scale_mode )
         {
+#ifdef WITH_GPL_CODE
             case SCALE_SCALE2X:
                 scale2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
-#ifdef WITH_GPL_CODE
             case SCALE_HQ2X:
                 hq2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
+                break;
+#else
+            case SCALE_SCALE2X:
+                SDL_Log("This build doesn't support GPL'ed SCALE2X, sorry :(");
+                break;
+            case SCALE_HQ2X:
+                SDL_Log("This build doesn't include GPL'ed HQ2X, sorry :(");
                 break;
 #endif
             case SCALE_SCANLINE2X:
@@ -558,7 +529,6 @@ void gr_unlock_screen()
             }
         }
     }
-#endif
 }
 
 /* --------------------------------------------------------------------------- */

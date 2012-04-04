@@ -30,12 +30,13 @@
 
 #include <SDL.h>
 
-#if defined(TARGET_IOS)
 #if SDL_VERSION_ATLEAST(2,0,0)
-#define __LIB_RENDER
-#include <g_video.h>
-#include <librender.h>
-#endif
+#include "g_compat.h"
+#   if defined(TARGET_IOS)
+#       define __LIB_RENDER
+#       include <g_video.h>
+#       include <librender.h>
+#   endif
 #endif
 
 #include "bgdrtm.h"

@@ -96,6 +96,9 @@
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
+		927DAC64152BCF690057F110 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06B3152BC041001BDE54 /* libSDL.a */; };
+		927DAC70152BCFD70057F110 /* bgload.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC6E152BCFD70057F110 /* bgload.c */; };
+		927DAC73152BD2D50057F110 /* g_compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC71152BD2D50057F110 /* g_compat.c */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
 		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
@@ -142,18 +145,11 @@
 			remoteGlobalIDString = BE1FA95407AF96B2004B6283;
 			remoteInfo = "Static Library";
 		};
-		92A6320313BD2BE200382D60 /* PBXContainerItemProxy */ = {
+		927DAC5E152BCC2B0057F110 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 92A631FC13BD2BE200382D60 /* tremor.xcodeproj */;
+			containerPortal = 927DAC56152BCC2A0057F110 /* tremor.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 9232A5B31396D47300058FDB;
-			remoteInfo = tremor;
-		};
-		92A6320A13BD2D2D00382D60 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92A631FC13BD2BE200382D60 /* tremor.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 9232A5B21396D47300058FDB;
 			remoteInfo = tremor;
 		};
 		92CD380213BD40EA000D5ED7 /* PBXContainerItemProxy */ = {
@@ -185,8 +181,6 @@
 		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
 		920C069E152BBF0B001BDE54 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../../3rdparty/libpng/projects/iOS/libpng.xcodeproj; sourceTree = "<group>"; };
 		920C06A8152BC040001BDE54 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL2/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
-		920C06B6152BC114001BDE54 /* g_compat.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = g_compat.c; sourceTree = "<group>"; };
-		920C06B7152BC114001BDE54 /* g_compat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = g_compat.h; sourceTree = "<group>"; };
 		9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcurl.xcodeproj; path = "../../3rdparty/curl-7.23.1/iOS_project/libcurl.xcodeproj"; sourceTree = "<group>"; };
 		921B48131391CE07005F1832 /* iOSBennuGD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSBennuGD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -384,8 +378,12 @@
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
 		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
 		9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL2_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
+		927DAC56152BCC2A0057F110 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
+		927DAC6E152BCFD70057F110 /* bgload.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bgload.c; sourceTree = "<group>"; };
+		927DAC6F152BCFD70057F110 /* bgload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bgload.h; sourceTree = "<group>"; };
+		927DAC71152BD2D50057F110 /* g_compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = g_compat.c; sourceTree = "<group>"; };
+		927DAC72152BD2D50057F110 /* g_compat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = g_compat.h; sourceTree = "<group>"; };
 		92976B8613BD29CE00CAECB5 /* libblit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libblit.c; sourceTree = "<group>"; };
-		92A631FC13BD2BE200382D60 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/src/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		92A6320D13BD2E1D00382D60 /* libtremor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libtremor.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
 		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
@@ -402,6 +400,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				927DAC64152BCF690057F110 /* libSDL.a in Frameworks */,
 				920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */,
 				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
 				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
@@ -469,12 +468,12 @@
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
+				927DAC56152BCC2A0057F110 /* tremor.xcodeproj */,
 				920C06A8152BC040001BDE54 /* SDL.xcodeproj */,
 				9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */,
 				920C069E152BBF0B001BDE54 /* libpng.xcodeproj */,
 				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
 				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
-				92A631FC13BD2BE200382D60 /* tremor.xcodeproj */,
 				921B4AE41391E237005F1832 /* common */,
 				921B4AC31391DDFB005F1832 /* bgdi */,
 				921B49551391D8A3005F1832 /* modules */,
@@ -582,6 +581,7 @@
 		921B49551391D8A3005F1832 /* modules */ = {
 			isa = PBXGroup;
 			children = (
+				927DAC6D152BCFD70057F110 /* libbgload */,
 				921B495A1391D8A3005F1832 /* libblit */,
 				921B49631391D8A3005F1832 /* libdraw */,
 				921B49661391D8A3005F1832 /* libfont */,
@@ -770,8 +770,8 @@
 		921B49B01391D8A3005F1832 /* libvideo */ = {
 			isa = PBXGroup;
 			children = (
-				920C06B6152BC114001BDE54 /* g_compat.c */,
-				920C06B7152BC114001BDE54 /* g_compat.h */,
+				927DAC71152BD2D50057F110 /* g_compat.c */,
+				927DAC72152BD2D50057F110 /* g_compat.h */,
 				921B49B11391D8A3005F1832 /* g_regions.c */,
 				921B49B21391D8A3005F1832 /* g_regions.h */,
 				921B49B31391D8A3005F1832 /* g_video.c */,
@@ -1124,12 +1124,21 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		92A631FD13BD2BE200382D60 /* Products */ = {
+		927DAC57152BCC2A0057F110 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				92A6320413BD2BE200382D60 /* libtremor.a */,
+				927DAC5F152BCC2B0057F110 /* libtremor.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		927DAC6D152BCFD70057F110 /* libbgload */ = {
+			isa = PBXGroup;
+			children = (
+				927DAC6E152BCFD70057F110 /* bgload.c */,
+				927DAC6F152BCFD70057F110 /* bgload.h */,
+			);
+			path = libbgload;
 			sourceTree = "<group>";
 		};
 		92C5D40013BE98FC00CA43D0 /* Game Resources */ = {
@@ -1175,7 +1184,6 @@
 			dependencies = (
 				92E9FDA314903FE0007F890B /* PBXTargetDependency */,
 				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
-				92A6320B13BD2D2D00382D60 /* PBXTargetDependency */,
 			);
 			name = BennuGD_iOS;
 			productName = BennuGD_iOS;
@@ -1222,8 +1230,8 @@
 					ProjectRef = 9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */;
 				},
 				{
-					ProductGroup = 92A631FD13BD2BE200382D60 /* Products */;
-					ProjectRef = 92A631FC13BD2BE200382D60 /* tremor.xcodeproj */;
+					ProductGroup = 927DAC57152BCC2A0057F110 /* Products */;
+					ProjectRef = 927DAC56152BCC2A0057F110 /* tremor.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1269,11 +1277,11 @@
 			remoteRef = 9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		92A6320413BD2BE200382D60 /* libtremor.a */ = {
+		927DAC5F152BCC2B0057F110 /* libtremor.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libtremor.a;
-			remoteRef = 92A6320313BD2BE200382D60 /* PBXContainerItemProxy */;
+			remoteRef = 927DAC5E152BCC2B0057F110 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		92CD380313BD40EA000D5ED7 /* libChipmunk-iOS.a */ = {
@@ -1385,17 +1393,14 @@
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
 				92307D481461F1B00011C04E /* mod_multi.c in Sources */,
 				92E9FDA01490369E007F890B /* mod_curl.c in Sources */,
+				927DAC70152BCFD70057F110 /* bgload.c in Sources */,
+				927DAC73152BD2D50057F110 /* g_compat.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		92A6320B13BD2D2D00382D60 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = tremor;
-			targetProxy = 92A6320A13BD2D2D00382D60 /* PBXContainerItemProxy */;
-		};
 		92CD380A13BD4221000D5ED7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Chipmunk-iOS";
@@ -1431,7 +1436,6 @@
 					"VERSION='\"1.0.0\"'",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1473,7 +1477,6 @@
 					NO_LIBKEY,
 					"VERSION='\"1.0.0\"'",
 				);
-				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1520,14 +1523,13 @@
 					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					../../3rdparty/SDL2/src/include,
+					../../3rdparty/SDL2/include,
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
-					../../3rdparty/libpng/src/,
+					../../3rdparty/libpng/,
 					../../3rdparty/SDL2_mixer/,
 					../../3rdparty/fmod/iOS/inc/,
 					"../../3rdparty/curl-7.23.1/include/",
@@ -1547,7 +1549,7 @@
 				);
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1576,14 +1578,13 @@
 					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					../../3rdparty/SDL2/src/include,
+					../../3rdparty/SDL2/include,
 					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
-					../../3rdparty/libpng/src/,
+					../../3rdparty/libpng/,
 					../../3rdparty/SDL2_mixer/,
 					../../3rdparty/fmod/iOS/inc/,
 					"../../3rdparty/curl-7.23.1/include/",
@@ -1604,7 +1605,7 @@
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
