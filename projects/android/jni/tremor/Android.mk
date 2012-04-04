@@ -1,4 +1,4 @@
-LOCAL_PATH := $(call my-dir)/../../../../3rdparty/libtremor/src/
+LOCAL_PATH := $(call my-dir)/../../../../3rdparty/libtremor/
 
 include $(CLEAR_VARS)
 

@@ -8,9 +8,9 @@ LOCAL_MODULE := bgdrtm
 
 LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
-	$(LOCAL_PATH)/../../../../3rdparty/SDL2/src/include/ \
-	$(LOCAL_PATH)/../../../../3rdparty/SDL_mixer/src/ \
-	$(LOCAL_PATH)/../../../../3rdparty/libpng/src/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL2/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL2_mixer/ \
+	$(LOCAL_PATH)/../../../../3rdparty/libpng/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
 	$(MODULES_PATH)/libbgload/ \
@@ -70,7 +70,6 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODFMODEX \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
-	-DSDL_NO_COMPAT \
 	-DWITH_SDLRWOPS
 
 LOCAL_SRC_FILES := \
@@ -113,6 +112,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/libblit/libblit.c \
 	../../../../modules/libvideo/g_regions.c \
 	../../../../modules/libvideo/g_video.c \
+   	../../../../modules/libvideo/g_compat.c \
 	../../../../modules/librender/g_fade.c \
 	../../../../modules/librender/g_frame.c \
 	../../../../modules/librender/g_instance.c \
