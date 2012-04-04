@@ -40,6 +40,10 @@
 
 #include "sysprocs_st.h"
 
+#if SDL_VERSION_ATLEAST(2,0,0)
+#include "g_compat.h"
+#endif
+
 /* --------------------------------------------------------------------------- */
 
 static int last_mousex = 0;

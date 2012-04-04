@@ -970,9 +970,16 @@ void gr_set_rgb( int color, int r, int g, int b )
 
 void gr_get_colors( int color, int num, uint8_t * pal )
 {
+    rgb_component * rgb;
+    
     if ( num < 1 || color < 0 || color > 255 ) return ;
     if ( color + num > 256 ) num = 256 - color ;
-
+    
+    if ( !sys_pixel_format->palette )
+        rgb = ( rgb_component * ) default_palette;
+    else
+        rgb = ( rgb_component * ) sys_pixel_format->palette->rgb;
+    
     while ( num-- )
     {
         *pal++ = rgb[ color ].r ;
