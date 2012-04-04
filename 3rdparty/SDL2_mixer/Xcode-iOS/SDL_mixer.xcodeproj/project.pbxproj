@@ -405,9 +405,19 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					../../SDL2/include/,
+				);
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = SDL_mixer;
+				REZ_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					vorbis/include,
+				);
 			};
 			name = Release;
 		};
@@ -416,9 +426,19 @@
 			buildSettings = {
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				HEADER_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					../../SDL2/include/,
+				);
 				LIBRARY_STYLE = STATIC;
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = SDL_mixer;
+				REZ_SEARCH_PATHS = (
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_1)",
+					"$(HEADER_SEARCH_PATHS_QUOTED_FOR_PROJECT_2)",
+					vorbis/include,
+				);
 			};
 			name = Debug;
 		};
