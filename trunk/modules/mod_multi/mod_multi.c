@@ -36,7 +36,7 @@
 #   define MAX_POINTERS 10
 #endif
 
-#if !SDL_VERSION_ATLEAST(2,0,0)
+#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
 #    error This module needs SDL 1.3, refusing to compile
 #endif
 
@@ -56,6 +56,103 @@ int numpointers=0;
 #define MOUSEX              0
 #define MOUSEY              1
 #define MOUSELEFT           9
+
+/* Given a pair of coords, convert them to the value the user expects,
+  taking into account screen rotations, scaling and stuff
+ */
+void convert_coords(float *x, float *y) {
+    if ( scale_resolution )
+    {
+        if ( scale_resolution_aspectratio == SRA_PRESERVE )
+        {
+            if ( scale_screen->w > scale_screen->h )
+            {
+                switch( scale_resolution_orientation )
+                {
+                    case    SRO_NORMAL:
+                        *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        break;
+                        
+                    case    SRO_LEFT:
+                        *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        break;
+                        
+                    case    SRO_DOWN:
+                        *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        break;
+                        
+                    case    SRO_RIGHT:
+                        *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        break;
+                }
+            }
+            else
+            {
+                switch( scale_resolution_orientation )
+                {
+                    case    SRO_NORMAL:
+                        *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        break;
+                        
+                    case    SRO_LEFT:
+                        *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        break;
+                        
+                    case    SRO_DOWN:
+                        *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        break;
+                        
+                    case    SRO_RIGHT:
+                        *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
+                        *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
+                        break;
+                }
+            }
+        }
+        else
+        {
+            switch( scale_resolution_orientation )
+            {
+                case    SRO_NORMAL:
+                    *x = (                           *x ) * ( (double)screen->w / (double)scale_screen->w );
+                    *y = (                           *y ) * ( (double)screen->h / (double)scale_screen->h );
+                    break;
+                    
+                case    SRO_LEFT:
+                    *x = ( (double)scale_screen->h - *y ) * ( (double)screen->w / (double)scale_screen->h );
+                    *y = (                           *x ) * ( (double)screen->h / (double)scale_screen->w );
+                    break;
+                    
+                case    SRO_DOWN:
+                    *x = ( (double)scale_screen->w - *x ) * ( (double)screen->w / (double)scale_screen->w );
+                    *y = ( (double)scale_screen->h - *y ) * ( (double)screen->h / (double)scale_screen->h );
+                    break;
+                    
+                case    SRO_RIGHT:
+                    *x = (                           *y ) * ( (double)screen->w / (double)scale_screen->h );
+                    *y = ( (double)scale_screen->w - *x ) * ( (double)screen->h / (double)scale_screen->w );
+                    break;
+            }
+        }
+    }
+    else if ( enable_scale || scale_mode != SCALE_NONE )
+    {
+        *x = *x / 2 ;
+        *y = *y / 2 ;
+    }
+    else
+    {
+        *x = *x ;
+        *y = *y ;
+    }
+}
 
 /* Return the position of finger in the pointers array, if it's not there,
 return the first unused entry.
@@ -83,14 +180,23 @@ int get_sdlfinger_index(SDL_FingerID finger) {
 
 /* Process SDL events looking for multitouch-related ones */
 void parse_input_events() {
-    int n=0, width=0, height=0, offset_x=0, offset_y=0;
+    int n=0;
+    double width=0, height=0;
+    float x=0.0, y=0.0;
     SDL_Event e;
     SDL_Touch *state;
     
     // SDL will give us the touch position relative to the whole window
     // but we might have set a different virtual resolution
-    width = scr_width;
-    height = scr_height;
+    if(scale_resolution) {
+        width  = scale_screen->w;
+        height = scale_screen->h;
+    } else if(screen) {
+        width  = screen->w;
+        height = screen->h;
+    } else {
+        width = height = 0;
+    }
     
     // Parse the SDL event
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
@@ -109,12 +215,16 @@ void parse_input_events() {
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
-                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
+                x = ( (float)e.tfinger.x / state->xres ) * width;
+                y = ( (float)e.tfinger.y / state->yres ) * height;
                 pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
                 
+                // Convert the touch location taking scaling/rotations into account
+                convert_coords(&x, &y);
+                pointers[n].x = (int)x; pointers[n].y = (int)y;
+                
                 // Fake a mouse click, but only for the first pointer and
-                // if libmouse is imported
+                // if libmouse has been imported
                 if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX )    = pointers[n].x;
@@ -134,11 +244,15 @@ void parse_input_events() {
                     break;
 
                 // Update the data about this finger's position
-                pointers[n].x = ( (float)e.tfinger.x / state->xres ) * width  - offset_x;
-                pointers[n].y = ( (float)e.tfinger.y / state->yres ) * height - offset_y;
+                x = ( (float)e.tfinger.x / state->xres ) * width;
+                y = ( (float)e.tfinger.y / state->yres ) * height;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
+                
+                // Convert the touch location taking scaling/rotations into account
+                convert_coords(&x, &y);
+                pointers[n].x = (int)x; pointers[n].y = (int)y;
 
-                // Fake a mouse move, but only if libmouse is imported
+                // Fake a mouse move, but only if libmouse has been imported
                 if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
@@ -161,16 +275,12 @@ void parse_input_events() {
                 
                 // Remove the data about this finger's position
                 pointers[n].active = SDL_FALSE;
-                pointers[n].x = -1.0;
-                pointers[n].y = -1.0;
-                pointers[n].pressure = -1.0;
+                pointers[n].pressure = 0.0;
                 
                 // Fake a mouse release, but only for the first pointer and
                 // if libmouse is imported
                 if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
-                        GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
-                        GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
                         GLODWORD( libmouse, MOUSELEFT ) = 0 ;
                     }
                 }
