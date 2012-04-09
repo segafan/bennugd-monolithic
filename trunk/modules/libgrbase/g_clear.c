@@ -49,6 +49,7 @@
 
 void gr_clear( GRAPH * dest )
 {
+    SDL_Log("dest == NULL ? %d | dest->pitch: %d | dest->height: %d", (dest == NULL), dest->pitch, dest->height);
     memset( dest->data, 0, dest->pitch * dest->height ) ;
 
     dest->modified = 1 ; /* Don't needs analysis */

@@ -154,7 +154,7 @@ int gr_lock_screen()
 
     if ( scale_resolution != 0 )
     {
-        if ( scale_screen && SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
+        if ( SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
     }
     else
     {

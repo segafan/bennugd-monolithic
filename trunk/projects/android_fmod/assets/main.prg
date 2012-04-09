@@ -7,14 +7,13 @@
 import "mod_video"
 import "mod_text"
 import "mod_mouse"
-import "mod_sound"
 import "mod_wm"
 import "mod_map"
 import "mod_draw"
 import "mod_say"
 import "mod_file"
 import "mod_text"
-
+import "mod_fmodex"
 #ifndef FALSE_MULTITOUCH
 import "mod_multi"
 #else
@@ -24,8 +23,8 @@ import "mod_multi"
 
 GLOBAL
 // Set to your liking
-width  = 320;
-height = 533;
+width  = 533;
+height = 320;
 sound  = 0;
 quit   = 0;
 
@@ -62,8 +61,10 @@ int song=0, num_fingers=0, i=0;
 Begin
     set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
-    width = graphic_info(0, -1, G_WIDTH);
-    height = graphic_info(0, -1, G_HEIGHT);
+    /*width = graphic_info(0, -1, G_WIDTH);
+    height = graphic_info(0, -1, G_HEIGHT);*/
+    
+    write("There are "+fmodex_mic_num()+" mikes available!");
     
     write(0, 0, 0, 0, "Width: "+width+" Height:"+height);
     
@@ -71,11 +72,12 @@ Begin
     x = width/2; y = height/2;
 
     bouncer();
-
+#ifdef TRUE_SOUND
     if(sound == 1)
         song = load_song("1.ogg");
         play_song(song, 0);
     end;
+#endif
     write_var(0, 0, height, 6, num_fingers);
     drawing_map(0, graph);
     drawing_color(rgb(0, 255, 255));
@@ -99,10 +101,11 @@ Begin
     End;
 
     unload_map(0, graph);
+#ifdef TRUE_SOUND
     if(sound == 1)
         unload_song(song);
     end
-
+#endif
     quit = 1;
     say("Quitting");
 End;
