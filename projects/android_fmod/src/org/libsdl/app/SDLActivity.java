@@ -48,8 +48,8 @@ public class SDLActivity extends Activity {
     static {
         System.loadLibrary("png");
         System.loadLibrary("SDL2");
-        System.loadLibrary("bgdrtm");
         System.loadLibrary("fmodex");
+        System.loadLibrary("bgdrtm");
         System.loadLibrary("main");
     }
 
