@@ -64,7 +64,7 @@ Begin
     /*width = graphic_info(0, -1, G_WIDTH);
     height = graphic_info(0, -1, G_HEIGHT);*/
     
-    write("There are "+fmodex_mic_num()+" mikes available!");
+    say("There are "+fmodex_mic_num()+" mikes available!");
     
     write(0, 0, 0, 0, "Width: "+width+" Height:"+height);
     
