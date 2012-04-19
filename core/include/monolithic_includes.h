@@ -26,9 +26,10 @@
 #include <libjoy_symbols.h>
 #include <mod_say_symbols.h>
 #include <mod_string_symbols.h>
-#include <mod_math_symbols.h>
 #ifndef NO_MODMATHI
 #  include <mod_mathi_symbols.h>
+#else
+#  include <mod_math_symbols.h>
 #endif
 #include <mod_time_symbols.h>
 #include <mod_file_symbols.h>
