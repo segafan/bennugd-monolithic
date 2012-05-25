@@ -1,0 +1,1123 @@
+2011-01-26 18:49  SplinterGU
+
+	* - Fix dingux compile bgdc (dingux and other consoles)
+
+2011-01-23 06:39  SplinterGU
+
+	* - Fix build-win32.sh
+	  - Remove SDL_INIT_TIMER for Dingux (bug in SDL?)
+
+2011-01-23 05:13  SplinterGU
+
+	* - Fix xadvance
+
+2011-01-21 05:42  SplinterGU
+
+	* - Add build-win32.sh
+
+2011-01-20 04:09  SplinterGU
+
+	* - fix compile prg using dcl file
+	  - fix debug info in compiler + libmode
+
+2011-01-17 22:54  SplinterGU
+
+	* - Fix cast
+
+2011-01-14 19:55  SplinterGU
+
+	* - change main prototypes
+
+2011-01-11 14:15  SplinterGU
+
+	* - Add moddesc to all builds
+
+2011-01-11 13:27  SplinterGU
+
+	* - Build system
+
+2011-01-11 12:19  SplinterGU
+
+	* - Build dingux a320
+
+2011-01-09 07:27  SplinterGU
+
+	* - Add OS_WII and OS_DINGUX_A320
+
+2011-01-09 07:04  SplinterGU
+
+	* - Remove SDL from core
+
+2011-01-09 05:26  SplinterGU
+
+	* .
+
+2011-01-09 02:49  SplinterGU
+
+	* - configure, add mipsel
+
+2011-01-09 02:28  SplinterGU
+
+	* -build scripts fix
+
+2011-01-08 23:35  SplinterGU
+
+	* - fix build scripts
+
+2011-01-08 18:40  SplinterGU
+
+	* - conditional compilation on wiz for detect firmware version on
+	  caanoo
+
+2011-01-08 18:14  SplinterGU
+
+	* - remove tools from dingoo
+
+2011-01-08 18:10  SplinterGU
+
+	* - Dingo and others builds updates
+
+2011-01-08 17:58  SplinterGU
+
+	* - configure update
+
+2011-01-08 17:57  SplinterGU
+
+	* - Crypt fix for use libdes
+
+2011-01-08 17:16  SplinterGU
+
+	* - use libdes option
+
+2011-01-08 17:09  SplinterGU
+
+	* -build scripts
+
+2011-01-08 17:08  SplinterGU
+
+	* - Add des-4.04b
+
+2011-01-07 00:32  SplinterGU
+
+	* - Caanoo fix detect firmwareZ version
+
+2011-01-07 00:12  SplinterGU
+
+	* - Fix speed problem in differents caanoo firmware version
+
+2011-01-06 18:34  SplinterGU
+
+	* - Fix bug in bgd_internal_copy_string_array
+	  - Fix bug in codeblocks jumps with onexit
+	  - Other minor bug fix
+
+2011-01-05 13:07  SplinterGU
+
+	* - mod_debug fix new dcb version
+
+2011-01-05 00:48  SplinterGU
+
+	* - Fix dcl process/functions flags
+
+2011-01-04 07:25  SplinterGU
+
+	* - Optimize memory used for strings in compilation
+	  - Fix max sources files in debug information (before 256, now
+	  4093)
+	  - Fix dcb version detection
+	  - Several improvements in the core
+	  - Better debug info messages
+	  - Compilation warnings now are disabled by default
+	  - New lib system, now can be possible build dcl libraries
+
+2011-01-01 23:35  SplinterGU
+
+	* - blitter fix in calculate corners when size of corners is lower
+	  that 1 px
+
+2010-12-28 14:17  SplinterGU
+
+	* - Fix for access to arrays of struct without [] to first element
+	  - Optimize compiled strings in dcb
+	  - Other minors fix
+
+2010-12-28 05:38  SplinterGU
+
+	* - Add more space between chars
+
+2010-12-28 05:29  SplinterGU
+
+	* - New font system
+
+2010-12-23 22:28  SplinterGU
+
+	* - Multiple source can be compiled from commandline
+
+2010-12-15 22:41  SplinterGU
+
+	* - Add png 1bpp support
+
+2010-12-15 14:07  SplinterGU
+
+	* - char[] initialization fix
+	  - full arrays copy support added
+	  - glyph_set fix
+	  - better error messages
+
+2010-12-08 22:59  SplinterGU
+
+	* - Fix diagonals on Caanoo
+
+2010-11-22 22:46  SplinterGU
+
+	* - Caanoo now use firmware SDL version
+
+2010-11-19 00:42  SplinterGU
+
+	* - Change MAX_PATH to 32768
+
+2010-11-09 21:31  SplinterGU
+
+	* - Save transparent color information in png 8 bits (Thanks
+	  DCelso)
+
+2010-11-09 16:55  SplinterGU
+
+	* - Add support of transparent color on load_png
+
+2010-11-09 04:08  SplinterGU
+
+	* - RGB* fix
+
+2010-11-09 03:38  SplinterGU
+
+	* - Add new RGB* functions
+
+2010-11-08 02:30  SplinterGU
+
+	* - 32bits fixed
+
+2010-11-04 06:40  SplinterGU
+
+	* - Fix collision with mouse when process have size != 100 (maybe
+	  if have angle too)
+
+2010-10-25 18:27  SplinterGU
+
+	* - Fix Caanoo problem with new firmware
+	  - Add full alpha support in 32 bits (now works find map_put or
+	  write_in_map)
+
+2010-10-19 10:57  SplinterGU
+
+	* - Fix -p compiler argument
+
+2010-10-05 01:36  SplinterGU
+
+	* - Add depth test on path_find, only 8bpp are valid!
+
+2010-09-30 16:10  SplinterGU
+
+	* - Fix draw functions
+
+2010-09-10 18:56  SplinterGU
+
+	* - Change free( path ) -> free ( hDir->path )
+
+2010-09-10 07:23  SplinterGU
+
+	* - Add checks on memory alloc in dirs.c and add missing free in
+	  glob
+
+2010-09-08 16:21  SplinterGU
+
+	* - Haiku Port
+
+2010-09-08 11:01  SplinterGU
+
+	* - Haiku fix?
+
+2010-09-08 01:28  SplinterGU
+
+	* - Replace HAIKU for BEOS
+
+2010-09-07 21:25  SplinterGU
+
+	* - Haiku support (thanks EugeneP for info and first port)
+
+2010-09-03 05:36  SplinterGU
+
+	* - Fix segment violation in libblit
+
+2010-09-02 21:29  SplinterGU
+
+	* - Condition C string escape string delimiter
+
+2010-09-02 20:56  SplinterGU
+
+	* - Add escape " or ' chars in strings
+
+2010-09-01 21:11  SplinterGU
+
+	* - Fix caanoo (?) again
+
+2010-09-01 04:20  SplinterGU
+
+	* - Remove duplicate vars
+	  - Fix gcc math problem and add others optimization flags in
+	  caanoo
+
+2010-09-01 03:25  SplinterGU
+
+	* - gcc math problems in caanoo
+
+2010-08-29 02:30  SplinterGU
+
+	* - Fix return in sound functions
+	  - Add 2 new unload functions with var reset
+	  unload_wav(&wav);
+	  unload_song(&song);
+
+2010-08-28 01:49  SplinterGU
+
+	* - Collision circle fixes
+	  - Fix problem with scale_resolution in 16bits
+
+2010-08-24 04:11  SplinterGU
+
+	* - Only collition process with same ctype
+	  - Fix resolution problem with Collition_Circle
+
+2010-08-24 00:12  SplinterGU
+
+	* - Fix problem with blit graph of 1px width
+	  - Fix on collision functions
+
+2010-08-23 07:25  SplinterGU
+
+	* - New collisions functions
+	  COLLITION_BOX(p)
+	  COLLITION_CIRCLE(p)
+
+2010-08-15 09:37  SplinterGU
+
+	* - Fix caanoo-vars.sh script
+	  - Fix libSDL_mixer check on configure and configure.in
+	  - Add SET_MUSIC_POSITION( double secs ) new function to mod_sound
+
+2010-08-13 18:44  SplinterGU
+
+	* - Now you can overwrite scale_resolution,
+	  scale_resolution_aspectratio and scale_resolution_orientation
+	  from enviroment vars
+
+2010-08-13 09:54  SplinterGU
+
+	* - 3 orientation modes added
+	  scale_resolution_orientation = 0 no rotation
+	  = 1 rotate 90 degress
+	  = 2 rotate 180 degress
+	  = 3 rotate 270 degress
+
+2010-08-11 10:35  SplinterGU
+
+	* - Fix __VERSION__ and COMPILER_VERSION, they are defines again
+	  - add scale_resolution_orientation and
+	  scale_resolution_aspectratio globals vars
+
+2010-08-06 00:52  SplinterGU
+
+	* - fix return on some joy functions
+
+2010-08-05 23:19  SplinterGU
+
+	* - Accel fix
+
+2010-08-05 03:54  SplinterGU
+
+	* - Remove debug messages
+
+2010-08-05 03:47  SplinterGU
+
+	* - Caanoo port complete
+	  - G-Sensors (Accelerators) support added
+	  - Wiz pad emulate on Caanoo, Caanoo have 2 virtual joys (1 wiz
+	  compatible + analog + accel, 1 native Caanoo with analog + accel)
+	  - if OS_ID enviroment var is defined BennuGD use it as global
+	  OS_ID
+
+2010-08-03 06:03  SplinterGU
+
+	* - Caanoo Port (beta)
+
+2010-08-02 03:25  SplinterGU
+
+	* - Wiz frame timming fix
+
+2010-07-29 07:58  SplinterGU
+
+	* - Add new default predefined macros
+
+2010-06-24 04:19  splintergu
+
+	* - Fix when use fade_off + fade_on without frame between it
+
+2010-06-21 13:34  splintergu
+
+	* - open2xwiz-vars.sh updated
+
+2010-06-21 02:44  splintergu
+
+	* - Several mod_m7 fixes
+
+2010-06-06 18:48  splintergu
+
+	* - Better bitmap_get
+
+2010-05-19 18:19  SplinterGU
+
+	* - Fix on mod_wm for compile in SO that don't have X11 or problem
+	  with SDL_syswm.h
+
+2010-05-18 03:26  SplinterGU
+
+	* - Fix access beyond of data area in bitmap_analize
+
+2010-05-15 02:52  SplinterGU
+
+	* - Fix on collision(process) and process don't exists
+
+2010-05-10 19:10  SplinterGU
+
+	* - unload_song fix
+
+2010-05-03 23:57  SplinterGU
+
+	* - remove use of arrange functions in dcb_settype
+	  - better fix for don't include modules files when use -a in bgdc
+	  - move varspace_file.c to bgdrtm folder.
+	  - remove duplicate var in c_main.c
+	  - fix some stuff in dcwr
+
+2010-04-23 03:49  SplinterGU
+
+	* - Memory leak fix on pal_load
+
+2010-04-09 03:51  SplinterGU
+
+	* - Include stdint.h in arrange.h
+
+2010-04-06 15:39  SplinterGU
+
+	* - Add "arrange.h" in strategic places
+
+2010-03-24 18:19  SplinterGU
+
+	* - Fixed dirty bug when process is destroyed
+
+2010-03-21 08:40  SplinterGU
+
+	* - Fixed bug with resolution and negative coords.
+
+2010-03-11 01:36  SplinterGU
+
+	* - Add atan2 to mod_math
+	  - Add mod_mathi for compatiblity with DIV in cos, sin, tan, acos,
+	  asin, atan, atan2
+
+2010-02-25 19:34  SplinterGU
+
+	* - Credits update
+
+2010-02-15 18:46  SplinterGU
+
+	* - Add S_FORCE and S_TREE in mod_proc
+
+2010-01-20 00:34  SplinterGU
+
+	* - Change ssl by crypto
+
+2010-01-19 21:38  SplinterGU
+
+	* - Win32 libpng fix
+
+2010-01-18 06:06  SplinterGU
+
+	* - LibSSL fix mingw
+
+2010-01-18 06:02  SplinterGU
+
+	* - libSSL fix
+
+2010-01-18 05:50  SplinterGU
+
+	* - Fix libssl on mingw
+
+2010-01-17 20:28  SplinterGU
+
+	* - mod_path memory leak patch fix
+
+2010-01-15 22:29  SplinterGU
+
+	* - path_find memory leak fix
+
+2010-01-15 17:52  SplinterGU
+
+	* - Fix some problems with set mouse position on scale_mode
+
+2009-12-30 21:47  SplinterGU
+
+	* - Replace libdes to libssl
+
+2009-12-30 21:26  SplinterGU
+
+	* - Rename vendor folder to 3rdparty
+	  - Remove use des-4.04b, and now use openssl
+
+2009-12-30 21:23  SplinterGU
+
+	* - Rename vendor folder to 3rdparty
+	  - Remove use des-4.04b, and now use openssl
+
+2009-12-30 21:15  SplinterGU
+
+	* - Rename vendor folder to 3rdparty
+	  - Remove use des-4.04b, and now use openssl
+	  - Update configure/autotools
+	  - rename crypt* to b_crypt*
+
+2009-12-29 19:25  SplinterGU
+
+	* - Log level control added
+
+2009-12-27 00:13  SplinterGU
+
+	* - Add SOUND_INIT and SOUND_CLOSE for initialize and deinitialize
+	  the module
+	  - Remove unusefull variables
+
+2009-12-26 22:29  SplinterGU
+
+	* - Add module_initialize with init_cos_tables in mod_grproc and
+	  mod_m7, for speedup
+
+2009-11-13 00:45  SplinterGU
+
+	* - Log Update
+
+2009-11-12 03:41  SplinterGU
+
+	* - Log update
+
+2009-11-09 17:33  SplinterGU
+
+	* - loadlib LGPL upgrade
+
+2009-11-09 17:24  SplinterGU
+
+	* - Add liblog (LGPL)
+	  - Add libdict (LGPL)
+
+2009-11-08 18:09  SplinterGU
+
+	* - Fix modvideo_mode_is_ok parameters
+	  - Fix mod_crypt args types
+
+2009-10-26 22:55  SplinterGU
+
+	* - map_block_copy fix
+
+2009-10-18 13:57  SplinterGU
+
+	* - Fix error message on invalid or inexistent dcb
+	  - Fix check for resource name duplicity in add to dcb and use of
+	  '\' path separator instead of '/'
+
+2009-10-15 02:30  SplinterGU
+
+	* - Add more modifier to shift_status:
+	  
+	  STAT_RCTRL 0x0000010
+	  STAT_LCTRL 0x0000020
+	  STAT_RALT 0x0000040
+	  STAT_LALT 0x0000080
+	  STAT_NUM 0x0000100
+	  STAT_CAPS 0x0000200
+	  STAT_SHIFT 0x0000400
+
+2009-10-14 23:44  SplinterGU
+
+	* - scale_resolutions now works in any resolution
+
+2009-10-08 01:16  SplinterGU
+
+	* - Fix on arrays chars
+
+2009-10-06 12:11  SplinterGU
+
+	* - scale speed up
+
+2009-09-18 03:25  SplinterGU
+
+	* - Check if params in functions are constants
+
+2009-09-12 01:13  SplinterGU
+
+	* - Fix mouse position on scale_resolution
+
+2009-09-03 02:41  SplinterGU
+
+	* - Fps control again!
+
+2009-09-01 02:32  SplinterGU
+
+	* - fix in fps count (this fix only affect to counter, the fps
+	  control system already work fine)
+
+2009-08-24 11:47  SplinterGU
+
+	* - Some improvides on fps control
+	  - Disable default 32 bit startup temporarily
+
+2009-08-20 01:36  SplinterGU
+
+	* - scale_resolution support
+
+2009-07-29 11:32  SplinterGU
+
+	* - More precision in FPS Control
+
+2009-07-29 03:42  SplinterGU
+
+	* - Better FPS Control
+
+2009-07-28 23:49  SplinterGU
+
+	* - FPS Control fix
+
+2009-07-28 03:02  SplinterGU
+
+	* - FPS control fix
+	  - Remove ScreenTo565 and 565ToScreen functions from file_fnt
+
+2009-07-26 15:39  SplinterGU
+
+	* - Replace all gz* for file*
+
+2009-07-22 02:39  SplinterGU
+
+	* - Open2xWiz setup vars for configure
+
+2009-07-22 02:02  SplinterGU
+
+	* - Add GP2XWIZ
+	  - New fps limit and frameskip system... now, all time is adjusted
+	  it.
+	  - Fix mod_joy help
+	  - Fix align rgb_component struct
+	  - Fix mod_map, palette use and discard
+	  - Add Makefile.openwiz to libdes
+	  - libvideo, add VIDEO_WIDTH, VIDEO_HEIGHT, VIDEO_DEPTH
+	  environment vars to change initial video mode
+
+2009-07-09 17:08  SplinterGU
+
+	* - Added constants:
+	  STAT_RSHIFT
+	  STAT_LSHIFT
+	  STAT_CTRL
+	  STAT_ALT
+
+2009-07-09 01:10  SplinterGU
+
+	* - Fix fileinfo.path in linux
+
+2009-07-08 00:43  SplinterGU
+
+	* - Constant libjoy fixed
+
+2009-07-07 01:56  SplinterGU
+
+	* - Fix configure
+
+2009-07-06 04:47  SplinterGU
+
+	* - Fix diropen if directory if void
+
+2009-07-05 04:32  SplinterGU
+
+	* - Add "types_def" report to moddesc
+	  
+	  -Esta línea y las que están debajo serán ignoradas--
+	  
+	  M tools/moddesc/moddesc.c
+
+2009-07-05 04:27  SplinterGU
+
+	* - Add "types_def" to shared library systems
+
+2009-07-03 23:36  SplinterGU
+
+	* - Png 32 bits fix save (don't change original data)
+
+2009-07-02 22:23  SplinterGU
+
+	* - Fix all configure/makefiles dependencies
+
+2009-07-02 19:46  SplinterGU
+
+	* - Add Makefile.in to mod_crypt
+
+2009-07-02 00:20  SplinterGU
+
+	* - New dirs lib and new glob, diropen, dirread, dirclose functions
+	  - New mod_crypt:
+	  
+	  method
+	  ------
+	  CRYPT_NONE
+	  CRYPT_DES
+	  CRYPT_3DES
+	  
+	  functions
+	  ---------
+	  
+	  handle CRYPT_NEW(int method, byte * key); /* key = byte [8] in
+	  DES, byte [24] 3DES */
+	  int CRYPT_DEL(handle);
+	  int CRYPT_ENCRYPT(handle, pointer in, pointer out, int blocks );
+	  /* each block = 8 bytes */
+	  int CRYPT_DECRYPT(handle, pointer in, pointer out, int blocks );
+	  /* each block = 8 bytes */
+	  int CRYPT_ENCRYPT(int method, byte * key, pointer in, pointer
+	  out, int blocks ); /* each block = 8 bytes */
+	  int CRYPT_DECRYPT(int method, byte * key, pointer in, pointer
+	  out, int blocks ); /* each block = 8 bytes */
+	  
+	  - add vendor folder and modified libdes-4.04b
+	  - some configure fix
+
+2009-06-23 23:11  SplinterGU
+
+	* - Save cleaned dcb
+
+2009-06-23 21:12  SplinterGU
+
+	* - Fix on use of containers when the last process on some Z list
+	  change
+	  to other Z list
+
+2009-06-15 18:34  SplinterGU
+
+	* - Add FMOVE, FREMOVE, FREWIND
+	  - Add MEM_CALLOC and CALLOC
+
+2009-06-14 22:36  SplinterGU
+
+	* - Fix parse on ; at end line when #include
+
+2009-06-14 15:39  SplinterGU
+
+	* - Rename messages.c to messages.h
+	  - Fix usage help for bgdi
+
+2009-06-13 15:50  SplinterGU
+
+	* - Fix "Runtime error in ???(????) - Mnemonic 0xC2F not
+	  implemented"
+
+2009-06-12 01:38  SplinterGU
+
+	* - load_fpg 1bpp fixed
+
+2009-06-11 01:16  SplinterGU
+
+	* - Remove spanish error message
+	  - Change some spanish code
+	  - Remove some printf
+
+2009-06-11 00:18  SplinterGU
+
+	* - Pointer type support in copy and save/load structs
+
+2009-06-10 01:28  SplinterGU
+
+	* - Fix some stuff with palettes
+
+2009-06-06 00:21  SplinterGU
+
+	* - Add support of string += char and char[]+= char
+
+2009-06-05 11:57  SplinterGU
+
+	* - Fix on grlib_get and new bitmaps (not graphs)
+
+2009-06-05 03:13  SplinterGU
+
+	* - Now fpgid are cyclic
+	  - Now fpg limit removed
+	  - Fix alpha in 32 bits rgba functions
+
+2009-06-05 01:37  SplinterGU
+
+	* - Add missing file
+
+2009-06-05 01:19  SplinterGU
+
+	* - Fix memory leak on unload_fpg
+	  - Fix clean memory on bitmap (not graphs) operations
+	  - Fix free memory on fpg load error
+	  - Remove innecesary graphs linked lists
+
+2009-06-04 02:53  SplinterGU
+
+	* - Fix use of string[] (indexes access), now return char type
+	  value
+
+2009-06-02 01:03  SplinterGU
+
+	* - ASC fix
+
+2009-06-01 03:08  SplinterGU
+
+	* - MAX_CHAR y MIN_CHAR constants added
+
+2009-06-01 02:22  SplinterGU
+
+	* - Replace SDL_KEYEVENTMASK with (SDL_EVENTMASK(SDL_KEYDOWN)|
+	  SDL_EVENTMASK(SDL_KEYUP)) (Thanks Sandman)
+	  - Fix rgb* functions that on (0,0,0) return 1 in 16 bits, and
+	  right value in 32 bits
+	  - Speed up for 32 bits in rgb* funciones
+
+2009-05-30 14:58  SplinterGU
+
+	* - RESOLUTION is used in detect object change
+	  - rgb now return correct value in 32 bits is value is 0 (thanks
+	  Sandman)
+
+2009-05-29 01:26  SplinterGU
+
+	* - Fix crash by bug in intances.c
+	  - Stupid optimizations on mod_debug
+
+2009-05-26 10:49  SplinterGU
+
+	* - Fix priority if it reach limits
+
+2009-05-26 01:21  SplinterGU
+
+	* - Fix dcb read data on non-intel (thanks Sandman)
+
+2009-05-25 23:23  SplinterGU
+
+	* - New instances system, hash on priority, type. Speed up improved
+	  on iterate instances.
+	  - Instances now are limited to 65536 running at same time
+	  - Instances dirty list by change on priority is removed.
+	  - collision, getid, signal,... speed up improved by use of new
+	  instance system and other.
+	  - speed up improved on show debug info
+	  - compiler parse number is fixed
+	  - debug console parse number is fixed
+	  - debug console color tags fixed
+	  - several casts are added in code
+	  - several sizeof are added in code
+	  - libvideo now start in 32 bits as default
+	  - getscreen now return graphic without control point 0,
+	  (centered)
+
+2009-05-14 01:43  SplinterGU
+
+	* - Fix memory leak problem in save_png and load_png
+
+2009-05-12 03:24  SplinterGU
+
+	* - Fix void pointer increment
+
+2009-05-12 03:19  SplinterGU
+
+	* - Mix 2 hook in sdlhandler
+
+2009-05-10 05:56  SplinterGU
+
+	* - contrib directory added
+	  - version 1.0.0
+
+2009-05-10 05:46  SplinterGU
+
+	* - Use gr_set_caption
+
+2009-05-10 05:44  SplinterGU
+
+	* - Compiler: Arguments type process now are supported
+	  - fix in g_instance graph change detection
+	  - two new internals functions gr_set_caption and gr_set_icon
+	  (used in libvideo and in mod_wm)
+	  - move some vars from libgrbase to libvideo
+	  - mod_wm now call new funtions on libvideo (gr_set_caption and
+	  gr_set_icon)
+
+2009-05-09 03:12  SplinterGU
+
+	* - Set ICON palette fix
+
+2009-05-09 02:19  SplinterGU
+
+	* - Fix sizeof on members of structs and types
+	  - Fix operations of add and sub on pointers
+	  - Fix type casts (and others casts)
+
+2009-05-08 03:11  SplinterGU
+
+	* - Fix bitmap_clone
+
+2009-05-05 03:07  SplinterGU
+
+	* - Now palette loaded is palette asigned to system palette
+	  - Fix drawing_color, before find rgb in 8 bits video
+	  - get_screen now clone bitmap(0,-1) (last screen drawed)
+
+2009-05-01 20:34  SplinterGU
+
+	* - bgdrtm - Fix exit status
+	  - exec - Fix return status from child dead _P_WAIT
+	  Fix return status on error
+	  Fix return status on _P_NOWAIT
+	  - mod_wm, none important
+
+2009-05-01 02:28  SplinterGU
+
+	* - Fix in exec
+	  - Fix in move_windows x11
+
+2009-04-28 14:15  SplinterGU
+
+	* - Now memcopy call to C memcpy
+
+2009-04-25 00:31  SplinterGU
+
+	* - Check on non-exists ctr
+
+2009-04-25 00:28  SplinterGU
+
+	* - Optimizations on strings (thanks Sandman)
+	  - Remove bad optimization on g_object
+
+2009-04-24 02:28  SplinterGU
+
+	* - Little g_object optimization
+
+2009-04-24 01:28  SplinterGU
+
+	* - Fix debug console background color
+
+2009-04-22 00:42  SplinterGU
+
+	* - Fix format function
+	  - Added GP2X constant
+
+2009-04-08 10:03  SplinterGU
+
+	* - Fix in the behavior of signed/unsigned expression
+
+2009-04-04 01:19  SplinterGU
+
+	* - Fix stupid message "don't exist or isn't version 7 DCB
+	  compatible"
+	  when don't use full dcbname
+	  - Fix add files to dcb when files added are gzip (fpg)
+	  - Minor fixed in dcb (byteorder)
+
+2009-04-02 14:11  SplinterGU
+
+	* - Primitive alpha fix in 32 bits
+
+2009-03-31 23:18  SplinterGU
+
+	* - Optimize of dirs functions
+	  - Fix mod_dir that don't use string_discard
+	  - New function MAP_NEW(w,h,depth,flags) where flags can be:
+	  B_CLEAR (bitmap clear) or 0 (no clear new bitmap)
+
+2009-03-29 01:41  SplinterGU
+
+	* - mod_joy splitted (thanks Sandman)
+	  - libjoy added (thanks Sandman)
+	  - fix bitmap_clone
+
+2009-03-21 21:00  SplinterGU
+
+	* - moddesc configure fix
+
+2009-03-21 20:19  SplinterGU
+
+	* - revert aditive CFLAGS and LDFLAGS change... in win32 the
+	  compiled
+	  binaries are very big (5x or more)
+
+2009-03-21 13:17  SplinterGU
+
+	* - bgdrtm: speedup string functions (string_char, string_concat,
+	  string_add, string[...], others)
+	  - Now find, substr, and any function with access to out of string
+	  limits
+	  return null string or -1.
+	  - strlen() function added, alias of len().
+	  - file_eof() and file_read() fixed in detection of end of file.
+	  - file() fixed, sizeof internal buffer and concat of data chunks.
+	  - fgets() fixed, sizeof internal buffer.
+	  - fexists() added, alias of file_exists().
+
+2009-03-19 23:09  SplinterGU
+
+	* *FLAGS+= fix
+
+2009-03-18 02:22  SplinterGU
+
+	* - Additive CFLAGS
+
+2009-03-15 00:03  SplinterGU
+
+	* - 32 bits drawing alpha support (alpha-pixel and drawing_alpha)
+	  - speed up some drawing functions
+	  - write_var pointer vars support
+
+2009-03-14 23:58  SplinterGU
+
+	* - new string_ptoa more efficient and same result in different SO.
+	  - check constants already defined as variable
+	  - Fix variant arg for pointer vars
+	  - Fix unsigned comparations
+
+2009-03-12 22:47  SplinterGU
+
+	* - Fixed Translucent tables in 8 bits
+	  - Fixed blend operations in 8 bits
+	  - Fixed Translucent+Blend in 8 bits
+
+2009-03-12 14:30  SplinterGU
+
+	* - Transparency tables update
+
+2009-03-08 03:40  SplinterGU
+
+	* - Fade 32bits support
+
+2009-03-07 01:12  SplinterGU
+
+	* - Dependency for mod_joy is fixed (thanks Sandman)
+
+2009-02-17 00:56  SplinterGU
+
+	* - Fix gr_save_fpg
+
+2009-02-09 18:24  SplinterGU
+
+	* README updated (not final)
+
+2009-02-05 01:13  SplinterGU
+
+	* mod_ffi removed
+
+2009-01-31 19:59  SplinterGU
+
+	* - set_text_color 32bits support
+
+2009-01-25 06:00  SplinterGU
+
+	* - Notes in g_object source code
+	  - Fix dirty update in draw objects
+	  - Check for center change in mouse graph
+
+2009-01-24 23:12  SplinterGU
+
+	* - mod_ffi is removed temporaly
+
+2009-01-24 21:20  SplinterGU
+
+	* - Removed unnecesary files
+
+2009-01-24 20:59  SplinterGU
+
+	* - Unnecesary files removed
+
+2009-01-24 20:47  SplinterGU
+
+	* - libffi 3.0.8 fix
+
+2009-01-24 18:54  SplinterGU
+
+	* - Windows fix
+
+2009-01-24 18:09  SplinterGU
+
+	* - Remove Makefile files, they must be generated with configure
+
+2009-01-24 16:39  SplinterGU
+
+	* - Fixed bug with use of mirror and point 0 not center
+
+2009-01-21 00:25  SplinterGU
+
+	* - Fixed bug on update graph on graph center change
+
+2009-01-16 03:43  SplinterGU
+
+	* - fix on use of file (fpg) = 0
+
+2009-01-15 07:57  SplinterGU
+
+	* - mod_effects constants add:
+	  
+	  BLUR_NORMAL 0
+	  BLUR_3x3 1
+	  BLUR_5x5 2
+	  BLUR_5x5_MAP 3
+	  
+	  GSCALE_RGB 0
+	  GSCALE_R 1
+	  GSCALE_G 2
+	  GSCALE_B 3
+	  GSCALE_RG 4
+	  GSCALE_RB 5
+	  GSCALE_GB 6
+	  GSCALE_OFF -1
+
+2009-01-15 07:36  SplinterGU
+
+	* - PNG load pixel displaced fix
+
+2009-01-12 23:43  SplinterGU
+
+	* - delete_draw(0) fix
+
+2009-01-12 22:30  SplinterGU
+
+	* - Draw update fix (thanks Sandman)
+
+2009-01-12 18:51  SplinterGU
+
+	* - License update
+
+2008-12-31 15:43  SplinterGU
+
+	* Dependencies fix
+
+2008-12-30 15:25  SplinterGU
+
+	* - Developer configure run (no changes)
+
+2008-12-30 15:10  SplinterGU
+
+	* - Extension remove fix
+	  - Enable interactive mode only in Win32
+
+2008-12-30 14:44  SplinterGU
+
+	* Initialization fix of type and typeb
+
+2008-12-29 02:13  SplinterGU
+
+	* .
+
