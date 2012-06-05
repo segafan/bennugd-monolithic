@@ -17,8 +17,8 @@ include $(DEVKITPPC)/wii_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	bgdc
 BUILD     :=	build
-SOURCES		:=	src
-INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ \
+SOURCES		:=	../../core/bgdc/src
+INCLUDES	:=	../../core/bgdc/include ../../core/include ../../modules/mod_say/ ../../modules/mod_string/ \
                 ../../modules/mod_math/ ../../modules/mod_time/ ../../modules/mod_file/ \
                 ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
                 ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
@@ -109,7 +109,7 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	make -C $(BUILD) -f $(CURDIR)/Makefile.wii
+	make -C $(BUILD) -f $(CURDIR)/Makefile_bgdc.wii
 	#powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
