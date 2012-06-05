@@ -1,4 +1,4 @@
-
+#---------------------------------------------------------------------------------
 # Clear the implicit built in rules
 #---------------------------------------------------------------------------------
 .SUFFIXES:
@@ -15,38 +15,25 @@ include $(DEVKITPPC)/wii_rules
 # SOURCES is a list of directories containing source code
 # INCLUDES is a list of directories containing extra header files
 #---------------------------------------------------------------------------------
-TARGET		:=	bgdc
-BUILD     :=	build
-SOURCES		:=	../../core/bgdc/src
-INCLUDES	:=	../../core/bgdc/include ../../core/include ../../modules/mod_say/ ../../modules/mod_string/ \
-                ../../modules/mod_math/ ../../modules/mod_time/ ../../modules/mod_file/ \
-                ../../modules/mod_sound/ ../../modules/libsdlhandler/ ../../modules/mod_joy/ \
-                ../../modules/libjoy/ ../../modules/mod_proc/ ../../modules/mod_sort/ \
-                ../../modules/mod_timers/ ../../modules/mod_regex/ ../../modules/libgrbase/ \
-                ../../modules/libblit/ ../../modules/libvideo/ ../../modules/librender/ \
-                ../../modules/mod_video/ ../../modules/libmouse/ ../../modules/mod_mouse/ \
-                ../../modules/mod_map/ ../../modules/libfont/  ../../modules/mod_dir/ \
-                ../../modules/libtext/ ../../modules/mod_text/ ../../modules/mod_rand/ \
-                ../../modules/mod_grproc/ ../../modules/libscroll/ ../../modules/mod_scroll/ \
-                ../../modules/libkey/ ../../modules/mod_key/ ../../modules/libdraw/ \
-                ../../modules/mod_draw/ ../../modules/mod_screen/ ../../modules/mod_path/ \
-                ../../modules/mod_effects/ ../../modules/mod_blendop/ ../../modules/mod_m7/ \
-				../../modules/libwm/ ../../modules/mod_wm/ ../../modules/mod_sys/ \
-				../../modules/mod_mem/ ../../modules/mod_flic/ ../../modules/mod_cd/ \
-				../../modules/mod_debug/ ../../modules/mod_wpad/
+TARGET		:=	bgdi
+BUILD       :=	build
+SOURCES		:=	../../core/bgdi/src
+INCLUDES	:=	../../core/bgdi/include ../../core/include ../../core/bgdrtm/include
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -Wall -D__BGDC__ -D__MONOLITHIC__ -D__STATIC__ -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
-CXXFLAGS	=	$(CFLAGS)
-LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+CFLAGS		=	-O3 -Wall -D__BGDI__ -D__STATIC__ -DWITH_GPL_CODE  -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
+LDFLAGS		=	-O3 $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS := -ldb -lfat -lz -lwiiuse -lbte -logc -lm
+LIBS := -ldb ../bgdrtm.a -lSDL_mixer -lsmpeg -lSDL -lpng \
+        -lvorbisidec -lz -lfat -lwiiuse -lbte -logc -lm -lwiikeyboard \
+	-lstdc++
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
@@ -67,10 +54,7 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 #---------------------------------------------------------------------------------
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
-CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c))) \
-              ../../common/debug.c ../../common/files.c ../../common/xctype.c \
-              ../../../3rdparty/libc_additions/realpath.c \
-              ../../../3rdparty/libc_additions/basename.c
+CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 sFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.S)))
@@ -93,9 +77,7 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
-					-I$(LIBOGC_INC) -I$(PORTLIBS)/include/SDL/ \
-					-I$(PORTLIBS)/include/chipmunk/ \
-					-I$(CURDIR)/../../3rdparty/libc_additions/
+					-I$(LIBOGC_INC) -I$(PORTLIBS)/include/SDL/
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
@@ -109,7 +91,8 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	make -C $(BUILD) -f $(CURDIR)/Makefile_bgdc.wii
+	@rm -fr $(OUTPUT).elf $(OUTPUT).dol
+	make -C $(BUILD) -f $(CURDIR)/Makefile_bgdi
 	#powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------

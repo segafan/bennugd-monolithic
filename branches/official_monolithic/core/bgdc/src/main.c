@@ -157,7 +157,7 @@ int main( int argc, char *argv[] )
     }
 
     /* get pathname of executable */
-#ifdef __STATIC__
+#ifdef TARGET_WII
     appexepath = calloc(1, 1);
     strcpy(appexepath, "./");
 #else

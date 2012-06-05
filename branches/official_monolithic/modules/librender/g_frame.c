@@ -30,6 +30,7 @@
 #include <string.h>
 #include <time.h>
 
+#define __LIBRENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */

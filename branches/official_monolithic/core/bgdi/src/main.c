@@ -49,6 +49,11 @@
 #include "xstrings.h"
 #include "dirs.h"
 
+#if defined(TARGET_WII)
+#include <SDL.h>
+#include <fat.h>
+#endif
+
 /* ---------------------------------------------------------------------- */
 
 static char * dcb_exts[] = { ".dcb", ".dat", ".bin", NULL };
@@ -121,14 +126,27 @@ int main( int argc, char *argv[] )
     }
 
     /* get pathname of executable */
+#ifdef TARGET_WII
+    appexepath = calloc(1, 1);
+    strcpy(appexepath, "./");
+#else
     ptr = strstr( appexefullpath, appexename );
     appexepath = calloc( 1, ptr - appexefullpath + 1 );
     strncpy( appexepath, appexefullpath, ptr - appexefullpath );
+#endif
 
     standalone = ( strncmpi( appexename, "bgdi", 4 ) == 0 ) ;
 
     /* add binary path */
     file_addp( appexepath );
+
+#ifdef TARGET_WII
+    // Initialize the Wii FAT filesystem, check stuff
+    if (!fatInitDefault()) {
+        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
+        exit(1);
+    }
+#endif
 
     if ( !standalone )
     {

@@ -26,6 +26,7 @@
  *
  */
 
+#define __LIBRENDER
 #include "librender.h"
 #include "fmath.h"
 

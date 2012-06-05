@@ -35,6 +35,7 @@
 #include "bgddl.h"
 #include "dlvaracc.h"
 
+#define __LIBRENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */

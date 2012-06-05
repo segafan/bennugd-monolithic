@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define __LIBRENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */

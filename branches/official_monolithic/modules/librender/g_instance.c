@@ -38,6 +38,7 @@
 
 /* --------------------------------------------------------------------------- */
 
+#define __LIBRENDER
 #include "librender.h"
 #include "resolution.h"
 

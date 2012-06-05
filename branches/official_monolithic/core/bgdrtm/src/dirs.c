@@ -163,7 +163,11 @@ int dir_delete( const char * dir )
 {
     char *c = dir_path_convert( dir ) ;
     if ( !c ) return 0;
+#ifdef TARGET_WII
+    int r = remove( c );
+#else
     int r = rmdir( c ) ;
+#endif
     free( c ) ;
     return r ;
 }
@@ -261,7 +265,7 @@ __DIR_ST * dir_open( const char * path )
     /* Convert '*.*' to '*' */
     if ( fptr > hDir->pattern + 2 && fptr[ -1 ] == '*' && fptr[ -2 ] == '.' && fptr[ -3 ] == '*' ) fptr[ -2 ] = 0;
 
-#if defined(TARGET_MAC) || defined(TARGET_BEOS)
+#if defined(TARGET_MAC) || defined(TARGET_BEOS) || defined(TARGET_WII)
     r = glob( hDir->pattern, GLOB_ERR | GLOB_NOSORT, NULL, &hDir->globd );
 #else
     r = glob( hDir->pattern, GLOB_ERR | GLOB_PERIOD | GLOB_NOSORT, NULL, &hDir->globd );
