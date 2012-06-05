@@ -58,27 +58,27 @@ DLCONSTANT __bgdexport( mod_text, constants_def)[] =
 } ;
 
 DLSYSFUNCS  __bgdexport( mod_text, functions_exports )[] = {
-    { "WRITE"               , "IIIIS"   , TYPE_INT  , modtext_write             },
-    { "WRITE"               , "IIIIIS"  , TYPE_INT  , modtext_write2            },
-    { "WRITE_INT"           , "IIIIP"   , TYPE_INT  , modtext_write_int         },
-    { "WRITE_INT"           , "IIIIIP"  , TYPE_INT  , modtext_write_int2        },
-    { "MOVE_TEXT"           , "III"     , TYPE_INT  , modtext_move_text         },
-    { "MOVE_TEXT"           , "IIII"    , TYPE_INT  , modtext_move_text2        },
-    { "DELETE_TEXT"         , "I"       , TYPE_INT  , modtext_delete_text       },
-    { "WRITE_IN_MAP"        , "ISI"     , TYPE_INT  , modtext_write_in_map      },
-    { "TEXT_WIDTH"          , "IS"      , TYPE_INT  , modtext_text_width        },
-    { "TEXT_HEIGHT"         , "IS"      , TYPE_INT  , modtext_text_height       },
-    { "GET_TEXT_COLOR"      , ""        , TYPE_INT  , modtext_get_text_color    },
-    { "GET_TEXT_COLOR"      , "I"       , TYPE_INT  , modtext_get_text_color2   },
-    { "SET_TEXT_COLOR"      , "I"       , TYPE_INT  , modtext_set_text_color    },
-    { "SET_TEXT_COLOR"      , "II"      , TYPE_INT  , modtext_set_text_color2   },
-    { "WRITE_VAR"           , "IIIIV++" , TYPE_INT  , modtext_write_var         },
-    { "WRITE_VAR"           , "IIIIIV++", TYPE_INT  , modtext_write_var2        },
-    { "WRITE_FLOAT"         , "IIIIP"   , TYPE_INT  , modtext_write_float       },
-    { "WRITE_FLOAT"         , "IIIIIP"  , TYPE_INT  , modtext_write_float2      },
-    { "WRITE_STRING"        , "IIIIP"   , TYPE_INT  , modtext_write_string      },
-    { "WRITE_STRING"        , "IIIIIP"  , TYPE_INT  , modtext_write_string2     },
-    { 0                     , 0         , 0         , 0                     }
+    { "WRITE"               , "IIIIS"   , TYPE_INT  , 0 },
+    { "WRITE"               , "IIIIIS"  , TYPE_INT  , 0 },
+    { "WRITE_INT"           , "IIIIP"   , TYPE_INT  , 0 },
+    { "WRITE_INT"           , "IIIIIP"  , TYPE_INT  , 0 },
+    { "MOVE_TEXT"           , "III"     , TYPE_INT  , 0 },
+    { "MOVE_TEXT"           , "IIII"    , TYPE_INT  , 0 },
+    { "DELETE_TEXT"         , "I"       , TYPE_INT  , 0 },
+    { "WRITE_IN_MAP"        , "ISI"     , TYPE_INT  , 0 },
+    { "TEXT_WIDTH"          , "IS"      , TYPE_INT  , 0 },
+    { "TEXT_HEIGHT"         , "IS"      , TYPE_INT  , 0 },
+    { "GET_TEXT_COLOR"      , ""        , TYPE_INT  , 0 },
+    { "GET_TEXT_COLOR"      , "I"       , TYPE_INT  , 0 },
+    { "SET_TEXT_COLOR"      , "I"       , TYPE_INT  , 0 },
+    { "SET_TEXT_COLOR"      , "II"      , TYPE_INT  , 0 },
+    { "WRITE_VAR"           , "IIIIV++" , TYPE_INT  , 0 },
+    { "WRITE_VAR"           , "IIIIIV++", TYPE_INT  , 0 },
+    { "WRITE_FLOAT"         , "IIIIP"   , TYPE_INT  , 0 },
+    { "WRITE_FLOAT"         , "IIIIIP"  , TYPE_INT  , 0 },
+    { "WRITE_STRING"        , "IIIIP"   , TYPE_INT  , 0 },
+    { "WRITE_STRING"        , "IIIIIP"  , TYPE_INT  , 0 },
+    { 0                     , 0         , 0         , 0 }
 };
 
 char * __bgdexport( mod_text, modules_dependency)[] =

@@ -40,7 +40,7 @@ INCLUDES	:=	include ../include ../../modules/mod_say/ ../../modules/mod_string/ 
 # options for code generation
 #---------------------------------------------------------------------------------
 
-CFLAGS		=	-g -O2 -Wall -D__BGDC__ -DWITH_GPL_CODE -D__MONOLITHIC__ -DNO_MODIMAGE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
+CFLAGS		=	-g -O2 -Wall -D__BGDC__ -DWITH_GPL_CODE -D__MONOLITHIC__ -DNO_MODMATHI -DNO_MODIMAGE -DNO_MODCHIPMUNK -DNO_MODMULTI -DNO_MODFMODEX -DNO_MODCURL -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	-save-temps -Xassembler -aln=$@.lst $(CFLAGS)
 LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
@@ -93,7 +93,7 @@ export OFILES	:=	$(CPPFILES:.cpp=.o) $(CFILES:.c=.o) \
 export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					$(foreach dir,$(LIBDIRS),-I$(dir)/include) \
 					-I$(CURDIR)/$(BUILD) \
-					-I$(LIBOGC_INC) -I$(LIBOGC_INC)/SDL \
+					-I$(LIBOGC_INC) -I$(PORTLIBS)/include/SDL \
 					-I$(PORTLIBS)/include/chipmunk/ \
 					-I$(CURDIR)/../../3rdparty/libc_additions/
 
