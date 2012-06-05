@@ -35,6 +35,9 @@
 
 char * __bgdexport( mod_mouse, modules_dependency )[] =
 {
+#ifdef TARGET_WII
+    "libjoy",
+#endif
     "libmouse",
     0
 };

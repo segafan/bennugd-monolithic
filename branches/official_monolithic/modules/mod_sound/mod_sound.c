@@ -155,9 +155,19 @@ static int sound_init()
         else
             audio_rate = 11025;
 
+#ifdef TARGET_WII
+        /* WII uses a powerpc architecture which operates as big-endian */
+        audio_format = AUDIO_S16MSB;
+        audio_rate = 48000;
+#else
         audio_format = AUDIO_S16;
+#endif
         audio_channels = GLODWORD( mod_sound, SOUND_MODE ) + 1;
+#ifdef TARGET_WII
+        audio_buffers = 1024;
+#else
         audio_buffers = 1024 * audio_rate / 22050;
+#endif
 
         /* Open the audio device */
         if ( Mix_OpenAudio( audio_rate, audio_format, audio_channels, audio_buffers ) >= 0 )
