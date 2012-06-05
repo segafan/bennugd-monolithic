@@ -490,6 +490,7 @@ int main( int argc, char *argv[] )
                 MSG_OPTION_D
                 MSG_OPTIONS
                 MSG_LICENSE, argv[0] );
+        printf("Sourcefile '%s' not found\n", sourcefile);
         return 0;
     }
 

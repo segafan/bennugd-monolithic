@@ -41,7 +41,7 @@ INCLUDES	:=	../../core/bgdc/include ../../core/include ../../modules/mod_say/ ..
 
 CFLAGS		=	-g -Wall -D__BGDC__ -D__STATIC__ -DWITH_GPL_CODE -DTARGET_WII -DVERSION='"1.0.0"' $(MACHDEP) $(INCLUDE)
 CXXFLAGS	=	$(CFLAGS)
-LDFLAGS		=	-g $(MACHDEP) -Wl,-Map,$(notdir $@).map
+LDFLAGS		=	-g $(MACHDEP)
 
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
@@ -68,7 +68,8 @@ export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 # automatically build a list of object files for our project
 #---------------------------------------------------------------------------------
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c))) \
-              ../../common/debug.c ../../common/files.c ../../common/xctype.c \
+              ../../../core/common/debug.c ../../../core/common/files.c \
+              ../../../core/common/xctype.c \
               ../../../3rdparty/libc_additions/realpath.c \
               ../../../3rdparty/libc_additions/basename.c
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
@@ -109,7 +110,7 @@ export OUTPUT	:=	$(CURDIR)/$(TARGET)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
-	make -C $(BUILD) -f $(CURDIR)/Makefile_bgdc.wii
+	make -C $(BUILD) -f $(CURDIR)/Makefile_bgdc
 	#powerpc-eabi-strip $(TARGET).elf
 
 #---------------------------------------------------------------------------------
@@ -128,7 +129,7 @@ reload:
 #---------------------------------------------------------------------------------
 else
 
-DEPENDS	:=	$(OFILES:.o=.d)
+DEPENDS	:=	$(OFILES:.o)
 
 #---------------------------------------------------------------------------------
 # main targets
