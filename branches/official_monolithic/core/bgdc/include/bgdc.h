@@ -48,7 +48,7 @@
  * INSTEAD OF JUST EXITING, GIVE THE USER SOME GRACE TIME TO READ THE ERRORS
  */
 #ifdef TARGET_WII
-#define exit( retval ) printf("\nQUITTING in 5 seconds.\n"); sleep(5); exit(retval);
+#define exit( retval ) printf("\nQUITTING in 5 seconds.\n"); sleep(10); exit(retval);
 #endif
 
 /*

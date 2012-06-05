@@ -157,14 +157,17 @@ int main( int argc, char *argv[] )
     }
 
     /* get pathname of executable */
-#ifdef TARGET_WII
-    appexepath = calloc(1, 1);
-    strcpy(appexepath, "./");
-#else
     ptr = strstr( appexefullpath, appexename );
-    appexepath = calloc( 1, ptr - appexefullpath + 1 );
-    strncpy( appexepath, appexefullpath, ptr - appexefullpath );
-#endif
+    if(ptr)
+    {
+        appexepath = calloc( 1, ptr - appexefullpath + 1 );
+        strncpy( appexepath, appexefullpath, ptr - appexefullpath );
+    }
+    else
+    {
+        appexepath = calloc(1, 1);
+        strcpy(appexepath, "");
+    }
 
     printf( BGDC_VERSION "\n"
             "Bennu Game Development Compiler\n"
@@ -189,7 +192,7 @@ int main( int argc, char *argv[] )
 #ifdef TARGET_WII
     // Initialize the Wii FAT filesystem, check stuff
     if (!fatInitDefault()) {
-        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
+        printf("Sorry, I cannot access the FAT filesystem on your SD card / USB device :(\n");
         exit(1);
     }
 #endif
@@ -486,11 +489,16 @@ int main( int argc, char *argv[] )
 
     if ( !sourcefile )
     {
-        printf( MSG_USING
+        /*printf( MSG_USING
                 MSG_OPTION_D
                 MSG_OPTIONS
-                MSG_LICENSE, argv[0] );
-        printf("Sourcefile '%s' not found\n", sourcefile);
+                MSG_LICENSE, argv[0] );*/
+        printf("Sourcefile '%s' not found\n%d given args are:\n", sourcefile, argc);
+        for ( i = 0 ; i < argc ; i++ ) {
+            printf("argv[%d]: %s\n", i, argv[i]);
+        }
+        printf("\n");
+        
         return 0;
     }
 

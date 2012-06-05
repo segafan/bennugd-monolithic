@@ -276,6 +276,8 @@ static void * dlibopen( const char * fname )
 {
     __FAKE_DL * fdl = __fake_dl;
     char dlname[32], *p;
+    FILE *fd;
+    fd = fopen("/out.log", "w+");
 
     if ( !fake_dl_inited )
     {
@@ -290,11 +292,14 @@ static void * dlibopen( const char * fname )
 
     while( fdl->dlname )
     {
-        if ( !strcmp( dlname, fdl->dlname ) ) return ( void * ) fdl;
+        fprintf(fd, "Checking %s->%s against %s\n", fname, dlname, fdl->dlname);
+        if ( !strcmp( dlname, fdl->dlname ) ) { fclose(fd); return ( void * ) fdl; }
         fdl++;
     }
 
     __dliberr = "Could not load library." ;
+    
+    fclose(fd);
 
     return NULL;
 }

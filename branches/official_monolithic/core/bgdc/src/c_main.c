@@ -528,6 +528,8 @@ static void import_module( const char * filename )
     if ( !library ) library  = dlibopen( filename ) ;
 
     if ( !library ) compile_error( MSG_LIBRARY_NOT_FOUND, filename ) ;
+    
+    printf("%s loaded\n", filename);
 
     modules_dependency = ( char ** ) _dlibaddr( library, "modules_dependency" ) ;
 

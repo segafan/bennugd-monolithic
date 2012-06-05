@@ -1386,9 +1386,9 @@ void fake_dl_init()
   
     /* -------------------- mod_crypt -------------------- */
  
-/*    __fake_dl[28].dlname                       = "mod_crypt";
+    __fake_dl[28].dlname                       = "mod_crypt";
 #ifdef __BGDC__
-    __fake_dl[28].constants_def                = mod_crypt_constants_def;
+    __fake_dl[28].constants_def                = NULL;
     __fake_dl[28].types_def                    = NULL;
     __fake_dl[28].globals_def                  = NULL;
     __fake_dl[28].locals_def                   = NULL;
@@ -1402,7 +1402,7 @@ void fake_dl_init()
     __fake_dl[28].globals_fixup                = NULL;
     __fake_dl[28].locals_fixup                 = NULL;
 #endif
-    __fake_dl[28].functions_exports            = mod_crypt_functions_exports;
+    __fake_dl[28].functions_exports            = NULL;
 #ifdef __BGDC__
     __fake_dl[28].module_initialize            = NULL;
     __fake_dl[28].module_finalize              = NULL;
@@ -1422,7 +1422,7 @@ void fake_dl_init()
     __fake_dl[28].process_exec_hook            = NULL;
     __fake_dl[28].handler_hooks                = NULL;
 #endif
-    __fake_dl[28].modules_dependency           = NULL;*/
+    __fake_dl[28].modules_dependency           = NULL;
   
     /* -------------------- mod_joy -------------------- */
  
