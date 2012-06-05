@@ -72,7 +72,7 @@ CFILES		:=	dcbr.c sysprocs.c strings.c dirs.c copy.c misc.c instance.c \
               interpreter.c varspace_file.c \
               ../../../3rdparty/libc_additions/basename.c \
               ../../../3rdparty/libc_additions/realpath.c \
-              ../../../3rdparty/libglob-bsd/glob.c \
+              ../../../3rdparty/libc_additions/glob.c \
               ../../../core/common/debug.c \
               ../../../core/common/files.c \
               ../../../core/common/xctype.c \
@@ -167,8 +167,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 					-I$(CURDIR)/$(BUILD) \
 					-I$(LIBOGC_INC) -I$(PORTLIBS)/include/SDL/ \
 					-I$(PORTLIBS)/include/chipmunk/ \
-					-I$(CURDIR)/../../3rdparty/libc_additions/ \
-					-I$(CURDIR)/../../3rdparty/libglob-bsd/include/
+					-I$(CURDIR)/../../3rdparty/libc_additions/
 
 #---------------------------------------------------------------------------------
 # build a list of library paths
