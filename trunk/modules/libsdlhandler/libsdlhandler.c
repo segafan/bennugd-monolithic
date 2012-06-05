@@ -33,6 +33,7 @@
 
 static void dump_new_events()
 {
+    SDL_Event event;
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
