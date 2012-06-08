@@ -165,8 +165,8 @@ int main( int argc, char *argv[] )
     }
     else
     {
-        appexepath = calloc(1, 1);
-        strcpy(appexepath, "");
+        appexepath = calloc(1, 2);
+        strcpy(appexepath, "./");
     }
 
     printf( BGDC_VERSION "\n"

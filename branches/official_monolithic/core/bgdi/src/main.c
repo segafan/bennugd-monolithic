@@ -126,14 +126,17 @@ int main( int argc, char *argv[] )
     }
 
     /* get pathname of executable */
-#ifdef TARGET_WII
-    appexepath = calloc(1, 1);
-    strcpy(appexepath, "./");
-#else
     ptr = strstr( appexefullpath, appexename );
-    appexepath = calloc( 1, ptr - appexefullpath + 1 );
-    strncpy( appexepath, appexefullpath, ptr - appexefullpath );
-#endif
+    if(ptr)
+    {
+        appexepath = calloc( 1, ptr - appexefullpath + 1 );
+        strncpy( appexepath, appexefullpath, ptr - appexefullpath );
+    }
+    else
+    {
+        appexepath = calloc(1, 1);
+        strcpy(appexepath, "");
+    }
 
     standalone = ( strncmpi( appexename, "bgdi", 4 ) == 0 ) ;
 
