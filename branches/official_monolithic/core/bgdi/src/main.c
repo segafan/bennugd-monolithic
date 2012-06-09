@@ -98,6 +98,12 @@ int main( int argc, char *argv[] )
         arg0 = strdup( argv[0] );
 #ifdef _WIN32
     }
+#elif defined(TARGET_WII)
+    // Initialize the Wii FAT filesystem, check stuff
+    if (!fatInitDefault()) {
+        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
+        exit(1);
+    }
 #endif
 
     ptr = arg0 + strlen( arg0 );
@@ -142,14 +148,6 @@ int main( int argc, char *argv[] )
 
     /* add binary path */
     file_addp( appexepath );
-
-#ifdef TARGET_WII
-    // Initialize the Wii FAT filesystem, check stuff
-    if (!fatInitDefault()) {
-        printf("Sorry, I cannot access the FAT filesystem on your card :(\n");
-        exit(1);
-    }
-#endif
 
     if ( !standalone )
     {

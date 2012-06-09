@@ -134,6 +134,12 @@ int main( int argc, char *argv[] )
     // Wait for Video setup to complete
     VIDEO_WaitVSync();
     if(rmode->viTVMode&VI_NON_INTERLACE) VIDEO_WaitVSync();
+
+    // Initialize the Wii FAT filesystem, check stuff
+    if (!fatInitDefault()) {
+        printf("Sorry, I cannot access the FAT filesystem on your SD card / USB device :(\n");
+        exit(1);
+    }
 #endif
 
     /* get my executable name */
@@ -188,14 +194,6 @@ int main( int argc, char *argv[] )
         strcpy( langinfo, getenv( "LANG" ) );
 #endif
     langinfo[2] = 0;
-    
-#ifdef TARGET_WII
-    // Initialize the Wii FAT filesystem, check stuff
-    if (!fatInitDefault()) {
-        printf("Sorry, I cannot access the FAT filesystem on your SD card / USB device :(\n");
-        exit(1);
-    }
-#endif
 
     srand( time( NULL ) );
 
