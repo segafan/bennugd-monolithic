@@ -528,8 +528,6 @@ static void import_module( const char * filename )
     if ( !library ) library  = dlibopen( filename ) ;
 
     if ( !library ) compile_error( MSG_LIBRARY_NOT_FOUND, filename ) ;
-    
-    printf("%s loaded\n", filename);
 
     modules_dependency = ( char ** ) _dlibaddr( library, "modules_dependency" ) ;
 
@@ -1121,7 +1119,12 @@ void compile_process()
         if ( params == MAX_PARAMS ) compile_error( MSG_TOO_MANY_PARAMS ) ;
 
         token_next() ;
-        if ( token.type == IDENTIFIER && token.code == identifier_comma ) token_next() ;
+//        if ( token.type == IDENTIFIER && token.code == identifier_comma ) token_next() ;
+        if ( token.type == IDENTIFIER )
+        {
+            if ( token.code != identifier_rightp && token.code != identifier_comma ) compile_error( MSG_EXPECTED, "," );
+            if ( token.code == identifier_comma ) token_next() ;
+        }
 
     } /* END while (token.type != IDENTIFIER || token.code != identifier_rightp) */
 
