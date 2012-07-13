@@ -54,13 +54,13 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_wm/ \
 	$(MODULES_PATH)/mod_sys/ \
 	$(MODULES_PATH)/mod_flic/ \
-	$(MODULES_PATH)/mod_mathi/ \
 	$(MODULES_PATH)/mod_multi/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DSTDC_HEADERS \
 	-D__BGDRTM__ \
 	-D__MONOLITHIC__ \
+	-DNO_MODMATHI \
 	-DNO_MODIMAGE \
 	-DNO_MODCHIPMUNK \
 	-DNO_MODICONV \
@@ -90,7 +90,6 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_say/mod_say.c \
 	../../../../modules/mod_string/mod_string.c \
 	../../../../modules/mod_math/mod_math.c \
-	../../../../modules/mod_mathi/mod_mathi.c \
 	../../../../modules/mod_time/mod_time.c \
 	../../../../modules/mod_file/mod_file.c \
 	../../../../modules/mod_sound/mod_sound.c \
