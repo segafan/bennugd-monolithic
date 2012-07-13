@@ -5,10 +5,7 @@
  */
 
 import "mod_video"
-import "mod_text"
-import "mod_mouse"
 import "mod_sound"
-import "mod_wm"
 import "mod_map"
 import "mod_draw"
 import "mod_say"
@@ -24,9 +21,9 @@ import "mod_multi"
 
 GLOBAL
 // Set to your liking
-width  = 320;
-height = 533;
-sound  = 0;
+width  = 533;
+height = 320;
+sound  = 1;
 quit   = 0;
 
 Process bouncer()
@@ -37,6 +34,8 @@ Private
 Begin
     if(file_exists("Icon.png"))
         graph = load_png("Icon.png");
+    else
+        return 1;
     end
     // Position the graphic onscreen
     w = graphic_info(0, graph, G_WIDTH);
@@ -60,6 +59,7 @@ Private
 int song=0, num_fingers=0, i=0;
 
 Begin
+    say("1");
     set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
     width = graphic_info(0, -1, G_WIDTH);
