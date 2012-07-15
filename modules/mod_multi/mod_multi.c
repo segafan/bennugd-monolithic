@@ -202,7 +202,6 @@ void parse_input_events() {
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
         switch ( e.type ) {
             case SDL_FINGERDOWN:
-                SDL_Log("Got SDL_FINGERDOWN\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
@@ -236,7 +235,6 @@ void parse_input_events() {
                 break;
             
             case SDL_FINGERMOTION:
-                SDL_Log("Got SDL_FINGERMOTION\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
@@ -264,7 +262,6 @@ void parse_input_events() {
                 break;
 
             case SDL_FINGERUP:
-                SDL_Log("Got SDL_FINGERUP\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
