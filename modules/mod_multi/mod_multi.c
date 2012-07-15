@@ -202,6 +202,7 @@ void parse_input_events() {
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
         switch ( e.type ) {
             case SDL_FINGERDOWN:
+                SDL_Log("Got SDL_FINGERDOWN\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
@@ -235,6 +236,7 @@ void parse_input_events() {
                 break;
             
             case SDL_FINGERMOTION:
+                SDL_Log("Got SDL_FINGERMOTION\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
@@ -262,6 +264,7 @@ void parse_input_events() {
                 break;
 
             case SDL_FINGERUP:
+                SDL_Log("Got SDL_FINGERUP\n");
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
@@ -299,25 +302,28 @@ static int modmulti_info(INSTANCE * my, int * params) {
     const unsigned char *info = (unsigned char *) string_get(params[1]);
     int n=params[0];
     
+    string_discard(params[1]);
+    
     // Check for failure
-    if (n >= MAX_POINTERS || n < 0)
+    if (n >= MAX_POINTERS || n < 0) {
         return -1;
+    }    
 
     // Return the info we were asked for
-    if(strncasecmp(info, "x", 1)) {
+    if(strncasecmp(info, "X", 1) == 0) {
         return pointers[n].x;
-    } else if(strncasecmp(info, "y", 1)) {
+    } else if(strncasecmp(info, "Y", 1) == 0) {
         return pointers[n].y;
-    } else if(strncasecmp(info, "pressure", 8)) {
+    } else if(strncasecmp(info, "PRESSURE", 8) == 0) {
         return pointers[n].pressure;
-    } else if(strncasecmp(info, "active", 6)) {
-        if(pointers[n].active == SDL_TRUE)
+    } else if(strncasecmp(info, "ACTIVE", 6) == 0) {
+        if(pointers[n].active == SDL_TRUE) {
             return 1;
-        else
+        } else {
+
             return 0;
+        }
     }
-    
-    string_discard(params[1]);
 
     return -1;
 }
