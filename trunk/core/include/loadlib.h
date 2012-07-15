@@ -236,7 +236,6 @@ static dlibhandle * dlibopen( const char * fname )
 			      }
 			
       			dlib->index = i;
-                SDL_Log("Library %s loaded with index %d\n", fname, i);
       			
             return ( dlib );
         }
@@ -249,9 +248,6 @@ static dlibhandle * dlibopen( const char * fname )
 
 static void * _dlibaddr( dlibhandle * handle, const char * symbol )
 {
-    SDL_Log("Looking for symbol name '%s' in %s (%d)\n",
-        symbol, symbol_list[handle->index].module_name, handle->index);
-    
     // Return the symbol they asked us for, or NULL
     if(strncmp(symbol, "modules_dependency", strlen("modules_dependency")) == 0)
         return symbol_list[handle->index].modules_dependency;

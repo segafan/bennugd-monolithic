@@ -59,15 +59,15 @@ Private
 int song=0, num_fingers=0, i=0;
 
 Begin
-    say("1");
     set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
-    width = graphic_info(0, -1, G_WIDTH);
-    height = graphic_info(0, -1, G_HEIGHT);
+    width = graphic_info(0, 0, G_WIDTH);
+    height = graphic_info(0, 0, G_HEIGHT);
     
     write(0, 0, 0, 0, "Width: "+width+" Height:"+height);
+    write(0, width, height, 8, "'0 A.D. Main Theme' CC-BY-SA Wildfire games");
     
-    graph = map_new(width, height, 16);
+    graph = map_new(width, height, 32);
     x = width/2; y = height/2;
 
     bouncer();
@@ -85,9 +85,9 @@ Begin
         num_fingers = multi_numpointers();
         
         for(i=0; i<10; i++)
-            if(multi_info(i, "ACTIVE") > 0.0)
-                draw_fcircle(multi_info(i, "Y"),
-                             multi_info(i, "X"), 5);
+            if(multi_info(i, "ACTIVE") > 0)
+                draw_fcircle(multi_info(i, "X"),
+                             multi_info(i, "Y"), 5);
                 say_fast("Drawing fcircle for pointer "+i+" @ "+
                              multi_info(i, "Y")+
                          "x"+multi_info(i, "X")+

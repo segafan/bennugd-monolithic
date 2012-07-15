@@ -633,7 +633,7 @@ void __bgdexport( libvideo, module_initialize )()
         GLODWORD( libvideo, GRAPH_MODE ) = MODE_16BITS;
 
     // Don't autostart video: doesn't work in Android
-    //gr_init( scr_width, scr_height ) ;
+    gr_init( scr_width, scr_height ) ;
 }
 
 /* --------------------------------------------------------------------------- */
