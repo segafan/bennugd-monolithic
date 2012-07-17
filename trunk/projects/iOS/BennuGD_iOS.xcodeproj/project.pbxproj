@@ -96,7 +96,7 @@
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
 		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
-		927DAC64152BCF690057F110 /* libSDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06B3152BC041001BDE54 /* libSDL.a */; };
+		927DAC64152BCF690057F110 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06B3152BC041001BDE54 /* libSDL2.a */; };
 		927DAC70152BCFD70057F110 /* bgload.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC6E152BCFD70057F110 /* bgload.c */; };
 		927DAC73152BD2D50057F110 /* g_compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC71152BD2D50057F110 /* g_compat.c */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
@@ -400,7 +400,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927DAC64152BCF690057F110 /* libSDL.a in Frameworks */,
+				927DAC64152BCF690057F110 /* libSDL2.a in Frameworks */,
 				920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */,
 				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
 				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
@@ -1252,7 +1252,7 @@
 		920C06B3152BC041001BDE54 /* libSDL.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libSDL.a;
+			path = libSDL2.a;
 			remoteRef = 920C06B2152BC041001BDE54 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
