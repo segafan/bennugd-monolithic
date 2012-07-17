@@ -10,5 +10,8 @@ wget -c http://www.fmod.org/index.php/release/version/fmodapi44004android.tar.gz
 tar xvzf fmodapi.tar.gz
 cp -r fmodapi44004android/api/inc .
 cp -r fmodapi44004android/api/lib .
+if ! [ -d ../../../projects/android_fmod/libs/ ]; then
+	mkdir -p ../../../projects/android_fmod/libs/
+fi
 cp -r fmodapi44004android/api/lib/* ../../../projects/android_fmod/libs/
 rm -rf fmodapi44004android fmodapi.tar.gz
