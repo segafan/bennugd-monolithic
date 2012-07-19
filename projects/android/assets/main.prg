@@ -22,8 +22,8 @@ import "mod_multi"
 
 GLOBAL
 // Set to your liking
-width  = 800;
-height = 480;
+width  = 320;
+height = 240;
 sound  = 1;
 quit   = 0;
 
@@ -60,6 +60,9 @@ Private
 int song=0, num_fingers=0, i=0;
 
 Begin
+    // Uncomment this to set a fixed resolution instead of using your device's
+    // default one.
+    // Your screen will hold a smaller rectangle with the resolution you set here
     //set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
     width = graphic_info(0, 0, G_WIDTH);
