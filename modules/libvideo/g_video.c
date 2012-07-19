@@ -518,6 +518,8 @@ int gr_set_mode( int width, int height, int depth )
     else
     {
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        width == 0 ? width = screen->w : 0;
+        height == 0 ? height = screen->h : 0;
     }
     
     if ( !screen ) return -1;
@@ -611,7 +613,7 @@ int gr_set_mode( int width, int height, int depth )
 int gr_init( int width, int height )
 {
 #if defined(TARGET_ANDROID)
-    return gr_set_mode( 800, 480, 32 );
+    return gr_set_mode( 0, 0, 32 );
 #else
     return gr_set_mode( width, height, 0 );
 #endif
