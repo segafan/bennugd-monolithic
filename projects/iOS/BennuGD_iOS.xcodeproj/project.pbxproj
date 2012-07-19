@@ -451,7 +451,7 @@
 		920C06A9152BC040001BDE54 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				920C06B3152BC041001BDE54 /* libSDL.a */,
+				920C06B3152BC041001BDE54 /* libSDL2.a */,
 				920C06B5152BC041001BDE54 /* testsdl.app */,
 			);
 			name = Products;
@@ -1249,7 +1249,7 @@
 			remoteRef = 920C06A5152BBF0C001BDE54 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		920C06B3152BC041001BDE54 /* libSDL.a */ = {
+		920C06B3152BC041001BDE54 /* libSDL2.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libSDL2.a;

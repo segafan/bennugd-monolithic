@@ -11,6 +11,7 @@ import "mod_draw"
 import "mod_say"
 import "mod_file"
 import "mod_text"
+import "mod_wm"
 
 #ifndef FALSE_MULTITOUCH
 import "mod_multi"
@@ -21,8 +22,8 @@ import "mod_multi"
 
 GLOBAL
 // Set to your liking
-width  = 533;
-height = 320;
+width  = 800;
+height = 480;
 sound  = 1;
 quit   = 0;
 
@@ -59,7 +60,7 @@ Private
 int song=0, num_fingers=0, i=0;
 
 Begin
-    set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
+    //set_mode(width, height, 32, MODE_FULLSCREEN|MODE_FRAMELESS);
     // Get the real screen resolution we're running at
     width = graphic_info(0, 0, G_WIDTH);
     height = graphic_info(0, 0, G_HEIGHT);
@@ -80,7 +81,8 @@ Begin
     drawing_map(0, graph);
     drawing_color(rgb(0, 255, 255));
 
-    while(num_fingers != 5)
+    /* Some touchscreens cannot detect all 5 fingers at once */
+    while(num_fingers < 4 && focus_status == 1)
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
         

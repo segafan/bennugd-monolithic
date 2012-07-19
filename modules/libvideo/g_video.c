@@ -324,6 +324,7 @@ int gr_set_mode( int width, int height, int depth )
         else
             enable_16bits = 0;
         depth = enable_32bits ? 32 : ( enable_16bits ? 16 : 8 );
+        SDL_Log("Depth: %d", depth);
     }
     else if ( depth == 16 )
     {
@@ -609,7 +610,11 @@ int gr_set_mode( int width, int height, int depth )
 
 int gr_init( int width, int height )
 {
+#if defined(TARGET_ANDROID)
+    return gr_set_mode( 800, 480, 32 );
+#else
     return gr_set_mode( width, height, 0 );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
