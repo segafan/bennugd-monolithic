@@ -82,7 +82,7 @@ g_eventfilter(void *userdata, SDL_Event * event)
 SDL_Surface *
 SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 {
-    SDL_DisplayMode desktop_mode;
+    SDL_DisplayMode desktop_mode, current_mode;
     int display = SDL_GetWindowDisplay(window);
     int window_x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(display);
     int window_y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(display);
@@ -97,6 +97,8 @@ SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
         }
     }
 
+    // Just choose the default screen in case SDL_GetWindowDisplay failed
+    display == -1 ? display = 0 : 1;
     SDL_GetDesktopDisplayMode(display, &desktop_mode);
 
     if (width == 0) {
