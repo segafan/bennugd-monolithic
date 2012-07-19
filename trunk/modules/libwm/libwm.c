@@ -101,6 +101,7 @@ static void wm_events()
     GLODWORD( libwm, EXIT_STATUS ) = 0 ;
 
 #if SDL_VERSION_ATLEAST(2,0,0)
+    /* Handle the plethora of events different systems can produce here */
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUIT, SDL_WINDOWEVENT ) > 0 )
     {
         switch ( e.type )
@@ -109,11 +110,13 @@ static void wm_events()
                 /* UPDATE  exit status... initilized each frame */
                 GLODWORD( libwm, EXIT_STATUS ) = 1 ;
                 break ;
-                
             case SDL_WINDOWEVENT:
                 switch (e.window.event) {
-#if defined(TARGET_IOS)
+                    case SDL_WINDOWEVENT_MINIMIZED:
+                        GLODWORD(libwm, WINDOW_STATUS) = 0;
+                        break;
                     case SDL_WINDOWEVENT_RESTORED:
+#if defined(TARGET_IOS)
                         // Get the new display surface & clear the old one
                         if(enable_scale) {
                             SDL_FreeSurface(scale_screen);
@@ -132,10 +135,11 @@ static void wm_events()
                         gr_draw_frame();
                         GLODWORD( librender, DUMPTYPE )    = olddump;
                         GLODWORD( librender, RESTORETYPE ) = oldrestore;
-
-                        GLODWORD(libwm, FOCUS_STATUS ) = 1;
-                        break;
+                        
+                        // We might need some code like this for Android, too...
 #endif
+                        GLODWORD(libwm, WINDOW_STATUS) = 1;
+                        break;
                     case SDL_WINDOWEVENT_ENTER:
                         GLODWORD(libwm, MOUSE_STATUS) = 1;
                         break;
@@ -147,6 +151,12 @@ static void wm_events()
                         break;
                     case SDL_WINDOWEVENT_SHOWN:
                         GLODWORD(libwm, WINDOW_STATUS) = 1;
+                        break;
+                    case SDL_WINDOWEVENT_FOCUS_LOST:
+                        GLODWORD(libwm, FOCUS_STATUS) = 0;
+                        break;
+                    case SDL_WINDOWEVENT_FOCUS_GAINED:
+                        GLODWORD(libwm, FOCUS_STATUS) = 1;
                         break;
                 }
             
