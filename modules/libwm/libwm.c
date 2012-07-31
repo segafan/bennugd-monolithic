@@ -32,11 +32,9 @@
 
 #if SDL_VERSION_ATLEAST(2,0,0)
 #include "g_compat.h"
-#   if defined(TARGET_IOS)
-#       define __LIB_RENDER
-#       include <g_video.h>
-#       include <librender.h>
-#   endif
+#   define __LIB_RENDER
+#   include <g_video.h>
+#   include <librender.h>
 #endif
 
 #include "bgdrtm.h"
@@ -116,28 +114,12 @@ static void wm_events()
                         GLODWORD(libwm, WINDOW_STATUS) = 0;
                         break;
                     case SDL_WINDOWEVENT_RESTORED:
-#if defined(TARGET_IOS)
-                        // Get the new display surface & clear the old one
                         if(enable_scale) {
-                            SDL_FreeSurface(scale_screen);
-                            scale_screen = SDL_GetWindowSurface(window);
+                            gr_set_mode(scale_screen->w, scale_screen->h,
+                                        scale_screen->format->BitsPerPixel);
+                        } else {
+                            gr_set_mode(screen->w, screen->h, screen->format->BitsPerPixel);
                         }
-                        else {
-                            SDL_FreeSurface(screen);
-                            screen = SDL_GetWindowSurface(window);
-                        }
-                        
-                        // Force full screen redraw
-                        olddump    = GLODWORD( librender, DUMPTYPE );
-                        oldrestore = GLODWORD( librender, RESTORETYPE );
-                        GLODWORD( librender, DUMPTYPE )    = 1;
-                        GLODWORD( librender, RESTORETYPE ) = 1;
-                        gr_draw_frame();
-                        GLODWORD( librender, DUMPTYPE )    = olddump;
-                        GLODWORD( librender, RESTORETYPE ) = oldrestore;
-                        
-                        // We might need some code like this for Android, too...
-#endif
                         GLODWORD(libwm, WINDOW_STATUS) = 1;
                         break;
                     case SDL_WINDOWEVENT_ENTER:

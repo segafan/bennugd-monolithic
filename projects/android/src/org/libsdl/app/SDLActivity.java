@@ -59,7 +59,7 @@ public class SDLActivity extends Activity {
 
     // Setup
     protected void onCreate(Bundle savedInstanceState) {
-        //Log.v("SDL", "onCreate()");
+        Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
         
         // So we can call stuff from static callbacks
@@ -88,11 +88,11 @@ public class SDLActivity extends Activity {
     }*/
 
     protected void onDestroy() {
-        super.onDestroy();
         Log.v("SDL", "onDestroy()");
+        super.onDestroy();
         // Send a quit message to the application
         SDLActivity.nativeQuit();
-
+        
         // Now wait for the SDL thread to quit
         if (mSDLThread != null) {
             try {
@@ -101,7 +101,7 @@ public class SDLActivity extends Activity {
                 Log.v("SDL", "Problem stopping thread: " + e);
             }
             mSDLThread = null;
-
+            
             //Log.v("SDL", "Finished waiting for SDL thread");
         }
     }
@@ -168,7 +168,7 @@ public class SDLActivity extends Activity {
         }
         else {
             /*
-             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume every time
+             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume
              * every time we get one of those events, only if it comes after surfaceDestroyed
              */
             if (mIsPaused) {
@@ -408,7 +408,7 @@ class SDLMain implements Runnable {
         // Runs SDL_main()
         SDLActivity.nativeInit();
 
-        //Log.v("SDL", "SDL thread terminated");
+        Log.v("SDL", "SDL thread terminated");
     }
 }
 

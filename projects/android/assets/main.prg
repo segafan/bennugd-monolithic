@@ -85,7 +85,7 @@ Begin
     drawing_color(rgb(0, 255, 255));
 
     /* Some touchscreens cannot detect all 5 fingers at once */
-    while(num_fingers < 4 && focus_status == 1)
+    while(num_fingers < 4)
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
         

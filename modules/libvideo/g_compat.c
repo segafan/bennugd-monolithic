@@ -153,6 +153,7 @@ SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
     if (!window) {
         return NULL;
     }
+    SDL_ShowWindow(window);
 
     window_flags = SDL_GetWindowFlags(window);
     surface_flags = 0;
