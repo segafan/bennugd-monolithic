@@ -194,13 +194,13 @@ int file_qputs( file * fp, char * buffer )
 
 int file_qgets( file * fp, char * buffer, int len )
 {
-    char * ptr, * result = NULL ;
-
+    char * result = NULL ;
+    char * ptr = result = buffer ;
+    int l = 0;
+    
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
-        int l = 0;
-        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
@@ -285,12 +285,12 @@ int file_puts( file * fp, char * buffer )
 int file_gets( file * fp, char * buffer, int len )
 {
     char * result = NULL ;
+    char * ptr = result = buffer ;
+    int l = 0;
 
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
-        int l = 0;
-        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
