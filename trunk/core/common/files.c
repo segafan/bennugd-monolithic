@@ -55,7 +55,7 @@
 
 #define MAX_POSSIBLE_PATHS  128
 
-char * possible_paths[MAX_POSSIBLE_PATHS] = { "", 0 } ;
+char * possible_paths[MAX_POSSIBLE_PATHS] = { NULL } ;
 
 int opened_files = 0;
 
@@ -194,13 +194,13 @@ int file_qputs( file * fp, char * buffer )
 
 int file_qgets( file * fp, char * buffer, int len )
 {
-    char * result = NULL ;
-    int l = 0;
-    char * ptr = result = buffer ;
+    char * ptr, * result = NULL ;
 
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
+        int l = 0;
+        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
@@ -284,13 +284,13 @@ int file_puts( file * fp, char * buffer )
 
 int file_gets( file * fp, char * buffer, int len )
 {
-    int l = 0;
     char * result = NULL ;
-    char * ptr = result = buffer ;
 
     if ( fp->type == F_XFILE )
     {
         XFILE * xf ;
+        int l = 0;
+        char * ptr = result = buffer ;
 
         xf = &x_file[fp->n] ;
 
@@ -854,6 +854,8 @@ void file_addp( const char * path )
     char truepath[__MAX_PATH];
     int n ;
 
+    if ( !path || !*path ) return;
+
     strcpy( truepath, path ) ;
 
     for ( n = 0 ; truepath[n] ; n++ ) if ( truepath[n] == '\\' ) truepath[n] = '/' ;
@@ -862,7 +864,7 @@ void file_addp( const char * path )
     for ( n = 0 ; n < MAX_POSSIBLE_PATHS - 1 && possible_paths[n] ; n++ ) ;
 
     possible_paths[n] = strdup( truepath ) ;
-    possible_paths[n+1] = 0 ;
+    possible_paths[n+1] = NULL ;
 }
 
 /* --- */
@@ -941,7 +943,7 @@ char * getfullpath( char *rel_path )
 {
     char fullpath[ __MAX_PATH ] = "";
 #ifdef _WIN32
-    GetFullPathName( rel_path, sizeof( fullpath ), &fullpath, NULL );
+    GetFullPathName( rel_path, sizeof( fullpath ), fullpath, NULL );
 #else
     realpath( rel_path, fullpath );
 #endif
@@ -961,27 +963,27 @@ char * whereis( char *file )
 {
     char * path = getenv( "PATH" ), *pact = path, *p;
     char fullname[ __MAX_PATH ];
-    
+
     while ( pact && *pact )
     {
         struct stat st;
-        
+
         if ( ( p = strchr( pact, ENV_PATH_SEP ) ) ) *p = '\0';
         sprintf( fullname, "%s%s%s", pact, ( pact[ strlen( pact ) - 1 ] == ENV_PATH_SEP ) ? "" : PATH_SEP, file );
-        
+
         if ( !stat( fullname, &st ) && S_ISREG( st.st_mode ) )
         {
             pact = strdup( pact );
             if ( p ) *p = ENV_PATH_SEP;
             return ( pact );
         }
-        
+
         if ( !p ) break;
-        
+
         *p = ENV_PATH_SEP;
         pact = p + 1;
     }
-    
+
     return NULL;
 }
 
