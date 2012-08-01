@@ -74,13 +74,5 @@ LOCAL_COPY_HEADERS := $(addprefix include/curl/,$(CURL_HEADERS))
 
 LOCAL_MODULE:= curl
 
-# Copy the licence to a place where Android will find it.
-# Actually, this doesn't quite work because the build system searches
-# for NOTICE files before it gets to this point, so it will only be seen
-# on subsequent builds.
-ALL_PREBUILT += $(LOCAL_PATH)/NOTICE
-$(LOCAL_PATH)/NOTICE: $(LOCAL_PATH)/COPYING | $(ACP)
-	$(copy-file-to-target)
-
 include $(BUILD_STATIC_LIBRARY)
 
