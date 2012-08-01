@@ -95,7 +95,6 @@ static int SetupWindowData(_THIS, SDL_Window *window, UIWindow *uiwindow, SDL_bo
 
     /* only one window on iOS, always shown */
     window->flags &= ~SDL_WINDOW_HIDDEN;
-    window->flags |= SDL_WINDOW_SHOWN;
 
     // SDL_WINDOW_BORDERLESS controls whether status bar is hidden.
     // This is only set if the window is on the main screen. Other screens
@@ -208,6 +207,22 @@ UIKit_CreateWindow(_THIS, SDL_Window *window)
 
     return 1;
 
+}
+
+void
+UIKit_ShowWindow(_THIS, SDL_Window * window)
+{
+    UIWindow *uiwindow = ((SDL_WindowData *) window->driverdata)->uiwindow;
+
+    [uiwindow makeKeyAndVisible];
+}
+
+void
+UIKit_HideWindow(_THIS, SDL_Window * window)
+{
+    UIWindow *uiwindow = ((SDL_WindowData *) window->driverdata)->uiwindow;
+
+    uiwindow.hidden = YES;
 }
 
 void
