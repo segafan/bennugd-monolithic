@@ -548,7 +548,8 @@ static void process_key_events()
 #else
     SDLMod m ;
 #endif
-    int k, asc ;
+    int k ;
+    int asc ;
     int pressed ;
     key_equiv * curr ;
     int keypress ;
@@ -612,8 +613,11 @@ static void process_key_events()
                 if ( ignore_key ) break ;
 
                 /* Almacena la pulsación de la tecla */
-
-                k = sdl_equiv[e.key.keysym.sym];
+#if SDL_VERSION_ATLEAST(2,0,0)
+                k = sdl_equiv[e.key.keysym.scancode] ;
+#else
+                k = sdl_equiv[e.key.keysym.sym] ;
+#endif
 
                 m = e.key.keysym.mod ;
 
@@ -705,12 +709,54 @@ HOOK __bgdexport( libkey, handler_hooks )[] =
 
 void __bgdexport( libkey, module_initialize )()
 {
+    int * ptr = equivs ;
+
+    if ( !SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_InitSubSystem( SDL_INIT_VIDEO );
+
+    memset( sdl_equiv, 0, sizeof( sdl_equiv ) );
+    memset( key_table, 0, sizeof( key_table ) ) ;
+
+    while ( *ptr != -1 )
+    {
+        sdl_equiv[*ptr] = ptr[1] ;
+        add_key_equiv( ptr[0], ptr[1] ) ;
+        ptr += 2 ;
+    }
+
+#if SDL_VERSION_ATLEAST(2,0,0)
+    if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
+#else
+    if ( !keystate ) keystate = SDL_GetKeyState( NULL );
+
+    SDL_EnableUNICODE( 1 );
+#endif
 }
 
 /* ----------------------------------------------------------------- */
 
 void __bgdexport( libkey, module_finalize )()
 {
+    /* FREE used key_equivs... note base 127 equivs are static not allocated... */
+    int i ;
+    key_equiv * aux ;
+    key_equiv * curr = key_table ;
+
+    for ( i = 0;i < 127;i++ )
+    {
+        if ( curr->next != NULL )
+        {
+            curr = curr->next ;
+            while ( curr->next != NULL )
+            {
+                aux = curr ;
+                curr = curr->next;
+                free( aux ) ;
+            }
+            free( curr ) ;
+        }
+    }
+
+    if ( SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_QuitSubSystem( SDL_INIT_VIDEO );
 }
 
 /* ----------------------------------------------------------------- */
