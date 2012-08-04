@@ -27,7 +27,8 @@
 
 struct SDL_GLDriverData
 {
-    int WGL_ARB_pixel_format;
+    SDL_bool HAS_WGL_ARB_pixel_format;
+    SDL_bool HAS_WGL_EXT_swap_control_tear;
 
     void *(WINAPI * wglGetProcAddress) (const char *proc);
       HGLRC(WINAPI * wglCreateContext) (HDC hdc);
@@ -44,7 +45,7 @@ struct SDL_GLDriverData
                                                    UINT nAttributes,
                                                    const int *piAttributes,
                                                    int *piValues);
-    void (WINAPI * wglSwapIntervalEXT) (int interval);
+    BOOL (WINAPI * wglSwapIntervalEXT) (int interval);
     int (WINAPI * wglGetSwapIntervalEXT) (void);
 };
 
