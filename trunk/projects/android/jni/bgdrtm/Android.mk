@@ -24,6 +24,8 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/libsdlhandler/ \
 	$(MODULES_PATH)/mod_joy/ \
 	$(MODULES_PATH)/libjoy/ \
+	$(MODULES_PATH)/libkey/ \
+	$(MODULES_PATH)/mod_key/ \
 	$(MODULES_PATH)/mod_proc/ \
 	$(MODULES_PATH)/mod_sort/ \
 	$(MODULES_PATH)/mod_timers/ \
@@ -66,7 +68,6 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODICONV \
 	-DNO_MODREGEX \
 	-DNO_MODMEM \
-	-DNO_LIBKEY \
 	-DNO_MODFMODEX \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
@@ -96,6 +97,8 @@ LOCAL_SRC_FILES := \
 	../../../../modules/libsdlhandler/libsdlhandler.c \
 	../../../../modules/libjoy/libjoy.c \
 	../../../../modules/mod_joy/mod_joy.c \
+	../../../../modules/libkey/libkey.c \
+	../../../../modules/mod_key/mod_key.c \
 	../../../../modules/mod_proc/mod_proc.c \
 	../../../../modules/mod_sort/mod_sort.c \
 	../../../../modules/mod_timers/mod_timers.c \
