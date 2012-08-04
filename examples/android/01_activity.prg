@@ -12,7 +12,6 @@ import "mod_say"
 import "mod_file"
 import "mod_text"
 import "mod_wm"
-import "mod_key"
 
 #ifndef FALSE_MULTITOUCH
 import "mod_multi"
@@ -86,7 +85,7 @@ Begin
     drawing_color(rgb(0, 255, 255));
 
     /* Some touchscreens cannot detect all 5 fingers at once */
-    while(num_fingers < 4)
+    while(num_fingers < 4 && focus_status == 1)
         // Store the total amount of fingers touching the screen
         num_fingers = multi_numpointers();
         
@@ -99,11 +98,6 @@ Begin
                          "x"+multi_info(i, "X")+
                          " active:"+multi_info(i, "ACTIVE"));
             end;
-        end;
-        
-        if(key(_Q))
-            say_fast("Q key pressed, quitting");
-            break;
         end;
 
         frame;
