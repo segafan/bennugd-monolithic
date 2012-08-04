@@ -20,7 +20,6 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_time/ \
 	$(MODULES_PATH)/mod_file/ \
 	$(MODULES_PATH)/mod_sound/ \
-	$(MODULES_PATH)/mod_curl/ \
 	$(MODULES_PATH)/libsdlhandler/ \
 	$(MODULES_PATH)/mod_joy/ \
 	$(MODULES_PATH)/libjoy/ \
@@ -56,17 +55,17 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_wm/ \
 	$(MODULES_PATH)/mod_sys/ \
 	$(MODULES_PATH)/mod_flic/ \
-	$(MODULES_PATH)/mod_multi/
+	$(MODULES_PATH)/mod_regex/ \
+	$(MODULES_PATH)/mod_multi/ \
+	$(MODULES_PATH)/mod_curl/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
-	-DSTDC_HEADERS \
 	-D__BGDRTM__ \
 	-D__MONOLITHIC__ \
 	-DNO_MODMATHI \
 	-DNO_MODIMAGE \
 	-DNO_MODCHIPMUNK \
 	-DNO_MODICONV \
-	-DNO_MODREGEX \
 	-DNO_MODMEM \
 	-DNO_MODFMODEX \
 	-DTARGET_LINUX \
@@ -154,6 +153,8 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_wm/mod_wm.c \
 	../../../../modules/mod_sys/mod_sys.c \
 	../../../../modules/mod_flic/mod_flic.c \
+	../../../../modules/mod_regex/mod_regex.c \
+	../../../../modules/mod_regex/regex.c \
 	../../../../modules/mod_multi/mod_multi.c \
 	../../../../modules/mod_curl/mod_curl.c
 
