@@ -27,6 +27,7 @@ class dialog_preferences(QtGui.QDialog):
         
         # Now set the line text to the preference value
         self.ui.lineSDK.setText(self.prefs.get('sdkdir'))
+        self.sdkdir = self.prefs.get('sdkdir')
         
         # Show the dialog
         self.show()
