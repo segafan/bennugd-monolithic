@@ -6,7 +6,7 @@
 """This is the main packager code for the BennuGD packager.
     The interface itself is holded in ui_mainwindow.ui/py"""
 
-import os,sys
+import os,sys,uuid,shutil
 
 # Import the Qt4 modules
 from PyQt4 import QtCore,QtGui
@@ -67,6 +67,9 @@ class packager(QtGui.QMainWindow):
                                         "from the Android SDK manager before trying to package anything")
             sys.stderr.write("Android 2.3.3 SDK Platform not installed, aborting packaging\n")
             return
+        
+        # Save the CWD
+        mycwd = os.getcwd()
 
         # Get the values from the user
         self.appos = self.ui.appOSselector.currentText()
@@ -74,14 +77,50 @@ class packager(QtGui.QMainWindow):
         
         # Will actually have to read values from QListView, but we'll do that later
         if not os.path.isdir(self.appdir):
-            QtGui.QMessageBox.critical(self, 'Game dir not readable', 'Cannot read game dir')
+            QtGui.QMessageBox.critical(self, 'Game dir not readable', 'Cannot read game dir.')
             return
         
         self.appdescriptor = self.ui.line_applabel.text()
+        if self.appdescriptor == '':
+            QtGui.QMessageBox.critical(self, 'App descriptor empty', 'The app descriptor cannot be left empty.')
+            return
+        
+        self.appname = self.ui.line_appname.text()
+        if self.appname == '':
+            QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
+            return
+        
+        # Create the workdir
+        workdir = os.path.join(os.getenv('TMP'), 'bgdp_'+str( uuid.uuid1()))
 
+        # Print some debug info
         sys.stdout.write('Packaging for: %s\n' % self.appos)
-        sys.stdout.write('App dir: %s\n' % self.appdir)
-        sys.stdout.write('App descriptor: %s\n' % self.appdescriptor)
-        # Package the user-selected app
-        QtGui.QMessageBox.information(self, 'Not implemented',
-                                          'Not quite there yet :(')
+        sys.stdout.write('Workdir: %s\n' % workdir)
+        
+        # Copy the template to the workdir
+        if self.appos == 'Android':
+            tpldir = os.path.join(mycwd, 'templates', 'android')
+        
+            # Copy the template to the workdir and the game into the template
+            pattern = shutil.ignore_patterns('.svn', '.hg*')
+            shutil.copytree(tpldir, workdir, ignore=pattern)
+            shutil.copytree(self.appdir, os.path.join(workdir, 'assets'), ignore=pattern)
+            
+            # Change what's needed to be changed in the template
+            fd = open(os.path.join(workdir, 'local.properties'), 'w')
+            fd.write('sdk.dir=%s\n' % self.sdkdir)
+            fd.close()
+            
+            fd = open(os.path.join(workdir, 'res', 'values', 'strings.xml'), 'w')
+            fd.write('<?xml version="1.0" encoding="utf-8"?>\n')
+            fd.write('<resources>\n')
+            fd.write('    <string name="app_name">%s</string>\n' % self.appname)
+            fd.write('</resources>\n')
+            fd.close()
+                
+            # Tell ant to package the app
+            os.chdir(workdir)
+            os.system("ant debug")
+        
+        # Return to the app working dir
+        os.chdir(mycwd)
