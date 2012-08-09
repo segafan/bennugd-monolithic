@@ -25,9 +25,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QListView" name="filelist">
+       <widget class="QListWidget" name="filelist">
         <property name="toolTip">
-         <string>The lst of files that will get packed</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The list of files that will get packed.&lt;/p&gt;&lt;p&gt;Please note that some files (*.exe, *.dll...) will not actually be copied.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
        </widget>
       </item>

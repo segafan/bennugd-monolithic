@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Thu Aug  9 17:07:31 2012
+# Created: Thu Aug  9 23:32:15 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
         self.label_appfiles = QtGui.QLabel(self.centralwidget)
         self.label_appfiles.setObjectName(_fromUtf8("label_appfiles"))
         self.verticalLayout_2.addWidget(self.label_appfiles)
-        self.filelist = QtGui.QListView(self.centralwidget)
+        self.filelist = QtGui.QListWidget(self.centralwidget)
         self.filelist.setObjectName(_fromUtf8("filelist"))
         self.verticalLayout_2.addWidget(self.filelist)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
@@ -116,7 +116,7 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "BennuGD Packager", None, QtGui.QApplication.UnicodeUTF8))
         self.label_appfiles.setText(QtGui.QApplication.translate("MainWindow", "Detected game files:", None, QtGui.QApplication.UnicodeUTF8))
-        self.filelist.setToolTip(QtGui.QApplication.translate("MainWindow", "The lst of files that will get packed", None, QtGui.QApplication.UnicodeUTF8))
+        self.filelist.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>The list of files that will get packed.</p><p>Please note that some files (*.exe, *.dll...) will not actually be copied.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.label_appOSselector.setText(QtGui.QApplication.translate("MainWindow", "Target OS:", None, QtGui.QApplication.UnicodeUTF8))
         self.appOSselector.setToolTip(QtGui.QApplication.translate("MainWindow", "The OS you\'re packaging your app for", None, QtGui.QApplication.UnicodeUTF8))
         self.appOSselector.setItemText(0, QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))

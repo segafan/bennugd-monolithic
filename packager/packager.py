@@ -24,6 +24,7 @@ class packager(QtGui.QMainWindow):
         # This is always the same
         self.ui=Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.iconprovider = QtGui.QFileIconProvider()
         
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
@@ -39,7 +40,7 @@ class packager(QtGui.QMainWindow):
         
         # Set default values
         self.appdir = ''
-        self.appdescriptor = ''
+        self.appdescriptor = ''      
 
     # Show the Directory selector dialogs
     def dirselector(self):
@@ -47,7 +48,19 @@ class packager(QtGui.QMainWindow):
         self.appdir = str(self.appdir)
         self.ui.line_appdir.setText(self.appdir)
         
-        # TODO: We should now populate the QListView
+        # TODO: We should now populate the QListWidget
+        self.ui.filelist.clear()
+        row=0
+        for root, dirs, files in os.walk(self.appdir):
+            for file in files:
+                fpath = os.path.join(root, file)
+                fname = fpath[(len(self.appdir)+1):]
+                newItem = QtGui.QListWidgetItem()
+                newIcon = self.ui.iconprovider.icon(QtCore.QFileInfo(fpath))
+                newItem.setText(fname)
+                newItem.setIcon(newIcon)
+                self.ui.filelist.insertItem(row, newItem)
+                row += 1
 
     def center(self):
         qr = self.frameGeometry()
@@ -114,7 +127,7 @@ class packager(QtGui.QMainWindow):
         
             # Copy the template to the workdir and the game into the template
             pattern = shutil.ignore_patterns('.svn', '.hg*', '*.exe', '*.dll', 
-                        '*.bat', '*.so', '*.dylib', '*.sh')
+                        '*.bat', '*.dylib', '*.sh')
             shutil.copytree(tpldir, workdir, ignore=pattern)
             shutil.copytree(self.appdir, os.path.join(workdir, 'assets'), ignore=pattern)
             
