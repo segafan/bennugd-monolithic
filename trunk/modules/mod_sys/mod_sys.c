@@ -43,6 +43,8 @@
 
 #if defined(TARGET_WII)
 #include <ogc/wiilaunch.h>
+#elif defined(TARGET_ANDROID)
+extern void Android_JNI_openURL(const char* url);
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -79,11 +81,14 @@ static int modsys_exec( INSTANCE * my, int * params )
     WII_OpenURL(string_get(params[1]));
     string_discard(params[1]);
     return 0;
-#elif 0
+#elif defined(TARGET_IOS)
     NSURL *myURL = [NSURL URLWithString:@"%s", string_get(params[1])];
     string_discard(params[1]);
 
     [[UIApplication sharedApplication] openURL:myURL];
+#elif defined(TARGET_ANDROID)
+    Android_JNI_openURL(string_get(params[1]));
+    string_discard(params[1]);
 #else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );
