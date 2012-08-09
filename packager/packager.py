@@ -63,8 +63,9 @@ class packager(QtGui.QMainWindow):
         # Check for android-10 SDK platform, refuse to package otherwise
         if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
             QtGui.QMessageBox.critical(self, 'Android 2.3.3 SDK Platform not installed',
-                                        "Please install the Android 2.3.3 (API 10) SDK Platform " +
-                                        "from the Android SDK manager before trying to package anything")
+                                        'Please install the Android 2.3.3 (API 10) SDK Platform ' +
+                                        'from the Android SDK manager before trying to package anything<br />' +
+                                        '<a href="http://developer.android.com/sdk/index.html">Installation instructions</a>')
             sys.stderr.write("Android 2.3.3 SDK Platform not installed, aborting packaging\n")
             return
         
@@ -98,7 +99,10 @@ class packager(QtGui.QMainWindow):
             self.target = 'release'
         
         # Create the workdir
-        workdir = os.path.join(os.getenv('TMP'), 'bgdp_'+str( uuid.uuid1()))
+        if sys.platform.startswith('win'):
+            workdir = os.path.join(os.getenv('TMP'), 'bgdp_'+str( uuid.uuid1()))
+        else:
+            workdir = os.path.join('/tmp', 'bgdp_'+str( uuid.uuid1()))
 
         # Print some debug info
         sys.stdout.write('Packaging for: %s\n' % self.appos)
@@ -128,7 +132,30 @@ class packager(QtGui.QMainWindow):
                 
             # Tell ant to package the app
             os.chdir(workdir)
-            os.system("ant "+self.target)
+            retval = os.system("ant "+self.target)
+            
+            # If the apk was generated correctly, asdk the user for the output
+            # location
+            if retval == 0:
+                bindir = os.path.join(workdir, 'bin')
+                if os.path.exists(bindir):
+                    for root, dirs, files in os.walk(bindir):
+                        for file in files:
+                            fpath = os.path.join(root, file)
+                            # Choose the aligned APK
+                            if fpath.endswith('.apk') and not 'unaligned' in fpath:
+                                outputdir = QtGui.QFileDialog.getSaveFileName(self, 'Savedir for APK', self.appdir)
+                                outputdir = str(outputdir)
+                                # The user didn't press 'Cancel'
+                                if os.path.exists(os.path.dirname(outputdir)):
+                                    shutil.copy(fpath, outputdir)
+                    
+                    # Remove workdir
+                    shutil.rmtree(workdir, True)
+                else:
+                    QtGui.QMessageBox.critical(self, 'Game dir not readable', 'Cannot read APK output dir.')
+            else:
+                QtGui.QMessageBox.critical(self, 'APK creation failed', 'APK creation failed with return code '+str(retval))
         
         # Return to the app working dir
         os.chdir(mycwd)

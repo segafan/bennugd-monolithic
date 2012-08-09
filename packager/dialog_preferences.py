@@ -40,8 +40,9 @@ class dialog_preferences(QtGui.QDialog):
         # Try to determine if the user has already installed android-10 in the SDK
         if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
             QtGui.QMessageBox.information(self, 'Android 2.3.3 SDK Platform not installed',
-                                        "Please install the Android 2.3.3 (API 10) SDK Platform " +
-                                        "from the Android SDK manager before trying to package anything")
+                                        'Please install the Android 2.3.3 (API 10) SDK Platform ' +
+                                        'from the Android SDK manager before trying to package anything.<br />'+
+                                        '<a href="http://developer.android.com/sdk/index.html">Installation instructions</a>')
         self.ui.lineSDK.setText(self.sdkdir)
 
     # Save the preferences
