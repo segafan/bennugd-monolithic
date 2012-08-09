@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Mon Aug  6 07:00:05 2012
+# Created: Thu Aug  9 17:07:31 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -74,6 +74,17 @@ class Ui_MainWindow(object):
         self.line_appname.setObjectName(_fromUtf8("line_appname"))
         self.horizontalLayout_5.addWidget(self.line_appname)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.label_debug = QtGui.QLabel(self.centralwidget)
+        self.label_debug.setObjectName(_fromUtf8("label_debug"))
+        self.horizontalLayout_2.addWidget(self.label_debug)
+        self.combo_debug = QtGui.QComboBox(self.centralwidget)
+        self.combo_debug.setObjectName(_fromUtf8("combo_debug"))
+        self.combo_debug.addItem(_fromUtf8(""))
+        self.combo_debug.addItem(_fromUtf8(""))
+        self.horizontalLayout_2.addWidget(self.combo_debug)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
         self.button_package = QtGui.QPushButton(self.centralwidget)
@@ -117,6 +128,10 @@ class Ui_MainWindow(object):
         self.label_appname.setText(QtGui.QApplication.translate("MainWindow", "App name:", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appname.setToolTip(QtGui.QApplication.translate("MainWindow", "User-visible name for your app", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appname.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Name to be shown to the user", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_debug.setText(QtGui.QApplication.translate("MainWindow", "Package for:", None, QtGui.QApplication.UnicodeUTF8))
+        self.combo_debug.setToolTip(QtGui.QApplication.translate("MainWindow", "Choose if you want to package for debug or for release", None, QtGui.QApplication.UnicodeUTF8))
+        self.combo_debug.setItemText(0, QtGui.QApplication.translate("MainWindow", "Debug", None, QtGui.QApplication.UnicodeUTF8))
+        self.combo_debug.setItemText(1, QtGui.QApplication.translate("MainWindow", "Release", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setToolTip(QtGui.QApplication.translate("MainWindow", "Click when you feel ready to package your app", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))

@@ -90,6 +90,13 @@ class packager(QtGui.QMainWindow):
             QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
             return
         
+        # Pack for debug or release
+        self.apptarget = self.ui.combo_debug.currentText()
+        if self.apptarget == 'Debug':
+            self.target = 'debug'
+        else:
+            self.target = 'release'
+        
         # Create the workdir
         workdir = os.path.join(os.getenv('TMP'), 'bgdp_'+str( uuid.uuid1()))
 
@@ -102,7 +109,8 @@ class packager(QtGui.QMainWindow):
             tpldir = os.path.join(mycwd, 'templates', 'android')
         
             # Copy the template to the workdir and the game into the template
-            pattern = shutil.ignore_patterns('.svn', '.hg*')
+            pattern = shutil.ignore_patterns('.svn', '.hg*', '*.exe', '*.dll', 
+                        '*.bat', '*.so', '*.dylib', '*.sh')
             shutil.copytree(tpldir, workdir, ignore=pattern)
             shutil.copytree(self.appdir, os.path.join(workdir, 'assets'), ignore=pattern)
             
@@ -120,7 +128,7 @@ class packager(QtGui.QMainWindow):
                 
             # Tell ant to package the app
             os.chdir(workdir)
-            os.system("ant debug")
+            os.system("ant "+self.target)
         
         # Return to the app working dir
         os.chdir(mycwd)
