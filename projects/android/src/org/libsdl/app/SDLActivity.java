@@ -10,6 +10,7 @@ import android.app.*;
 import android.content.*;
 import android.view.*;
 import android.os.*;
+import android.net.Uri;
 import android.util.Log;
 import android.graphics.*;
 import android.text.method.*;
@@ -397,6 +398,14 @@ public class SDLActivity extends Activity {
             mAudioTrack.stop();
             mAudioTrack = null;
         }
+    }
+    
+    // Taken from
+    // http://digitalsynapsesblog.blogspot.com.es/2011/09/cocos2d-x-launching-url-on-android.html
+    public static void openURL(String url) { 
+     Intent i = new Intent(Intent.ACTION_VIEW);  
+     i.setData(Uri.parse(url));
+     mSingleton.startActivity(i);
     }
 }
 

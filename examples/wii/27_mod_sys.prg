@@ -5,5 +5,5 @@ Private
     string arg;
 Begin
     arg = "file.txt";
-    exec(_P_NOWAIT,"cat", 1,&arg);
+    exec(_P_NOWAIT,"cat", 1, &arg);
 End
