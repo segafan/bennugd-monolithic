@@ -18,7 +18,7 @@ Private
 Begin
     width = graphic_info(0, 0, G_WIDTH);
     height = graphic_info(0, 0, G_HEIGHT);
-    write(0, width/2, height/2, 4, "Touch the screen to open the browser");
+    write(0, width/2, height/2, 4, "Touch the screen to go to BennuGD-Mobile");
     
     /* Some touchscreens cannot detect all 5 fingers at once */
     while(num_fingers < 1 && focus_status == 1)
@@ -28,6 +28,6 @@ Begin
     end
     
     // Quit our app so that we don't stay idle on the background
-    exec(_P_NOWAIT, "http://forum.bennugd.org", 0, 0);
+    exec(_P_NOWAIT, "http://bennugd-mobile.blogspot.com", 0, 0);
 End
 
