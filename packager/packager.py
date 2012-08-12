@@ -160,6 +160,7 @@ class packager(QtGui.QMainWindow):
         
         # Copy the template to the workdir
         if self.appos == 'Android':
+            self.ui.statusbar.showMessage('Packaging...')
             tpldir = os.path.join(mycwd, 'templates', 'android')
         
             # Copy the template to the workdir and the game into the template
@@ -183,9 +184,9 @@ class packager(QtGui.QMainWindow):
             # Tell ant to package the app and, optionally, install it
             os.chdir(workdir)
             if self.appinstall:
-                retval = os.system('ant '+self.target+' install')
+                retval = subprocess.call(['ant', self.target, 'install'])
             else:
-                retval = os.system('ant '+self.target)
+                retval = subprocess.call(['ant', self.target])
             
             # If the apk was generated correctly, asdk the user for the output
             # location
@@ -210,5 +211,6 @@ class packager(QtGui.QMainWindow):
             else:
                 QtGui.QMessageBox.critical(self, 'APK creation failed', 'APK creation failed with return code '+str(retval))
         
+        self.ui.statusbar.clearMessage()
         # Return to the app working dir
         os.chdir(mycwd)
