@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Thu Aug  9 23:32:15 2012
+# Created: Sun Aug 12 19:42:27 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -46,13 +46,13 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_7 = QtGui.QHBoxLayout()
         self.horizontalLayout_7.setObjectName(_fromUtf8("horizontalLayout_7"))
-        self.button_appdirselector = QtGui.QPushButton(self.centralwidget)
-        self.button_appdirselector.setObjectName(_fromUtf8("button_appdirselector"))
-        self.horizontalLayout_7.addWidget(self.button_appdirselector)
         self.line_appdir = QtGui.QLineEdit(self.centralwidget)
         self.line_appdir.setEnabled(False)
         self.line_appdir.setObjectName(_fromUtf8("line_appdir"))
         self.horizontalLayout_7.addWidget(self.line_appdir)
+        self.button_appdirselector = QtGui.QPushButton(self.centralwidget)
+        self.button_appdirselector.setObjectName(_fromUtf8("button_appdirselector"))
+        self.horizontalLayout_7.addWidget(self.button_appdirselector)
         self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
@@ -87,9 +87,16 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_2)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.verticalLayout.addItem(spacerItem)
+        self.horizontalLayout_6 = QtGui.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(_fromUtf8("horizontalLayout_6"))
+        self.check_install = QtGui.QCheckBox(self.centralwidget)
+        self.check_install.setChecked(True)
+        self.check_install.setObjectName(_fromUtf8("check_install"))
+        self.horizontalLayout_6.addWidget(self.check_install)
         self.button_package = QtGui.QPushButton(self.centralwidget)
         self.button_package.setObjectName(_fromUtf8("button_package"))
-        self.verticalLayout.addWidget(self.button_package)
+        self.horizontalLayout_6.addWidget(self.button_package)
+        self.verticalLayout.addLayout(self.horizontalLayout_6)
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
@@ -120,8 +127,8 @@ class Ui_MainWindow(object):
         self.label_appOSselector.setText(QtGui.QApplication.translate("MainWindow", "Target OS:", None, QtGui.QApplication.UnicodeUTF8))
         self.appOSselector.setToolTip(QtGui.QApplication.translate("MainWindow", "The OS you\'re packaging your app for", None, QtGui.QApplication.UnicodeUTF8))
         self.appOSselector.setItemText(0, QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_appdirselector.setText(QtGui.QApplication.translate("MainWindow", "Select game directory...", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appdir.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Please choose a dir", None, QtGui.QApplication.UnicodeUTF8))
+        self.button_appdirselector.setText(QtGui.QApplication.translate("MainWindow", "Select game directory...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_aplabel.setText(QtGui.QApplication.translate("MainWindow", "App descriptor:", None, QtGui.QApplication.UnicodeUTF8))
         self.line_applabel.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Unique ID for your app, should include your company\'s name and you game\'s name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.line_applabel.setText(QtGui.QApplication.translate("MainWindow", "org.libsdl.app", None, QtGui.QApplication.UnicodeUTF8))
@@ -132,6 +139,8 @@ class Ui_MainWindow(object):
         self.combo_debug.setToolTip(QtGui.QApplication.translate("MainWindow", "Choose if you want to package for debug or for release", None, QtGui.QApplication.UnicodeUTF8))
         self.combo_debug.setItemText(0, QtGui.QApplication.translate("MainWindow", "Debug", None, QtGui.QApplication.UnicodeUTF8))
         self.combo_debug.setItemText(1, QtGui.QApplication.translate("MainWindow", "Release", None, QtGui.QApplication.UnicodeUTF8))
+        self.check_install.setToolTip(QtGui.QApplication.translate("MainWindow", "Install resultng APK to device or emulator", None, QtGui.QApplication.UnicodeUTF8))
+        self.check_install.setText(QtGui.QApplication.translate("MainWindow", "Install APK", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setToolTip(QtGui.QApplication.translate("MainWindow", "Click when you feel ready to package your app", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))

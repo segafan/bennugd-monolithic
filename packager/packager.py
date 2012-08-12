@@ -52,6 +52,9 @@ class packager(QtGui.QMainWindow):
         self.ui.filelist.clear()
         row=0
         for root, dirs, files in os.walk(self.appdir):
+            if '.svn' in dirs:
+                dirs.remove('.svn')
+
             for file in files:
                 fpath = os.path.join(root, file)
                 fname = fpath[(len(self.appdir)+1):]
@@ -88,6 +91,7 @@ class packager(QtGui.QMainWindow):
         # Get the values from the user
         self.appos = self.ui.appOSselector.currentText()
         self.appos = str(self.appos)
+        self.appinstall = self.ui.check_install.isChecked()
         
         # Will actually have to read values from QListView, but we'll do that later
         if not os.path.isdir(self.appdir):
@@ -143,9 +147,12 @@ class packager(QtGui.QMainWindow):
             fd.write('</resources>\n')
             fd.close()
                 
-            # Tell ant to package the app
+            # Tell ant to package the app and, optionally, install it
             os.chdir(workdir)
-            retval = os.system("ant "+self.target)
+            if self.appinstall:
+                retval = os.system('ant '+self.target+' install')
+            else:
+                retval = os.system('ant '+self.target)
             
             # If the apk was generated correctly, asdk the user for the output
             # location

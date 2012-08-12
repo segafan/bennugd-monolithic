@@ -64,19 +64,19 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
-         <widget class="QPushButton" name="button_appdirselector">
-          <property name="text">
-           <string>Select game directory...</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QLineEdit" name="line_appdir">
           <property name="enabled">
            <bool>false</bool>
           </property>
           <property name="placeholderText">
            <string>Please choose a dir</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_appdirselector">
+          <property name="text">
+           <string>Select game directory...</string>
           </property>
          </widget>
         </item>
@@ -172,14 +172,31 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="button_package">
-        <property name="toolTip">
-         <string>Click when you feel ready to package your app</string>
-        </property>
-        <property name="text">
-         <string>Package</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QCheckBox" name="check_install">
+          <property name="toolTip">
+           <string>Install resultng APK to device or emulator</string>
+          </property>
+          <property name="text">
+           <string>Install APK</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="button_package">
+          <property name="toolTip">
+           <string>Click when you feel ready to package your app</string>
+          </property>
+          <property name="text">
+           <string>Package</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
