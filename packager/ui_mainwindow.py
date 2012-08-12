@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Sun Aug 12 19:42:27 2012
+# Created: Sun Aug 12 21:02:57 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -142,7 +142,7 @@ class Ui_MainWindow(object):
         self.check_install.setToolTip(QtGui.QApplication.translate("MainWindow", "Install resultng APK to device or emulator", None, QtGui.QApplication.UnicodeUTF8))
         self.check_install.setText(QtGui.QApplication.translate("MainWindow", "Install APK", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setToolTip(QtGui.QApplication.translate("MainWindow", "Click when you feel ready to package your app", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package", None, QtGui.QApplication.UnicodeUTF8))
+        self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package && Install", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPreferences.setText(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPreferences.setToolTip(QtGui.QApplication.translate("MainWindow", "Preferences dialog", None, QtGui.QApplication.UnicodeUTF8))

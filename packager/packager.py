@@ -37,10 +37,18 @@ class packager(QtGui.QMainWindow):
         self.ui.actionQuit.triggered.connect(sys.exit)
         self.ui.button_appdirselector.clicked.connect(self.dirselector)
         self.ui.button_package.clicked.connect(self.package)
+        self.ui.check_install.stateChanged.connect(self.check_install_changed)
         
         # Set default values
         self.appdir = ''
-        self.appdescriptor = ''      
+        self.appdescriptor = ''
+    
+    # Change the "Package & Install" button text
+    def check_install_changed(self):
+        if self.ui.check_install.isChecked():
+            self.ui.button_package.setText('Package && Install')
+        else:
+            self.ui.button_package.setText('Package')
 
     # Show the Directory selector dialogs
     def dirselector(self):

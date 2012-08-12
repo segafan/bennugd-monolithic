@@ -192,7 +192,7 @@
            <string>Click when you feel ready to package your app</string>
           </property>
           <property name="text">
-           <string>Package</string>
+           <string>Package &amp;&amp; Install</string>
           </property>
          </widget>
         </item>

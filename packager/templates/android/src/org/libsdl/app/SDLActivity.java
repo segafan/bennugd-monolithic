@@ -10,6 +10,7 @@ import android.app.*;
 import android.content.*;
 import android.view.*;
 import android.os.*;
+import android.net.Uri;
 import android.util.Log;
 import android.graphics.*;
 import android.text.method.*;
@@ -59,7 +60,7 @@ public class SDLActivity extends Activity {
 
     // Setup
     protected void onCreate(Bundle savedInstanceState) {
-        //Log.v("SDL", "onCreate()");
+        Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
         
         // So we can call stuff from static callbacks
@@ -88,11 +89,11 @@ public class SDLActivity extends Activity {
     }*/
 
     protected void onDestroy() {
-        super.onDestroy();
         Log.v("SDL", "onDestroy()");
+        super.onDestroy();
         // Send a quit message to the application
         SDLActivity.nativeQuit();
-
+        
         // Now wait for the SDL thread to quit
         if (mSDLThread != null) {
             try {
@@ -101,7 +102,7 @@ public class SDLActivity extends Activity {
                 Log.v("SDL", "Problem stopping thread: " + e);
             }
             mSDLThread = null;
-
+            
             //Log.v("SDL", "Finished waiting for SDL thread");
         }
     }
@@ -168,7 +169,7 @@ public class SDLActivity extends Activity {
         }
         else {
             /*
-             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume every time
+             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume
              * every time we get one of those events, only if it comes after surfaceDestroyed
              */
             if (mIsPaused) {
@@ -398,6 +399,14 @@ public class SDLActivity extends Activity {
             mAudioTrack = null;
         }
     }
+    
+    // Taken from
+    // http://digitalsynapsesblog.blogspot.com.es/2011/09/cocos2d-x-launching-url-on-android.html
+    public static void openURL(String url) { 
+     Intent i = new Intent(Intent.ACTION_VIEW);  
+     i.setData(Uri.parse(url));
+     mSingleton.startActivity(i);
+    }
 }
 
 /**
@@ -408,7 +417,7 @@ class SDLMain implements Runnable {
         // Runs SDL_main()
         SDLActivity.nativeInit();
 
-        //Log.v("SDL", "SDL thread terminated");
+        Log.v("SDL", "SDL thread terminated");
     }
 }
 
@@ -540,9 +549,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
              final int touchDevId = event.getDeviceId();
              final int pointerCount = event.getPointerCount();
              // touchId, pointerId, action, x, y, pressure
-             int actionPointerIndex = event.getActionIndex();
+             int actionPointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent. ACTION_POINTER_ID_SHIFT; /* API 8: event.getActionIndex(); */
              int pointerFingerId = event.getPointerId(actionPointerIndex);
-             int action = event.getActionMasked();
+             int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
 
              float x = event.getX(actionPointerIndex);
              float y = event.getY(actionPointerIndex);
