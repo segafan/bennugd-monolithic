@@ -85,7 +85,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QLabel" name="label_aplabel">
+         <widget class="QLabel" name="label_applabel">
           <property name="text">
            <string>App descriptor:</string>
           </property>
@@ -213,13 +213,25 @@
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
+   <widget class="QMenu" name="menuEmulator">
+    <property name="title">
+     <string>&amp;Android</string>
+    </property>
+    <widget class="QMenu" name="menuAVD">
+     <property name="title">
+      <string>AVD</string>
+     </property>
+    </widget>
+    <addaction name="menuAVD"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuEmulator"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionPreferences">
@@ -239,6 +251,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionAndroid">
+   <property name="text">
+    <string>Android</string>
    </property>
   </action>
  </widget>

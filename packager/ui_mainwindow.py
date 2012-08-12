@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Sun Aug 12 21:02:57 2012
+# Created: Sun Aug 12 22:05:18 2012
 #      by: PyQt4 UI code generator 4.9.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -56,9 +56,9 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_7)
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.label_aplabel = QtGui.QLabel(self.centralwidget)
-        self.label_aplabel.setObjectName(_fromUtf8("label_aplabel"))
-        self.horizontalLayout_4.addWidget(self.label_aplabel)
+        self.label_applabel = QtGui.QLabel(self.centralwidget)
+        self.label_applabel.setObjectName(_fromUtf8("label_applabel"))
+        self.horizontalLayout_4.addWidget(self.label_applabel)
         self.line_applabel = QtGui.QLineEdit(self.centralwidget)
         self.line_applabel.setEnabled(False)
         self.line_applabel.setReadOnly(False)
@@ -104,6 +104,10 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
+        self.menuEmulator = QtGui.QMenu(self.menubar)
+        self.menuEmulator.setObjectName(_fromUtf8("menuEmulator"))
+        self.menuAVD = QtGui.QMenu(self.menuEmulator)
+        self.menuAVD.setObjectName(_fromUtf8("menuAVD"))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(MainWindow)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
@@ -112,10 +116,14 @@ class Ui_MainWindow(object):
         self.actionPreferences.setObjectName(_fromUtf8("actionPreferences"))
         self.actionQuit = QtGui.QAction(MainWindow)
         self.actionQuit.setObjectName(_fromUtf8("actionQuit"))
+        self.actionAndroid = QtGui.QAction(MainWindow)
+        self.actionAndroid.setObjectName(_fromUtf8("actionAndroid"))
         self.menuFile.addAction(self.actionPreferences)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionQuit)
+        self.menuEmulator.addAction(self.menuAVD.menuAction())
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuEmulator.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -129,7 +137,7 @@ class Ui_MainWindow(object):
         self.appOSselector.setItemText(0, QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appdir.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Please choose a dir", None, QtGui.QApplication.UnicodeUTF8))
         self.button_appdirselector.setText(QtGui.QApplication.translate("MainWindow", "Select game directory...", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_aplabel.setText(QtGui.QApplication.translate("MainWindow", "App descriptor:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_applabel.setText(QtGui.QApplication.translate("MainWindow", "App descriptor:", None, QtGui.QApplication.UnicodeUTF8))
         self.line_applabel.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Unique ID for your app, should include your company\'s name and you game\'s name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
         self.line_applabel.setText(QtGui.QApplication.translate("MainWindow", "org.libsdl.app", None, QtGui.QApplication.UnicodeUTF8))
         self.label_appname.setText(QtGui.QApplication.translate("MainWindow", "App name:", None, QtGui.QApplication.UnicodeUTF8))
@@ -143,10 +151,13 @@ class Ui_MainWindow(object):
         self.check_install.setText(QtGui.QApplication.translate("MainWindow", "Install APK", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setToolTip(QtGui.QApplication.translate("MainWindow", "Click when you feel ready to package your app", None, QtGui.QApplication.UnicodeUTF8))
         self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package && Install", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuEmulator.setTitle(QtGui.QApplication.translate("MainWindow", "&Android", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuAVD.setTitle(QtGui.QApplication.translate("MainWindow", "AVD", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPreferences.setText(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPreferences.setToolTip(QtGui.QApplication.translate("MainWindow", "Preferences dialog", None, QtGui.QApplication.UnicodeUTF8))
         self.actionPreferences.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+,", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAndroid.setText(QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
 

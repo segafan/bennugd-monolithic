@@ -6,7 +6,7 @@
 """This is the main packager code for the BennuGD packager.
     The interface itself is holded in ui_mainwindow.ui/py"""
 
-import os,sys,uuid,shutil
+import os,sys,uuid,shutil,subprocess
 
 # Import the Qt4 modules
 from PyQt4 import QtCore,QtGui
@@ -42,6 +42,31 @@ class packager(QtGui.QMainWindow):
         # Set default values
         self.appdir = ''
         self.appdescriptor = ''
+        
+        # Get the list of installed AVDs
+        avdlist = self.list_emulators()
+        for avd in avdlist:
+            action = QtGui.QAction(self)
+            action.setObjectName(avd)
+            action.setText(avd)
+            action.triggered.connect(self.launch_emulator)
+            self.ui.menuAVD.addAction(action)
+    
+    # List installed emulators
+    def list_emulators(self):
+        output = subprocess.check_output(['android', 'list', 'avd'], universal_newlines=True)
+        avdlist = []
+
+        for line in output.split('\n'):
+            fields = line.split()
+            if len(fields)>0 and fields[0] == 'Name:':
+                avdlist.append(fields[1])
+        
+        return avdlist
+    
+    # Launch an emulator
+    def launch_emulator(self):
+        print self.ui.menuAVD.activeAction()
     
     # Change the "Package & Install" button text
     def check_install_changed(self):
@@ -52,7 +77,7 @@ class packager(QtGui.QMainWindow):
 
     # Show the Directory selector dialogs
     def dirselector(self):
-        self.appdir = QtGui.QFileDialog.getExistingDirectory(self, 'Choose game dir')
+        self.appdir = QtGui.QFileDialog.getExistingDirectory(self, 'Choose game dir', self.appdir)
         self.appdir = str(self.appdir)
         self.ui.line_appdir.setText(self.appdir)
         
