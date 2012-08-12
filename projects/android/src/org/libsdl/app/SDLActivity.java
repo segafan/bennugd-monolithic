@@ -9,6 +9,7 @@ import javax.microedition.khronos.egl.*;
 import android.app.*;
 import android.content.*;
 import android.view.*;
+import android.view.inputmethod.InputMethodManager;
 import android.os.*;
 import android.net.Uri;
 import android.util.Log;
@@ -60,7 +61,7 @@ public class SDLActivity extends Activity {
 
     // Setup
     protected void onCreate(Bundle savedInstanceState) {
-        Log.v("SDL", "onCreate()");
+        //Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
         
         // So we can call stuff from static callbacks
@@ -89,11 +90,11 @@ public class SDLActivity extends Activity {
     }*/
 
     protected void onDestroy() {
-        Log.v("SDL", "onDestroy()");
         super.onDestroy();
+        Log.v("SDL", "onDestroy()");
         // Send a quit message to the application
         SDLActivity.nativeQuit();
-        
+
         // Now wait for the SDL thread to quit
         if (mSDLThread != null) {
             try {
@@ -102,19 +103,39 @@ public class SDLActivity extends Activity {
                 Log.v("SDL", "Problem stopping thread: " + e);
             }
             mSDLThread = null;
-            
+
             //Log.v("SDL", "Finished waiting for SDL thread");
         }
     }
 
     // Messages from the SDLMain thread
-    static int COMMAND_CHANGE_TITLE = 1;
+    static final int COMMAND_CHANGE_TITLE = 1;
+    static final int COMMAND_KEYBOARD_SHOW = 2;
 
     // Handler for the messages
     Handler commandHandler = new Handler() {
+        @Override
         public void handleMessage(Message msg) {
-            if (msg.arg1 == COMMAND_CHANGE_TITLE) {
+            switch (msg.arg1) {
+            case COMMAND_CHANGE_TITLE:
                 setTitle((String)msg.obj);
+                break;
+            case COMMAND_KEYBOARD_SHOW:
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (manager != null) {
+                    switch (((Integer)msg.obj).intValue()) {
+                    case 0:
+                        manager.hideSoftInputFromWindow(mSurface.getWindowToken(), 0);
+                        break;
+                    case 1:
+                        manager.showSoftInput(mSurface, 0);
+                        break;
+                    case 2:
+                        manager.toggleSoftInputFromWindow(mSurface.getWindowToken(), 0, 0);
+                        break;
+                    }
+                }
+               break;
             }
         }
     };
@@ -157,6 +178,10 @@ public class SDLActivity extends Activity {
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
     }
 
+    public static void sendMessage(int command, int param) {
+        mSingleton.sendCommand(command, Integer.valueOf(param));
+    }
+
     public static Context getContext() {
         return mSingleton;
     }
@@ -169,7 +194,7 @@ public class SDLActivity extends Activity {
         }
         else {
             /*
-             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume
+             * Some Android variants may send multiple surfaceChanged events, so we don't need to resume every time
              * every time we get one of those events, only if it comes after surfaceDestroyed
              */
             if (mIsPaused) {
@@ -417,7 +442,7 @@ class SDLMain implements Runnable {
         // Runs SDL_main()
         SDLActivity.nativeInit();
 
-        Log.v("SDL", "SDL thread terminated");
+        //Log.v("SDL", "SDL thread terminated");
     }
 }
 
@@ -600,4 +625,3 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     }
 
 }
-
