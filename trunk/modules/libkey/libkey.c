@@ -210,6 +210,10 @@ static int equivs[] =
     SDL_SCANCODE_LGUI,          98,
     SDL_SCANCODE_RGUI,          99,
     //SDL_SCANCODE_COMPOSE,       99,
+    SDL_SCANCODE_VOLUMEUP,     100,
+    SDL_SCANCODE_VOLUMEDOWN,   101,
+    SDL_SCANCODE_AC_BACK,      102,
+    SDL_SCANCODE_AC_SEARCH,    103,
 #else
     SDLK_ESCAPE,        1,
     SDLK_1,             2,

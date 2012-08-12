@@ -419,6 +419,9 @@ int gr_set_mode( int width, int height, int depth )
                                        scale_screen->format->Gmask,
                                        scale_screen->format->Bmask,
                                        scale_screen->format->Amask);
+        
+        width == 0 ? width = scale_screen->w : 0;
+        height == 0 ? height = scale_screen->h : 0;
 
         /* scale tables */
 
@@ -639,7 +642,6 @@ void __bgdexport( libvideo, module_initialize )()
     else
         GLODWORD( libvideo, GRAPH_MODE ) = MODE_16BITS;
 
-    // Don't autostart video: doesn't work in Android
     gr_init( scr_width, scr_height ) ;
 }
 
