@@ -13,12 +13,13 @@ import "mod_sound"
 import "mod_wm"
 import "mod_map"
 import "mod_say"
+import "mod_sys"
 
 GLOBAL
 // Set to your liking
 width  = 768;
 height = 1024;
-sound  = 1;
+sound  = 0;
 quit   = 0;
 
 Process bouncer()
@@ -94,6 +95,8 @@ Begin
     if(sound == 1)
         unload_song(song);
     end
+    
+    exec(_P_WAIT, "http://bennugd-mobile.blogspot.com", 0, 0);
 
     quit = 1;
 End;

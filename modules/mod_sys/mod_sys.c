@@ -85,10 +85,9 @@ static int modsys_exec( INSTANCE * my, int * params )
     return 0;
 #elif defined(TARGET_IOS)
     NSString *urlString = [NSString stringWithFormat:@"%s" , string_get(params[1])];
-    NSURL *myURL = [NSURL URLWithString:urlString];
     string_discard(params[1]);
 
-    [[UIApplication sharedApplication] openURL:myURL];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 #elif defined(TARGET_ANDROID)
     Android_JNI_openURL(string_get(params[1]));
     string_discard(params[1]);
