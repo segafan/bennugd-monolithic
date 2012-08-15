@@ -12,8 +12,8 @@ import "mod_mouse"
 
 GLOBAL
 // Set to your liking
-float width  = 480.0;
-float height = 320.0;
+float width  = 2048.0;
+float height = 1536.0;
 
 Process spectrum_analyser()
 Private

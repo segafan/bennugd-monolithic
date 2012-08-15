@@ -459,7 +459,7 @@ void sysproc_init()
 
         if( !library )
         {
-            printf( dliberror() ) ;
+            fprintf( stderr, "%s\n", dliberror() ) ;
             exit( 0 );
         }
 
