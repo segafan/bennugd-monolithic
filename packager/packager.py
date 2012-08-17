@@ -54,14 +54,17 @@ class packager(QtGui.QMainWindow):
     
     # List installed emulators
     def list_emulators(self):
-        output = subprocess.check_output(['android', 'list', 'avd'], universal_newlines=True)
         avdlist = []
+        try:
+            output = subprocess.check_output([self.sdkdir, 'tools', 'android', 'list', 'avd'], universal_newlines=True)
 
-        for line in output.split('\n'):
-            fields = line.split()
-            if len(fields)>0 and fields[0] == 'Name:':
-                avdlist.append(fields[1])
-        
+            for line in output.split('\n'):
+                fields = line.split()
+                if len(fields)>0 and fields[0] == 'Name:':
+                    avdlist.append(fields[1])
+        except:
+            pass
+
         return avdlist
     
     # Launch an emulator
