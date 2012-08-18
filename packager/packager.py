@@ -38,6 +38,9 @@ class packager(QtGui.QMainWindow):
         self.ui.button_appdirselector.clicked.connect(self.dirselector)
         self.ui.button_package.clicked.connect(self.package)
         self.ui.check_install.stateChanged.connect(self.check_install_changed)
+        self.ui.icon_hdpi.clicked.connect(self.update_icon)
+        self.ui.icon_mdpi.clicked.connect(self.update_icon)
+        self.ui.icon_ldpi.clicked.connect(self.update_icon)
         
         # Set default values
         self.appdir = ''
@@ -52,7 +55,17 @@ class packager(QtGui.QMainWindow):
             action.triggered.connect(self.launch_emulator)
             self.ui.menuAVD.addAction(action)
     
-    # List installed emulators
+    # Update the icons for the app
+    def update_icon(self):
+        iconpath = QtGui.QFileDialog.getOpenFileName(self, "Choose icon file",
+                                               self.appdir,
+                                               "Images (*.png *.jpg *.bmp *.svg)");
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(iconpath), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.sender().setIcon(icon1)
+    
+    # Return a list with the installed emulators as reported by
+    # android list avd
     def list_emulators(self):
         avdlist = []
         try:
@@ -64,7 +77,7 @@ class packager(QtGui.QMainWindow):
                 if len(fields)>0 and fields[0] == 'Name:':
                     avdlist.append(fields[1])
         except:
-                sys.stdout.write("Couldn't list available AVDs")
+                sys.stdout.write("Couldn't list available AVDs\n")
 
         return avdlist
     
@@ -74,7 +87,7 @@ class packager(QtGui.QMainWindow):
             subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'),
                                  '-avd', self.sender().text()])
         except:
-            pass
+            sys.stderr.write("Couldn't open emulator instance for %s\n" % self.sender().text())
     
     # Change the "Package & Install" button text
     def check_install_changed(self):
@@ -188,6 +201,13 @@ class packager(QtGui.QMainWindow):
             fd.write('    <string name="app_name">%s</string>\n' % self.appname)
             fd.write('</resources>\n')
             fd.close()
+            
+            self.ui.icon_hdpi.icon().pixmap(72, 72).save(
+                        os.path.join(workdir, 'res', 'drawable-hdpi', 'icon.png'))
+            self.ui.icon_mdpi.icon().pixmap(48, 48).save(
+                        os.path.join(workdir, 'res', 'drawable-mdpi', 'icon.png'))
+            self.ui.icon_ldpi.icon().pixmap(32, 32).save(
+                        os.path.join(workdir, 'res', 'drawable-ldpi', 'icon.png'))
                 
             # Tell ant to package the app and, optionally, install it
             os.chdir(workdir)

@@ -144,7 +144,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QGraphicsView" name="icon_hdpi">
+         <widget class="QPushButton" name="icon_hdpi">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -166,14 +166,30 @@
           <property name="toolTip">
            <string>Icon for high resolution displays</string>
           </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>templates/android/res/drawable-hdpi/icon.png</normaloff>templates/android/res/drawable-hdpi/icon.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>72</width>
+            <height>72</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QGraphicsView" name="icon_mdpi">
+         <widget class="QPushButton" name="icon_mdpi">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
+            <horstretch>48</horstretch>
+            <verstretch>48</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
@@ -185,36 +201,68 @@
           <property name="maximumSize">
            <size>
             <width>48</width>
-            <height>48</height>
+            <height>49</height>
            </size>
           </property>
           <property name="toolTip">
            <string>Icon for medium resolution displays</string>
           </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>templates/android/res/drawable-mdpi/icon.png</normaloff>templates/android/res/drawable-mdpi/icon.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="QGraphicsView" name="icon_ldpi">
+         <widget class="QPushButton" name="icon_ldpi">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
+            <horstretch>32</horstretch>
+            <verstretch>32</verstretch>
            </sizepolicy>
           </property>
           <property name="minimumSize">
            <size>
-            <width>36</width>
-            <height>36</height>
+            <width>32</width>
+            <height>32</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>36</width>
-            <height>36</height>
+            <width>32</width>
+            <height>32</height>
            </size>
           </property>
           <property name="toolTip">
            <string>Icon for low resolution displays</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>templates/android/res/drawable-ldpi/icon.png</normaloff>templates/android/res/drawable-ldpi/icon.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>32</width>
+            <height>32</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -266,7 +314,7 @@
         <item>
          <widget class="QCheckBox" name="check_install">
           <property name="toolTip">
-           <string>Install resultng APK to device or emulator</string>
+           <string>Install resulting APK to device or emulator</string>
           </property>
           <property name="text">
            <string>Install APK</string>
@@ -298,7 +346,7 @@
      <x>0</x>
      <y>0</y>
      <width>966</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
