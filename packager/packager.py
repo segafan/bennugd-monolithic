@@ -233,6 +233,10 @@ class packager(QtGui.QMainWindow):
             fd.write('sdk.dir=%s\n' % self.sdkdir)
             fd.close()
             
+            fd = open(os.path.join(workdir, 'default.properties'), 'w')
+            fd.write('target=android-10s\n' % self.sdkdir)
+            fd.close()
+            
             fd = open(os.path.join(workdir, 'res', 'values', 'strings.xml'), 'w')
             fd.write('<?xml version="1.0" encoding="utf-8"?>\n')
             fd.write('<resources>\n')
