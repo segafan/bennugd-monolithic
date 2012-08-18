@@ -29,12 +29,17 @@ class packager(QtGui.QMainWindow):
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
         self.sdkdir = self.prefs.get('sdkdir')
-        if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
+        if not os.path.isdir(self.sdkdir):
             self.show_preferences()
+            # Reread the user-given value, if any
+            self.sdkdir = self.prefs.get('sdkdir')
         
         # Connect the signals
         self.ui.actionPreferences.triggered.connect(self.show_preferences)
         self.ui.actionQuit.triggered.connect(sys.exit)
+        self.ui.actionSDK_Manager.triggered.connect(self.menuitem)
+        self.ui.actionAVD_Manager.triggered.connect(self.menuitem)
+        self.ui.actionDDMS.triggered.connect(self.menuitem)
         self.ui.button_appdirselector.clicked.connect(self.dirselector)
         self.ui.button_package.clicked.connect(self.package)
         self.ui.check_install.stateChanged.connect(self.check_install_changed)
@@ -55,18 +60,49 @@ class packager(QtGui.QMainWindow):
             action.triggered.connect(self.launch_emulator)
             self.ui.menuAVD.addAction(action)
     
-    # Update the icons for the app
+    def menuitem(self):
+        'Takes care of handling miscellaneous menu item actions'
+        action = self.sender().text()
+        
+        if action == 'SDK Manager':
+            try:
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'),
+                              'sdk'])
+            except:
+                QtGui.QMessageBox.critical(self, 'SDK manager launch error',
+                              'Couldn\'t launch the SDK Manager, sorry :(\n'+
+                              '(Maybe you haven\'t configured the SDK path correctly?)')
+        elif action == 'AVD Manager':
+            try:
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'),
+                              'avd'])
+            except:
+                QtGui.QMessageBox.critical(self, 'AVD manager launch error',
+                              'Couldn\'t launch the Android Virtual Device Manager, sorry :(\n'+
+                              '(Maybe you haven\'t configured the SDK path correctly?)')
+        elif action == 'DDMS':
+            try:
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'ddms')])
+            except:
+                QtGui.QMessageBox.critical(self, 'DDMS launch error',
+                              'Couldn\'t launch the Dalvik Debug Monitor Server (DDMS), sorry :(\n'+
+                            '(Maybe you haven\'t configured the SDK path correctly?)')
+        else:
+            sys.stdout.write('Unknown menu action\n')
+                
     def update_icon(self):
+        'Update the icons for the app'
         iconpath = QtGui.QFileDialog.getOpenFileName(self, "Choose icon file",
                                                self.appdir,
                                                "Images (*.png *.jpg *.bmp *.svg)");
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(iconpath), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.sender().setIcon(icon1)
+        if iconpath != '':
+            icon1 = QtGui.QIcon()
+            icon1.addPixmap(QtGui.QPixmap(iconpath), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.sender().setIcon(icon1)
     
-    # Return a list with the installed emulators as reported by
-    # android list avd
     def list_emulators(self):
+        '''Return a list with the installed emulators as reported by
+           android list avd'''
         avdlist = []
         try:
             output = subprocess.check_output([os.path.join(self.sdkdir, 'tools', 'android'),
@@ -81,13 +117,14 @@ class packager(QtGui.QMainWindow):
 
         return avdlist
     
-    # Launch an emulator
     def launch_emulator(self):
+        'Launch an emulator instance'
         try:
             subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'),
                                  '-avd', self.sender().text()])
         except:
-            sys.stderr.write("Couldn't open emulator instance for %s\n" % self.sender().text())
+            QtGui.QMessageBox.critical(self, 'Android emulator launch error',
+                            "Couldn't open emulator instance for %s\n" % self.sender().text())
     
     # Change the "Package & Install" button text
     def check_install_changed(self):
@@ -96,8 +133,8 @@ class packager(QtGui.QMainWindow):
         else:
             self.ui.button_package.setText('Package')
 
-    # Show the Directory selector dialogs
     def dirselector(self):
+        'Show the Directory selector dialogs'
         self.appdir = QtGui.QFileDialog.getExistingDirectory(self, 'Choose game dir', self.appdir)
         self.appdir = str(self.appdir)
         self.ui.line_appdir.setText(self.appdir)
@@ -126,17 +163,16 @@ class packager(QtGui.QMainWindow):
         self.move(qr.topLeft())
 
     def show_preferences(self):
-        # This function displays the preferences
+        'Displays the preferences dialog'
         dialog=dialog_preferences()
 
     def package(self):
+        'Takes care of packaging the given app'
         # Check for android-10 SDK platform, refuse to package otherwise
         if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
             QtGui.QMessageBox.critical(self, 'Android 2.3.3 SDK Platform not installed',
                                         'Please install the Android 2.3.3 (API 10) SDK Platform ' +
-                                        'from the Android SDK manager before trying to package anything<br />' +
-                                        '<a href="http://developer.android.com/sdk/index.html">Installation instructions</a>')
-            sys.stderr.write("Android 2.3.3 SDK Platform not installed, aborting packaging\n")
+                                        'from the Android SDK manager before trying to package anything')
             return
         
         # Save the CWD
@@ -172,6 +208,8 @@ class packager(QtGui.QMainWindow):
         # Create the workdir
         if sys.platform.startswith('win'):
             workdir = os.path.join(os.getenv('TMP'), 'bgdp_'+str( uuid.uuid1()))
+        elif sys.platform == 'darwin':
+            workdir = os.path.join('/private', 'tmp', 'bgdp_'+str( uuid.uuid1()))
         else:
             workdir = os.path.join('/tmp', 'bgdp_'+str( uuid.uuid1()))
 

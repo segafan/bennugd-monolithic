@@ -171,7 +171,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>templates/android/res/drawable-hdpi/icon.png</normaloff>templates/android/res/drawable-hdpi/icon.png</iconset>
+            <normaloff>res/icon.png</normaloff>res/icon.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -212,7 +212,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>templates/android/res/drawable-mdpi/icon.png</normaloff>templates/android/res/drawable-mdpi/icon.png</iconset>
+            <normaloff>res/icon.png</normaloff>res/icon.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -253,7 +253,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>templates/android/res/drawable-ldpi/icon.png</normaloff>templates/android/res/drawable-ldpi/icon.png</iconset>
+            <normaloff>res/icon.png</normaloff>res/icon.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -367,6 +367,10 @@
      </property>
     </widget>
     <addaction name="menuAVD"/>
+    <addaction name="separator"/>
+    <addaction name="actionSDK_Manager"/>
+    <addaction name="actionAVD_Manager"/>
+    <addaction name="actionDDMS"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEmulator"/>
@@ -394,6 +398,30 @@
   <action name="actionAndroid">
    <property name="text">
     <string>Android</string>
+   </property>
+  </action>
+  <action name="actionSDK_Manager">
+   <property name="text">
+    <string>SDK Manager</string>
+   </property>
+   <property name="toolTip">
+    <string>Launch the Android SDK manager</string>
+   </property>
+  </action>
+  <action name="actionAVD_Manager">
+   <property name="text">
+    <string>AVD Manager</string>
+   </property>
+   <property name="toolTip">
+    <string>Launch the android AVD manager</string>
+   </property>
+  </action>
+  <action name="actionDDMS">
+   <property name="text">
+    <string>DDMS</string>
+   </property>
+   <property name="toolTip">
+    <string>Launch DDMS</string>
    </property>
   </action>
  </widget>

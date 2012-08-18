@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Sat Aug 18 03:02:03 2012
+# Created: Sat Aug 18 22:07:59 2012
 #      by: PyQt4 UI code generator 4.9.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -91,9 +91,7 @@ class Ui_MainWindow(object):
         self.icon_hdpi.setMinimumSize(QtCore.QSize(72, 72))
         self.icon_hdpi.setMaximumSize(QtCore.QSize(72, 72))
         self.icon_hdpi.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("templates/android/res/drawable-hdpi/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.icon_hdpi.setIcon(icon1)
+        self.icon_hdpi.setIcon(icon)
         self.icon_hdpi.setIconSize(QtCore.QSize(72, 72))
         self.icon_hdpi.setFlat(True)
         self.icon_hdpi.setObjectName(_fromUtf8("icon_hdpi"))
@@ -107,9 +105,7 @@ class Ui_MainWindow(object):
         self.icon_mdpi.setMinimumSize(QtCore.QSize(48, 48))
         self.icon_mdpi.setMaximumSize(QtCore.QSize(48, 49))
         self.icon_mdpi.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("templates/android/res/drawable-mdpi/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.icon_mdpi.setIcon(icon2)
+        self.icon_mdpi.setIcon(icon)
         self.icon_mdpi.setIconSize(QtCore.QSize(48, 48))
         self.icon_mdpi.setFlat(True)
         self.icon_mdpi.setObjectName(_fromUtf8("icon_mdpi"))
@@ -123,9 +119,7 @@ class Ui_MainWindow(object):
         self.icon_ldpi.setMinimumSize(QtCore.QSize(32, 32))
         self.icon_ldpi.setMaximumSize(QtCore.QSize(32, 32))
         self.icon_ldpi.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("templates/android/res/drawable-ldpi/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.icon_ldpi.setIcon(icon3)
+        self.icon_ldpi.setIcon(icon)
         self.icon_ldpi.setIconSize(QtCore.QSize(32, 32))
         self.icon_ldpi.setFlat(True)
         self.icon_ldpi.setObjectName(_fromUtf8("icon_ldpi"))
@@ -175,10 +169,20 @@ class Ui_MainWindow(object):
         self.actionQuit.setObjectName(_fromUtf8("actionQuit"))
         self.actionAndroid = QtGui.QAction(MainWindow)
         self.actionAndroid.setObjectName(_fromUtf8("actionAndroid"))
+        self.actionSDK_Manager = QtGui.QAction(MainWindow)
+        self.actionSDK_Manager.setObjectName(_fromUtf8("actionSDK_Manager"))
+        self.actionAVD_Manager = QtGui.QAction(MainWindow)
+        self.actionAVD_Manager.setObjectName(_fromUtf8("actionAVD_Manager"))
+        self.actionDDMS = QtGui.QAction(MainWindow)
+        self.actionDDMS.setObjectName(_fromUtf8("actionDDMS"))
         self.menuFile.addAction(self.actionPreferences)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionQuit)
         self.menuEmulator.addAction(self.menuAVD.menuAction())
+        self.menuEmulator.addSeparator()
+        self.menuEmulator.addAction(self.actionSDK_Manager)
+        self.menuEmulator.addAction(self.actionAVD_Manager)
+        self.menuEmulator.addAction(self.actionDDMS)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuEmulator.menuAction())
 
@@ -221,4 +225,10 @@ class Ui_MainWindow(object):
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAndroid.setText(QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSDK_Manager.setText(QtGui.QApplication.translate("MainWindow", "SDK Manager", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSDK_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the Android SDK manager", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAVD_Manager.setText(QtGui.QApplication.translate("MainWindow", "AVD Manager", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAVD_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the android AVD manager", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDDMS.setText(QtGui.QApplication.translate("MainWindow", "DDMS", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDDMS.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch DDMS", None, QtGui.QApplication.UnicodeUTF8))
 
