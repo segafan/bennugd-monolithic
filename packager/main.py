@@ -14,6 +14,11 @@ from PyQt4 import QtCore,QtGui
 from packager import packager
 
 def main():
+    # Set the CWD to the directory containing main.py
+    # This is needed when launching from a graphic shell
+    mypwd = os.path.realpath(__file__)
+    os.chdir(os.path.dirname(mypwd))
+
     app = QtGui.QApplication(sys.argv)
     window=packager()
 
