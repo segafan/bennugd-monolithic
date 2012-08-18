@@ -56,20 +56,25 @@ class packager(QtGui.QMainWindow):
     def list_emulators(self):
         avdlist = []
         try:
-            output = subprocess.check_output([self.sdkdir, 'tools', 'android', 'list', 'avd'], universal_newlines=True)
+            output = subprocess.check_output([os.path.join(self.sdkdir, 'tools', 'android'),
+                                          'list', 'avd'], universal_newlines=True)
 
             for line in output.split('\n'):
                 fields = line.split()
                 if len(fields)>0 and fields[0] == 'Name:':
                     avdlist.append(fields[1])
         except:
-            pass
+                sys.stdout.write("Couldn't list available AVDs")
 
         return avdlist
     
     # Launch an emulator
     def launch_emulator(self):
-        print self.ui.menuAVD.activeAction()
+        try:
+            subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'),
+                                 '-avd', self.sender().text()])
+        except:
+            pass
     
     # Change the "Package & Install" button text
     def check_install_changed(self):
