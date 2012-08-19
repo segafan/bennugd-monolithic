@@ -34,6 +34,13 @@ class packager(QtGui.QMainWindow):
             # Reread the user-given value, if any
             self.sdkdir = self.prefs.get('sdkdir')
         
+        # Windows is stupid
+        self.batext=''
+        self.exeext=''
+        if sys.platform.startswith('win'):
+            self.batext='.bat'
+            self.exeext='.exe'
+        
         # Connect the signals
         self.ui.actionPreferences.triggered.connect(self.show_preferences)
         self.ui.actionQuit.triggered.connect(sys.exit)
@@ -66,7 +73,7 @@ class packager(QtGui.QMainWindow):
         
         if action == 'SDK Manager':
             try:
-                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'),
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'+self.batext),
                               'sdk'])
             except:
                 QtGui.QMessageBox.critical(self, 'SDK manager launch error',
@@ -74,7 +81,7 @@ class packager(QtGui.QMainWindow):
                               '(Maybe you haven\'t configured the SDK path correctly?)')
         elif action == 'AVD Manager':
             try:
-                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'),
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'android'+self.batext),
                               'avd'])
             except:
                 QtGui.QMessageBox.critical(self, 'AVD manager launch error',
@@ -82,7 +89,7 @@ class packager(QtGui.QMainWindow):
                               '(Maybe you haven\'t configured the SDK path correctly?)')
         elif action == 'DDMS':
             try:
-                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'ddms')])
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'ddms'+self.batext)])
             except:
                 QtGui.QMessageBox.critical(self, 'DDMS launch error',
                               'Couldn\'t launch the Dalvik Debug Monitor Server (DDMS), sorry :(\n'+
@@ -105,7 +112,7 @@ class packager(QtGui.QMainWindow):
            android list avd'''
         avdlist = []
         try:
-            output = subprocess.check_output([os.path.join(self.sdkdir, 'tools', 'android'),
+            output = subprocess.check_output([os.path.join(self.sdkdir, 'tools', 'android'+self.batext),
                                           'list', 'avd'], universal_newlines=True)
 
             for line in output.split('\n'):
@@ -120,7 +127,7 @@ class packager(QtGui.QMainWindow):
     def launch_emulator(self):
         'Launch an emulator instance'
         try:
-            subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'),
+            subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'+self.exeext),
                                  '-avd', self.sender().text()])
         except:
             QtGui.QMessageBox.critical(self, 'Android emulator launch error',
