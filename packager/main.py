@@ -16,8 +16,12 @@ from packager import packager
 def main():
     # Set the CWD to the directory containing main.py
     # This is needed when launching from a graphic shell
-    mypwd = os.path.realpath(__file__)
-    os.chdir(os.path.dirname(mypwd))
+    try:
+        mypwd = os.path.realpath(__file__)
+        os.chdir(os.path.dirname(mypwd))
+    except:
+        # Won't work after being cx_freeze'd
+        pass
 
     app = QtGui.QApplication(sys.argv)
     window=packager()

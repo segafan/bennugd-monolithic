@@ -128,7 +128,7 @@ class packager(QtGui.QMainWindow):
         'Launch an emulator instance'
         try:
             subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'emulator'+self.exeext),
-                                 '-avd', self.sender().text()])
+                                 '-avd', str( self.sender().text() )])
         except:
             QtGui.QMessageBox.critical(self, 'Android emulator launch error',
                             "Couldn't open emulator instance for %s\n" % self.sender().text())
