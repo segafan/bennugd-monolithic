@@ -101,7 +101,7 @@ class packager(QtGui.QMainWindow):
         'Update the icons for the app'
         iconpath = QtGui.QFileDialog.getOpenFileName(self, "Choose icon file",
                                                self.appdir,
-                                               "Images (*.png *.jpg *.bmp *.svg)");
+                                               "Images (*.png *.jpg *.bmp)");
         if iconpath != '':
             icon1 = QtGui.QIcon()
             icon1.addPixmap(QtGui.QPixmap(iconpath), QtGui.QIcon.Normal, QtGui.QIcon.Off)
