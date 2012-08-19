@@ -39,7 +39,6 @@ function package_osx {
     rm -rf output/OSX/
     hdiutil convert "output/raw.dmg" -format UDZO -o "$OUTPUTDMG"
     rm -f "output/raw.dmg"
-#hdiutil create -fs HFS+ -volname "BennuGD Packager" -srcfolder output/OSX/ "$OUTPUTDMG"
 }
 
 # Determine if we're on Linux or on Mac and set output dir
