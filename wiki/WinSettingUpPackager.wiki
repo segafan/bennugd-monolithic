@@ -1,0 +1,22 @@
+#summary Instructions on setting up the BennuGD Packager for Windows
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+The BennuGD Packager is a Python+Qt4 application that packages your BennuGD/Android games in an APK and, optionally, installs them to your device or an emulator. In order to get it working you need to perform a few extra steps that are detailed below. The program has been tested to work on Windows 7 64 bits but should run in other Windows versions, too.
+
+= Prerequisites =
+
+  * *Android SDK*
+  Get it from [http://developer.android.com/sdk/index.html here] and install it.
+  It might instruct you to install a Java version in your system, if you don't have any.
+  * *Microsoft Visual C++ 2008 Redistributable Package*
+  It's pretty common, but you might need it in systems where other programs haven't installed it.
+  Get it for [http://www.microsoft.com/downloads/en/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF  32bit] or [http://www.microsoft.com/downloads/en/details.aspx?FamilyID=BD2A6171-E2D6-4230-B809-9A8D7548C1B6 64bit] Windows systems.
+  * *ANT*
+  [Please note that future builds of the packager will include a version of ANT and this step will become unnecessary]
+  Get it from [http://ant.apache.org/bindownload.cgi here] and install it as described [http://www.techpitcher.com/installing-apache-ant-in-windows.html here].
+
+= Using the program =
+
+With this you should have everything needed to use the packager. Go to the downloads section and get the latest version for windows. Download and run the BennuGD Packager.exe (no installation required)
