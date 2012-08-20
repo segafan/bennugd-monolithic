@@ -1,0 +1,26 @@
+#summary Instructions on setting up the BennuGD Packager for Mac
+#labels Featured,Phase-Deploy
+
+= Introduction =
+
+The BennuGD Packager is a Python+Qt4 application that packages your BennuGD/Android games in an APK and, optionally, installs them to your device or an emulator.
+In order to get it working you need to perform a few extra steps that are detailed below.
+The program has been tested to work on OSX Mountain Lion (10.8) but should run in other systems, too.
+
+
+= Prerequisites =
+
+First of all, you need to install Python. MacOS X comes with Python 2.7.2 pre-installed but that doesn't seem to work with PyQtX (this note includes Mountain Lion).
+  * *Python 2.7.3*
+  Get it from [http://python.org/download/releases/2.7.3/ here] and install it. It won't conflict with your system's Python implementation, so don't worry.
+  * *PyQtX*
+  Get it from [http://sourceforge.net/projects/pyqtx/files/Complete/PyQtX%2B_py273_q482_pyqt494.pkg.mpkg.zip/download here]. It'll check that you install the above package, first.
+  * *Android SDK*
+  Get it from [http://developer.android.com/sdk/index.html here] and uncompress it to some place you like.
+  If it's the first time you launch a Java app in OSX, the system might ask you to confirm that you want to download the Java runtime. Please do so.
+
+The program also bundles a binary copy of ANT, but you won't [hopefully] notice.
+
+= Using the program =
+
+With this you should have everything needed to use the packager. Go to the downloads section and get the latest DMG; Uncompress and run the app from there.
