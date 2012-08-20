@@ -12,16 +12,13 @@ function package_osx {
     cp $WORKDIR/*.py .
     cp -r $WORKDIR/templates .
     cp $WORKDIR/res/icon.png res
+    cp -r $WORKDIR/3rdparty/ant_osx ant
     
     for i in $(find * | grep svn); do
         if [ -d $i ]; then
             rm -rf $i
         fi
     done
-    
-    # Patch main.py to point to python.org binaries
-    # THIS IS CRAP! but I cannot get cx_freeze to work on Mac
-    sed -i '' 's/\/usr\/bin\/env python/\/Library\/Frameworks\/Python.framework\/Versions\/2.7\/bin\/python/g' main.py
     
     # Finally, create DMG image with the app (We have to do this many times to be able to set an icon)
     cd ../../../
