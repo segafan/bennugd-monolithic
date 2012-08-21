@@ -241,7 +241,7 @@ class packager(QtGui.QMainWindow):
             fd.close()
             
             fd = open(os.path.join(workdir, 'default.properties'), 'w')
-            fd.write('target=android-10s\n' % self.sdkdir)
+            fd.write('target=android-10\n')
             fd.close()
             
             fd = open(os.path.join(workdir, 'res', 'values', 'strings.xml'), 'w')
@@ -261,9 +261,9 @@ class packager(QtGui.QMainWindow):
             # Tell ant to package the app and, optionally, install it
             os.chdir(workdir)
             if self.appinstall:
-                retval = subprocess.call(['ant', self.target, 'install'])
+                retval = subprocess.call(['ant'+self.batext, self.target, 'install'])
             else:
-                retval = subprocess.call(['ant', self.target])
+                retval = subprocess.call(['ant'+self.batext, self.target])
             
             # If the apk was generated correctly, asdk the user for the output
             # location
