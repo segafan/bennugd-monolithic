@@ -9,7 +9,7 @@ The BennuGD Packager is a Python+Qt4 application that packages your BennuGD/Andr
 
   * *Android SDK*
   Get it from [http://developer.android.com/sdk/index.html here] and install it.
-  It might instruct you to install a Java version in your system, if you don't have any.
+  It might instruct you to install a JDK version in your system, if you don't have any.
   * *Microsoft Visual C++ 2008 Redistributable Package*
   It's pretty common, but you might need it in systems where other programs haven't installed it.
   Get it for [http://www.microsoft.com/downloads/en/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF  32bit] or [http://www.microsoft.com/downloads/en/details.aspx?FamilyID=BD2A6171-E2D6-4230-B809-9A8D7548C1B6 64bit] Windows systems.
