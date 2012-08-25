@@ -15,7 +15,7 @@ First of all, you need to install Python. OS X comes with Python 2.7.2 pre-insta
   GateKeeper is a new measure in OSX Mountain Lion (10.8) which restricts which software you can use and which one you cannot. By default it won't let you use the BennuGD Packager as it's not a signed binary.
   Even if there appear to be measures to temporarily disable it for specific apps, just [http://blog.brettalton.com/2012/08/19/disable-gatekeeper-in-mac-os-x-10-8-mountain-lion/ disable it completely]. It's best for your freedom.
   * *Python 2.7.3*
-  Get it from [http://python.org/download/releases/2.7.3/ here] and install it. It won't conflict with your system's Python implementation, so don't worry.
+  The Python version bundled with OSX just won't work. Get the official version from [http://python.org/download/releases/2.7.3/ here] and install it. It won't conflict with your system's Python implementation, so don't worry.
   * *PyQtX*
   Get it from [http://sourceforge.net/projects/pyqtx/files/Complete/PyQtX%2B_py273_q482_pyqt494.pkg.mpkg.zip/download here]. It'll check that you install the above package, first.
   * *Android SDK*
