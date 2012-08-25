@@ -15,4 +15,8 @@ XCOPY templates output\win32\templates /E /I
 XCOPY res output\win32\res /E /I
 DEL output\win32\res\icon.icns
 DEL output\win32\res\BennuGD_Packager.tar.bz2
+MOVE "output\win32\res\Set Environment.bat" "output\win32\Set Environment.bat"
 MOVE output\win32\main.exe "output\win32\BennuGD Packager.exe"
+
+REM Copy binary ANT to the output folder
+XCOPY 3rdparty\ant_win output\win32\ant_win /E /I
