@@ -38,7 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		92A632CB13BD30AB00382D60 /* PBXContainerItemProxy */ = {
+		920719DE15EADABC002C2A74 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 92A632C413BD30AB00382D60 /* Ogg.xcodeproj */;
 			proxyType = 2;
@@ -77,7 +77,7 @@
 		9232A5E61396D56A00058FDB /* registry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = registry.h; path = ../../../registry.h; sourceTree = "<group>"; };
 		9232A5E71396D56A00058FDB /* window_lookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window_lookup.h; path = ../../../window_lookup.h; sourceTree = "<group>"; };
 		9232A5E81396D56A00058FDB /* window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = window.h; path = ../../../window.h; sourceTree = "<group>"; };
-		92A632C413BD30AB00382D60 /* Ogg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Ogg.xcodeproj; path = ../../../../libogg/src/iOS/Ogg/Ogg.xcodeproj; sourceTree = "<group>"; };
+		92A632C413BD30AB00382D60 /* Ogg.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Ogg.xcodeproj; path = ../../../libogg/src/iOS/Ogg/Ogg.xcodeproj; sourceTree = "<group>"; };
 		92A632CD13BD30BE00382D60 /* libOgg.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libOgg.a; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -94,6 +94,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		920719DB15EADABC002C2A74 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				920719DF15EADABC002C2A74 /* libOgg.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		9232A5A81396D47300058FDB = {
 			isa = PBXGroup;
 			children = (
@@ -179,14 +187,6 @@
 			name = Headers;
 			sourceTree = "<group>";
 		};
-		92A632C513BD30AB00382D60 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92A632CC13BD30AB00382D60 /* libOgg.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -250,7 +250,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 92A632C513BD30AB00382D60 /* Products */;
+					ProductGroup = 920719DB15EADABC002C2A74 /* Products */;
 					ProjectRef = 92A632C413BD30AB00382D60 /* Ogg.xcodeproj */;
 				},
 			);
@@ -262,11 +262,11 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		92A632CC13BD30AB00382D60 /* libOgg.a */ = {
+		920719DF15EADABC002C2A74 /* libOgg.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libOgg.a;
-			remoteRef = 92A632CB13BD30AB00382D60 /* PBXContainerItemProxy */;
+			remoteRef = 920719DE15EADABC002C2A74 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
