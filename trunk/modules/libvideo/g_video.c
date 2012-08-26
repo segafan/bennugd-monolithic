@@ -412,15 +412,15 @@ int gr_set_mode( int width, int height, int depth )
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 
         if ( !scale_screen ) return -1;
-        screen = SDL_CreateRGBSurface( sdl_flags, surface_width, surface_height,
+        screen = SDL_CreateRGBSurface( sdl_flags,
+                                       width,
+                                       height,
                                        scale_screen->format->BitsPerPixel,
                                        scale_screen->format->Rmask,
                                        scale_screen->format->Gmask,
                                        scale_screen->format->Bmask,
-                                       scale_screen->format->Amask);
-        
-        width == 0 ? width = scale_screen->w : 0;
-        height == 0 ? height = scale_screen->h : 0;
+                                       scale_screen->format->Amask
+                                     );
 
         /* scale tables */
 
