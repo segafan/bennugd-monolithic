@@ -12,13 +12,7 @@ import "mod_say"
 import "mod_file"
 import "mod_text"
 import "mod_wm"
-
-#ifndef FALSE_MULTITOUCH
 import "mod_multi"
-#else
-#define multi_info(a, b) 0
-#define multi_numpointers() 0
-#endif
 
 GLOBAL
 // Set to your liking
