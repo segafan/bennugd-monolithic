@@ -1,0 +1,14 @@
+Source: bennugd-packager
+Priority: optional
+Maintainer: Joseba García Etxebarria <joseba.gar@gmail.com>
+Build-Depends: debhelper (>= 7),
+Standards-Version: 3.9.2
+Section: libs
+
+Package: bennugd-packager
+Section: libs
+Architecture: any
+Depends: python, python-qt4, ant
+Description: BennuGD Packager
+ This package contains a packager for BennuGD games. Right now it works for 
+ packaging your games for Android
