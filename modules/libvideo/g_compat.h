@@ -33,7 +33,7 @@
 #include <SDL.h>
 
 #if !SDL_VERSION_ATLEAST(2,0,0)
-#error You shouldn't be building this in a SDL1.2 build
+#error You should not be building this in a SDL1.2 build
 #endif
 
 /**

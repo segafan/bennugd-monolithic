@@ -111,7 +111,7 @@
 		9232A58A1396CEF000058FDB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = 9232A58D1396CEF000058FDB /* Build configuration list for PBXProject "Ogg" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -181,6 +181,7 @@
 				DSTROOT = /tmp/Ogg.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ogg/Ogg-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -193,6 +194,7 @@
 				DSTROOT = /tmp/Ogg.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Ogg/Ogg-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -1285,7 +1285,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0440;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "SDL" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1473,6 +1473,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "testsdl-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -1490,6 +1491,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "testsdl-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = (
@@ -1508,6 +1510,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = PrepareXcodeProjectTemplate;
 			};
 			name = Debug;
@@ -1517,6 +1520,7 @@
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = PrepareXcodeProjectTemplate;
 				ZERO_LINK = NO;
 			};
@@ -1532,6 +1536,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				SDKROOT = iphoneos;
@@ -1548,6 +1553,7 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.1.3;
 				SDKROOT = iphoneos;
@@ -1559,6 +1565,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = SDL2;
 				SKIP_INSTALL = YES;
 			};
@@ -1568,6 +1575,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
+				GCC_THUMB_SUPPORT = NO;
 				PRODUCT_NAME = SDL2;
 				SKIP_INSTALL = YES;
 			};
