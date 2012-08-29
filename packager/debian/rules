@@ -35,9 +35,6 @@ build: build-stamp
 build-stamp: configure-stamp  
 	dh_testdir
 
-	# Add here commands to compile the package.
-	./make.sh
-
 	touch $@
 
 clean: 
@@ -46,7 +43,7 @@ clean:
 	rm -f build-stamp configure-stamp
 
 	# Add here commands to clean up after the build process.
-	rm -rf mod_multi.o mod_multi.so *stamp debian/*.log debian/tmp debian/*.substvars
+	rm -rf *stamp debian/*.log debian/tmp debian/*.substvars
 
 	dh_prep 
 
@@ -57,8 +54,13 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/tmp
-	mkdir -p debian/tmp/usr/lib/i386-linux-gnu/bennugd
-	cp mod_multi.so debian/tmp/usr/lib/i386-linux-gnu/bennugd
+	mkdir -p debian/tmp/usr/share/bennugd-packager/templates/android
+	mkdir -p debian/tmp/usr/share/bennugd-packager/res
+	mkdir -p debian/tmp/usr/share/applications
+	cp *.py debian/tmp/usr/share/bennugd-packager
+	cp -r templates/android/* debian/tmp/usr/share/bennugd-packager/templates/android
+	cp res/icon.png debian/tmp/usr/share/bennugd-packager/res
+	cp res/bennugd-packager.desktop debian/tmp/usr/share/applications
 
 
 # Build architecture-independent files here.
@@ -82,16 +84,16 @@ binary-arch: build install
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-	dh_installman
-	dh_link
-	dh_strip
+#	dh_installman
+#	dh_link
+#	dh_strip
 	dh_compress
 	dh_fixperms
 #	dh_perl
 #	dh_python
 #	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
+#	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
