@@ -94,7 +94,6 @@
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
-		9233FED81412D34A00D99C88 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9233FED71412D34A00D99C88 /* Icon.png */; };
 		926744DC15DC329A00411F01 /* iOSBennuGD_accelerometers.prg in Resources */ = {isa = PBXBuildFile; fileRef = 926744DB15DC329A00411F01 /* iOSBennuGD_accelerometers.prg */; };
 		927DAC64152BCF690057F110 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06B3152BC041001BDE54 /* libSDL2.a */; };
 		927DAC70152BCFD70057F110 /* bgload.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC6E152BCFD70057F110 /* bgload.c */; };
@@ -376,7 +375,6 @@
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
 		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
-		9233FED71412D34A00D99C88 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = ../android/assets/Icon.png; sourceTree = "<group>"; };
 		9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL2_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
 		926744DB15DC329A00411F01 /* iOSBennuGD_accelerometers.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD_accelerometers.prg; path = TestData/iOSBennuGD_accelerometers.prg; sourceTree = "<group>"; };
 		927DAC56152BCC2A0057F110 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
@@ -1145,7 +1143,6 @@
 				926744DB15DC329A00411F01 /* iOSBennuGD_accelerometers.prg */,
 				92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */,
 				92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */,
-				9233FED71412D34A00D99C88 /* Icon.png */,
 			);
 			name = "Game Resources";
 			sourceTree = "<group>";
@@ -1214,7 +1211,7 @@
 		921B480A1391CE07005F1832 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = 921B480D1391CE07005F1832 /* Build configuration list for PBXProject "BennuGD_iOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1318,7 +1315,6 @@
 			files = (
 				92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */,
 				92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */,
-				9233FED81412D34A00D99C88 /* Icon.png in Resources */,
 				926744DC15DC329A00411F01 /* iOSBennuGD_accelerometers.prg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1438,6 +1434,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1472,6 +1469,7 @@
 					"-lm",
 					"-lz",
 				);
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1481,6 +1479,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COMPRESS_PNG_FILES = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1514,6 +1513,7 @@
 					"-lm",
 					"-lz",
 				);
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -1529,8 +1529,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					COLORSPACE_BGR,
-					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
 					__BGDI__,
@@ -1555,7 +1553,7 @@
 					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1569,7 +1567,7 @@
 				);
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1580,13 +1578,10 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					COLORSPACE_BGR,
-					SDL_NO_COMPAT,
 					__MONOLITHIC__,
 					__BGDRTM__,
 					__BGDI__,
@@ -1611,7 +1606,7 @@
 					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
@@ -1625,8 +1620,7 @@
 				);
 				PRODUCT_NAME = iOSBennuGD;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};

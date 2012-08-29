@@ -66,8 +66,8 @@ static int SetupWindowData(_THIS, SDL_Window *window, UIWindow *uiwindow, SDL_bo
         window->y = 0;
 
         /* Get frame dimensions in pixels */
-        int width = (int)(uiwindow.frame.size.width * displaymodedata->scale);
-        int height = (int)(uiwindow.frame.size.height * displaymodedata->scale);
+        int width = (int)(uiwindow.frame.size.width);
+        int height = (int)(uiwindow.frame.size.height);
 
         /* We can pick either width or height here and we'll rotate the
            screen to match, so we pick the closest to what we wanted.
@@ -241,8 +241,8 @@ UIKit_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display
     }
 
     /* Get frame dimensions in pixels */
-    int width = (int)(uiwindow.frame.size.width * displaymodedata->scale);
-    int height = (int)(uiwindow.frame.size.height * displaymodedata->scale);
+    int width = (int)(uiwindow.frame.size.width);
+    int height = (int)(uiwindow.frame.size.height);
 
     /* We can pick either width or height here and we'll rotate the
        screen to match, so we pick the closest to what we wanted.

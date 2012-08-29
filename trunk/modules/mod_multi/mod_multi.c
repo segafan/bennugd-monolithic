@@ -27,6 +27,7 @@
 #include <bgddl.h>
 #include <libvideo.h>
 #include <g_video.h>
+#include <g_compat.h>
 #include <libmouse_symbols.h>
 #include <SDL.h>
 #include "bgddl.h"
@@ -181,8 +182,10 @@ int get_sdlfinger_index(SDL_FingerID finger) {
 /* Process SDL events looking for multitouch-related ones */
 void parse_input_events() {
     int n=0;
-    double width=0, height=0;
     float x=0.0, y=0.0;
+    double width=0, height=0;
+    double w_width=0, w_height=0;
+    SDL_DisplayMode mode;
     SDL_Event e;
     SDL_Touch *state;
     
@@ -195,7 +198,21 @@ void parse_input_events() {
         width  = screen->w;
         height = screen->h;
     } else {
-        width = height = 0;
+        // This'll avoid division-by-zero below
+        SDL_Log("Unexpected condition getting resolution, refusing to parse events");
+        return;
+    }
+    
+    // Get the size of the SDL window to handle the case when the
+    // bennugd window doesn't use all the available screen space
+    if (SDL_GetWindowDisplayMode(window, &mode)) {
+        // Nasty error
+        SDL_Log("Couldn't get current window size, using defaults");
+        w_width = width;
+        w_height = height;
+    } else {
+        w_width = mode.w;
+        w_height = mode.h;
     }
     
     // Parse the SDL event
@@ -215,8 +232,8 @@ void parse_input_events() {
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                x = ( (float)e.tfinger.x / state->xres ) * width;
-                y = ( (float)e.tfinger.y / state->yres ) * height;
+                x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
+                y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
                 pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
                 
                 // Convert the touch location taking scaling/rotations into account
@@ -244,8 +261,8 @@ void parse_input_events() {
                     break;
 
                 // Update the data about this finger's position
-                x = ( (float)e.tfinger.x / state->xres ) * width;
-                y = ( (float)e.tfinger.y / state->yres ) * height;
+                x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
+                y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
                 
                 // Convert the touch location taking scaling/rotations into account
