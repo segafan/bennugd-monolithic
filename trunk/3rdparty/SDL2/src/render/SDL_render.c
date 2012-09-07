@@ -1373,13 +1373,43 @@ SDL_DestroyRenderer(SDL_Renderer * renderer)
         SDL_DestroyTexture(renderer->textures);
     }
 
-    SDL_SetWindowData(renderer->window, SDL_WINDOWRENDERDATA, NULL);
+    if (renderer->window) {
+        SDL_SetWindowData(renderer->window, SDL_WINDOWRENDERDATA, NULL);
+    }
 
     /* It's no longer magical... */
     renderer->magic = NULL;
 
     /* Free the renderer instance */
     renderer->DestroyRenderer(renderer);
+}
+
+int SDL_GL_BindTexture(SDL_Texture *texture, float *texw, float *texh)
+{
+    SDL_Renderer *renderer;
+
+    CHECK_TEXTURE_MAGIC(texture, -1);
+    renderer = texture->renderer;
+    if (renderer && renderer->GL_BindTexture) {
+        return renderer->GL_BindTexture(renderer, texture, texw, texh);
+    }
+
+    SDL_Unsupported();
+    return -1;
+}
+
+int SDL_GL_UnbindTexture(SDL_Texture *texture)
+{
+    SDL_Renderer *renderer;
+
+    CHECK_TEXTURE_MAGIC(texture, -1);
+    renderer = texture->renderer;
+    if (renderer && renderer->GL_UnbindTexture) {
+        return renderer->GL_UnbindTexture(renderer, texture);
+    }
+
+    SDL_Unsupported();
+    return -1;
 }
 
 /* vi: set ts=4 sw=4 expandtab: */
