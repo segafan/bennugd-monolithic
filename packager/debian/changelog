@@ -1,3 +1,9 @@
+bennugd-packager (1.0.2) precise; urgency=low
+
+  * More packaging fixes
+
+ -- Joseba García Etxebarria <joseba.gar@gmail.com>  Fri, 07 Sep 2012 20:17:36 +0200
+
 bennugd-packager (1.0.1) precise; urgency=low
 
   * Packaging fixes
