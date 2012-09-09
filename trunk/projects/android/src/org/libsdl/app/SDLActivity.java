@@ -74,6 +74,10 @@ public class SDLActivity extends Activity {
         mSurface = new SDLSurface(getApplication());
         setContentView(mSurface);
         SurfaceHolder holder = mSurface.getHolder();
+        
+        // Don't allow the screen lock
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     }
 
     // Events
