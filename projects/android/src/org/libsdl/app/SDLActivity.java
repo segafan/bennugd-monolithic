@@ -18,7 +18,6 @@ import android.text.method.*;
 import android.text.*;
 import android.media.*;
 import android.hardware.*;
-import android.content.*;
 
 import java.lang.*;
 
