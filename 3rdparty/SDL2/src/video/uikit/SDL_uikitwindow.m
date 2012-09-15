@@ -66,8 +66,8 @@ static int SetupWindowData(_THIS, SDL_Window *window, UIWindow *uiwindow, SDL_bo
         window->y = 0;
 
         /* Get frame dimensions in pixels */
-        int width = (int)(uiwindow.frame.size.width);
-        int height = (int)(uiwindow.frame.size.height);
+        int width = (int)(uiwindow.frame.size.width * displaymodedata->scale);
+        int height = (int)(uiwindow.frame.size.height * displaymodedata->scale);
 
         /* We can pick either width or height here and we'll rotate the
            screen to match, so we pick the closest to what we wanted.
@@ -226,6 +226,16 @@ UIKit_HideWindow(_THIS, SDL_Window * window)
 }
 
 void
+UIKit_RaiseWindow(_THIS, SDL_Window * window)
+{
+    // We don't currently offer a concept of "raising" the SDL window, since
+    //  we only allow one per display, in the iOS fashion.
+    // However, we use this entry point to rebind the context to the view
+    //  during OnWindowRestored processing.
+    _this->GL_MakeCurrent(_this, _this->current_glwin, _this->current_glctx);
+}
+
+void
 UIKit_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display, SDL_bool fullscreen)
 {
     SDL_DisplayData *displaydata = (SDL_DisplayData *) display->driverdata;
@@ -241,8 +251,8 @@ UIKit_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display
     }
 
     /* Get frame dimensions in pixels */
-    int width = (int)(uiwindow.frame.size.width);
-    int height = (int)(uiwindow.frame.size.height);
+    int width = (int)(uiwindow.frame.size.width * displaymodedata->scale);
+    int height = (int)(uiwindow.frame.size.height * displaymodedata->scale);
 
     /* We can pick either width or height here and we'll rotate the
        screen to match, so we pick the closest to what we wanted.
