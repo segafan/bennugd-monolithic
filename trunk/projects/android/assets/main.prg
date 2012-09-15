@@ -53,11 +53,11 @@ int song=0, num_fingers=0, i=0;
 
 Begin
     // Get the real screen resolution we're running at
-    width = graphic_info(0, 0, G_WIDTH)/2;
-    height = graphic_info(0, 0, G_HEIGHT)/2;
+    width = graphic_info(0, 0, G_WIDTH);
+    height = graphic_info(0, 0, G_HEIGHT);
     // Set scale_resolution to width/2xheight/2
-    scale_resolution = width*10000+height;
-    set_mode(width, height, 32);
+    //scale_resolution = width*10000+height;
+    //set_mode(width, height, 32);
     
     write(0, 0,  0, 0, "Width: "+width+" Height:"+height);
     write(0, 0, 10, 0, "scale_resolution: 0"+scale_resolution);

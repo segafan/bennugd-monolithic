@@ -107,11 +107,6 @@ static SDL_VideoDevice *_this = NULL;
         return retval; \
     }
 
-#define INVALIDATE_GLCONTEXT() \
-    _this->current_glwin = NULL; \
-    _this->current_glctx = NULL;
-
-
 /* Support for framebuffer emulation using an accelerated renderer */
 
 #define SDL_WINDOWTEXTUREDATA   "_SDL_WindowTextureData"
@@ -1496,6 +1491,24 @@ SDL_GetWindowPosition(SDL_Window * window, int *x, int *y)
 }
 
 void
+SDL_SetWindowBordered(SDL_Window * window, SDL_bool bordered)
+{
+    CHECK_WINDOW_MAGIC(window, );
+    if (!(window->flags & SDL_WINDOW_FULLSCREEN)) {
+        const int want = (bordered != SDL_FALSE);  /* normalize the flag. */
+        const int have = ((window->flags & SDL_WINDOW_BORDERLESS) == 0);
+        if ((want != have) && (_this->SetWindowBordered)) {
+            if (want) {
+                window->flags &= ~SDL_WINDOW_BORDERLESS;
+            } else {
+                window->flags |= SDL_WINDOW_BORDERLESS;
+            }
+            _this->SetWindowBordered(_this, window, (SDL_bool) want);
+        }
+    }
+}
+
+void
 SDL_SetWindowSize(SDL_Window * window, int w, int h)
 {
     CHECK_WINDOW_MAGIC(window, );
@@ -1865,14 +1878,12 @@ SDL_GetWindowGrab(SDL_Window * window)
 void
 SDL_OnWindowShown(SDL_Window * window)
 {
-    INVALIDATE_GLCONTEXT();
     SDL_OnWindowRestored(window);
 }
 
 void
 SDL_OnWindowHidden(SDL_Window * window)
 {
-    INVALIDATE_GLCONTEXT();
     SDL_UpdateFullscreenMode(window, SDL_FALSE);
 }
 
