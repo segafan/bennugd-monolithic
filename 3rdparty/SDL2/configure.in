@@ -450,7 +450,7 @@ AC_HELP_STRING([--enable-mmx], [use MMX assembly routines [[default=yes]]]),
     fi
 
     AC_ARG_ENABLE(3dnow,
-AC_HELP_STRING([--enable-3dnow], [use MMX assembly routines [[default=yes]]]),
+AC_HELP_STRING([--enable-3dnow], [use 3DNow! assembly routines [[default=yes]]]),
                   , enable_3dnow=yes)
     if test x$enable_3dnow = xyes; then
         save_CFLAGS="$CFLAGS"
@@ -459,12 +459,14 @@ AC_HELP_STRING([--enable-3dnow], [use MMX assembly routines [[default=yes]]]),
         amd3dnow_CFLAGS="-m3dnow"
         CFLAGS="$save_CFLAGS $amd3dnow_CFLAGS"
 
-        AC_TRY_COMPILE([
+        AC_TRY_LINK([
         #include <mm3dnow.h>
         #ifndef __3dNOW__
         #error Assembler CPP flag not enabled
         #endif
         ],[
+        void *p = 0;
+        _m_prefetch(p);
         ],[
         have_gcc_3dnow=yes
         ])
@@ -1010,7 +1012,10 @@ AC_HELP_STRING([--enable-video-x11], [use X11 video driver [[default=yes]]]),
         case "$host" in
             *-*-darwin*)
                 # This isn't necessary for X11, but fixes GLX detection
-                if test "x$x_includes" = xNONE && test "x$x_libraries" = xNONE; then
+                if test "x$x_includes" = xNONE && \
+                   test "x$x_libraries" = xNONE && \
+                   test -d /usr/X11R6/include && \
+                   test -d /usr/X11R6/lib; then
                     x_includes="/usr/X11R6/include"
                     x_libraries="/usr/X11R6/lib"
                 fi

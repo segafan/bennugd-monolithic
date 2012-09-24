@@ -105,7 +105,13 @@ SDL_GLContext UIKit_GL_CreateContext(_THIS, SDL_Window * window)
     UIWindow *uiwindow = data->uiwindow;
 
     /* construct our view, passing in SDL's OpenGL configuration data */
-    view = [[SDL_uikitopenglview alloc] initWithFrame: [uiwindow bounds]
+    CGRect frame;
+    if (window->flags & (SDL_WINDOW_FULLSCREEN|SDL_WINDOW_BORDERLESS)) {
+        frame = [displaydata->uiscreen bounds];
+    } else {
+        frame = [displaydata->uiscreen applicationFrame];
+    }
+    view = [[SDL_uikitopenglview alloc] initWithFrame: frame
                                     scale: displaymodedata->scale
                                     retainBacking: _this->gl_config.retained_backing
                                     rBits: _this->gl_config.red_size
@@ -125,9 +131,13 @@ SDL_GLContext UIKit_GL_CreateContext(_THIS, SDL_Window * window)
         [view->viewcontroller setView:view];
         [view->viewcontroller retain];
     }
-
-    /* add the view to our window */
-    [uiwindow addSubview: view ];
+    
+    // The view controller needs to be the root in order to control rotation on iOS 6.0
+    if (uiwindow.rootViewController == nil) {
+        uiwindow.rootViewController = view->viewcontroller;
+    } else {
+        [uiwindow addSubview: view];
+    }
 
     if ( UIKit_GL_MakeCurrent(_this, window, view) < 0 ) {
         UIKit_GL_DeleteContext(_this, view);
