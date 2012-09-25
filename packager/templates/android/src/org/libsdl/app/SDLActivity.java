@@ -18,7 +18,6 @@ import android.text.method.*;
 import android.text.*;
 import android.media.*;
 import android.hardware.*;
-import android.content.*;
 
 import java.lang.*;
 
@@ -74,6 +73,10 @@ public class SDLActivity extends Activity {
         mSurface = new SDLSurface(getApplication());
         setContentView(mSurface);
         SurfaceHolder holder = mSurface.getHolder();
+        
+        // Don't allow the screen lock
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     }
 
     // Events
@@ -459,6 +462,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Sensors
     private static SensorManager mSensorManager;
 
+    // Keep track of the surface size to normalize touch events
+    private static float mWidth, mHeight;
+
     // Startup    
     public SDLSurface(Context context) {
         super(context);
@@ -470,7 +476,11 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setOnKeyListener(this); 
         setOnTouchListener(this);   
 
-        mSensorManager = (SensorManager)context.getSystemService("sensor");  
+        mSensorManager = (SensorManager)context.getSystemService("sensor");
+
+        // Some arbitrary defaults to avoid a potential division by zero
+        mWidth = 1.0f;
+        mHeight = 1.0f;
     }
 
     // Called when we have a valid drawing surface
@@ -539,6 +549,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             Log.v("SDL", "pixel format unknown " + format);
             break;
         }
+
+        mWidth = (float) width;
+        mHeight = (float) height;
         SDLActivity.onNativeResize(width, height, sdlFormat);
         Log.v("SDL", "Window size:" + width + "x"+height);
 
@@ -554,9 +567,16 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
         
-        // Ignore volumen keys so they're handled by Android
+        // Send volume key signal but return false, so that
+        // Android will set the volume for our app
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
             keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                SDLActivity.onNativeKeyDown(keyCode);
+            }
+            else if (event.getAction() == KeyEvent.ACTION_UP) {
+                SDLActivity.onNativeKeyUp(keyCode);
+            }
 			return false;
 		}
 
@@ -584,8 +604,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
              int pointerFingerId = event.getPointerId(actionPointerIndex);
              int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
 
-             float x = event.getX(actionPointerIndex);
-             float y = event.getY(actionPointerIndex);
+             float x = event.getX(actionPointerIndex) / mWidth;
+             float y = event.getY(actionPointerIndex) / mHeight;
              float p = event.getPressure(actionPointerIndex);
 
              if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
@@ -593,8 +613,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                 // changed since prev event.
                 for (int i = 0; i < pointerCount; i++) {
                     pointerFingerId = event.getPointerId(i);
-                    x = event.getX(i);
-                    y = event.getY(i);
+                    x = event.getX(i) / mWidth;
+                    y = event.getY(i) / mHeight;
                     p = event.getPressure(i);
                     SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
                 }
