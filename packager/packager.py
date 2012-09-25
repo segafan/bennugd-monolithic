@@ -237,7 +237,8 @@ class packager(QtGui.QMainWindow):
             
             # Change what's needed to be changed in the template
             fd = open(os.path.join(workdir, 'local.properties'), 'w')
-            fd.write('sdk.dir=%s\n' % self.sdkdir)
+			# We want the UNIX-like PATH
+            fd.write('sdk.dir=%s\n' % self.sdkdir.replace('\\', '/'))
             fd.close()
             
             fd = open(os.path.join(workdir, 'default.properties'), 'w')
