@@ -8,7 +8,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../libtremor/ \
 	$(LOCAL_PATH)/../libtremor/ogg/ \
 	$(LOCAL_PATH)/../SDL2/include/ \
-	$(LOCAL_PATH)/../../projects/android/jni/mikmod/include/ \
+	$(LOCAL_PATH)/../mikmod/include/ \
 
 LOCAL_CFLAGS := -DWAV_MUSIC -DOGG_MUSIC -DOGG_USE_TREMOR -DMOD_MUSIC
 
