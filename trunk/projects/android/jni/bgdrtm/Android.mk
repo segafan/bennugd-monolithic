@@ -8,8 +8,8 @@ LOCAL_MODULE := bgdrtm
 
 LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
-	$(LOCAL_PATH)/../../../../3rdparty/SDL2/include/ \
-	$(LOCAL_PATH)/../../../../3rdparty/SDL2_mixer/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/SDL_mixer/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libpng/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
