@@ -623,8 +623,8 @@ SDL_GetDisplayBounds(int displayIndex, SDL_Rect * rect)
             SDL_GetDisplayBounds(displayIndex-1, rect);
             rect->x += rect->w;
         }
-        rect->w = display->desktop_mode.w;
-        rect->h = display->desktop_mode.h;
+        rect->w = display->current_mode.w;
+        rect->h = display->current_mode.h;
     }
     return 0;
 }
@@ -1978,7 +1978,7 @@ SDL_DestroyWindow(SDL_Window * window)
     /* make no context current if this is the current context window. */
     if (window->flags & SDL_WINDOW_OPENGL) {
         if (_this->current_glwin == window) {
-            SDL_GL_MakeCurrent(NULL, NULL);
+            SDL_GL_MakeCurrent(window, NULL);
         }
     }
 
@@ -2639,7 +2639,7 @@ SDL_GL_SwapWindow(SDL_Window * window)
 void
 SDL_GL_DeleteContext(SDL_GLContext context)
 {
-    if (!_this || !_this->gl_data || !context) {
+    if (!_this || !context) {
         return;
     }
     _this->GL_MakeCurrent(_this, NULL, NULL);

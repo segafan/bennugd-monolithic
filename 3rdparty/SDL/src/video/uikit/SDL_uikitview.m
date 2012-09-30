@@ -22,16 +22,17 @@
 
 #if SDL_VIDEO_DRIVER_UIKIT
 
-#import "SDL_uikitview.h"
+#include "SDL_uikitview.h"
 
 #include "../../events/SDL_keyboard_c.h"
 #include "../../events/SDL_mouse_c.h"
 #include "../../events/SDL_touch_c.h"
 
 #if SDL_IPHONE_KEYBOARD
-#import "keyinfotable.h"
-#import "SDL_uikitappdelegate.h"
-#import "SDL_uikitwindow.h"
+#include "keyinfotable.h"
+#include "SDL_uikitappdelegate.h"
+#include "SDL_uikitmodes.h"
+#include "SDL_uikitwindow.h"
 #endif
 
 @implementation SDL_uikitview
@@ -84,13 +85,14 @@
     SDL_Window *window = self->viewcontroller.window;
     SDL_VideoDisplay *display = SDL_GetDisplayForWindow(window);
     SDL_DisplayModeData *displaymodedata = (SDL_DisplayModeData *) display->current_mode.driverdata;
-    point.x *= displaymodedata->scale;
-    point.y *= displaymodedata->scale;
     
     if (normalize) {
         CGRect bounds = [self bounds];
         point.x /= bounds.size.width;
         point.y /= bounds.size.height;
+    } else {
+        point.x *= displaymodedata->scale;
+        point.y *= displaymodedata->scale;
     }
     return point;
 }
