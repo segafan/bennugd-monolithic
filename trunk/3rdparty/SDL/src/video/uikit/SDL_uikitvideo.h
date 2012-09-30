@@ -23,23 +23,7 @@
 
 #include <UIKit/UIKit.h>
 
-extern BOOL SDL_UIKit_supports_multiple_displays;
-
-typedef struct SDL_DisplayData SDL_DisplayData;
-
-struct SDL_DisplayData
-{
-    UIScreen *uiscreen;
-    CGFloat scale;
-};
-
-typedef struct SDL_DisplayModeData SDL_DisplayModeData;
-
-struct SDL_DisplayModeData
-{
-    UIScreenMode *uiscreenmode;
-    CGFloat scale;
-};
+#include "../SDL_sysvideo.h"
 
 #endif /* _SDL_uikitvideo_h */
 
