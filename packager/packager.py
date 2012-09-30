@@ -26,6 +26,14 @@ class packager(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.ui.iconprovider = QtGui.QFileIconProvider()
         
+        # Now, try to ensure ANT is installed
+        if not os.path.isdir( str(os.getenv('ANT_HOME')) ):
+            QtGui.QMessageBox.critical(self, 'ANT not found',
+                "You don't appear to have ANT correctly installed in your system, you can "+
+                "install it with winant-install-v7.exe from the BennuGD Packager dir.")
+            sys.exit()
+            
+        
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
         self.sdkdir = self.prefs.get('sdkdir')
