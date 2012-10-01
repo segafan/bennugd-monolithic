@@ -27,7 +27,7 @@ class packager(QtGui.QMainWindow):
         self.ui.iconprovider = QtGui.QFileIconProvider()
         
         # Now, try to ensure ANT is installed
-        if not os.path.isdir( str(os.getenv('ANT_HOME')) ):
+        if sys.platform.startswith('win') and not os.path.isdir( str(os.getenv('ANT_HOME')) ):
             QtGui.QMessageBox.critical(self, 'ANT not found',
                 "You don't appear to have ANT correctly installed in your system, you can "+
                 "install it with winant-install-v7.exe from the BennuGD Packager dir.")
@@ -245,20 +245,63 @@ class packager(QtGui.QMainWindow):
             
             # Change what's needed to be changed in the template
             fd = open(os.path.join(workdir, 'local.properties'), 'w')
-			# We want the UNIX-like PATH
+            # We want the UNIX-like PATH
             fd.write('sdk.dir=%s\n' % self.sdkdir.replace('\\', '/'))
             fd.close()
             
+            # Create default.properties
             fd = open(os.path.join(workdir, 'default.properties'), 'w')
             fd.write('target=android-10\n')
             fd.close()
             
+            # Create strings.xml
             fd = open(os.path.join(workdir, 'res', 'values', 'strings.xml'), 'w')
             fd.write('<?xml version="1.0" encoding="utf-8"?>\n')
             fd.write('<resources>\n')
             fd.write('    <string name="app_name">%s</string>\n' % self.appname)
             fd.write('</resources>\n')
             fd.close()
+            
+            # Create the directory with the Java wrapper
+            wrapper_path = os.path.join(workdir, self.appdescriptor.replace('.', '/'))
+            wrapper_path = os.path.normpath(wrapper_path)
+            os.makedirs(wrapper_path)
+            fd = open(os.path.join(wrapper_path, 'MyGame.java'))
+            fd.write('package %s;\n' % self.appdescriptor)
+            fd.write('import org.libsdl.app.SDLActivity;\n')
+            fd.write('import android.os.*;\n')
+            fd.write('public class MyGame extends SDLActivity {\n')
+            fd.write('    protected void onCreate(Bundle savedInstanceState) {\n')
+            fd.write('        super.onCreate(savedInstanceState);\n')
+            fd.write('    }\n')
+            fd.write('    protected void onDestroy() {\n')
+            fd.write('        super.onDestroy();\n')
+            fd.write('    }\n')
+            fd.write('}\n')
+            fd.close()
+            
+            # Create AndroidManifest.xml
+            fd = open(os.path.join(workdir, 'AndroidManifest.xml'))
+            fd.write('<?xml version="1.0" encoding="utf-8"?>\n')
+            fd.write('<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n')
+            fd.write('      package="org.bennugd.samplegame"\n')
+            fd.write('      android:versionCode="1"\n')
+            fd.write('      android:versionName="1.0">\n')
+            fd.write('        <application android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">\n')
+            fd.write('        <activity android:name="MyGame"\n')
+            fd.write('                  android:label="@string/app_name">\n')
+            fd.write('            <intent-filter>\n')
+            fd.write('                <action android:name="android.intent.action.MAIN" />\n')
+            fd.write('                <category android:name="android.intent.category.LAUNCHER" />\n')
+            fd.write('            </intent-filter>\n')
+            fd.write('        </activity>\n')
+            fd.write('    </application>\n')
+            fd.write('    <uses-sdk android:minSdkVersion="9" />\n')
+            fd.write('    <uses-feature android:glEsVersion="0x00020000" />\n')
+            fd.write('    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n')
+            fd.write('</manifest>\n')
+            fd.close()
+            
             
             self.ui.icon_hdpi.icon().pixmap(72, 72).save(
                         os.path.join(workdir, 'res', 'drawable-hdpi', 'icon.png'))

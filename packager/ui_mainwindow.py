@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Sat Aug 18 22:07:59 2012
-#      by: PyQt4 UI code generator 4.9.4
+# Created: Mon Oct  1 17:55:42 2012
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -63,7 +63,9 @@ class Ui_MainWindow(object):
         self.label_applabel.setObjectName(_fromUtf8("label_applabel"))
         self.horizontalLayout_4.addWidget(self.label_applabel)
         self.line_applabel = QtGui.QLineEdit(self.centralwidget)
-        self.line_applabel.setEnabled(False)
+        self.line_applabel.setEnabled(True)
+        self.line_applabel.setStatusTip(_fromUtf8(""))
+        self.line_applabel.setText(_fromUtf8(""))
         self.line_applabel.setReadOnly(False)
         self.line_applabel.setObjectName(_fromUtf8("line_applabel"))
         self.horizontalLayout_4.addWidget(self.line_applabel)
@@ -77,6 +79,17 @@ class Ui_MainWindow(object):
         self.line_appname.setObjectName(_fromUtf8("line_appname"))
         self.horizontalLayout_5.addWidget(self.line_appname)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.horizontalLayout_9 = QtGui.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName(_fromUtf8("horizontalLayout_9"))
+        self.label_orientation = QtGui.QLabel(self.centralwidget)
+        self.label_orientation.setObjectName(_fromUtf8("label_orientation"))
+        self.horizontalLayout_9.addWidget(self.label_orientation)
+        self.combo_orientation = QtGui.QComboBox(self.centralwidget)
+        self.combo_orientation.setObjectName(_fromUtf8("combo_orientation"))
+        self.combo_orientation.addItem(_fromUtf8(""))
+        self.combo_orientation.addItem(_fromUtf8(""))
+        self.horizontalLayout_9.addWidget(self.combo_orientation)
+        self.verticalLayout.addLayout(self.horizontalLayout_9)
         self.label_icons = QtGui.QLabel(self.centralwidget)
         self.label_icons.setObjectName(_fromUtf8("label_icons"))
         self.verticalLayout.addWidget(self.label_icons)
@@ -151,7 +164,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -200,10 +213,13 @@ class Ui_MainWindow(object):
         self.button_appdirselector.setText(QtGui.QApplication.translate("MainWindow", "Select game directory...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_applabel.setText(QtGui.QApplication.translate("MainWindow", "App descriptor:", None, QtGui.QApplication.UnicodeUTF8))
         self.line_applabel.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Unique ID for your app, should include your company\'s name and you game\'s name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_applabel.setText(QtGui.QApplication.translate("MainWindow", "org.libsdl.app", None, QtGui.QApplication.UnicodeUTF8))
+        self.line_applabel.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "com.yourcompany.gamename", None, QtGui.QApplication.UnicodeUTF8))
         self.label_appname.setText(QtGui.QApplication.translate("MainWindow", "App name:", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appname.setToolTip(QtGui.QApplication.translate("MainWindow", "User-visible name for your app", None, QtGui.QApplication.UnicodeUTF8))
         self.line_appname.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Name to be shown to the user", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_orientation.setText(QtGui.QApplication.translate("MainWindow", "Orientation:", None, QtGui.QApplication.UnicodeUTF8))
+        self.combo_orientation.setItemText(0, QtGui.QApplication.translate("MainWindow", "Portrait", None, QtGui.QApplication.UnicodeUTF8))
+        self.combo_orientation.setItemText(1, QtGui.QApplication.translate("MainWindow", "Landscape", None, QtGui.QApplication.UnicodeUTF8))
         self.label_icons.setText(QtGui.QApplication.translate("MainWindow", "Icons:", None, QtGui.QApplication.UnicodeUTF8))
         self.icon_hdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for high resolution displays", None, QtGui.QApplication.UnicodeUTF8))
         self.icon_mdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for medium resolution displays", None, QtGui.QApplication.UnicodeUTF8))

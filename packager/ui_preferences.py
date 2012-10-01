@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_preferences.ui'
 #
-# Created: Mon Aug  6 05:53:29 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Mon Oct  1 17:58:06 2012
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,9 +17,9 @@ except AttributeError:
 class Ui_Preferences(object):
     def setupUi(self, Preferences):
         Preferences.setObjectName(_fromUtf8("Preferences"))
-        Preferences.resize(475, 210)
+        Preferences.resize(475, 122)
         self.layoutWidget = QtGui.QWidget(Preferences)
-        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 451, 181))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 451, 101))
         self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setMargin(0)
