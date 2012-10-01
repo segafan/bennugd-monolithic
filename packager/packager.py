@@ -203,7 +203,7 @@ class packager(QtGui.QMainWindow):
             QtGui.QMessageBox.critical(self, 'Game dir not readable', 'Cannot read game dir.')
             return
         
-        self.appdescriptor = self.ui.line_applabel.text()
+        self.appdescriptor = str( self.ui.line_applabel.text() )
         if self.appdescriptor == '':
             QtGui.QMessageBox.critical(self, 'App descriptor empty', 'The app descriptor cannot be left empty.')
             return
@@ -212,6 +212,9 @@ class packager(QtGui.QMainWindow):
         if self.appname == '':
             QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
             return
+        
+        # Pack for landscape or portrait
+        self.apporientation = self.ui.combo_orientation.currentText()
         
         # Pack for debug or release
         self.apptarget = self.ui.combo_debug.currentText()
@@ -263,10 +266,11 @@ class packager(QtGui.QMainWindow):
             fd.close()
             
             # Create the directory with the Java wrapper
-            wrapper_path = os.path.join(workdir, self.appdescriptor.replace('.', '/'))
+            wrapper_path = os.path.join(workdir, 'src', self.appdescriptor.replace('.', '/'))
             wrapper_path = os.path.normpath(wrapper_path)
+            print "Creating %s" % wrapper_path
             os.makedirs(wrapper_path)
-            fd = open(os.path.join(wrapper_path, 'MyGame.java'))
+            fd = open(os.path.join(wrapper_path, 'MyGame.java'), 'w')
             fd.write('package %s;\n' % self.appdescriptor)
             fd.write('import org.libsdl.app.SDLActivity;\n')
             fd.write('import android.os.*;\n')
@@ -281,14 +285,16 @@ class packager(QtGui.QMainWindow):
             fd.close()
             
             # Create AndroidManifest.xml
-            fd = open(os.path.join(workdir, 'AndroidManifest.xml'))
+            fd = open(os.path.join(workdir, 'AndroidManifest.xml'), 'w')
             fd.write('<?xml version="1.0" encoding="utf-8"?>\n')
             fd.write('<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n')
-            fd.write('      package="org.bennugd.samplegame"\n')
+            fd.write('      package="%s"\n' % self.appdescriptor)
             fd.write('      android:versionCode="1"\n')
             fd.write('      android:versionName="1.0">\n')
             fd.write('        <application android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">\n')
             fd.write('        <activity android:name="MyGame"\n')
+            if self.apporientation == 'Landscape':
+                fd.write('                  android:screenOrientation="sensorLandscape"\n')
             fd.write('                  android:label="@string/app_name">\n')
             fd.write('            <intent-filter>\n')
             fd.write('                <action android:name="android.intent.action.MAIN" />\n')
@@ -296,7 +302,7 @@ class packager(QtGui.QMainWindow):
             fd.write('            </intent-filter>\n')
             fd.write('        </activity>\n')
             fd.write('    </application>\n')
-            fd.write('    <uses-sdk android:minSdkVersion="9" />\n')
+            fd.write('    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="10"/>\n')
             fd.write('    <uses-feature android:glEsVersion="0x00020000" />\n')
             fd.write('    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n')
             fd.write('</manifest>\n')
