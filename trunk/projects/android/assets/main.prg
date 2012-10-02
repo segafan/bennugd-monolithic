@@ -12,6 +12,7 @@ import "mod_file"
 import "mod_text"
 import "mod_wm"
 import "mod_multi"
+import "mod_mouse"
 
 GLOBAL
 // Set to your liking
@@ -77,12 +78,18 @@ Begin
         num_fingers = multi_numpointers();
         
         for(i=0; i<10; i++)
-            if(multi_info(i, "ACTIVE") > 0)
+            /*if(multi_info(i, "ACTIVE") > 0)
                 draw_fcircle(multi_info(i, "X"),
                              multi_info(i, "Y"), 5);
                 say_fast("Drawing fcircle for pointer "+i+" @ "+
-                             multi_info(i, "Y")+
-                         "x"+multi_info(i, "X")+
+                             multi_info(i, "X")+
+                         "x"+multi_info(i, "Y")+
+                         " active:"+multi_info(i, "ACTIVE"));
+            end;*/
+            if(mouse.left)
+                draw_fcircle(mouse.x, mouse.y, 5);
+                say_fast("Drawing fcircle for pointer "+i+" @ "+
+                             mouse.x+"x"+mouse.y+
                          " active:"+multi_info(i, "ACTIVE"));
             end;
         end;
