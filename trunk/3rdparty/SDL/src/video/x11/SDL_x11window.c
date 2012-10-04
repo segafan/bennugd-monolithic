@@ -79,6 +79,7 @@ X11_IsWindowMapped(_THIS, SDL_Window * window)
     }
 }
 
+#if 0
 static SDL_bool
 X11_IsActionAllowed(SDL_Window *window, Atom action)
 {
@@ -105,6 +106,7 @@ X11_IsActionAllowed(SDL_Window *window, Atom action)
     }
     return ret;
 }
+#endif /* 0 */
 
 void
 X11_SetNetWMState(_THIS, Window xwindow, Uint32 flags)
@@ -756,6 +758,36 @@ X11_SetWindowSize(_THIS, SDL_Window * window)
          XSetWMNormalHints(display, data->xwindow, sizehints);
 
          XFree(sizehints);
+
+        /* From Pierre-Loup:
+           For the windowed resize problem; WMs each have their little quirks with
+           that.  When you change the size hints, they get a ConfigureNotify event
+           with the WM_NORMAL_SIZE_HINTS Atom.  They all save the hints then, but
+           they don't all resize the window right away to enforce the new hints.
+           Those who do properly do it are:
+          
+             - XFWM
+             - metacity
+             - KWin
+
+           These are great.  Now, others are more problematic as you could observe
+           first hand.  Compiz/Unity only falls into the code that does it on select
+           actions, such as window move, raise, map, etc.
+
+           WindowMaker is even more difficult and will _only_ do it on map.
+
+           Awesome only does it on user-initiated moves as far as I can tell.
+          
+           Your raise workaround only fixes compiz/Unity.  With that all "modern"
+           window managers are covered.  Trying to Hide/Show on windowed resize
+           (UnMap/Map) fixes both Unity and WindowMaker, but introduces subtle
+           problems with transitioning from Windowed to Fullscreen on Unity.  Since
+           some window moves happen after the transitions to fullscreen, that forces
+           SDL to fall from windowed to fullscreen repeatedly and it sometimes leaves
+           itself in a state where the fullscreen window is slightly offset by what
+           used to be the window decoration titlebar.
+        */
+        XRaiseWindow(display, data->xwindow);
     } else {
         XResizeWindow(display, data->xwindow, window->w, window->h);
     }
@@ -912,33 +944,30 @@ X11_SetWindowFullscreenViaWM(_THIS, SDL_Window * window, SDL_VideoDisplay * _dis
     Display *display = data->videodata->display;
     Atom _NET_WM_STATE = data->videodata->_NET_WM_STATE;
     Atom _NET_WM_STATE_FULLSCREEN = data->videodata->_NET_WM_STATE_FULLSCREEN;
-    Atom _NET_WM_ACTION_FULLSCREEN = data->videodata->_NET_WM_ACTION_FULLSCREEN;
 
     if (X11_IsWindowMapped(_this, window)) {
         XEvent e;
 
-        if (!X11_IsActionAllowed(window, _NET_WM_ACTION_FULLSCREEN)) {
-            /* We aren't allowed to go into fullscreen mode... */
-            if ((window->flags & SDL_WINDOW_RESIZABLE) == 0) {
-                /* ...and we aren't resizable. Compiz refuses fullscreen toggle in this case. */
-                XSizeHints *sizehints = XAllocSizeHints();
-                long flags = 0;
-                XGetWMNormalHints(display, data->xwindow, sizehints, &flags);
-                /* set the resize flags on */
+        if (!(window->flags & SDL_WINDOW_RESIZABLE)) {
+            /* Compiz refuses fullscreen toggle if we're not resizable, so update the hints so we
+               can be resized to the fullscreen resolution (or reset so we're not resizable again) */
+            XSizeHints *sizehints = XAllocSizeHints();
+            long flags = 0;
+            XGetWMNormalHints(display, data->xwindow, sizehints, &flags);
+            /* set the resize flags on */
+            if (fullscreen) {
+                /* we are going fullscreen so turn the flags off */
+                sizehints->flags &= ~(PMinSize | PMaxSize);
+            } else {
+                /* Reset the min/max width height to make the window non-resizable again */
                 sizehints->flags |= PMinSize | PMaxSize;
-                if (fullscreen) {
-                    /* we are going fullscreen so turn the flags off */
-                    sizehints->flags ^= (PMinSize | PMaxSize);
-                } else {
-                    /* Reset the min/max width height to make the window non-resizable again */
-                    sizehints->min_width = sizehints->max_width = window->w;
-                    sizehints->min_height = sizehints->max_height = window->h;
-                }
-                XSetWMNormalHints(display, data->xwindow, sizehints);
-                XFree(sizehints);
+                sizehints->min_width = sizehints->max_width = window->windowed.w;
+                sizehints->min_height = sizehints->max_height = window->windowed.h;
             }
+            XSetWMNormalHints(display, data->xwindow, sizehints);
+            XFree(sizehints);
         }
-        
+
         SDL_zero(e);
         e.xany.type = ClientMessage;
         e.xclient.message_type = _NET_WM_STATE;
