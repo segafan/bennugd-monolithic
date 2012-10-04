@@ -30,16 +30,29 @@
 /* --------------------------------------------------------------------------- */
 
 #ifndef __BGDC__
-
-#ifdef WIN32
-#define DLLEXPORT   __declspec(dllexport)
-#define DLLIMPORT   __declspec(dllimport)
-#else
-#define DLLEXPORT
-#define DLLIMPORT
+  #if defined(WIN32) && !defined( __STATIC__ )
+    #define DLLEXPORT   __declspec(dllexport)
+    #define DLLIMPORT   __declspec(dllimport)
+  #else
+    #define DLLEXPORT
+    #define DLLIMPORT
+  #endif
 #endif
 
 /* --------------------------------------------------------------------------- */
+
+#ifdef __BGDC__
+#define FUNC(a,b,c,d)     { a, b, c, NULL }
+#else
+#define FUNC(a,b,c,d)     { a, b, c, d }
+#endif
+
+/* --------------------------------------------------------------------------- */
+
+#define __bgdexport(m,a)    m##_##a
+
+/* --------------------------------------------------------------------------- */
+
 /*
  *  ENDIANESS TRICKS
  */
@@ -47,22 +60,15 @@
 #include "arrange.h"
 
 #include <typedef_st.h>
+#include <instance_st.h>
 #include <sysprocs_st.h>
 
 #include <commons_defs.h>
 
-#endif
-
 /* --------------------------------------------------------------------------- */
-#include <instance_st.h>
 #ifdef __MONOLITHIC__
 #include <typedef_st.h>
 #endif
-
-/* --------------------------------------------------------------------------- */
-
-#define __bgdexport(m,a)    m##_##a
-
 /* --------------------------------------------------------------------------- */
 
 typedef struct
