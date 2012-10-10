@@ -295,6 +295,8 @@ class packager(QtGui.QMainWindow):
             fd.write('        <activity android:name="MyGame"\n')
             if self.apporientation == 'Landscape':
                 fd.write('                  android:screenOrientation="sensorLandscape"\n')
+            else:
+                fd.write('                  android:screenOrientation="portrait"\n')
             fd.write('                  android:label="@string/app_name">\n')
             fd.write('            <intent-filter>\n')
             fd.write('                <action android:name="android.intent.action.MAIN" />\n')
