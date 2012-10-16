@@ -718,6 +718,7 @@ X11_SetWindowIcon(_THIS, SDL_Window * window, SDL_Surface * icon)
                             32, PropModeReplace, (unsigned char *) propdata,
                             propsize);
         }
+        SDL_free(propdata);
         SDL_FreeSurface(surface);
     } else {
         XDeleteProperty(display, data->xwindow, _NET_WM_ICON);
@@ -991,6 +992,15 @@ X11_SetWindowFullscreenViaWM(_THIS, SDL_Window * window, SDL_VideoDisplay * _dis
         }
         X11_SetNetWMState(_this, data->xwindow, flags);
     }
+
+    if (data->visual->class == DirectColor) {
+        if ( fullscreen ) {
+            XInstallColormap(display, data->colormap);
+        } else {
+            XUninstallColormap(display, data->colormap);
+        }
+    }
+
     XFlush(display);
 }
 

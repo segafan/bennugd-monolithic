@@ -27,6 +27,17 @@
 
 /*#define X11MODES_DEBUG*/
 
+/* I'm becoming more and more convinced that the application should never
+ * use XRandR, and it's the window manager's responsibility to track and
+ * manage display modes for fullscreen windows.  Right now XRandR is completely
+ * broken with respect to window manager behavior on every window manager that
+ * I can find.  For example, on Unity 3D if you show a fullscreen window while
+ * the resolution is changing (within ~250 ms) your window will retain the
+ * fullscreen state hint but be decorated and windowed.
+*/
+#define XRANDR_DISABLED_BY_DEFAULT
+
+
 static int
 get_visualinfo(Display * display, int screen, XVisualInfo * vinfo)
 {
@@ -190,12 +201,21 @@ CheckXRandR(Display * display, int *major, int *minor)
 
     /* Allow environment override */
     env = SDL_GetHint(SDL_HINT_VIDEO_X11_XRANDR);
+#ifdef XRANDR_DISABLED_BY_DEFAULT
+    if (!env || !SDL_atoi(env)) {
+#ifdef X11MODES_DEBUG
+        printf("XRandR disabled by default due to window manager issues\n");
+#endif
+        return SDL_FALSE;
+    }
+#else
     if (env && !SDL_atoi(env)) {
 #ifdef X11MODES_DEBUG
         printf("XRandR disabled due to hint\n");
 #endif
         return SDL_FALSE;
     }
+#endif /* XRANDR_ENABLED_BY_DEFAULT */
 
     if (!SDL_X11_HAVE_XRANDR) {
 #ifdef X11MODES_DEBUG
@@ -254,7 +274,7 @@ SetXRandRModeInfo(Display *display, XRRScreenResources *res, XRROutputInfo *outp
             mode->refresh_rate = CalculateXRandRRefreshRate(info);
             ((SDL_DisplayModeData*)mode->driverdata)->xrandr_mode = modeID;
 #ifdef X11MODES_DEBUG
-            printf("XRandR mode %d: %dx%d@%dHz\n", modeID, mode->w, mode->h, mode->refresh_rate);
+            printf("XRandR mode %d: %dx%d@%dHz\n", (int) modeID, mode->w, mode->h, mode->refresh_rate);
 #endif
             return SDL_TRUE;
         }
@@ -547,11 +567,18 @@ X11_InitModes(_THIS)
 #if SDL_VIDEO_DRIVER_X11_XVIDMODE
         if (!displaydata->use_xrandr &&
 #if SDL_VIDEO_DRIVER_X11_XINERAMA
-            (!displaydata->use_xinerama || displaydata->xinerama_info.screen_number == 0) &&
+            /* XVidMode only works on the screen at the origin */
+            (!displaydata->use_xinerama ||
+             (displaydata->x == 0 && displaydata->y == 0)) &&
 #endif
             use_vidmode) {
             displaydata->use_vidmode = use_vidmode;
-            XF86VidModeGetModeInfo(data->display, screen, &modedata->vm_mode);
+            if (displaydata->use_xinerama) {
+                displaydata->vidmode_screen = 0;
+            } else {
+                displaydata->vidmode_screen = screen;
+            }
+            XF86VidModeGetModeInfo(data->display, displaydata->vidmode_screen, &modedata->vm_mode);
         }
 #endif /* SDL_VIDEO_DRIVER_X11_XVIDMODE */
 
@@ -652,15 +679,15 @@ X11_GetDisplayModes(_THIS, SDL_VideoDisplay * sdl_display)
 
 #if SDL_VIDEO_DRIVER_X11_XVIDMODE
     if (data->use_vidmode &&
-        XF86VidModeGetAllModeLines(display, data->screen, &nmodes, &modes)) {
+        XF86VidModeGetAllModeLines(display, data->vidmode_screen, &nmodes, &modes)) {
         int i;
 
 #ifdef X11MODES_DEBUG
         printf("VidMode modes: (unsorted)\n");
         for (i = 0; i < nmodes; ++i) {
-            printf("Mode %d: %d x %d @ %d\n", i,
+            printf("Mode %d: %d x %d @ %d, flags: 0x%x\n", i,
                    modes[i]->hdisplay, modes[i]->vdisplay,
-                   CalculateXVidModeRefreshRate(modes[i]));
+                   CalculateXVidModeRefreshRate(modes[i]), modes[i]->flags);
         }
 #endif
         for (i = 0; i < nmodes; ++i) {
@@ -745,7 +772,7 @@ X11_SetDisplayMode(_THIS, SDL_VideoDisplay * sdl_display, SDL_DisplayMode * mode
 
 #if SDL_VIDEO_DRIVER_X11_XVIDMODE
     if (data->use_vidmode) {
-        XF86VidModeSwitchToMode(display, data->screen, &modedata->vm_mode);
+        XF86VidModeSwitchToMode(display, data->vidmode_screen, &modedata->vm_mode);
     }
 #endif /* SDL_VIDEO_DRIVER_X11_XVIDMODE */
 
