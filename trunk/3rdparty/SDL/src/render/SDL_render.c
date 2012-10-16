@@ -926,6 +926,8 @@ SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
         /* Make a backup of the viewport */
         renderer->viewport_backup = renderer->viewport;
         renderer->scale_backup = renderer->scale;
+        renderer->logical_w_backup = renderer->logical_w;
+        renderer->logical_h_backup = renderer->logical_h;
     }
     renderer->target = texture;
 
@@ -940,9 +942,13 @@ SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
         renderer->viewport.h = texture->h;
         renderer->scale.x = 1.0f;
         renderer->scale.y = 1.0f;
+        renderer->logical_w = 0;
+        renderer->logical_h = 0;
     } else {
         renderer->viewport = renderer->viewport_backup;
         renderer->scale = renderer->scale_backup;
+        renderer->logical_w = renderer->logical_w_backup;
+        renderer->logical_h = renderer->logical_h_backup;
     }
     if (renderer->UpdateViewport(renderer) < 0) {
         return -1;
@@ -950,6 +956,12 @@ SDL_SetRenderTarget(SDL_Renderer *renderer, SDL_Texture *texture)
 
     /* All set! */
     return 0;
+}
+
+SDL_Texture *
+SDL_GetRenderTarget(SDL_Renderer *renderer)
+{
+    return renderer->target;
 }
 
 static int
@@ -961,7 +973,9 @@ UpdateLogicalSize(SDL_Renderer *renderer)
     float scale;
     SDL_Rect viewport;
 
-    if (renderer->window) {
+    if (renderer->target) {
+        SDL_QueryTexture(renderer->target, NULL, NULL, &w, &h);
+    } else if (renderer->window) {
         SDL_GetWindowSize(renderer->window, &w, &h);
     } else {
         /* FIXME */
@@ -1049,7 +1063,10 @@ SDL_RenderSetViewport(SDL_Renderer * renderer, const SDL_Rect * rect)
     } else {
         renderer->viewport.x = 0;
         renderer->viewport.y = 0;
-        if (renderer->window) {
+        if (renderer->target) {
+            SDL_QueryTexture(renderer->target, NULL, NULL,
+                              &renderer->viewport.w, &renderer->viewport.h);
+        } else if (renderer->window) {
             SDL_GetWindowSize(renderer->window,
                               &renderer->viewport.w, &renderer->viewport.h);
         } else {
