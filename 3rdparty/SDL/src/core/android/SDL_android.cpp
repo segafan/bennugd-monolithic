@@ -337,7 +337,6 @@ extern "C" void Android_JNI_openURL(const char* url)
     }
 }
 
-
 static void Android_JNI_ThreadDestroyed(void* value) {
     /* The thread is being destroyed, detach it from the Java VM and set the mThreadKey value to NULL as required */
     JNIEnv *env = (JNIEnv*) value;
