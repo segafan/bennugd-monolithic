@@ -15,7 +15,6 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/librender/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
-	-D__STATIC__ \
 	-D__LIBRENDER \
 	-DWITH_GPL_CODE \
 	-DTARGET_LINUX \

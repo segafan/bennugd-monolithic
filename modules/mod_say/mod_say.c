@@ -39,7 +39,6 @@ static int modsay_say( INSTANCE * my, int * params )
 {
     /* Show debugging info also in stdout */
     SDL_Log( "%s\n", string_get( params[0] ) );
-    fflush( stdout );
     string_discard( params[0] ) ;
     return 1 ;
 }

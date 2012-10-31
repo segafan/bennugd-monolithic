@@ -45,6 +45,7 @@
 #endif
 
 #include <stdio.h>
+#include <SDL.h>
 
 /*******************************************************************************
  * COMMON                                                                      *
@@ -97,6 +98,7 @@ static void * dlibopen( const char * fname )
 {
     char *f;
     char *_fname = NULL;
+    
 #ifdef _WIN32
     void * hnd = LoadLibrary( fname );
 #else
