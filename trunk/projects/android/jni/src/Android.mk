@@ -3,7 +3,7 @@ CORE_PATH := $(LOCAL_PATH)/../../../../core/
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := main
+LOCAL_MODULE := bgdi
 
 SDL_PATH := $(LOCAL_PATH)/../../../../3rdparty/SDL
 
@@ -11,7 +11,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
 	$(CORE_PATH)/include \
-	$(LOCAL_PATH)/../../../3rdparty/libglob-bsd/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(SDL_PATH)/include
 
 # Add any compilation flags for your project here...
@@ -25,8 +25,8 @@ LOCAL_CFLAGS := \
 LOCAL_SRC_FILES := /../../../../3rdparty/SDL/src/main/android/SDL_android_main.cpp \
 	main.c
 
-LOCAL_SHARED_LIBRARIES  += modules render SDL2
-LOCAL_STATIC_LIBRARY    += bgdrtm
-LOCAL_LDLIBS := -lGLESv2 -llog
+LOCAL_SHARED_LIBRARIES  += bgdrtm glob SDL2
+LOCAL_STATIC_LIBRARY    += 
+LOCAL_LDLIBS := -lGLESv2
 
 include $(BUILD_SHARED_LIBRARY)

@@ -16,7 +16,6 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-D__BGDRTM__ \
-	-D__STATIC__ \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS
@@ -37,7 +36,7 @@ LOCAL_SRC_FILES := \
 	../../../../core/common/xctype.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
-LOCAL_SHARED_LIBRARIES += glob
+LOCAL_SHARED_LIBRARIES += SDL2 glob
 LOCAL_STATIC_LIBRARIES += 
 
-include $(BUILD_STATIC_LIBRARY)
+include $(BUILD_SHARED_LIBRARY)
