@@ -1,7 +1,7 @@
 /*
- *  Copyright (c) 2006-2012 SplinterGU (Fenix/Bennugd)
- *  Copyright (c) 2002-2006 Fenix Team (Fenix)
- *  Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2002-2006 Fenix Team (Fenix)
+ *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -82,11 +82,7 @@ static char _tmp[128];
 
 /* --------------------------------------------------------------------------- */
 
-#if defined(TARGET_PSP)
-int SDL_main( int argc, char *argv[] )
-#else
 int main( int argc, char *argv[] )
-#endif
 {
     time_t curtime;
     struct tm *loctime;
@@ -167,11 +163,12 @@ int main( int argc, char *argv[] )
     strncpy( appexepath, appexefullpath, ptr - appexefullpath );
 
     printf( BGDC_VERSION "\n"
-            "Copyright © 2006-2012 SplinterGU (Fenix/BennuGD)\n"
-            "Copyright © 2002-2006 Fenix Team (Fenix)\n"
-            "Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
-            "Bennu Game Development comes with ABSOLUTELY NO WARRANTY;\n"
-            "see COPYING for details\n\n" );
+            "Bennu Game Development Compiler\n"
+            "\n"
+            "Copyright (c) 2006-2012 SplinterGU (Fenix/BennuGD)\n"
+            "Copyright (c) 2002-2006 Fenix Team (Fenix)\n"
+            "Copyright (c) 1999-2002 José Luis Cebrián Pagüe (Fenix)\n"
+            "\n" );
 
     /* Default lang to EN */
     strcpy( langinfo, "EN" );
@@ -243,13 +240,6 @@ int main( int argc, char *argv[] )
     sysproc_init();
 
     /* Get command line parameters */
-#ifdef TARGET_PSP
-    	if (argc<2){
-    		char* newargv[2]={argv[0],"EBOOT.prg"};
-    		argc = 2;
-    	    argv=newargv;
-    	}
-#endif
 
     for ( i = 1 ; i < argc ; i++ )
     {

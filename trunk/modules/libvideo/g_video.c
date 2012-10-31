@@ -50,6 +50,7 @@
 /* --------------------------------------------------------------------------- */
 
 GRAPH * icon = NULL ;
+
 SDL_Surface * screen = NULL ;
 SDL_Surface * scale_screen = NULL ;
 
@@ -71,7 +72,7 @@ int frameless = 0 ;
 int scale_mode = SCALE_NONE ;
 int waitvsync = 0 ;
 
-int scale_resolution = 0 ;
+int scale_resolution = -1 ;
 int * scale_resolution_table_w = NULL;
 int * scale_resolution_table_h = NULL;
 int scale_resolution_aspectratio = 0;
@@ -82,77 +83,14 @@ int scale_resolution_aspectratio_offy = 0;
 
 /* --------------------------------------------------------------------------- */
 
-DLCONSTANT  __bgdexport( libvideo, constants_def )[] =
-{
-    { "M320X200"            , TYPE_DWORD    , 3200200               },
-    { "M320X240"            , TYPE_DWORD    , 3200240               },
-    { "M320X400"            , TYPE_DWORD    , 3200400               },
-    { "M360X240"            , TYPE_DWORD    , 3600240               },
-    { "M376X282"            , TYPE_DWORD    , 3760282               },
-    { "M400X300"            , TYPE_DWORD    , 4000300               },
-    { "M512X384"            , TYPE_DWORD    , 5120384               },
-    { "M640X400"            , TYPE_DWORD    , 6400400               },
-    { "M640X480"            , TYPE_DWORD    , 6400480               },
-    { "M800X600"            , TYPE_DWORD    , 8000600               },
-    { "M1024X768"           , TYPE_DWORD    , 10240768              },
-    { "M1280X1024"          , TYPE_DWORD    , 12801024              },
-
-    { "MODE_WINDOW"         , TYPE_DWORD    , MODE_WINDOW           },
-    { "MODE_2XSCALE"        , TYPE_DWORD    , MODE_2XSCALE          },
-    { "MODE_FULLSCREEN"     , TYPE_DWORD    , MODE_FULLSCREEN       },
-    { "MODE_DOUBLEBUFFER"   , TYPE_DWORD    , MODE_DOUBLEBUFFER     },
-    { "MODE_HARDWARE"       , TYPE_DWORD    , MODE_HARDWARE         },
-
-    { "MODE_WAITVSYNC"      , TYPE_DWORD    , MODE_WAITVSYNC        },
-    { "WAITVSYNC"           , TYPE_DWORD    , MODE_WAITVSYNC        },
-
-    { "DOUBLE_BUFFER"       , TYPE_DWORD    , MODE_DOUBLEBUFFER     },  /* Obsolete */
-    { "HW_SURFACE"          , TYPE_DWORD    , MODE_HARDWARE         },  /* Obsolete */
-
-    { "MODE_8BITS"          , TYPE_DWORD    , 8                     },
-    { "MODE_16BITS"         , TYPE_DWORD    , 16                    },
-    { "MODE_32BITS"         , TYPE_DWORD    , 32                    },
-
-    { "MODE_8BPP"           , TYPE_DWORD    , 8                     },
-    { "MODE_16BPP"          , TYPE_DWORD    , 16                    },
-    { "MODE_32BPP"          , TYPE_DWORD    , 32                    },
-
-    { "MODE_MODAL"          , TYPE_DWORD    , MODE_MODAL            },  /* GRAB INPU */
-    { "MODE_FRAMELESS"      , TYPE_DWORD    , MODE_FRAMELESS        },  /* FRAMELESS window */
-
-    { "SCALE_NONE"          , TYPE_DWORD    , SCALE_NONE            },
-
-    { "SRO_NORMAL"          , TYPE_DWORD    , SRO_NORMAL            },
-    { "SRO_LEFT"            , TYPE_DWORD    , SRO_LEFT              },
-    { "SRO_DOWN"            , TYPE_DWORD    , SRO_DOWN              },
-    { "SRO_RIGHT"           , TYPE_DWORD    , SRO_RIGHT             },
-
-    { "SRA_STRETCH"         , TYPE_DWORD    , SRA_STRETCH           },
-    { "SRA_PRESERVE"        , TYPE_DWORD    , SRA_PRESERVE          },
-
-    { NULL                  , 0             , 0                     }
-} ;
-
-/* --------------------------------------------------------------------------- */
-
-#define GRAPH_MODE                      0
-#define SCALE_MODE                      1
-#define FULL_SCREEN                     2
-#define SCALE_RESOLUTION                3
-#define SCALE_RESOLUTION_ASPECTRATIO    4
-#define SCALE_RESOLUTION_ORIENTATION    5
-
-/* --------------------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-
-char * __bgdexport( libvideo, globals_def ) =
-    "graph_mode = 0;\n"
-    "scale_mode = 0;\n"
-    "full_screen = 0;\n"
-    "scale_resolution = 0;\n"
-    "scale_resolution_aspectratio = 0;\n"
-    "scale_resolution_orientation = 0;\n"
-    ;
+enum {
+    GRAPH_MODE = 0,
+    SCALE_MODE,
+    FULL_SCREEN,
+    SCALE_RESOLUTION,
+    SCALE_RESOLUTION_ASPECTRATIO,
+    SCALE_RESOLUTION_ORIENTATION
+};
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -348,14 +286,14 @@ int gr_set_mode( int width, int height, int depth )
         scale_resolution_table_h = NULL;
     }
 
-    if ( scale_resolution )
+    if ( scale_resolution != -1 )
     {
         surface_width  = scale_resolution / 10000 ;
         surface_height = scale_resolution % 10000 ;
     }
     else
     {
-        scale_resolution = 0;
+        scale_resolution = -1;
 
         if ( scale_mode != SCALE_NONE ) enable_scale = 1;
         if ( enable_scale && scale_mode == SCALE_NONE ) scale_mode = SCALE_SCALE2X;
@@ -379,23 +317,26 @@ int gr_set_mode( int width, int height, int depth )
     }
 
     /* Setup the SDL Video Mode */
+
     sdl_flags = SDL_HWPALETTE;
     if ( double_buffer ) sdl_flags |= SDL_DOUBLEBUF;
     if ( full_screen ) sdl_flags |= SDL_FULLSCREEN;
     if ( frameless ) sdl_flags |= SDL_NOFRAME;
 
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
-    
-    if ( scale_screen ) {
-        SDL_FreeSurface( scale_screen ) ;
+
+    if ( scale_screen )
+    {
+        SDL_FreeSurface( scale_screen );
         scale_screen = NULL;
     }
-    if ( screen ) {
-        SDL_FreeSurface( screen ) ;
+    if ( screen )
+    {
+        SDL_FreeSurface( screen );
         screen = NULL;
     }
 
-    if ( scale_resolution )
+    if ( scale_resolution != -1 )
     {
         switch ( scale_resolution_orientation )
         {
@@ -412,6 +353,13 @@ int gr_set_mode( int width, int height, int depth )
         scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
 
         if ( !scale_screen ) return -1;
+
+        if ( !width && !height )
+        {
+            width = scale_screen->w;
+            height = scale_screen->h;
+        }
+
         screen = SDL_CreateRGBSurface( sdl_flags,
                                        width,
                                        height,
@@ -492,8 +440,8 @@ int gr_set_mode( int width, int height, int depth )
             }
         }
 
-        if ( !( scale_resolution_table_w = malloc( surface_width  * sizeof( int ) ) ) ) return -1;
-        if ( !( scale_resolution_table_h = malloc( surface_height * sizeof( int ) ) ) ) return -1;
+        if ( !( scale_resolution_table_w = malloc( scale_screen->w * sizeof( int ) ) ) ) return -1;
+        if ( !( scale_resolution_table_h = malloc( scale_screen->h * sizeof( int ) ) ) ) return -1;
 
         for ( w = 0; w < scale_screen->w; w++ )
         {
@@ -520,10 +468,8 @@ int gr_set_mode( int width, int height, int depth )
     else
     {
         screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
-        width == 0 ? width = screen->w : 0;
-        height == 0 ? height = screen->h : 0;
     }
-    
+
     if ( !screen ) return -1;
 
 #if SDL_VERSION_ATLEAST(2,0,0)
@@ -574,16 +520,22 @@ int gr_set_mode( int width, int height, int depth )
 
 //    gr_make_trans_table();
 
+    if ( scale_resolution == -1 && enable_scale )
+    {
+        surface_width  = screen->w * 2;
+        surface_height = screen->h * 2;
+    }
+
     /* Bitmaps de fondo */
 
     /* Only allow background with same properties that video mode */
     if (
         !background ||
-        scr_width != width || scr_height != height ||
+        scr_width != screen->w || scr_height != screen->h ||
         sys_pixel_format->depth != background->format->depth )
     {
         if ( background ) bitmap_destroy( background );
-        background = bitmap_new( 0, width, height, sys_pixel_format->depth ) ;
+        background = bitmap_new( 0, screen->w, screen->h, sys_pixel_format->depth ) ;
         if ( background )
         {
             gr_clear( background ) ;
@@ -640,6 +592,7 @@ void __bgdexport( libvideo, module_initialize )()
         GLODWORD( libvideo, GRAPH_MODE ) = atoi(e);
     else
         GLODWORD( libvideo, GRAPH_MODE ) = MODE_16BITS;
+    if ( ( e = getenv( "VIDEO_FULLSCREEN" ) ) ) GLODWORD( libvideo, GRAPH_MODE ) |= atoi(e) ? MODE_FULLSCREEN : 0;
 
     gr_init( scr_width, scr_height ) ;
 }
@@ -660,16 +613,13 @@ void __bgdexport( libvideo, module_finalize )()
         directdraw = NULL;
     }
 #endif
-
     if ( SDL_WasInit( SDL_INIT_VIDEO ) ) SDL_QuitSubSystem( SDL_INIT_VIDEO );
 }
 
 /* --------------------------------------------------------------------------- */
+/* exports                                                                     */
+/* --------------------------------------------------------------------------- */
 
-char * __bgdexport( libvideo, modules_dependency )[] =
-{
-    "libgrbase",
-    NULL
-};
+#include "libvideo_exports.h"
 
 /* --------------------------------------------------------------------------- */

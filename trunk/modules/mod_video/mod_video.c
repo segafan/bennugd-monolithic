@@ -43,7 +43,9 @@
 
 /* --------------------------------------------------------------------------- */
 
-#define GRAPH_MODE  0
+enum {
+    GRAPH_MODE = 0
+};
 
 /* --------------------------------------------------------------------------- */
 
@@ -104,7 +106,7 @@ static int get_sdl_flags( int flags )
     sdl_flags |= ( flags & MODE_FRAMELESS ) ? SDL_WINDOW_BORDERLESS : 0;
 #else
     int sdl_flags = SDL_HWPALETTE;
-    
+
     sdl_flags |= ( flags & MODE_FULLSCREEN ) ? SDL_FULLSCREEN : 0 ;
     sdl_flags |= ( flags & MODE_DOUBLEBUFFER ) ? SDL_DOUBLEBUF : 0 ;
     sdl_flags |= ( flags & MODE_HARDWARE ) ? SDL_HWSURFACE : SDL_SWSURFACE ;
@@ -125,7 +127,7 @@ or -1 if any dimension is okay for the given format.
 
 static int modvideo_list_modes( INSTANCE * my, int * params )
 {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     return NULL;
 #else
     SDL_Rect **modes;
@@ -177,7 +179,7 @@ static int modvideo_list_modes( INSTANCE * my, int * params )
 
 static int modvideo_mode_is_ok( INSTANCE * my, int * params )
 {
-#if SDL_VERSION_ATLEAST(1, 3, 0)
+#if SDL_VERSION_ATLEAST(2,0,0)
     return 0;
 #else
     int sdl_flags = get_sdl_flags( params[3] );
@@ -190,31 +192,9 @@ static int modvideo_mode_is_ok( INSTANCE * my, int * params )
 }
 
 /* --------------------------------------------------------------------------- */
-
-DLSYSFUNCS  __bgdexport( mod_video, functions_exports )[] =
-{
-
-    /* Video */
-    { "SET_MODE"        , "I"     , TYPE_INT        , modvideo_set_mode         },
-    { "SET_MODE"        , "II"    , TYPE_INT        , modvideo_set_mode_2       },
-    { "SET_MODE"        , "III"   , TYPE_INT        , modvideo_set_mode_3       },
-    { "SET_MODE"        , "IIII"  , TYPE_INT        , modvideo_set_mode_4       },
-    { "SET_FPS"         , "II"    , TYPE_INT        , modvideo_set_fps          },
-
-    { "GET_MODES"       , "II"    , TYPE_POINTER    , modvideo_list_modes       },
-    { "MODE_IS_OK"      , "IIII"  , TYPE_INT        , modvideo_mode_is_ok       },
-
-    { 0                 , 0       , 0               , 0                         }
-};
-
+/* exports                                                                     */
 /* --------------------------------------------------------------------------- */
 
-char * __bgdexport( mod_video, modules_dependency )[] =
-{
-    "libgrbase",
-    "libvideo",
-    "librender",
-    NULL
-};
+#include "mod_video_exports.h"
 
 /* --------------------------------------------------------------------------- */

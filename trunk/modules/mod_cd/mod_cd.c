@@ -32,11 +32,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef TARGET_MAC
-#include <SDL/SDL.h>
-#else
 #include <SDL.h>
-#endif
 
 #include "bgddl.h"
 #include "bgdrtm.h"
@@ -44,55 +40,25 @@
 #include "dlvaracc.h"
 
 /* --------------------------------------------------------------------------- */
-
+#if !SDL_VERSION_ATLEAST(2,0,0)
 static SDL_CD * sdl_cd = NULL;
+#endif
 static int      sdl_cdnum = -1;
 
 /* ----------------------------------------------------------------- */
 
-#define CD_TRACK        0
-#define CD_FRAME        1
-#define CD_TRACKS       2
-#define CD_MINUTE       3
-#define CD_SECOND       4
-#define CD_SUBFRAME     5
-#define CD_MINUTES      6
-#define CD_SECONDS      7
-#define CD_FRAMES       8
-#define CD_TRACKINFO    9     /* 400 INTs */
-
-/* ----------------------------------------------------------------- */
-/* Definicion de constantes (usada en tiempo de compilacion)         */
-DLCONSTANT  __bgdexport( mod_cd, constants_def )[] =
-{
-    { "CD_TRAYEMPTY", TYPE_INT, 0  },
-    { "CD_STOPPED"  , TYPE_INT, 1  },
-    { "CD_PLAYING"  , TYPE_INT, 2  },
-    { "CD_PAUSED"   , TYPE_INT, 3  },
-    { "CD_ERROR"    , TYPE_INT, -1 },
-    { NULL          , 0       , 0  }
-} ;
-
-/* ----------------------------------------------------------------- */
-/* Definicion de variables globales (usada en tiempo de compilacion) */
-char * __bgdexport( mod_cd, globals_def ) =
-    "STRUCT cdinfo\n"
-    " current_track;\n"
-    " current_frame;\n"
-    " tracks;\n"
-    " minute;\n"
-    " second;\n"
-    " subframe;\n"
-    " minutes;\n"
-    " seconds;\n"
-    " subframes;\n"
-    " STRUCT track[99]\n"
-    "  audio;\n"
-    "  minutes;\n"
-    "  seconds;\n"
-    "  subframes;\n"
-    " END;\n"
-    "END;\n" ;
+enum {
+    CD_TRACK = 0,
+    CD_FRAME,
+    CD_TRACKS,
+    CD_MINUTE,
+    CD_SECOND,
+    CD_SUBFRAME,
+    CD_MINUTES,
+    CD_SECONDS,
+    CD_FRAMES,
+    CD_TRACKINFO
+};
 
 /* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -122,7 +88,11 @@ DLVARFIXUP  __bgdexport( mod_cd, globals_fixup )[] =
 
 static int modcd_drives( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     return SDL_CDNumDrives();
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -133,6 +103,9 @@ static int modcd_drives( INSTANCE * my, int * params )
 
 static int modcd_status( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -144,6 +117,7 @@ static int modcd_status( INSTANCE * my, int * params )
     }
 
     return SDL_CDStatus( sdl_cd );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -154,6 +128,9 @@ static int modcd_status( INSTANCE * my, int * params )
 
 static int modcd_name( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     int result;
 
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
@@ -161,6 +138,7 @@ static int modcd_name( INSTANCE * my, int * params )
     result = string_new( SDL_CDName( params[0] ) );
     string_use( result );
     return result;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -172,6 +150,9 @@ static int modcd_name( INSTANCE * my, int * params )
 
 static int modcd_getinfo( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     int i, total = 0;
     char * trackinfo;
 
@@ -199,6 +180,7 @@ static int modcd_getinfo( INSTANCE * my, int * params )
     }
     FRAMES_TO_MSF( total, &GLODWORD( mod_cd, CD_MINUTES ), &GLODWORD( mod_cd, CD_SECONDS ), &GLODWORD( mod_cd, CD_FRAMES ) );
     return 1;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -209,6 +191,9 @@ static int modcd_getinfo( INSTANCE * my, int * params )
 
 static int modcd_play( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -223,6 +208,7 @@ static int modcd_play( INSTANCE * my, int * params )
         return !SDL_CDPlayTracks( sdl_cd, params[1], 0, 1, 0 );
 
     return 0;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -233,6 +219,9 @@ static int modcd_play( INSTANCE * my, int * params )
 
 static int modcd_playtracks( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -247,6 +236,7 @@ static int modcd_playtracks( INSTANCE * my, int * params )
         return !SDL_CDPlayTracks( sdl_cd, params[1], 0, params[2], 0 );
 
     return 0;
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -257,6 +247,9 @@ static int modcd_playtracks( INSTANCE * my, int * params )
 
 static int modcd_eject( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -268,6 +261,7 @@ static int modcd_eject( INSTANCE * my, int * params )
     }
 
     return !SDL_CDEject( sdl_cd );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -278,6 +272,9 @@ static int modcd_eject( INSTANCE * my, int * params )
 
 static int modcd_pause( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -289,6 +286,7 @@ static int modcd_pause( INSTANCE * my, int * params )
     }
 
     return !SDL_CDPause( sdl_cd );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -299,6 +297,9 @@ static int modcd_pause( INSTANCE * my, int * params )
 
 static int modcd_resume( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -310,6 +311,7 @@ static int modcd_resume( INSTANCE * my, int * params )
     }
 
     return !SDL_CDResume( sdl_cd );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
@@ -320,6 +322,9 @@ static int modcd_resume( INSTANCE * my, int * params )
 
 static int modcd_stop( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2,0,0)
+    return 0;
+#else
     if ( params[0] < 0 || params[0] >= SDL_CDNumDrives() ) return 0;
 
     if ( sdl_cd == NULL || sdl_cdnum != params[0] )
@@ -331,39 +336,32 @@ static int modcd_stop( INSTANCE * my, int * params )
     }
 
     return !SDL_CDStop( sdl_cd );
+#endif
 }
-
-/* --------------------------------------------------------------------------- */
-
-DLSYSFUNCS  __bgdexport( mod_cd, functions_exports )[] =
-{
-    /* Funciones de manejo de CD */
-    { "CD_DRIVES"   , ""      , TYPE_INT    , modcd_drives     },
-    { "CD_STATUS"   , "I"     , TYPE_INT    , modcd_status     },
-    { "CD_NAME"     , "I"     , TYPE_STRING , modcd_name       },
-    { "CD_GETINFO"  , "I"     , TYPE_INT    , modcd_getinfo    },
-    { "CD_PLAY"     , "II"    , TYPE_INT    , modcd_play       },
-    { "CD_PLAY"     , "III"   , TYPE_INT    , modcd_playtracks },
-    { "CD_STOP"     , "I"     , TYPE_INT    , modcd_stop       },
-    { "CD_PAUSE"    , "I"     , TYPE_INT    , modcd_pause      },
-    { "CD_RESUME"   , "I"     , TYPE_INT    , modcd_resume     },
-    { "CD_EJECT"    , "I"     , TYPE_INT    , modcd_eject      },
-    { 0             , 0       , 0           , 0                }
-};
 
 /* --------------------------------------------------------------------------- */
 /* Funciones de inicializacion del modulo/plugin                               */
 
 void  __bgdexport( mod_cd, module_initialize )()
 {
+#if !SDL_VERSION_ATLEAST(2,0,0)
     if ( !SDL_WasInit( SDL_INIT_CDROM ) ) SDL_InitSubSystem( SDL_INIT_CDROM );
+#endif
 }
 
 /* --------------------------------------------------------------------------- */
 
 void  __bgdexport( mod_cd, module_finalize )()
 {
+#if !SDL_VERSION_ATLEAST(2,0,0)
     if ( SDL_WasInit( SDL_INIT_CDROM ) ) SDL_QuitSubSystem( SDL_INIT_CDROM );
+#endif
 }
+
+/* --------------------------------------------------------------------------- */
+/* exports                                                                     */
+/* --------------------------------------------------------------------------- */
+
+#include "mod_cd_exports.h"
 
 /* --------------------------------------------------------------------------- */

@@ -33,7 +33,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 
 #ifdef TARGET_BEOS
 #include <posix/assert.h>
@@ -50,6 +49,10 @@
 #endif
 
 #include <stdint.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "files.h"
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright Â© 2006-2012 SplinterGU (Fenix/Bennugd)
+ *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -126,11 +126,11 @@ int debug = 0;  /* 1 if running in debug mode      */
 #define _OS_ID          OS_WII
 #endif
 
-#ifdef TARGET_PSP
+#ifdef TARGET_ANDROID
 #ifdef _OS_ID
 #undef _OS_ID
 #endif
-#define _OS_ID          OS_PSP
+#define _OS_ID          OS_ANDROID
 #endif
 
 #ifdef TARGET_IOS
@@ -138,13 +138,6 @@ int debug = 0;  /* 1 if running in debug mode      */
 #undef _OS_ID
 #endif
 #define _OS_ID          OS_IOS
-#endif
-
-#ifdef TARGET_ANDROID
-#ifdef _OS_ID
-#undef _OS_ID
-#endif
-#define _OS_ID          OS_ANDROID
 #endif
 
 /* --------------------------------------------------------------------------- */
@@ -221,7 +214,7 @@ int strncmpi( char * str1, char * str2, int sz )
 #endif
         str1++; str2++; sz--;
     }
-    
+
     return 0 ;
 }
 

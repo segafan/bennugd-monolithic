@@ -31,7 +31,7 @@
 /* ----------------------------------------------------------------- */
 /* Public functions                                                  */
 
-static void dump_new_events()
+static void  dump_new_events()
 {
     SDL_Event event;
     /* Remove all pendings events */
@@ -57,7 +57,7 @@ static void dump_new_events()
 void __bgdexport( libsdlhandler, module_initialize )()
 {
 #if SDL_VERSION_ATLEAST(2,0,0)
-    // This is different in SDL 1.3
+    // This is different in SDL 2.0
 #else
     if ( !SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_InitSubSystem( SDL_INIT_EVENTTHREAD );
 #endif
@@ -68,7 +68,7 @@ void __bgdexport( libsdlhandler, module_initialize )()
 void __bgdexport( libsdlhandler, module_finalize )()
 {
 #if SDL_VERSION_ATLEAST(2,0,0)
-    // This is different in SDL 1.3
+    // This is different in SDL 2.0
 #else
     if ( SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_QuitSubSystem( SDL_INIT_EVENTTHREAD );
 #endif

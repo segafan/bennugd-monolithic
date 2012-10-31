@@ -74,7 +74,7 @@ extern INSTANCE * trace_instance;
 /* --------------------------------------------------------------------------- */
 // Some SDKs define strcmpi to strncasecmp, but we want to user our own
 
-#if defined(TARGET_WII) || defined(TARGET_PSP)
+#if defined(TARGET_WII)
 #ifdef strncmpi
 #undef strncmpi
 #endif
