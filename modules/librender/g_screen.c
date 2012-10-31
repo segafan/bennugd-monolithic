@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define __LIB_RENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */
@@ -152,7 +151,7 @@ int gr_lock_screen()
 
     screen_locked = 1 ;
 
-    if ( scale_resolution != 0 )
+    if ( scale_resolution != -1 )
     {
         if ( SDL_MUSTLOCK( scale_screen ) ) SDL_LockSurface( scale_screen ) ;
     }
@@ -196,7 +195,7 @@ void gr_unlock_screen()
 
     screen_locked = 0 ;
 
-    if ( scale_resolution )
+    if ( scale_resolution != -1 )
     {
         uint8_t  * src8  = screen->pixels, * dst8  = scale_screen->pixels , * pdst = scale_screen->pixels ;
         uint16_t * src16 = screen->pixels, * dst16 = scale_screen->pixels ;
@@ -413,7 +412,6 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( scale_screen ) ) SDL_UnlockSurface( scale_screen ) ;
         if ( waitvsync ) gr_wait_vsync();
-
         SDL_Flip( scale_screen ) ;
     }
     else if ( enable_scale )
@@ -459,17 +457,15 @@ void gr_unlock_screen()
         /* Esto podria ir en un modulo aparte */
         switch ( scale_mode )
         {
-#ifdef WITH_GPL_CODE
             case SCALE_SCALE2X:
                 scale2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
+
+#ifdef WITH_GPL_CODE
             case SCALE_HQ2X:
                 hq2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
 #else
-            case SCALE_SCALE2X:
-                SDL_Log("This build doesn't support GPL'ed SCALE2X, sorry :(");
-                break;
             case SCALE_HQ2X:
                 SDL_Log("This build doesn't include GPL'ed HQ2X, sorry :(");
                 break;
@@ -489,7 +485,6 @@ void gr_unlock_screen()
 
         if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
         if ( waitvsync ) gr_wait_vsync();
-
         SDL_Flip( screen ) ;
     }
     else if ( scrbitmap->info_flags & GI_EXTERNAL_DATA )
@@ -506,7 +501,6 @@ void gr_unlock_screen()
         {
             if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
             if ( waitvsync ) gr_wait_vsync();
-
             SDL_Flip( screen ) ;
         }
         else
@@ -524,7 +518,6 @@ void gr_unlock_screen()
                 }
                 if ( SDL_MUSTLOCK( screen ) ) SDL_UnlockSurface( screen ) ;
                 if ( waitvsync ) gr_wait_vsync();
-
                 SDL_UpdateRects( screen, updaterects_count, rects ) ;
             }
         }

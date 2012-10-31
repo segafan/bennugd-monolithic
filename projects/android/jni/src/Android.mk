@@ -25,8 +25,8 @@ LOCAL_CFLAGS := \
 LOCAL_SRC_FILES := /../../../../3rdparty/SDL/src/main/android/SDL_android_main.cpp \
 	main.c
 
-LOCAL_SHARED_LIBRARIES  += bgdrtm SDL2
-LOCAL_STATIC_LIBRARY    +=
-LOCAL_LDLIBS := -lGLESv1_CM -llog
+LOCAL_SHARED_LIBRARIES  += modules render SDL2
+LOCAL_STATIC_LIBRARY    += bgdrtm
+LOCAL_LDLIBS := -lGLESv2 -llog
 
 include $(BUILD_SHARED_LIBRARY)

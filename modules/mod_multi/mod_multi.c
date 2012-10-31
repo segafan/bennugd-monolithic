@@ -28,7 +28,6 @@
 #include <libvideo.h>
 #include <g_video.h>
 #include <g_compat.h>
-#include <libmouse_symbols.h>
 #include <SDL.h>
 #include "bgddl.h"
 #include "dlvaracc.h"
@@ -242,13 +241,13 @@ void parse_input_events() {
                 
                 // Fake a mouse click, but only for the first pointer and
                 // if libmouse has been imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX )    = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY )    = pointers[n].y;
                         GLODWORD( libmouse, MOUSELEFT ) = 1 ;
                     }
-                }
+                }*/
                 break;
             
             case SDL_FINGERMOTION:
@@ -270,12 +269,12 @@ void parse_input_events() {
                 pointers[n].x = (int)x; pointers[n].y = (int)y;
 
                 // Fake a mouse move, but only if libmouse has been imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
                     }
-                }
+                }*/
                 break;
 
             case SDL_FINGERUP:
@@ -296,11 +295,11 @@ void parse_input_events() {
                 
                 // Fake a mouse release, but only for the first pointer and
                 // if libmouse is imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLODWORD( libmouse, MOUSELEFT ) = 0 ;
                     }
-                }
+                }*/
                 break;
         }
     }

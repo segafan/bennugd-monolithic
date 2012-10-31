@@ -32,7 +32,9 @@
 #define SCALE_NONE          0x0000
 
 #include "scaler_scale2x.h"
+#ifdef WITH_GPL_CODE
 #include "scaler_hq2x.h"
+#endif
 #include "scaler_scanline.h"
 #include "scaler_normal.h"
 
