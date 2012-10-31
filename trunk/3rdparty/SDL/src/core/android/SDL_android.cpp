@@ -325,18 +325,6 @@ extern "C" SDL_bool Android_JNI_GetAccelerometerValues(float values[3])
     return retval;
 }
 
-extern "C" void Android_JNI_openURL(const char* url)
-{
-    jmethodID mid;
-    JNIEnv *mEnv = Android_JNI_GetEnv();
-    mid = mEnv->GetStaticMethodID(mActivityClass,"openURL", "(Ljava/lang/String;)V");
-    if (mid) {
-        jstring Url = mEnv->NewStringUTF(url);
-        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
-        mEnv->DeleteLocalRef(Url);
-    }
-}
-
 static void Android_JNI_ThreadDestroyed(void* value) {
     /* The thread is being destroyed, detach it from the Java VM and set the mThreadKey value to NULL as required */
     JNIEnv *env = (JNIEnv*) value;
