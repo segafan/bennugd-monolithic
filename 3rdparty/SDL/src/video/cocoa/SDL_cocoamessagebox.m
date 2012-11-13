@@ -26,6 +26,7 @@
 #include <altivec.h>
 #undef bool
 #undef vector
+#undef pixel
 #endif
 
 #include "SDL_messagebox.h"
@@ -36,6 +37,8 @@
 int
 Cocoa_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid)
 {
+    Cocoa_RegisterApp();
+
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
     NSAlert* alert = [[NSAlert alloc] init];
