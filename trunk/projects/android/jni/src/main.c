@@ -86,11 +86,11 @@ int main( int argc, char *argv[] )
     INSTANCE * mainproc_running;
     dcb_signature dcb_signature;
 
-	SDL_Log("BennuGD Init");
+    SDL_Log("BennuGD Init");
 
     /* get my executable name */
 
-        arg0 = strdup( argv[0] );
+    arg0 = strdup( argv[0] );
 
     ptr = arg0 + strlen( arg0 );
     while ( ptr > arg0 && ptr[-1] != '\\' && ptr[-1] != '/' ) ptr-- ;
@@ -128,15 +128,16 @@ int main( int argc, char *argv[] )
     file_addp( appexepath );
 
 
-	if(file_exists("main.dcb")) {
-		filename = "main.dcb";
-    	SDL_Log("%s: main.dcb exists in APK\n", appexename);
-	}
-	else
-	{
-		SDL_Log("main.dcb not found in APK, quitting\n");
+    if(file_exists("main.dcb")) {
+        filename = "main.dcb";
+        debug = 4;
+        SDL_Log("%s: main.dcb exists in APK\n", appexename);
+    }
+    else
+    {
+        SDL_Log("main.dcb not found in APK, quitting\n");
         return -1 ;
-	}
+    }
 
     /* Initialization (modules needed before dcb_load) */
 
@@ -192,7 +193,7 @@ fflush(stdout);
 
             if ( !dcbloaded )
             {
-                printf( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
+                SDL_Log( "%s: doesn't exist or isn't version %d DCB compatible\n", filename, DCB_VERSION >> 8 ) ;
                 return -1 ;
             }
         }
@@ -210,22 +211,28 @@ fflush(stdout);
 
     sysproc_init() ;
 
+    SDL_Log("bgdrtm_entry %s", filename);
     argv[0] = filename;
     bgdrtm_entry( argc, argv );
+    SDL_Log("Fin bgdrtm_entry");
 
     if ( mainproc )
     {
+        SDL_Log("1");
         mainproc_running = instance_new( mainproc, NULL ) ;
+        SDL_Log("2");
         ret = instance_go_all() ;
+        SDL_Log("3");
     }
 
+    SDL_Log("bgdrtm_exit");
     bgdrtm_exit( ret );
 
     free( appexename        );
     free( appexepath        );
     free( appexefullpath    );
     free( appname           );
-
+    SDL_Log("Done");
     return ret;
 }
 

@@ -3,7 +3,7 @@ CORE_PATH := $(LOCAL_PATH)/../../../../core/
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE := bgdi
+LOCAL_MODULE := main
 
 SDL_PATH := $(LOCAL_PATH)/../../../../3rdparty/SDL
 
