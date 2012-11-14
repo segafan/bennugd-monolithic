@@ -4,6 +4,7 @@
  * Use as you wish
  */
 
+import "mod_video"
 import "mod_say"
 
 Process Main()
