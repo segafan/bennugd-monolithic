@@ -211,18 +211,13 @@ fflush(stdout);
 
     sysproc_init() ;
 
-    SDL_Log("bgdrtm_entry %s", filename);
     argv[0] = filename;
     bgdrtm_entry( argc, argv );
-    SDL_Log("Fin bgdrtm_entry");
 
     if ( mainproc )
     {
-        SDL_Log("1");
         mainproc_running = instance_new( mainproc, NULL ) ;
-        SDL_Log("2");
         ret = instance_go_all() ;
-        SDL_Log("3");
     }
 
     SDL_Log("bgdrtm_exit");

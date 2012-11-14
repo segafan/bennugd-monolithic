@@ -66,7 +66,12 @@ public class SDLActivity extends Activity {
         System.loadLibrary("mod_say");
         System.loadLibrary("mod_string");
         System.loadLibrary("bgload");
-        System.loadLibrary("bgdi");
+        System.loadLibrary("grbase");
+        System.loadLibrary("blit");
+        System.loadLibrary("video");
+        System.loadLibrary("render");
+        System.loadLibrary("mod_video");
+        System.loadLibrary("main");
     }
 
     // Setup

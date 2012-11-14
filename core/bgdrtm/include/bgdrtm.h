@@ -40,6 +40,11 @@
 #include "xctype.h"
 #include "instance.h"
 
+#warning REMOVE ME!!!
+#include <SDL.h>
+#undef printf
+#define printf SDL_Log
+
 /* --------------------------------------------------------------------------- */
 
 extern void * globaldata ;

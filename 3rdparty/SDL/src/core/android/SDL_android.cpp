@@ -178,6 +178,18 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
     bHasNewData = true;
 }
 
+extern "C" void Android_JNI_openURL(const char* url)
+{
+    jmethodID mid;
+    JNIEnv *mEnv = Android_JNI_GetEnv();
+    mid = mEnv->GetStaticMethodID(mActivityClass,"openURL", "(Ljava/lang/String;)V");
+    if (mid) {
+        jstring Url = mEnv->NewStringUTF(url);
+        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
+        mEnv->DeleteLocalRef(Url);
+    }
+}
+
 // Quit
 extern "C" void Java_org_libsdl_app_SDLActivity_nativeQuit(
                                     JNIEnv* env, jclass cls)
