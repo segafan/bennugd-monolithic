@@ -156,7 +156,6 @@ CreateApplicationMenus(void)
 void
 Cocoa_RegisterApp(void)
 {
-    /* This can get called more than once! Be careful what you initialize! */
     ProcessSerialNumber psn;
     NSAutoreleasePool *pool;
 

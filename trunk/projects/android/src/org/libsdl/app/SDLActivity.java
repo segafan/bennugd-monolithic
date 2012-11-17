@@ -15,6 +15,7 @@ import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
 import android.os.*;
+import android.net.Uri;
 import android.util.Log;
 import android.graphics.*;
 import android.text.method.*;
@@ -93,6 +94,10 @@ public class SDLActivity extends Activity {
         setContentView(mLayout);
 
         SurfaceHolder holder = mSurface.getHolder();
+        
+        // Don't allow the screen lock
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
     }
 
     // Events
@@ -129,7 +134,7 @@ public class SDLActivity extends Activity {
 
     // Messages from the SDLMain thread
     static final int COMMAND_CHANGE_TITLE = 1;
-    static final int COMMAND_UNUSED = 2;
+    static final int COMMAND_KEYBOARD_SHOW = 2;
     static final int COMMAND_TEXTEDIT_HIDE = 3;
 
     // Handler for the messages
@@ -140,6 +145,22 @@ public class SDLActivity extends Activity {
             case COMMAND_CHANGE_TITLE:
                 setTitle((String)msg.obj);
                 break;
+            case COMMAND_KEYBOARD_SHOW:
+                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (manager != null) {
+                    switch (((Integer)msg.obj).intValue()) {
+                    case 0:
+                        manager.hideSoftInputFromWindow(mSurface.getWindowToken(), 0);
+                        break;
+                    case 1:
+                        manager.showSoftInput(mSurface, 0);
+                        break;
+                    case 2:
+                        manager.toggleSoftInputFromWindow(mSurface.getWindowToken(), 0, 0);
+                        break;
+                    }
+                }
+               break;
             case COMMAND_TEXTEDIT_HIDE:
                 if (mTextEdit != null) {
                     mTextEdit.setVisibility(View.GONE);
@@ -262,10 +283,10 @@ public class SDLActivity extends Activity {
 
     // EGL functions
     public static boolean initEGL(int majorVersion, int minorVersion) {
-        try {
-            if (SDLActivity.mEGLDisplay == null) {
-                Log.v("SDL", "Starting up OpenGL ES " + majorVersion + "." + minorVersion);
+        if (SDLActivity.mEGLDisplay == null) {
+            //Log.v("SDL", "Starting up OpenGL ES " + majorVersion + "." + minorVersion);
 
+            try {
                 EGL10 egl = (EGL10)EGLContext.getEGL();
 
                 EGLDisplay dpy = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
@@ -294,20 +315,31 @@ public class SDLActivity extends Activity {
                 }
                 EGLConfig config = configs[0];
 
+                /*int EGL_CONTEXT_CLIENT_VERSION=0x3098;
+                int contextAttrs[] = new int[] { EGL_CONTEXT_CLIENT_VERSION, majorVersion, EGL10.EGL_NONE };
+                EGLContext ctx = egl.eglCreateContext(dpy, config, EGL10.EGL_NO_CONTEXT, contextAttrs);
+
+                if (ctx == EGL10.EGL_NO_CONTEXT) {
+                    Log.e("SDL", "Couldn't create context");
+                    return false;
+                }
+                SDLActivity.mEGLContext = ctx;*/
                 SDLActivity.mEGLDisplay = dpy;
                 SDLActivity.mEGLConfig = config;
                 SDLActivity.mGLMajor = majorVersion;
                 SDLActivity.mGLMinor = minorVersion;
-            }
-            return SDLActivity.createEGLSurface();
 
-        } catch(Exception e) {
-            Log.v("SDL", e + "");
-            for (StackTraceElement s : e.getStackTrace()) {
-                Log.v("SDL", s.toString());
+                SDLActivity.createEGLSurface();
+            } catch(Exception e) {
+                Log.v("SDL", e + "");
+                for (StackTraceElement s : e.getStackTrace()) {
+                    Log.v("SDL", s.toString());
+                }
             }
-            return false;
         }
+        else SDLActivity.createEGLSurface();
+
+        return true;
     }
 
     public static boolean createEGLContext() {
@@ -347,10 +379,8 @@ public class SDLActivity extends Activity {
             }
             SDLActivity.mEGLSurface = surface;
             return true;
-        } else {
-            Log.e("SDL", "Surface creation failed, display = " + SDLActivity.mEGLDisplay + ", config = " + SDLActivity.mEGLConfig);
-            return false;
         }
+        return false;
     }
 
     // EGL buffer flip
@@ -470,6 +500,14 @@ public class SDLActivity extends Activity {
             mAudioTrack.stop();
             mAudioTrack = null;
         }
+    }
+    
+    // Taken from
+    // http://digitalsynapsesblog.blogspot.com.es/2011/09/cocos2d-x-launching-url-on-android.html
+    public static void openURL(String url) { 
+     Intent i = new Intent(Intent.ACTION_VIEW);  
+     i.setData(Uri.parse(url));
+     mSingleton.startActivity(i);
     }
 }
 
@@ -602,6 +640,19 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
+        
+        // Send volume key signal but return false, so that
+        // Android will set the volume for our app
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+            keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                SDLActivity.onNativeKeyDown(keyCode);
+            }
+            else if (event.getAction() == KeyEvent.ACTION_UP) {
+                SDLActivity.onNativeKeyUp(keyCode);
+            }
+            return false;
+        }
 
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
             //Log.v("SDL", "key down: " + keyCode);
@@ -719,7 +770,7 @@ class DummyEdit extends View implements View.OnKeyListener {
         ic = new SDLInputConnection(this, true);
 
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI
-                | 33554432 /* API 11: EditorInfo.IME_FLAG_NO_FULLSCREEN */;
+                | 33554432;
 
         return ic;
     }
