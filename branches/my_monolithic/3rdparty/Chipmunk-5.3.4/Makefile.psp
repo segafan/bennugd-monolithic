@@ -1,0 +1,51 @@
+#
+# monolithic Makefile for compiling the PSP port of BennuGD
+#
+
+# this should be the root of the source tree (where /core, /examples and /modules live)
+ROOT_DIR = ../..
+
+# 3rd party modules
+3RDPARTY_DIR = $(ROOT_DIR)/3rdparty
+
+# chipmunk 2D rigid body library
+CHIPMUNK_DIR = $(3RDPARTY_DIR)/Chipmunk-5.3.4
+CHIPMUNK_C_FILES = chipmunk.c cpArbiter.c cpArray.c cpBB.c cpBody.c cpCollision.c cpHashSet.c cpPolyShape.c
+CHIPMUNK_C_FILES += cpShape.c cpSpace.c cpSpaceComponent.c cpSpaceHash.c cpSpaceQuery.c cpSpaceStep.c cpVect.c
+
+CHIPMUNK_C_FILES += constraints/cpConstraint.c constraints/cpDampedRotarySpring.c constraints/cpDampedSpring.c
+CHIPMUNK_C_FILES += constraints/cpGearJoint.c constraints/cpGrooveJoint.c constraints/cpPinJoint.c
+CHIPMUNK_C_FILES += constraints/cpPivotJoint.c
+CHIPMUNK_C_FILES += constraints/cpRatchetJoint.c constraints/cpRotaryLimitJoint.c constraints/cpSimpleMotor.c
+CHIPMUNK_C_FILES += constraints/cpSlideJoint.c
+
+CHIPMUNK_OBJS = $(CHIPMUNK_C_FILES:.c=.o)
+
+# PSPSDK relies on $(OBJS) to compile things
+
+# source files
+OBJS  = $(foreach obj, $(CHIPMUNK_OBJS), $(CHIPMUNK_DIR)/src/$(obj))
+
+CFLAGS  = -O2 -G0 -Wall -DTARGET_PSP -DVERSION='"1.0-psp"' -std=gnu99
+CFLAGS += -DCP_USE_DOUBLES=1
+CFLAGS += -I$(CHIPMUNK_DIR)/include/chipmunk
+CFLAGS += -I$(CHIPMUNK_DIR)/include/chipmunk/constraints -I$(CHIPMUNK_DIR)
+CFLAGS += -I$(ROOT_DIR)/core/include
+
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+
+ASFLAGS = $(CFLAGS)
+
+# main targets
+TARGET_LIB = libchipmunk.a
+
+# PSPSDK specific stuff
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSP_FW_VERSION = 500
+BUILD_PRX = 0
+USE_USER_LIBS = 1
+USE_KERNEL_LIBS = 0
+
+# this is the last thing we put in the makefile
+include $(PSPSDK)/lib/build.mak
+
