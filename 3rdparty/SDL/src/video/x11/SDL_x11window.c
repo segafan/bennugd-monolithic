@@ -22,7 +22,6 @@
 
 #if SDL_VIDEO_DRIVER_X11
 
-#include "SDL_hints.h"
 #include "../SDL_sysvideo.h"
 #include "../SDL_pixels_c.h"
 #include "../../events/SDL_keyboard_c.h"
@@ -537,14 +536,8 @@ X11_CreateWindow(_THIS, SDL_Window * window)
                     PropModeReplace,
                     (unsigned char *)&_NET_WM_WINDOW_TYPE_NORMAL, 1);
 
-    
-    {
-        Atom protocols[] = {
-            data->WM_DELETE_WINDOW, /* Allow window to be deleted by the WM */
-            data->_NET_WM_PING, /* Respond so WM knows we're alive */
-        };
-        XSetWMProtocols(display, w, protocols, sizeof (protocols) / sizeof (protocols[0]));
-    }
+    /* Allow the window to be deleted by the window manager */
+    XSetWMProtocols(display, w, &data->WM_DELETE_WINDOW, 1);
 
     if (SetupWindowData(_this, window, w, SDL_TRUE) < 0) {
         XDestroyWindow(display, w);
@@ -1090,7 +1083,7 @@ X11_BeginWindowFullscreenLegacy(_THIS, SDL_Window * window, SDL_VideoDisplay * _
     XIfEvent(display, &ev, &isMapNotify, (XPointer)&data->xwindow);
     XCheckIfEvent(display, &ev, &isUnmapNotify, (XPointer)&data->xwindow);
 
-    SDL_UpdateWindowGrab(window);
+    X11_SetWindowGrab(_this, window);
 }
 
 static void
@@ -1116,7 +1109,7 @@ X11_EndWindowFullscreenLegacy(_THIS, SDL_Window * window, SDL_VideoDisplay * _di
     }
 #endif
 
-    SDL_UpdateWindowGrab(window);
+    X11_SetWindowGrab(_this, window);
 
     XReparentWindow(display, data->xwindow, root, window->x, window->y);
 
@@ -1239,21 +1232,19 @@ X11_SetWindowGammaRamp(_THIS, SDL_Window * window, const Uint16 * ramp)
 }
 
 void
-X11_SetWindowGrab(_THIS, SDL_Window * window, SDL_bool grabbed)
+X11_SetWindowGrab(_THIS, SDL_Window * window)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
     Display *display = data->videodata->display;
     SDL_bool oldstyle_fullscreen;
-    SDL_bool grab_keyboard;
-    const char *hint;
 
-    /* ICCCM2.0-compliant window managers can handle fullscreen windows
-       If we're using XVidMode to change resolution we need to confine
-       the cursor so we don't pan around the virtual desktop.
-     */
+    /* ICCCM2.0-compliant window managers can handle fullscreen windows */
     oldstyle_fullscreen = X11_IsWindowLegacyFullscreen(_this, window);
 
-    if (oldstyle_fullscreen || grabbed) {
+    if (oldstyle_fullscreen ||
+        ((window->flags & SDL_WINDOW_INPUT_GRABBED) &&
+         (window->flags & SDL_WINDOW_INPUT_FOCUS))) {
+
         /* Try to grab the mouse */
         for (;;) {
             int result =
@@ -1262,26 +1253,15 @@ X11_SetWindowGrab(_THIS, SDL_Window * window, SDL_bool grabbed)
             if (result == GrabSuccess) {
                 break;
             }
-            SDL_Delay(50);
+            SDL_Delay(100);
         }
 
         /* Raise the window if we grab the mouse */
         XRaiseWindow(display, data->xwindow);
 
         /* Now grab the keyboard */
-        hint = SDL_GetHint(SDL_HINT_GRAB_KEYBOARD);
-        if (hint && SDL_atoi(hint)) {
-            grab_keyboard = SDL_TRUE;
-        } else {
-            /* We need to do this with the old style override_redirect
-               fullscreen window otherwise we won't get keyboard focus.
-            */
-            grab_keyboard = oldstyle_fullscreen;
-        }
-        if (grab_keyboard) {
-            XGrabKeyboard(display, data->xwindow, True, GrabModeAsync,
-                          GrabModeAsync, CurrentTime);
-        }
+        XGrabKeyboard(display, data->xwindow, True, GrabModeAsync,
+                      GrabModeAsync, CurrentTime);
     } else {
         XUngrabPointer(display, CurrentTime);
         XUngrabKeyboard(display, CurrentTime);

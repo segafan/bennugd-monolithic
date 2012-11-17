@@ -50,10 +50,6 @@ Android_CreateWindow(_THIS, SDL_Window * window)
     window->flags |= SDL_WINDOW_SHOWN;          /* only one window on Android */
     window->flags |= SDL_WINDOW_INPUT_FOCUS;    /* always has input focus */    
 
-    /* One window, it always has focus */
-    SDL_SetMouseFocus(window);
-    SDL_SetKeyboardFocus(window);
-
     return 0;
 }
 
