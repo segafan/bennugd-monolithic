@@ -47,6 +47,11 @@ enum {
 };
 
 /* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( mod_regex, globals_def ) = "STRING regex_reg[15];\n";
+
+/* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -410,10 +415,13 @@ static int modregex_join (INSTANCE * my, int * params)
     return result;
 }
 
-/* ----------------------------------------------------------------- */
-/* exports                                                           */
-/* ----------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
 
-#include "mod_regex_exports.h"
-
-/* ----------------------------------------------------------------- */
+DLSYSFUNCS __bgdexport( mod_regex, functions_exports) [] = {
+    /* Regex */
+    { "REGEX"                , "SS"    , TYPE_INT    , modregex_regex           },
+    { "REGEX_REPLACE"        , "SSS"   , TYPE_STRING , modregex_regex_replace   },
+    { "SPLIT"                , "SSPI"  , TYPE_INT    , modregex_split           },
+    { "JOIN"                 , "SPI"   , TYPE_STRING , modregex_join            },
+    { 0                      , 0       , 0           , 0                        }
+};

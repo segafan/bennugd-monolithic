@@ -39,6 +39,7 @@ static int modsay_say( INSTANCE * my, int * params )
 {
     /* Show debugging info also in stdout */
     SDL_Log( "%s\n", string_get( params[0] ) );
+    fflush( stdout );
     string_discard( params[0] ) ;
     return 1 ;
 }
@@ -54,9 +55,13 @@ static int modsay_say_fast( INSTANCE * my, int * params )
 }
 
 /* ----------------------------------------------------------------- */
-/* exports                                                           */
-/* ----------------------------------------------------------------- */
+/* Declaracion de funciones                                          */
 
-#include "mod_say_exports.h"
+DLSYSFUNCS  __bgdexport( mod_say, functions_exports )[] =
+{
+    { "SAY"     , "S", TYPE_UNDEFINED, modsay_say     },
+    { "SAY_FAST", "S", TYPE_UNDEFINED, modsay_say_fast},
+    { 0         , 0  , 0             , 0              }
+};
 
 /* ----------------------------------------------------------------- */

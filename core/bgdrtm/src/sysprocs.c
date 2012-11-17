@@ -419,12 +419,18 @@ void sysproc_init()
 
     char soname[ __MAX_PATH ], fullsoname[ __MAX_PATH ], **spath ;
 
-#if defined( WIN32 )
+#if defined( __MONOLITHIC__ )
+#define DLLEXT      ".fakelib"
+#define SIZEDLLEXT  8
+#elif defined( WIN32 )
 #define DLLEXT      ".dll"
+#define SIZEDLLEXT  4
 #elif defined(TARGET_MAC)
 #define DLLEXT      ".dylib"
+#define SIZEDLLEXT  6
 #else
 #define DLLEXT      ".so"
+#define SIZEDLLEXT  3
 #endif
 
     for ( n = 0; n < dcb.data.NImports; n++ )
@@ -455,7 +461,7 @@ void sysproc_init()
 
         if ( !library )
         {
-            printf( dliberror() ) ;
+            fprintf( stderr, "%s\n", dliberror() ) ;
             exit( 0 );
         }
 

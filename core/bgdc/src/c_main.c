@@ -365,12 +365,12 @@ void compile_warning( int notoken, const char *fmt, ... )
 {
     char text[4000] ;
     char * fname = ( import_filename ) ? import_filename : (( current_file != -1 && files[current_file] && *files[current_file] ) ? files[current_file] : NULL );
-
+    
     va_list ap;
     va_start( ap, fmt );
     vsprintf( text, fmt, ap );
     va_end( ap );
-
+    
     fprintf( stdout, MSG_COMPILE_WARNING,
             ( fname && ( fname[0] != '/' && fname[0] != '\\' && fname[1] != ':' ) ) ?  main_path : "",
             fname ? fname : "N/A",
@@ -384,7 +384,7 @@ void compile_warning( int notoken, const char *fmt, ... )
     } else {
         fprintf( stdout, ".\n" );
     }
-
+    
 }
 
 /* ---------------------------------------------------------------------- */
@@ -474,12 +474,18 @@ static void import_module( const char * filename )
     char        * ptr;
     char        ** pex;
 
-#if defined( WIN32 )
+#if defined( __MONOLITHIC__ )
+#define DLLEXT      ".fakelib"
+#define SIZEDLLEXT  8
+#elif defined( WIN32 )
 #define DLLEXT      ".dll"
+#define SIZEDLLEXT  4
 #elif defined(TARGET_MAC)
 #define DLLEXT      ".dylib"
+#define SIZEDLLEXT  6
 #else
 #define DLLEXT      ".so"
+#define SIZEDLLEXT  3
 #endif
 
     strncpy( soname, filename, sizeof( soname ) );
@@ -517,15 +523,19 @@ static void import_module( const char * filename )
 
     fullsoname[0] = '\0';
 
+    library  = dlibopen( filename ) ;
+
     spath = dlsearchpath;
     while( !library && spath && *spath )
     {
+#ifdef _WIN32
+        sprintf( fullsoname, "%s%s\\%s", appexepath, *spath, filename );
+#else
         sprintf( fullsoname, "%s%s/%s", appexepath, *spath, filename );
+#endif
         library  = dlibopen( fullsoname ) ;
         spath++;
     }
-
-    if ( !library ) library  = dlibopen( filename ) ;
 
     if ( !library ) compile_error( MSG_LIBRARY_NOT_FOUND, filename ) ;
 
@@ -1119,12 +1129,7 @@ void compile_process()
         if ( params == MAX_PARAMS ) compile_error( MSG_TOO_MANY_PARAMS ) ;
 
         token_next() ;
-//        if ( token.type == IDENTIFIER && token.code == identifier_comma ) token_next() ;
-        if ( token.type == IDENTIFIER )
-        {
-            if ( token.code != identifier_rightp && token.code != identifier_comma ) compile_error( MSG_EXPECTED, "," );
-            if ( token.code == identifier_comma ) token_next() ;
-        }
+        if ( token.type == IDENTIFIER && token.code == identifier_comma ) token_next() ;
 
     } /* END while (token.type != IDENTIFIER || token.code != identifier_rightp) */
 

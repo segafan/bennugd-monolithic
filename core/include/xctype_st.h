@@ -26,9 +26,6 @@
  *
  */
 
-#ifndef __XCTYPE_ST_H
-#define __XCTYPE_ST_H
-
 #define ISALPHA(c)     (c_type [(unsigned char)c] & CTYPE_ALPHA)
 #define ISSPACE(c)     (c_type [(unsigned char)c] & CTYPE_SPACE)
 #define ISNUM(c)       (c_type [(unsigned char)c] & CTYPE_NUM)
@@ -45,4 +42,3 @@
 #define CTYPE_SPACE     16
 #define CTYPE_ALNUM     32
 
-#endif

@@ -2872,11 +2872,14 @@ void __bgdexport( mod_debug, module_initialize )()
 void __bgdexport( mod_debug, module_finalize )()
 {
 }
-*/
-/* --------------------------------------------------------------------------- */
-/* exports                                                                     */
+
 /* --------------------------------------------------------------------------- */
 
-#include "mod_debug_exports.h"
+char * __bgdexport( mod_debug, modules_dependency )[] =
+{
+    "libkey",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

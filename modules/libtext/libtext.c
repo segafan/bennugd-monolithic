@@ -43,8 +43,6 @@
 
 #include "libtext.h"
 
-#include "libtext_exports.h"
-
 /* --------------------------------------------------------------------------- */
 
 int fntcolor8 = -1 ;
@@ -93,6 +91,14 @@ enum {
     TEXTZ = 0,
     TEXT_FLAGS
 };
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( libtext, globals_def ) =
+    "text_z = -256;\n"
+    "text_flags;\n"
+    ;
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -921,5 +927,16 @@ int gr_text_getcolor2( int textid )
 
     return 0;
 }
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libtext, modules_dependency )[] =
+{
+    "libgrbase",
+    "libblit",
+    "librender",
+    "libfont",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

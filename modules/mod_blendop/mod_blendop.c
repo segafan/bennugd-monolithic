@@ -271,10 +271,32 @@ static int modblendop_tint( INSTANCE * my, int * params )
     return 1;
 }
 
-/* ----------------------------------------------------------------- */
-/* exports                                                           */
-/* ----------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
 
-#include "mod_blendop_exports.h"
+DLSYSFUNCS __bgdexport( mod_blendop, functions_exports)[] =
+{
+    /* Blendops */
+    { "BLENDOP_NEW"          , ""      , TYPE_INT   , modblendop_create_blendop },
+    { "BLENDOP_IDENTITY"     , "I"     , TYPE_INT   , modblendop_identity       },
+    { "BLENDOP_TINT"         , "IFIII" , TYPE_INT   , modblendop_tint           },
+    { "BLENDOP_TRANSLUCENCY" , "IF"    , TYPE_INT   , modblendop_translucency   },
+    { "BLENDOP_INTENSITY"    , "IF"    , TYPE_INT   , modblendop_intensity      },
+    { "BLENDOP_SWAP"         , "I"     , TYPE_INT   , modblendop_swap           },
+    { "BLENDOP_ASSIGN"       , "III"   , TYPE_INT   , modblendop_assign         },
+    { "BLENDOP_APPLY"        , "III"   , TYPE_INT   , modblendop_apply          },
+    { "BLENDOP_FREE"         , "I"     , TYPE_INT   , modblendop_free           },
+    { "BLENDOP_GRAYSCALE"    , "II"    , TYPE_INT   , modblendop_grayscale      },
 
-/* ----------------------------------------------------------------- */
+    { 0                      , 0       , 0          , 0                                 }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_blendop, modules_dependency )[] =
+{
+    "libgrbase",
+    NULL
+};
+
+/* --------------------------------------------------------------------------- */
+

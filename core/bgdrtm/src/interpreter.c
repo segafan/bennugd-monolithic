@@ -149,13 +149,12 @@ int instance_go_all()
                     last_instance_run = NULL;
                     continue;
                 }
-                SDL_Log("This");
+
                 i_count++;
 
                 last_instance_run = NULL;
-                SDL_Log("a; %d", i==NULL);
+
                 instance_go( i );
-                SDL_Log("b");
 
                 if ( force_debug )
                 {
@@ -168,8 +167,6 @@ int instance_go_all()
 
                 i = instance_next_by_priority();
             }
-            
-                SDL_Log("This2");
 
             if ( must_exit ) break ;
 
@@ -298,7 +295,6 @@ int instance_go( INSTANCE * r )
                 break ;
 
             case MN_PUSH:
-/*            case MN_PUSH | MN_FLOAT: */
                 *r->stack_ptr++ = ptr[1] ;
                 ptr += 2 ;
                 break ;

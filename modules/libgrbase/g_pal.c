@@ -33,6 +33,7 @@
 #include <stdlib.h>
 
 #include "libgrbase.h"
+#include "g_video.h"
 
 /* --------------------------------------------------------------------------- */
 
@@ -354,62 +355,51 @@ int find_nearest_color( PALETTE * pal, int first, int last, int r, int g, int b 
 /* --------------------------------------------------------------------------- */
 /* Find the opaque pixel value corresponding to an RGB triple */
 
-int _rgba( PIXEL_FORMAT * format, int r, int g, int b, int a )
+int gr_map_rgb( PIXEL_FORMAT * format, int r, int g, int b )
 {
-    int color;
-
-    if ( format->depth < 16 ) return find_nearest_color( format->palette, 0, 255, r, g, b );
-
-    color = (( r >> format->Rloss ) << format->Rshift ) |
+    if ( format->depth == 32 )
+    {
+        return  0xff000000                  |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
+    }
+    else if ( format->depth == 16 )
+    {
+        return
+            (( r >> format->Rloss ) << format->Rshift ) |
             (( g >> format->Gloss ) << format->Gshift ) |
             (( b >> format->Bloss ) << format->Bshift ) ;
-
-    if ( format->depth == 32 ) color |= (( a >> format->Aloss ) << format->Ashift );
-
-    return color;
+    }
+    else
+    {
+        return find_nearest_color( format->palette, 0, 255, r, g, b );
+    }
 }
 
 /* --------------------------------------------------------------------------- */
 /* Find the pixel value corresponding to an RGBA quadruple */
 
-int _rgb( PIXEL_FORMAT * format, int r, int g, int b )
+int gr_map_rgba( PIXEL_FORMAT * format, int r, int g, int b, int a )
 {
-    return _rgba( format, r, g, b, 255 );
-}
-
-/* --------------------------------------------------------------------------- */
-
-void _get_rgba( PIXEL_FORMAT * format, int color, int *r, int *g, int *b, int *a )
-{
-    /* 8 bits mode, work with system palette */
-
-    if ( format->depth < 16 )
+    if ( format->depth == 32 )
     {
-        rgb_component * rgb ;
-
-        if ( !format->palette ) rgb = ( rgb_component * ) default_palette;
-        else                    rgb = format->palette->rgb ;
-
-        color &= 0xFF ;
-        ( *r ) = rgb[ color ].r ;
-        ( *g ) = rgb[ color ].g ;
-        ( *b ) = rgb[ color ].b ;
-
-        return ;
+        return  (( a << 24 ) & 0xff000000 ) |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
     }
-
-    ( *r ) = (( color & format->Rmask ) >> format->Rshift ) << format->Rloss ;
-    ( *g ) = (( color & format->Gmask ) >> format->Gshift ) << format->Gloss ;
-    ( *b ) = (( color & format->Bmask ) >> format->Bshift ) << format->Bloss ;
-
-    if ( a && format->depth == 32 ) ( *a ) = (( color & format->Amask ) >> format->Ashift ) << format->Aloss ;
-}
-
-/* --------------------------------------------------------------------------- */
-
-void _get_rgb( PIXEL_FORMAT * format, int color, int *r, int *g, int *b )
-{
-    return _get_rgba( format, color, r, g, b, NULL );
+    else if ( format->depth == 16 )
+    {
+        return
+            (( r >> format->Rloss ) << format->Rshift ) |
+            (( g >> format->Gloss ) << format->Gshift ) |
+            (( b >> format->Bloss ) << format->Bshift ) ;
+    }
+    else
+    {
+        return find_nearest_color( format->palette, 0, 255, r, g, b );
+    }
 }
 
 /* --------------------------------------------------------------------------- */
@@ -425,20 +415,20 @@ void pal_refresh( PALETTE * pal )
             uint8_t * p = default_palette;
             for ( n = 0; n < 256; n++ )
             {
-                default_colorequiv[ n ] = _rgb( sys_pixel_format, *( p ), *( p + 1 ), *( p + 2 ) );
+                default_colorequiv[ n ] = gr_map_rgb( sys_pixel_format, *( p ), *( p + 1 ), *( p + 2 ) );
                 p += 3;
             }
 
             pal = first_palette;
             while ( pal )
             {
-                for ( n = 256; n--; ) pal->colorequiv[ n ] = _rgb( sys_pixel_format, pal->rgb[ n ].r, pal->rgb[ n ].g, pal->rgb[ n ].b );
+                for ( n = 256; n--; ) pal->colorequiv[ n ] = gr_map_rgb( sys_pixel_format, pal->rgb[ n ].r, pal->rgb[ n ].g, pal->rgb[ n ].b );
                 pal = pal->next;
             }
         }
         else
         {
-            for ( n = 256; n--; ) pal->colorequiv[ n ] = _rgb( sys_pixel_format, pal->rgb[ n ].r, pal->rgb[ n ].g, pal->rgb[ n ].b );
+            for ( n = 256; n--; ) pal->colorequiv[ n ] = gr_map_rgb( sys_pixel_format, pal->rgb[ n ].r, pal->rgb[ n ].g, pal->rgb[ n ].b );
         }
     }
     else
@@ -645,22 +635,78 @@ void gr_roll_palette( int color0, int num, int inc )
 }
 
 /* --------------------------------------------------------------------------- */
+/* This functions is used only for 16 and 32 bits                              */
 
 int gr_rgb( int r, int g, int b )
 {
     int color ;
-    color = _rgb( sys_pixel_format, r, g, b );
-    if ( sys_pixel_format->depth == 16 && !color ) return 1;
+
+    if ( sys_pixel_format->depth == 32 )
+    {
+#ifdef COLORSPACE_BGR
+        return                 0xff000000   |
+                (( b << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( r       ) & 0x000000ff ) ;
+#else
+        return                 0xff000000   |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
+#endif
+    }
+
+    /* 16 bits */
+#ifdef COLORSPACE_BGR
+    color = (( b >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
+            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
+            (( r >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
+#else
+    color = (( r >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
+            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
+            (( b >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
+#endif
+
+    if ( !color ) return 1 ;
+
     return color ;
 }
 
 /* --------------------------------------------------------------------------- */
+/* This functions is used only for 16 and 32 bits                              */
 
 int gr_rgba( int r, int g, int b, int a )
 {
-    int color ;
-    color = _rgba( sys_pixel_format, r, g, b, a );
-    if ( sys_pixel_format->depth == 16 && !color ) return 1;
+    int color;
+
+    if ( sys_pixel_format->depth == 32 )
+    {
+#ifdef COLORSPACE_BGR
+        return  (( a << 24 ) & 0xff000000 ) |
+                (( b << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( r       ) & 0x000000ff ) ;
+#else
+        return  (( a << 24 ) & 0xff000000 ) |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
+#endif
+    }
+
+    /* 16 bits */
+#ifdef COLORSPACE_BGR
+    color = (( b >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
+            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
+            (( r >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;    
+#else
+    color = (( r >> sys_pixel_format->Rloss ) << sys_pixel_format->Rshift ) |
+            (( g >> sys_pixel_format->Gloss ) << sys_pixel_format->Gshift ) |
+            (( b >> sys_pixel_format->Bloss ) << sys_pixel_format->Bshift ) ;
+#endif
+
+    if ( !color ) return 1 ;
+
     return color ;
 }
 
@@ -668,14 +714,61 @@ int gr_rgba( int r, int g, int b, int a )
 
 void gr_get_rgb( int color, int *r, int *g, int *b )
 {
-    return _get_rgb( sys_pixel_format, color, r, g, b );
+    /* 8 bits mode, work with system palette */
+
+    if ( sys_pixel_format->depth < 16 )
+    {
+        rgb_component * rgb ;
+
+        if ( !sys_pixel_format->palette )
+            rgb = ( rgb_component * ) default_palette;
+        else
+            rgb = sys_pixel_format->palette->rgb ;
+
+        color &= 0xFF ;
+        ( *r ) = rgb[ color ].r ;
+        ( *g ) = rgb[ color ].g ;
+        ( *b ) = rgb[ color ].b ;
+
+        return ;
+    }
+
+    ( *r ) = (( color & sys_pixel_format->Rmask ) >> sys_pixel_format->Rshift ) << sys_pixel_format->Rloss;
+    ( *g ) = (( color & sys_pixel_format->Gmask ) >> sys_pixel_format->Gshift ) << sys_pixel_format->Gloss;
+    ( *b ) = (( color & sys_pixel_format->Bmask ) >> sys_pixel_format->Bshift ) << sys_pixel_format->Bloss;
 }
 
 /* --------------------------------------------------------------------------- */
 
 void gr_get_rgba( int color, int *r, int *g, int *b, int *a )
 {
-    return _get_rgba( sys_pixel_format, color, r, g, b, a );
+    /* 8 bits mode, work with system palette */
+
+    if ( sys_pixel_format->depth < 16 )
+    {
+        rgb_component * rgb ;
+
+        if ( !sys_pixel_format->palette )
+            rgb = ( rgb_component * ) default_palette;
+        else
+            rgb = sys_pixel_format->palette->rgb ;
+
+        color &= 0xFF ;
+        ( *r ) = rgb[ color ].r ;
+        ( *g ) = rgb[ color ].g ;
+        ( *b ) = rgb[ color ].b ;
+
+        return ;
+    }
+
+    ( *r ) = (( color & sys_pixel_format->Rmask ) >> sys_pixel_format->Rshift ) << sys_pixel_format->Rloss ;
+    ( *g ) = (( color & sys_pixel_format->Gmask ) >> sys_pixel_format->Gshift ) << sys_pixel_format->Gloss ;
+    ( *b ) = (( color & sys_pixel_format->Bmask ) >> sys_pixel_format->Bshift ) << sys_pixel_format->Bloss ;
+
+    if ( sys_pixel_format->depth == 32 )
+    {
+        ( *a ) = (( color & sys_pixel_format->Amask ) >> sys_pixel_format->Ashift ) << sys_pixel_format->Aloss ;
+    }
 }
 
 /* --------------------------------------------------------------------------- */
@@ -684,10 +777,27 @@ void gr_get_rgba( int color, int *r, int *g, int *b, int *a )
 int gr_rgb_depth( int depth, int r, int g, int b )
 {
     int color ;
+
+    if ( depth == 32 )
+    {
+        return                 0xff000000   |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
+    }
+
+    /* 16 bits */
+
     PIXEL_FORMAT * pf = bitmap_create_format( depth );
-    color = _rgb( pf, r, g, b );
+
+    color = (( r >> pf->Rloss ) << pf->Rshift ) |
+            (( g >> pf->Gloss ) << pf->Gshift ) |
+            (( b >> pf->Bloss ) << pf->Bshift ) ;
+
     free( pf );
-    if ( !color && depth == 16 ) return 1 ;
+
+    if ( !color ) return 1 ;
+
     return color ;
 }
 
@@ -696,11 +806,26 @@ int gr_rgb_depth( int depth, int r, int g, int b )
 
 int gr_rgba_depth( int depth, int r, int g, int b, int a )
 {
-    int color ;
+    int color;
+
+    if ( depth == 32 )
+    {
+        return  (( a << 24 ) & 0xff000000 ) |
+                (( r << 16 ) & 0x00ff0000 ) |
+                (( g <<  8 ) & 0x0000ff00 ) |
+                (( b       ) & 0x000000ff ) ;
+    }
+
     PIXEL_FORMAT * pf = bitmap_create_format( depth );
-    color = _rgba( pf, r, g, b, a );
+
+    color = (( r >> pf->Rloss ) << pf->Rshift ) |
+            (( g >> pf->Gloss ) << pf->Gshift ) |
+            (( b >> pf->Bloss ) << pf->Bshift ) ;
+
     free( pf );
-    if ( !color && depth == 16 ) return 1 ;
+
+    if ( !color ) return 1 ;
+
     return color ;
 }
 
@@ -708,8 +833,31 @@ int gr_rgba_depth( int depth, int r, int g, int b, int a )
 
 void gr_get_rgb_depth( int depth, int color, int *r, int *g, int *b )
 {
+    /* 8 bits mode, work with system palette */
+
+    if ( depth < 16 )
+    {
+        rgb_component * rgb ;
+
+        if ( !sys_pixel_format->palette )
+            rgb = ( rgb_component * ) default_palette;
+        else
+            rgb = sys_pixel_format->palette->rgb ;
+
+        color &= 0xFF ;
+        ( *r ) = rgb[ color ].r ;
+        ( *g ) = rgb[ color ].g ;
+        ( *b ) = rgb[ color ].b ;
+
+        return ;
+    }
+
     PIXEL_FORMAT * pf = bitmap_create_format( depth );
-    _get_rgb( pf, color, r, g, b );
+
+    ( *r ) = (( color & pf->Rmask ) >> pf->Rshift ) << pf->Rloss;
+    ( *g ) = (( color & pf->Gmask ) >> pf->Gshift ) << pf->Gloss;
+    ( *b ) = (( color & pf->Bmask ) >> pf->Bshift ) << pf->Bloss;
+
     free( pf );
 }
 
@@ -717,14 +865,49 @@ void gr_get_rgb_depth( int depth, int color, int *r, int *g, int *b )
 
 void gr_get_rgba_depth( int depth, int color, int *r, int *g, int *b, int *a )
 {
+    /* 8 bits mode, work with system palette */
+
+    if ( depth < 16 )
+    {
+        rgb_component * rgb ;
+
+        if ( !sys_pixel_format->palette )
+            rgb = ( rgb_component * ) default_palette;
+        else
+            rgb = sys_pixel_format->palette->rgb ;
+
+        color &= 0xFF ;
+        ( *r ) = rgb[ color ].r ;
+        ( *g ) = rgb[ color ].g ;
+        ( *b ) = rgb[ color ].b ;
+
+        return ;
+    }
+
     PIXEL_FORMAT * pf = bitmap_create_format( depth );
-    _get_rgba( pf, color, r, g, b, a );
+
+    ( *r ) = (( color & pf->Rmask ) >> pf->Rshift ) << pf->Rloss;
+    ( *g ) = (( color & pf->Gmask ) >> pf->Gshift ) << pf->Gloss;
+    ( *b ) = (( color & pf->Bmask ) >> pf->Bshift ) << pf->Bloss;
+
+    if ( depth == 32 )
+    {
+        ( *a ) = (( color & pf->Amask ) >> pf->Ashift ) << pf->Aloss ;
+    }
+
     free( pf );
 }
 
 /* --------------------------------------------------------------------------- */
 
 int gr_find_nearest_color( int r, int g, int b )
+{
+    return find_nearest_color( sys_pixel_format->palette, 0, 255, r, g, b ) ;
+}
+
+/* --------------------------------------------------------------------------- */
+
+int gr_get_color( int r, int g, int b )
 {
     return find_nearest_color( sys_pixel_format->palette, 0, 255, r, g, b ) ;
 }
@@ -767,17 +950,17 @@ void gr_make_trans_table()
 void gr_set_rgb( int color, int r, int g, int b )
 {
     if ( color < 0 || color > 255 ) return ;
-
+    
     if ( !sys_pixel_format->palette )
     {
         sys_pixel_format->palette = pal_new( NULL );
         memset ( sys_pixel_format->palette->rgb, '\0', sizeof( sys_pixel_format->palette->rgb ) );
     }
-
+    
     sys_pixel_format->palette->rgb[ color ].r = r << 2;
     sys_pixel_format->palette->rgb[ color ].g = g << 2;
     sys_pixel_format->palette->rgb[ color ].b = b << 2;
-
+    
     palette_changed = 1 ;
 }
 
@@ -788,15 +971,15 @@ void gr_set_rgb( int color, int r, int g, int b )
 void gr_get_colors( int color, int num, uint8_t * pal )
 {
     rgb_component * rgb;
-
+    
     if ( num < 1 || color < 0 || color > 255 ) return ;
     if ( color + num > 256 ) num = 256 - color ;
-
+    
     if ( !sys_pixel_format->palette )
         rgb = ( rgb_component * ) default_palette;
     else
         rgb = ( rgb_component * ) sys_pixel_format->palette->rgb;
-
+    
     while ( num-- )
     {
         *pal++ = rgb[ color ].r ;

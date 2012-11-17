@@ -61,16 +61,7 @@ public class SDLActivity extends Activity {
         System.loadLibrary("mikmod");
         System.loadLibrary("SDL2");
         System.loadLibrary("SDL2_mixer");
-        System.loadLibrary("glob");
         System.loadLibrary("bgdrtm");
-        System.loadLibrary("mod_say");
-        System.loadLibrary("mod_string");
-        System.loadLibrary("bgload");
-        System.loadLibrary("grbase");
-        System.loadLibrary("blit");
-        System.loadLibrary("video");
-        System.loadLibrary("render");
-        System.loadLibrary("mod_video");
         System.loadLibrary("main");
     }
 

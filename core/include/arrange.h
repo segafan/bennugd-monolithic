@@ -30,14 +30,6 @@
     #define __ARRANGE_ST_H
 
     #include <stdint.h>
-    
-    #ifdef __LIL_ENDIAN
-    #undef __LIL_ENDIAN
-    #endif
-    
-    #ifdef __BIG_ENDIAN
-    #undef __BIG_ENDIAN
-    #endif
 
     #define __LIL_ENDIAN 1234
     #define __BIG_ENDIAN 4321
@@ -50,8 +42,7 @@
         defined(__ppc__) || \
         defined(__POWERPC__) || \
         defined(_M_PPC) || \
-        defined(__sparc__) || \
-        defined(GEKKO)
+        defined(__sparc__)
         #define __BYTEORDER  __BIG_ENDIAN
     #else
         #define __BYTEORDER  __LIL_ENDIAN

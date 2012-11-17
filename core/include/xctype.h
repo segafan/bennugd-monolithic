@@ -26,9 +26,6 @@
  *
  */
 
-#ifndef __XCTYPE_H
-#define __XCTYPE_H
-
 #include <xctype_st.h>
 
 extern int dos_chars ;		/* 1 = Código fuente en caracteres MS-DOS */
@@ -42,4 +39,3 @@ extern void init_c_type () ;
 extern unsigned char dos_to_win[256] ;
 extern unsigned char win_to_dos[256] ;
 
-#endif

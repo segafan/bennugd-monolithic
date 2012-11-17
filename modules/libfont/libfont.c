@@ -33,6 +33,8 @@
 
 #include "bgdrtm.h"
 
+#include "bgddl.h"
+
 #define __LIB_FONT
 #include "libfont.h"
 
@@ -717,9 +719,18 @@ FONT * gr_font_get( int id )
 }
 
 /* --------------------------------------------------------------------------- */
-/* exports                                                                     */
+
+void __bgdexport( libfont, module_initialize )()
+{
+    gr_font_systemfont( ( char * ) default_font );
+}
+
 /* --------------------------------------------------------------------------- */
 
-#include "libfont_exports.h"
+char * __bgdexport( libfont, modules_dependency )[] =
+{
+    "libgrbase",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

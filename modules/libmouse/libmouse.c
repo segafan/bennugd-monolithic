@@ -62,7 +62,19 @@ static GRAPH * mouse_map = NULL;
 
 /* --------------------------------------------------------------------------- */
 
-#include "libmouse_exports.h"
+char * __bgdexport( libmouse, globals_def ) =
+    "STRUCT mouse\n"
+    "x = 99999, y = 99999;\n"
+    "z = -512;\n"
+    "file;\n"
+    "graph;\n"
+    "angle;\n"
+    "size = 100;\n"
+    "flags;\n"
+    "region;\n"
+    "left, middle, right;\n"
+    "wheelup, wheeldown;\n"
+    "END\n";
 
 /* --------------------------------------------------------------------------- */
 
@@ -471,6 +483,19 @@ HOOK __bgdexport( libmouse, handler_hooks )[] =
     { 4800, do_mouse_events },
     { 0, NULL }
 } ;
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( libmouse, modules_dependency )[] =
+{
+    "libsdlhandler",
+    "libgrbase",
+    "libvideo",
+    "libblit",
+    "librender", // Add by Sandman
+    NULL
+};
+
 /* --------------------------------------------------------------------------- */
 
 void __bgdexport( libmouse, module_initialize )()

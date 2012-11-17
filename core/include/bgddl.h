@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
+ *  Copyright ï¿½ 2006-2012 SplinterGU (Fenix/Bennugd)
  *
  *  This file is part of Bennu - Game Development
  *
@@ -65,6 +65,10 @@
 
 #include <commons_defs.h>
 
+/* --------------------------------------------------------------------------- */
+#ifdef __MONOLITHIC__
+#include <typedef_st.h>
+#endif
 /* --------------------------------------------------------------------------- */
 
 typedef struct

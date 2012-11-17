@@ -44,6 +44,11 @@ enum {
 };
 
 /* ----------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+
+char * __bgdexport( mod_timers, globals_def ) = "timer[9];\n";
+
+/* ----------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
 /* El interprete completa esta estructura, si la variable existe.    */
 /* (usada en tiempo de ejecucion)                                    */
@@ -95,10 +100,3 @@ HOOK __bgdexport( mod_timers, handler_hooks )[] =
     {   0, NULL            }
 } ;
 
-/* --------------------------------------------------------------------------- */
-/* exports                                                                     */
-/* --------------------------------------------------------------------------- */
-
-#include "mod_timers_exports.h"
-
-/* --------------------------------------------------------------------------- */

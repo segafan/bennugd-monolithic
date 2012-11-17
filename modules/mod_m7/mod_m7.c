@@ -44,12 +44,16 @@
 
 #include "resolution.h"
 
-#include "mod_m7.h"
-
 /* --------------------------------------------------------------------------- */
 
 extern uint8_t trans_table[256][256] ;
 extern int trans_table_updated ;
+
+/* --------------------------------------------------------------------------- */
+
+// #define FOCAL_DIST  128
+
+#define C_M7        2
 
 /* --------------------------------------------------------------------------- */
 
@@ -144,6 +148,39 @@ enum {
     STATUS,
     RESOLUTION
 };
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de constantes (usada en tiempo de compilacion)         */
+
+DLCONSTANT __bgdexport( mod_m7, constants_def )[] =
+{
+    { "C_M7", TYPE_INT, C_M7 },
+    { NULL  , 0       , 0 }
+} ;
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables globales (usada en tiempo de compilacion) */
+char * __bgdexport( mod_m7, globals_def ) =
+    "STRUCT m7[9]\n"
+    "camera;\n"
+    "height = 32;\n"
+    "distance = 64;\n"
+    "horizon = 0;\n"
+    "focus = 256;\n"
+    "z = 256;\n"
+    "color = 0;\n"
+    "flags = 0;\n"
+    "END\n" ;
+
+/* --------------------------------------------------------------------------- */
+/* Definicion de variables locales (usada en tiempo de compilacion)  */
+char * __bgdexport( mod_m7, locals_def ) =
+    "ctype;\n"
+    "cnumber;\n"
+    "height;\n"
+    "STRUCT _m7_reserved\n"
+    "  distance1;\n"
+    "END;\n";
 
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                           */
@@ -925,10 +962,29 @@ void __bgdexport( mod_m7, module_initialize )()
     init_cos_tables() ;
 }
 
-/* ----------------------------------------------------------------- */
-/* exports                                                           */
-/* ----------------------------------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
-#include "mod_m7_exports.h"
+DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
+{
+    { "MODE7_START" , "IIIIIIII"    , TYPE_INT , modm7_start2 },
+    { "MODE7_START" , "IIIIII"      , TYPE_INT , modm7_start  },
+    { "MODE7_STOP"  , "I"           , TYPE_INT , modm7_stop   },
 
-/* ----------------------------------------------------------------- */
+    { "START_MODE7" , "IIIIIIII"    , TYPE_INT , modm7_start2 },
+    { "START_MODE7" , "IIIIII"      , TYPE_INT , modm7_start  },
+    { "STOP_MODE7"  , "I"           , TYPE_INT , modm7_stop   },
+
+    { NULL          , NULL          , 0        , NULL         }
+};
+
+/* --------------------------------------------------------------------------- */
+
+char * __bgdexport( mod_m7, modules_dependency )[] =
+{
+    "libgrbase",
+    "libvideo",
+    "librender",
+    NULL
+};
+
+/* --------------------------------------------------------------------------- */

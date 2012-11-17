@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define __LIB_RENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */
@@ -457,15 +458,19 @@ void gr_unlock_screen()
         /* Esto podria ir en un modulo aparte */
         switch ( scale_mode )
         {
+#ifdef WITH_GPL_CODE
             case SCALE_SCALE2X:
                 scale2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
 
-#ifdef WITH_GPL_CODE
             case SCALE_HQ2X:
                 hq2x( scr->data, scr->pitch, screen->pixels, screen->pitch, scr->width, scr->height );
                 break;
 #else
+            case SCALE_SCALE2X:
+                SDL_Log("This build doesn't support GPL'ed SCALE2X, sorry :(");
+                break;
+
             case SCALE_HQ2X:
                 SDL_Log("This build doesn't include GPL'ed HQ2X, sorry :(");
                 break;

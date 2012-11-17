@@ -83,9 +83,19 @@ static int modkey_key( INSTANCE * my, int * params )
 }
 
 /* --------------------------------------------------------------------------- */
-/* exports                                                                     */
+
+DLSYSFUNCS  __bgdexport( mod_key, functions_exports )[] =
+{
+    { "KEY" , "I"   , TYPE_INT  , modkey_key   },
+    { 0     , 0     , 0         , 0            }
+};
+
 /* --------------------------------------------------------------------------- */
 
-#include "mod_key_exports.h"
+char * __bgdexport( mod_key, modules_dependency )[] =
+{
+    "libkey",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

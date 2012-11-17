@@ -30,6 +30,7 @@
 #include <string.h>
 #include <time.h>
 
+#define __LIB_RENDER
 #include "librender.h"
 
 /* --------------------------------------------------------------------------- */
@@ -228,12 +229,13 @@ void gr_refresh_palette()
         {
             for ( n = 0 ; n < 256 ; n++ )
             {
-                sys_pixel_format->palette->colorequiv[ n ] = _rgb(
-                                                                  sys_pixel_format,
-                                                                  sys_pixel_format->palette->rgb[ n ].r,
-                                                                  sys_pixel_format->palette->rgb[ n ].g,
-                                                                  sys_pixel_format->palette->rgb[ n ].b
-                                                                 ) ;
+                sys_pixel_format->palette->colorequiv[ n ] = gr_map_rgb
+                        (
+                            sys_pixel_format,
+                            sys_pixel_format->palette->rgb[ n ].r,
+                            sys_pixel_format->palette->rgb[ n ].g,
+                            sys_pixel_format->palette->rgb[ n ].b
+                        ) ;
             }
         }
     }

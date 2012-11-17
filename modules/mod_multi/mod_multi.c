@@ -28,6 +28,7 @@
 #include <libvideo.h>
 #include <g_video.h>
 #include <g_compat.h>
+#include <libmouse_symbols.h>
 #include <SDL.h>
 #include "bgddl.h"
 #include "dlvaracc.h"
@@ -182,6 +183,7 @@ int get_sdlfinger_index(SDL_FingerID finger) {
 void parse_input_events() {
     int n=0;
     float x=0.0, y=0.0;
+    float sdlx, sdly;
     double width=0, height=0;
     double w_width=0, w_height=0;
     SDL_DisplayMode mode;
@@ -233,21 +235,25 @@ void parse_input_events() {
                 pointers[n].active = SDL_TRUE;
                 x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
                 y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
-                pointers[n].pressure = ((float)e.tfinger.pressure / state->pressure_max ) * 255;
+                pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
                 
                 // Convert the touch location taking scaling/rotations into account
+                sdlx = x; sdly = y;
                 convert_coords(&x, &y);
-                pointers[n].x = (int)x; pointers[n].y = (int)y;
+                pointers[n].x = (int)x;
+                pointers[n].y = (int)y;
+                
+                SDL_Log("Touch  at %dx%d translates to %dx%d", (int)sdlx, (int)sdly, (int)x, (int)y);
                 
                 // Fake a mouse click, but only for the first pointer and
                 // if libmouse has been imported
-                /*if (n == 0) {
+                if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX )    = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY )    = pointers[n].y;
                         GLODWORD( libmouse, MOUSELEFT ) = 1 ;
                     }
-                }*/
+                }
                 break;
             
             case SDL_FINGERMOTION:
@@ -265,16 +271,20 @@ void parse_input_events() {
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
                 
                 // Convert the touch location taking scaling/rotations into account
+                sdlx = x; sdly = y;
                 convert_coords(&x, &y);
-                pointers[n].x = (int)x; pointers[n].y = (int)y;
+                pointers[n].x = (int)x;
+                pointers[n].y = (int)y;
+                
+                SDL_Log("Motion at %dx%d translates to %dx%d", (int)sdlx, (int)sdly, (int)x, (int)y);
 
                 // Fake a mouse move, but only if libmouse has been imported
-                /*if (n == 0) {
+                if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
                     }
-                }*/
+                }
                 break;
 
             case SDL_FINGERUP:
@@ -295,11 +305,11 @@ void parse_input_events() {
                 
                 // Fake a mouse release, but only for the first pointer and
                 // if libmouse is imported
-                /*if (n == 0) {
+                if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLODWORD( libmouse, MOUSELEFT ) = 0 ;
                     }
-                }*/
+                }
                 break;
         }
     }

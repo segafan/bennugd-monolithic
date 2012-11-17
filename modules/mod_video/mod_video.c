@@ -106,7 +106,7 @@ static int get_sdl_flags( int flags )
     sdl_flags |= ( flags & MODE_FRAMELESS ) ? SDL_WINDOW_BORDERLESS : 0;
 #else
     int sdl_flags = SDL_HWPALETTE;
-
+    
     sdl_flags |= ( flags & MODE_FULLSCREEN ) ? SDL_FULLSCREEN : 0 ;
     sdl_flags |= ( flags & MODE_DOUBLEBUFFER ) ? SDL_DOUBLEBUF : 0 ;
     sdl_flags |= ( flags & MODE_HARDWARE ) ? SDL_HWSURFACE : SDL_SWSURFACE ;
@@ -192,9 +192,31 @@ static int modvideo_mode_is_ok( INSTANCE * my, int * params )
 }
 
 /* --------------------------------------------------------------------------- */
-/* exports                                                                     */
+
+DLSYSFUNCS  __bgdexport( mod_video, functions_exports )[] =
+{
+
+    /* Video */
+    { "SET_MODE"        , "I"     , TYPE_INT        , modvideo_set_mode         },
+    { "SET_MODE"        , "II"    , TYPE_INT        , modvideo_set_mode_2       },
+    { "SET_MODE"        , "III"   , TYPE_INT        , modvideo_set_mode_3       },
+    { "SET_MODE"        , "IIII"  , TYPE_INT        , modvideo_set_mode_4       },
+    { "SET_FPS"         , "II"    , TYPE_INT        , modvideo_set_fps          },
+
+    { "GET_MODES"       , "II"    , TYPE_POINTER    , modvideo_list_modes       },
+    { "MODE_IS_OK"      , "IIII"  , TYPE_INT        , modvideo_mode_is_ok       },
+
+    { 0                 , 0       , 0               , 0                         }
+};
+
 /* --------------------------------------------------------------------------- */
 
-#include "mod_video_exports.h"
+char * __bgdexport( mod_video, modules_dependency )[] =
+{
+    "libgrbase",
+    "libvideo",
+    "librender",
+    NULL
+};
 
 /* --------------------------------------------------------------------------- */

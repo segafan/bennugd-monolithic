@@ -601,10 +601,15 @@ static int modsort_quicksort( INSTANCE *my, int *params )
     return 1 ;
 }
 
-/* ----------------------------------------------------------------- */
-/* exports                                                           */
-/* ----------------------------------------------------------------- */
+/* ---------------------------------------------------------------------- */
 
-#include "mod_sort_exports.h"
-
-/* ----------------------------------------------------------------- */
+DLSYSFUNCS  __bgdexport( mod_sort, functions_exports )[] =
+{
+    /* Funciones sort */
+    { "QUICKSORT"   , "PIIIBB", TYPE_INT    , modsort_quicksort },
+    { "KSORT"       , "V++V++", TYPE_INT    , modsort_ksort     },
+    { "KSORT"       , "V++V++I", TYPE_INT    , modsort_ksort_n   },
+    { "SORT"        , "V++I"  , TYPE_INT    , modsort_sort_n    },
+    { "SORT"        , "V++"   , TYPE_INT    , modsort_sort      },
+    { 0             , 0       , 0           , 0                 }
+};

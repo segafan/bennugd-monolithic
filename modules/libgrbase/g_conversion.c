@@ -57,6 +57,10 @@ enum {
     ALPHA_STEPS = 0
 };
 
+char * __bgdexport( libgrbase, globals_def ) =
+    "alpha_steps = 16;\n"
+    ;
+
 /* --------------------------------------------------------------------------- */
 /* Son las variables que se desea acceder.                                     */
 /* El interprete completa esta estructura, si la variable existe.              */

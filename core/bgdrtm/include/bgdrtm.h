@@ -40,11 +40,6 @@
 #include "xctype.h"
 #include "instance.h"
 
-#warning REMOVE ME!!!
-#include <SDL.h>
-#undef printf
-#define printf SDL_Log
-
 /* --------------------------------------------------------------------------- */
 
 extern void * globaldata ;
@@ -79,7 +74,7 @@ extern INSTANCE * trace_instance;
 /* --------------------------------------------------------------------------- */
 // Some SDKs define strcmpi to strncasecmp, but we want to user our own
 
-#if defined(TARGET_WII)
+#if defined(TARGET_WII) || defined(TARGET_PSP)
 #ifdef strncmpi
 #undef strncmpi
 #endif

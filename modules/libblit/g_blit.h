@@ -31,6 +31,9 @@
 
 /* --------------------------------------------------------------------------- */
 
+#include "libgrbase.h"
+
+/* --------------------------------------------------------------------------- */
 /* Flags para gr_blit                                                          */
 
 #define B_HMIRROR       0x0001
@@ -46,17 +49,10 @@
 
 /* --------------------------------------------------------------------------- */
 
-#ifndef __BGDC__
-
-#include "libgrbase.h"
-
-/* --------------------------------------------------------------------------- */
-
 extern void gr_blit( GRAPH * dest, REGION * clip, int x, int y, int flags, GRAPH * gr ) ;
 extern void gr_get_bbox( REGION * dest, REGION * clip, int x, int y, int flags, int angle, int scalex, int scaley, GRAPH * gr ) ;
 extern void gr_rotated_blit( GRAPH * dest, REGION * clip, int x, int y, int flags, int angle, int scalex, int scaley, GRAPH * gr ) ;
 
 /* --------------------------------------------------------------------------- */
-#endif
 
 #endif

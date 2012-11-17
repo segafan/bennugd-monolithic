@@ -11,7 +11,7 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/include \
 	$(CORE_PATH)/bgdrtm/include/ \
 	$(CORE_PATH)/include \
-	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
+	$(LOCAL_PATH)/../../../3rdparty/libglob-bsd/include/ \
 	$(SDL_PATH)/include
 
 # Add any compilation flags for your project here...
@@ -19,14 +19,15 @@ LOCAL_CFLAGS := \
 	-D__BGDI__ \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
-	-DVERSION='"1.0.0"'
+	-DVERSION='"1.0.0"' \
+	-DGL_GLEXT_PROTOTYPES
 
 # Add your application source files here...
 LOCAL_SRC_FILES := /../../../../3rdparty/SDL/src/main/android/SDL_android_main.cpp \
 	main.c
 
-LOCAL_SHARED_LIBRARIES  += bgdrtm glob SDL2
-LOCAL_STATIC_LIBRARY    += 
-LOCAL_LDLIBS := -lGLESv2
+LOCAL_SHARED_LIBRARIES  += bgdrtm SDL2
+LOCAL_STATIC_LIBRARY    +=
+LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)
