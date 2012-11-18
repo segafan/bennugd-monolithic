@@ -33,6 +33,7 @@
 char * __bgdexport( mod_mouse, modules_dependency )[] =
 {
     "libmouse",
+    "mod_multi",
 #ifdef TARGET_WII
     "libjoy",
 #endif

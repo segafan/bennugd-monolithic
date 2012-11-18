@@ -37,9 +37,11 @@
 #   define MAX_POINTERS 10
 #endif
 
-#if SDL_MAJOR_VERSION == 1 && SDL_MINOR_VERSION == 2
-#    error This module needs SDL 1.3, refusing to compile
+#if ! SDL_VERSION_ATLEAST(2,0,0)
+#    error This module needs SDL 2.0, refusing to compile
 #endif
+
+/* --------------------------------------------------------------------------- */
 
 typedef struct {
     SDL_bool active;
@@ -54,15 +56,17 @@ multi_pointer pointers[MAX_POINTERS];
 int numpointers=0;
 
 // Required for mouse emulation
-#define MOUSEX              0
-#define MOUSEY              1
-#define MOUSELEFT           9
+enum {
+    MOUSEX = 0,
+    MOUSEY,
+    MOUSELEFT = 9
+};
 
 /* Given a pair of coords, convert them to the value the user expects,
   taking into account screen rotations, scaling and stuff
  */
 void convert_coords(float *x, float *y) {
-    if ( scale_resolution )
+    if ( scale_resolution != -1 )
     {
         if ( scale_resolution_aspectratio == SRA_PRESERVE )
         {
@@ -147,11 +151,6 @@ void convert_coords(float *x, float *y) {
     {
         *x = *x / 2 ;
         *y = *y / 2 ;
-    }
-    else
-    {
-        *x = *x ;
-        *y = *y ;
     }
 }
 
@@ -243,8 +242,6 @@ void parse_input_events() {
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
                 
-                SDL_Log("Touch  at %dx%d translates to %dx%d", (int)sdlx, (int)sdly, (int)x, (int)y);
-                
                 // Fake a mouse click, but only for the first pointer and
                 // if libmouse has been imported
                 if (n == 0) {
@@ -275,8 +272,6 @@ void parse_input_events() {
                 convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
-                
-                SDL_Log("Motion at %dx%d translates to %dx%d", (int)sdlx, (int)sdly, (int)x, (int)y);
 
                 // Fake a mouse move, but only if libmouse has been imported
                 if (n == 0) {

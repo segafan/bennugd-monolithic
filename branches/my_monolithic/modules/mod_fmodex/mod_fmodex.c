@@ -46,9 +46,11 @@
 #define SPECTRUMSIZE        256
 
 /* Constant definitions for BennuGD vars */
-#define FMODEX_SPECTRUM		  0
-#define SOUND_FREQ			  1
-#define FMODEX_SPECTRUMSIZE   2
+enum {
+    FMODEX_SPECTRUM = 0,
+    SOUND_FREQ,
+    FMODEX_SPECTRUMSIZE
+};
 
 /* Error checking, no return value */
 #define ERRCHECK(FUNCTION) \
@@ -67,7 +69,6 @@
         return retval; \
     } \
 }
-
 
 /* These var should stay static */
 static FMOD_SYSTEM     *fsystem;

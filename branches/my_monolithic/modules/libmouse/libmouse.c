@@ -137,6 +137,10 @@ DLVARFIXUP __bgdexport( libmouse, globals_fixup )[] =
 
 static void do_mouse_events()
 {
+    // Don't process mouse events at all
+    SDL_FlushEvents(SDL_MOUSEMOTION, SDL_MOUSEWHEEL);
+    return;
+    
     SDL_Event e ;
     static int last_mouse_x = -1, last_mouse_y = -1 ;
 
@@ -182,7 +186,7 @@ static void do_mouse_events()
     GLODWORD( libmouse, MOUSEWHEELDOWN ) = 0 ;
 
 #if SDL_VERSION_ATLEAST(2,0,0)
-	while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEWHEEL ) > 0 )
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEMOTION, SDL_MOUSEWHEEL ) > 0 )
 #else
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_MOUSEEVENTMASK ) > 0 )
 #endif
