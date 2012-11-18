@@ -68,7 +68,6 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODICONV \
 	-DNO_MODMEM \
 	-DNO_MODFMODEX \
-	-DNO_MODCURL \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
@@ -157,10 +156,11 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_flic/mod_flic.c \
 	../../../../modules/mod_regex/mod_regex.c \
 	../../../../modules/mod_regex/regex.c \
-	../../../../modules/mod_multi/mod_multi.c
+	../../../../modules/mod_multi/mod_multi.c \
+	../../../../modules/mod_curl/mod_curl.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png
-LOCAL_STATIC_LIBRARIES += 
+LOCAL_STATIC_LIBRARIES += curl 
 
 include $(BUILD_SHARED_LIBRARY)
