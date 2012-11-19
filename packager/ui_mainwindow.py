@@ -245,6 +245,6 @@ class Ui_MainWindow(object):
         self.actionSDK_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the Android SDK manager", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAVD_Manager.setText(QtGui.QApplication.translate("MainWindow", "AVD Manager", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAVD_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the android AVD manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDDMS.setText(QtGui.QApplication.translate("MainWindow", "DDMS", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDDMS.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch DDMS", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDDMS.setText(QtGui.QApplication.translate("MainWindow", "Monitor", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDDMS.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch Android Monitor", None, QtGui.QApplication.UnicodeUTF8))
 

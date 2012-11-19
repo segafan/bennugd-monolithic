@@ -95,12 +95,12 @@ class packager(QtGui.QMainWindow):
                 QtGui.QMessageBox.critical(self, 'AVD manager launch error',
                               'Couldn\'t launch the Android Virtual Device Manager, sorry :(\n'+
                               '(Maybe you haven\'t configured the SDK path correctly?)')
-        elif action == 'DDMS':
+        elif action == 'Monitor':
             try:
-                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'ddms'+self.batext)])
+                subprocess.Popen([os.path.join(self.sdkdir, 'tools', 'monitor'+self.batext)])
             except:
-                QtGui.QMessageBox.critical(self, 'DDMS launch error',
-                              'Couldn\'t launch the Dalvik Debug Monitor Server (DDMS), sorry :(\n'+
+                QtGui.QMessageBox.critical(self, 'Monitor launch error',
+                              'Couldn\'t launch the Android Monitor, sorry :(\n'+
                             '(Maybe you haven\'t configured the SDK path correctly?)')
         else:
             sys.stdout.write('Unknown menu action\n')

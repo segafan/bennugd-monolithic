@@ -436,10 +436,10 @@
   </action>
   <action name="actionDDMS">
    <property name="text">
-    <string>DDMS</string>
+    <string>Monitor</string>
    </property>
    <property name="toolTip">
-    <string>Launch DDMS</string>
+    <string>Launch Android Monitor</string>
    </property>
   </action>
  </widget>
