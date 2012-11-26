@@ -1,3 +1,21 @@
+bennugd-packager (1.0.10) precise; urgency=low
+
+  * Packager will now uncompress your FPGs, FNTs and MAPs before packing them.
+
+ -- Joseba García Etxebarria <joseba.gar@gmail.com>  Mon, 26 Nov 2012 18:37:32 +0100
+
+bennugd-packager (1.0.9) precise; urgency=low
+
+  * Updated BennuGD binaries.
+
+ -- Joseba García Etxebarria <joseba.gar@gmail.com>  Mon, 19 Nov 2012 17:57:58 +0100
+
+bennugd-packager (1.0.8) precise; urgency=low
+
+  * Updated BennuGD binaries.
+
+ -- Joseba García Etxebarria <joseba.gar@gmail.com>  Sun, 18 Nov 2012 03:05:04 +0100
+
 bennugd-packager (1.0.7) precise; urgency=low
 
   * Updated BennuGD binaries to include the latest upstream changes and fix some bugs.
