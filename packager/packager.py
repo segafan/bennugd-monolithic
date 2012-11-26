@@ -171,16 +171,6 @@ class packager(QtGui.QMainWindow):
                 self.ui.filelist.insertItem(row, newItem)
                 row += 1
 
-    def center(self):
-        qr = self.frameGeometry()
-        cp = QtGui.QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-
-    def show_preferences(self):
-        'Displays the preferences dialog'
-        dialog=dialog_preferences()
-
     def uncompresstree(self, src, exts=None):
         """Handles uncompression of gzip files with given extensions in given dir
         Taken from shutil.copytree"""
@@ -193,25 +183,26 @@ class packager(QtGui.QMainWindow):
                 if os.path.isdir(srcname):
                     self.uncompresstree(srcname, exts)
                 else:
-                    # gzip won't raise an exception until we try to actually
-                    # uncompress data
-                    f_in = gzip.open(srcname, 'rb')
-                    f_out = open(srcname+'.out', 'wb')
-                    success = True
-                    try:
-                        f_out.writelines(f_in)
-                    except IOError:
-                        # Not in gz format
-                        success = False
-                    f_in.close()
-                    f_out.close()
+                    if srcname.lower().endswith(exts):
+                        # gzip won't raise an exception until we try to actually
+                        # uncompress data
+                        f_in = gzip.open(srcname, 'rb')
+                        f_out = open(srcname+'.out', 'wb')
+                        success = True
+                        try:
+                            f_out.writelines(f_in)
+                        except IOError:
+                            # Not in gz format
+                            success = False
+                        f_in.close()
+                        f_out.close()
 
-                    if success:
-                        # Replace compressed file with uncompressed version
-                        os.remove(srcname)
-                        os.rename(srcname+'.out', srcname)
-                    else:
-                        os.remove(srcname+'.out')
+                        if success:
+                            # Replace compressed file with uncompressed version
+                            os.remove(srcname)
+                            os.rename(srcname+'.out', srcname)
+                        else:
+                            os.remove(srcname+'.out')
 
             except (IOError, os.error) as why:
                 errors.append((srcname, str(why)))
@@ -393,3 +384,13 @@ class packager(QtGui.QMainWindow):
         self.ui.statusbar.clearMessage()
         # Return to the app working dir
         os.chdir(mycwd)
+
+    def center(self):
+        qr = self.frameGeometry()
+        cp = QtGui.QDesktopWidget().availableGeometry().center()
+        qr.moveCenter(cp)
+        self.move(qr.topLeft())
+
+    def show_preferences(self):
+        'Displays the preferences dialog'
+        dialog=dialog_preferences()
