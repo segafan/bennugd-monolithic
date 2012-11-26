@@ -375,7 +375,7 @@ class packager(QtGui.QMainWindow):
                                     shutil.copy(fpath, outputdir)
 
                     # Remove workdir
-                    #shutil.rmtree(workdir, True)
+                    shutil.rmtree(workdir, True)
                 else:
                     QtGui.QMessageBox.critical(self, 'Game dir not readable', 'Cannot read APK output dir.')
             else:
