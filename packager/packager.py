@@ -283,6 +283,11 @@ class packager(QtGui.QMainWindow):
             fd = open(os.path.join(workdir, 'local.properties'), 'w')
             # We want the UNIX-like PATH
             fd.write('sdk.dir=%s\n' % self.sdkdir.replace('\\', '/'))
+            if self.target == 'release':
+                fd.write('key.store=%s\n' % self.prefs.get('keystore').replace('\\', '/'))
+                fd.write('key.store.password=%s\n' % self.prefs.get('keystorepass'))
+                fd.write('key.alias=%s\n' % self.prefs.get('keyalias'))
+                fd.write('key.alias.password=%s\n' % self.prefs.get('keyaliaspass'))
             fd.close()
 
             # Create default.properties
@@ -301,7 +306,6 @@ class packager(QtGui.QMainWindow):
             # Create the directory with the Java wrapper
             wrapper_path = os.path.join(workdir, 'src', self.appdescriptor.replace('.', '/'))
             wrapper_path = os.path.normpath(wrapper_path)
-            print "Creating %s" % wrapper_path
             os.makedirs(wrapper_path)
             fd = open(os.path.join(wrapper_path, 'MyGame.java'), 'w')
             fd.write('package %s;\n' % self.appdescriptor)
@@ -367,12 +371,20 @@ class packager(QtGui.QMainWindow):
                         for file in files:
                             fpath = os.path.join(root, file)
                             # Choose the aligned APK
-                            if fpath.endswith('.apk') and not 'unaligned' in fpath:
-                                outputdir = QtGui.QFileDialog.getSaveFileName(self, 'Savedir for APK', self.appdir)
-                                outputdir = str(outputdir)
-                                # The user didn't press 'Cancel'
-                                if os.path.exists(os.path.dirname(outputdir)):
-                                    shutil.copy(fpath, outputdir)
+                            if self.target == 'release':
+                                if fpath.endswith('-release.apk'):
+                                    outputfname = QtGui.QFileDialog.getSaveFileName(self, 'Savedir for release APK', self.appdir)
+                                    outputfname = str(outputfname)
+                                    # The user didn't press 'Cancel'
+                                    if os.path.exists(os.path.dirname(outputfname)):
+                                        shutil.copy(fpath, outputfname)
+                            else:
+                                if fpath.endswith('-debug.apk'):
+                                    outputfname = QtGui.QFileDialog.getSaveFileName(self, 'Savedir for debug APK', self.appdir)
+                                    outputfname = str(outputfname)
+                                    # The user didn't press 'Cancel'
+                                    if os.path.exists(os.path.dirname(outputfname)):
+                                        shutil.copy(fpath, outputfname)
 
                     # Remove workdir
                     shutil.rmtree(workdir, True)

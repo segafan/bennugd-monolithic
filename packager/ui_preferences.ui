@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>475</width>
-    <height>153</height>
+    <width>474</width>
+    <height>228</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>451</width>
-     <height>134</height>
+     <height>209</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,7 +56,7 @@
       <item>
        <widget class="QLabel" name="labelkeystore">
         <property name="text">
-         <string>KeyStore:</string>
+         <string>Key Store:</string>
         </property>
        </widget>
       </item>
@@ -87,12 +87,48 @@
       <item>
        <widget class="QLabel" name="labelkeystorepass">
         <property name="text">
-         <string>KeyStore password:</string>
+         <string>Key Store password:</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLineEdit" name="linekeystorepass">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="labelkeyalias">
+        <property name="text">
+         <string>Key Alias:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="linekeyalias">
+        <property name="placeholderText">
+         <string>[Optional] Set your key alias</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="labelkeyaliaspass">
+        <property name="text">
+         <string>Key Alias password:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="linekeyaliaspass">
         <property name="echoMode">
          <enum>QLineEdit::Password</enum>
         </property>

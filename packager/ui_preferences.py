@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_preferences.ui'
 #
-# Created: Wed Nov 28 13:20:56 2012
-#      by: PyQt4 UI code generator 4.9.1
+# Created: Thu Nov 29 14:22:40 2012
+#      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -17,9 +17,9 @@ except AttributeError:
 class Ui_Preferences(object):
     def setupUi(self, Preferences):
         Preferences.setObjectName(_fromUtf8("Preferences"))
-        Preferences.resize(475, 153)
+        Preferences.resize(474, 228)
         self.layoutWidget = QtGui.QWidget(Preferences)
-        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 451, 134))
+        self.layoutWidget.setGeometry(QtCore.QRect(10, 10, 451, 209))
         self.layoutWidget.setObjectName(_fromUtf8("layoutWidget"))
         self.verticalLayout = QtGui.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setMargin(0)
@@ -61,6 +61,25 @@ class Ui_Preferences(object):
         self.linekeystorepass.setObjectName(_fromUtf8("linekeystorepass"))
         self.horizontalLayout_3.addWidget(self.linekeystorepass)
         self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.labelkeyalias = QtGui.QLabel(self.layoutWidget)
+        self.labelkeyalias.setObjectName(_fromUtf8("labelkeyalias"))
+        self.horizontalLayout_2.addWidget(self.labelkeyalias)
+        self.linekeyalias = QtGui.QLineEdit(self.layoutWidget)
+        self.linekeyalias.setObjectName(_fromUtf8("linekeyalias"))
+        self.horizontalLayout_2.addWidget(self.linekeyalias)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
+        self.labelkeyaliaspass = QtGui.QLabel(self.layoutWidget)
+        self.labelkeyaliaspass.setObjectName(_fromUtf8("labelkeyaliaspass"))
+        self.horizontalLayout_4.addWidget(self.labelkeyaliaspass)
+        self.linekeyaliaspass = QtGui.QLineEdit(self.layoutWidget)
+        self.linekeyaliaspass.setEchoMode(QtGui.QLineEdit.Password)
+        self.linekeyaliaspass.setObjectName(_fromUtf8("linekeyaliaspass"))
+        self.horizontalLayout_4.addWidget(self.linekeyaliaspass)
+        self.verticalLayout.addLayout(self.horizontalLayout_4)
         self.buttonBox = QtGui.QDialogButtonBox(self.layoutWidget)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
@@ -77,8 +96,11 @@ class Ui_Preferences(object):
         self.labelSDK.setText(QtGui.QApplication.translate("Preferences", "Android SDK dir:", None, QtGui.QApplication.UnicodeUTF8))
         self.lineSDK.setPlaceholderText(QtGui.QApplication.translate("Preferences", "Please choose path to SDK", None, QtGui.QApplication.UnicodeUTF8))
         self.button_SDKPath.setText(QtGui.QApplication.translate("Preferences", "Choose...", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelkeystore.setText(QtGui.QApplication.translate("Preferences", "KeyStore:", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelkeystore.setText(QtGui.QApplication.translate("Preferences", "Key Store:", None, QtGui.QApplication.UnicodeUTF8))
         self.linekeystore.setPlaceholderText(QtGui.QApplication.translate("Preferences", "[Optional] Please choose path to Android Keystore", None, QtGui.QApplication.UnicodeUTF8))
         self.button_keystore.setText(QtGui.QApplication.translate("Preferences", "Choose...", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelkeystorepass.setText(QtGui.QApplication.translate("Preferences", "KeyStore password:", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelkeystorepass.setText(QtGui.QApplication.translate("Preferences", "Key Store password:", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelkeyalias.setText(QtGui.QApplication.translate("Preferences", "Key Alias:", None, QtGui.QApplication.UnicodeUTF8))
+        self.linekeyalias.setPlaceholderText(QtGui.QApplication.translate("Preferences", "[Optional] Set your key alias", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelkeyaliaspass.setText(QtGui.QApplication.translate("Preferences", "Key Alias password:", None, QtGui.QApplication.UnicodeUTF8))
 
