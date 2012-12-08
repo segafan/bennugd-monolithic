@@ -55,7 +55,7 @@ Begin
         write(0, 320,  0, 2, "Width: "+width+" Height:"+height);
         write(0, 320, 10, 2, "scale_resolution: 0"+scale_resolution);
         write(0, 0, 0, 0, "Multi: "+multi_info(0, "X")+"x"+multi_info(0, "Y"));
-	write(0, 160, 240, 4, "You can now display adds in BennuGD Android!");
+	write(0, 160, 240, 4, "You can now display ads in BennuGD Android!");
 
         frame;
     End;
