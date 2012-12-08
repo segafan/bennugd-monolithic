@@ -191,7 +191,7 @@ void parse_input_events() {
     
     // SDL will give us the touch position relative to the whole window
     // but we might have set a different virtual resolution
-    if(scale_resolution) {
+    if(scale_screen) {
         width  = scale_screen->w;
         height = scale_screen->h;
     } else if(screen) {
