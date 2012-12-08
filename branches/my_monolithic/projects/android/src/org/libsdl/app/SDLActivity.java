@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
+import android.widget.LinearLayout;
 import android.os.*;
 import android.net.Uri;
 import android.util.Log;
@@ -39,7 +40,7 @@ public class SDLActivity extends Activity {
     private static SDLActivity mSingleton;
     private static SDLSurface mSurface;
     private static View mTextEdit;
-    private static ViewGroup mLayout;
+    public static ViewGroup mLayout;
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     private static Thread mSDLThread;
