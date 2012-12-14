@@ -9,12 +9,13 @@ The BennuGD Packager is a Python+Qt4 application that packages your BennuGD/Andr
 
   * *Android SDK*
   Get it from [http://developer.android.com/sdk/index.html here] and install it.
+  Inside the SDK, install the Android 3.2 (android-13) SDK.
   It might instruct you to install a JDK version in your system, if you don't have any.
   * *Microsoft Visual C++ 2008 Redistributable Package*
   It's pretty common, but you might need it in systems where other programs haven't installed it.
   Get it for [http://www.microsoft.com/downloads/en/details.aspx?familyid=9B2DA534-3E03-4391-8A4D-074B9F2BC1BF  32bit] or [http://www.microsoft.com/downloads/en/details.aspx?FamilyID=BD2A6171-E2D6-4230-B809-9A8D7548C1B6 64bit] Windows systems.
   * *ANT*
-  The windows builds of the packager include a binary version of ANT. If ANT is not yet installed in your system, you should be able to directly run the included "Set Environment.bat" script, which should configure Windows for you.
+  The windows builds of the packager include an installer for ANT. If ANT is not yet installed in your system, you should run the provided winant-install-v7.exe before running the packager.
 
 = Using the program =
 
