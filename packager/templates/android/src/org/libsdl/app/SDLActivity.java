@@ -39,7 +39,7 @@ public class SDLActivity extends Activity {
     private static SDLActivity mSingleton;
     private static SDLSurface mSurface;
     private static View mTextEdit;
-    private static ViewGroup mLayout;
+    public static ViewGroup mLayout;
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     private static Thread mSDLThread;

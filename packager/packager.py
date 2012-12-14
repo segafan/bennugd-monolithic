@@ -37,7 +37,7 @@ class packager(QtGui.QMainWindow):
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
         self.sdkdir = self.prefs.get('sdkdir')
-        if not os.path.isdir(self.sdkdir):
+        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
             self.show_preferences()
             # Reread the user-given value, if any
             self.sdkdir = self.prefs.get('sdkdir')
@@ -57,6 +57,7 @@ class packager(QtGui.QMainWindow):
         self.ui.actionDDMS.triggered.connect(self.menuitem)
         self.ui.button_appdirselector.clicked.connect(self.dirselector)
         self.ui.button_package.clicked.connect(self.package)
+        self.ui.check_admob.stateChanged.connect(self.check_admob_changed)
         self.ui.check_install.stateChanged.connect(self.check_install_changed)
         self.ui.icon_hdpi.clicked.connect(self.update_icon)
         self.ui.icon_mdpi.clicked.connect(self.update_icon)
@@ -141,8 +142,16 @@ class packager(QtGui.QMainWindow):
             QtGui.QMessageBox.critical(self, 'Android emulator launch error',
                             "Couldn't open emulator instance for %s\n" % self.sender().text())
 
-    # Change the "Package & Install" button text
+    def check_admob_changed(self):
+        'Enable/disable the AdMob publisher ID textbox'
+        if self.ui.check_admob.isChecked():
+            self.ui.line_admob.setEnabled(True)
+        else:
+            self.ui.line_admob.setText('')
+            self.ui.line_admob.setEnabled(False)
+
     def check_install_changed(self):
+        'Change the "Package & Install" button text'
         if self.ui.check_install.isChecked():
             self.ui.button_package.setText('Package && Install')
         else:
@@ -215,10 +224,10 @@ class packager(QtGui.QMainWindow):
 
     def package(self):
         'Takes care of packaging the given app'
-        # Check for android-10 SDK platform, refuse to package otherwise
-        if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
-            QtGui.QMessageBox.critical(self, 'Android 2.3.3 SDK Platform not installed',
-                                        'Please install the Android 2.3.3 (API 10) SDK Platform ' +
+        # Check for android-13 SDK platform, refuse to package otherwise
+        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
+            QtGui.QMessageBox.critical(self, 'Android 3.2 SDK Platform not installed',
+                                        'Please install the Android 3.2 (API 13) SDK Platform ' +
                                         'from the Android SDK manager before trying to package anything')
             return
 
@@ -229,6 +238,7 @@ class packager(QtGui.QMainWindow):
         self.appos = self.ui.appOSselector.currentText()
         self.appos = str(self.appos)
         self.appinstall = self.ui.check_install.isChecked()
+        self.admob = self.ui.check_admob.isChecked()
 
         # Will actually have to read values from QListView, but we'll do that later
         if not os.path.isdir(self.appdir):
@@ -243,6 +253,16 @@ class packager(QtGui.QMainWindow):
         self.appname = self.ui.line_appname.text()
         if self.appname == '':
             QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
+            return
+
+        admobjar = self.sdkdir + '/extras/google/admob_ads_sdk/GoogleAdMobAdsSdk-6.2.1.jar'
+        if not os.path.isfile(admobjar):
+            QtGui.QMessageBox.critical(self, 'Google AdMob Ads SDK', 'Please install the Google AdMob Ads SDK from the Android SDK')
+            return
+
+        self.admobid = self.ui.line_admob.text()
+        if self.admobid == '':
+            QtGui.QMessageBox.critical(self, 'AdMob ID empty', 'The AdMob Publisher ID cannot be empty.')
             return
 
         # Pack for landscape or portrait
@@ -277,6 +297,7 @@ class packager(QtGui.QMainWindow):
                         '*.bat', '*.dylib', '*.sh')
             shutil.copytree(tpldir, workdir, ignore=pattern)
             shutil.copytree(self.appdir, os.path.join(workdir, 'assets'), ignore=pattern)
+            shutil.copy(admobjar, os.path.join(workdir, 'libs'))
             self.uncompresstree( os.path.join(workdir, 'assets'), ('.fpg', '.map', '.fnt') )
 
             # Change what's needed to be changed in the template
@@ -292,7 +313,7 @@ class packager(QtGui.QMainWindow):
 
             # Create default.properties
             fd = open(os.path.join(workdir, 'default.properties'), 'w')
-            fd.write('target=android-10\n')
+            fd.write('target=android-13\n')
             fd.close()
 
             # Create strings.xml
@@ -309,13 +330,29 @@ class packager(QtGui.QMainWindow):
             os.makedirs(wrapper_path)
             fd = open(os.path.join(wrapper_path, 'MyGame.java'), 'w')
             fd.write('package %s;\n' % self.appdescriptor)
+            if self.admob:
+                fd.write('import com.google.ads.AdRequest;\n')
+                fd.write('import com.google.ads.AdSize;\n')
+                fd.write('import com.google.ads.AdView;\n')
             fd.write('import org.libsdl.app.SDLActivity;\n')
             fd.write('import android.os.*;\n')
             fd.write('public class MyGame extends SDLActivity {\n')
+            if self.admob:
+                    fd.write('    private AdView adView;\n')
             fd.write('    protected void onCreate(Bundle savedInstanceState) {\n')
             fd.write('        super.onCreate(savedInstanceState);\n')
+            if self.admob:
+                fd.write('        adView = new AdView(this, AdSize.BANNER, "'+self.admobid+'");\n')
+                fd.write('        super.mLayout.addView(adView);\n')
+                fd.write('        AdRequest adRequest = new AdRequest();\n')
+                fd.write('        adRequest.addTestDevice(AdRequest.TEST_EMULATOR);\n')
+                fd.write('        adView.loadAd(new AdRequest());\n')
             fd.write('    }\n')
             fd.write('    protected void onDestroy() {\n')
+            if self.admob:
+                fd.write('        if (adView != null) {\n')
+                fd.write('          adView.destroy();\n')
+                fd.write('        }\n')
             fd.write('        super.onDestroy();\n')
             fd.write('    }\n')
             fd.write('}\n')
@@ -340,10 +377,15 @@ class packager(QtGui.QMainWindow):
             fd.write('                <category android:name="android.intent.category.LAUNCHER" />\n')
             fd.write('            </intent-filter>\n')
             fd.write('        </activity>\n')
+            if self.admob:
+                fd.write('        <activity android:name="com.google.ads.AdActivity"\n')
+                fd.write('            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>\n')
             fd.write('    </application>\n')
-            fd.write('    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="10"/>\n')
+            fd.write('    <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="13"/>\n')
             fd.write('    <uses-feature android:glEsVersion="0x00020000" />\n')
-            fd.write('    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />\n')
+            if self.admob:
+                fd.write('    <uses-permission android:name="android.permission.INTERNET"/>\n')
+                fd.write('    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>')
             fd.write('</manifest>\n')
             fd.close()
 

@@ -48,10 +48,10 @@ class dialog_preferences(QtGui.QDialog):
     def SDKPath(self):
         self.sdkdir = QtGui.QFileDialog.getExistingDirectory(self, 'Choose Android SDK dir')
         self.sdkdir = str(self.sdkdir)
-        # Try to determine if the user has already installed android-10 in the SDK
-        if not os.path.isdir(self.sdkdir + '/platforms/android-10'):
-            QtGui.QMessageBox.information(self, 'Android 2.3.3 SDK Platform not installed',
-                                        'Please install the Android 2.3.3 (API 10) SDK Platform ' +
+        # Try to determine if the user has already installed android-13 in the SDK
+        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
+            QtGui.QMessageBox.information(self, 'Android 3.2 SDK Platform not installed',
+                                        'Please install the Android 3.2 (API 13) SDK Platform ' +
                                         'from the Android SDK manager before trying to package anything.')
         self.ui.lineSDK.setText(self.sdkdir)
 
@@ -59,7 +59,7 @@ class dialog_preferences(QtGui.QDialog):
     def keystorePath(self):
         self.keystore = QtGui.QFileDialog.getOpenFileName(self, 'Choose Key Store file')
         self.keystore = str(self.keystore)
-        # Try to determine if the user has already installed android-10 in the SDK
+        # Try to determine if the user provided keystore is ok
         if not os.path.isfile(self.keystore):
             QtGui.QMessageBox.information(self, 'Keystore file not valid',
                                         'Please choose a valid keystore.')

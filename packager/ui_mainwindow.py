@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Mon Oct  1 17:55:42 2012
+# Created: Thu Dec 13 19:40:27 2012
 #      by: PyQt4 UI code generator 4.9.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -90,6 +90,17 @@ class Ui_MainWindow(object):
         self.combo_orientation.addItem(_fromUtf8(""))
         self.horizontalLayout_9.addWidget(self.combo_orientation)
         self.verticalLayout.addLayout(self.horizontalLayout_9)
+        self.horizontalLayout_10 = QtGui.QHBoxLayout()
+        self.horizontalLayout_10.setObjectName(_fromUtf8("horizontalLayout_10"))
+        self.check_admob = QtGui.QCheckBox(self.centralwidget)
+        self.check_admob.setObjectName(_fromUtf8("check_admob"))
+        self.horizontalLayout_10.addWidget(self.check_admob)
+        self.line_admob = QtGui.QLineEdit(self.centralwidget)
+        self.line_admob.setEnabled(False)
+        self.line_admob.setReadOnly(False)
+        self.line_admob.setObjectName(_fromUtf8("line_admob"))
+        self.horizontalLayout_10.addWidget(self.line_admob)
+        self.verticalLayout.addLayout(self.horizontalLayout_10)
         self.label_icons = QtGui.QLabel(self.centralwidget)
         self.label_icons.setObjectName(_fromUtf8("label_icons"))
         self.verticalLayout.addWidget(self.label_icons)
@@ -164,7 +175,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 25))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 27))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -220,6 +231,8 @@ class Ui_MainWindow(object):
         self.label_orientation.setText(QtGui.QApplication.translate("MainWindow", "Orientation:", None, QtGui.QApplication.UnicodeUTF8))
         self.combo_orientation.setItemText(0, QtGui.QApplication.translate("MainWindow", "Portrait", None, QtGui.QApplication.UnicodeUTF8))
         self.combo_orientation.setItemText(1, QtGui.QApplication.translate("MainWindow", "Landscape", None, QtGui.QApplication.UnicodeUTF8))
+        self.check_admob.setText(QtGui.QApplication.translate("MainWindow", "Show AdMob ads:", None, QtGui.QApplication.UnicodeUTF8))
+        self.line_admob.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "AdMob publisher ID", None, QtGui.QApplication.UnicodeUTF8))
         self.label_icons.setText(QtGui.QApplication.translate("MainWindow", "Icons:", None, QtGui.QApplication.UnicodeUTF8))
         self.icon_hdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for high resolution displays", None, QtGui.QApplication.UnicodeUTF8))
         self.icon_mdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for medium resolution displays", None, QtGui.QApplication.UnicodeUTF8))
