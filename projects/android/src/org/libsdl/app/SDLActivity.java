@@ -14,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
-import android.widget.LinearLayout;
 import android.os.*;
 import android.net.Uri;
 import android.util.Log;
@@ -126,7 +125,7 @@ public class SDLActivity extends Activity {
 
     // Messages from the SDLMain thread
     static final int COMMAND_CHANGE_TITLE = 1;
-    static final int COMMAND_KEYBOARD_SHOW = 2;
+    static final int COMMAND_UNUSED = 2;
     static final int COMMAND_TEXTEDIT_HIDE = 3;
 
     // Handler for the messages
@@ -137,22 +136,6 @@ public class SDLActivity extends Activity {
             case COMMAND_CHANGE_TITLE:
                 setTitle((String)msg.obj);
                 break;
-            case COMMAND_KEYBOARD_SHOW:
-                InputMethodManager manager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if (manager != null) {
-                    switch (((Integer)msg.obj).intValue()) {
-                    case 0:
-                        manager.hideSoftInputFromWindow(mSurface.getWindowToken(), 0);
-                        break;
-                    case 1:
-                        manager.showSoftInput(mSurface, 0);
-                        break;
-                    case 2:
-                        manager.toggleSoftInputFromWindow(mSurface.getWindowToken(), 0, 0);
-                        break;
-                    }
-                }
-               break;
             case COMMAND_TEXTEDIT_HIDE:
                 if (mTextEdit != null) {
                     mTextEdit.setVisibility(View.GONE);
@@ -184,7 +167,7 @@ public class SDLActivity extends Activity {
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
                                             int action, float x,
                                             float y, float p);
-    public static native void onNativeAccel(float x, float y, float z);
+    public static native void onNativeAccel(String name, float x, float y, float z);
     public static native void nativeRunAudioThread();
 
 
@@ -275,10 +258,10 @@ public class SDLActivity extends Activity {
 
     // EGL functions
     public static boolean initEGL(int majorVersion, int minorVersion) {
-        if (SDLActivity.mEGLDisplay == null) {
-            //Log.v("SDL", "Starting up OpenGL ES " + majorVersion + "." + minorVersion);
+        try {
+            if (SDLActivity.mEGLDisplay == null) {
+                Log.v("SDL", "Starting up OpenGL ES " + majorVersion + "." + minorVersion);
 
-            try {
                 EGL10 egl = (EGL10)EGLContext.getEGL();
 
                 EGLDisplay dpy = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
@@ -307,31 +290,20 @@ public class SDLActivity extends Activity {
                 }
                 EGLConfig config = configs[0];
 
-                /*int EGL_CONTEXT_CLIENT_VERSION=0x3098;
-                int contextAttrs[] = new int[] { EGL_CONTEXT_CLIENT_VERSION, majorVersion, EGL10.EGL_NONE };
-                EGLContext ctx = egl.eglCreateContext(dpy, config, EGL10.EGL_NO_CONTEXT, contextAttrs);
-
-                if (ctx == EGL10.EGL_NO_CONTEXT) {
-                    Log.e("SDL", "Couldn't create context");
-                    return false;
-                }
-                SDLActivity.mEGLContext = ctx;*/
                 SDLActivity.mEGLDisplay = dpy;
                 SDLActivity.mEGLConfig = config;
                 SDLActivity.mGLMajor = majorVersion;
                 SDLActivity.mGLMinor = minorVersion;
-
-                SDLActivity.createEGLSurface();
-            } catch(Exception e) {
-                Log.v("SDL", e + "");
-                for (StackTraceElement s : e.getStackTrace()) {
-                    Log.v("SDL", s.toString());
-                }
             }
-        }
-        else SDLActivity.createEGLSurface();
+            return SDLActivity.createEGLSurface();
 
-        return true;
+        } catch(Exception e) {
+            Log.v("SDL", e + "");
+            for (StackTraceElement s : e.getStackTrace()) {
+                Log.v("SDL", s.toString());
+            }
+            return false;
+        }
     }
 
     public static boolean createEGLContext() {
@@ -371,8 +343,10 @@ public class SDLActivity extends Activity {
             }
             SDLActivity.mEGLSurface = surface;
             return true;
+        } else {
+            Log.e("SDL", "Surface creation failed, display = " + SDLActivity.mEGLDisplay + ", config = " + SDLActivity.mEGLConfig);
+            return false;
         }
-        return false;
     }
 
     // EGL buffer flip
@@ -632,43 +606,43 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
+        boolean retval;
+
         // Dispatch the different events depending on how they come from
         switch ( event.getSource() ) {
             case InputDevice.SOURCE_KEYBOARD:
-               Log.v("SDL", "onKey source: KEYBOARD" );
+               Log.v("SDL", "onKey source: KEYBOARD "+event.getDevice().getName() );
                break;
             case InputDevice.SOURCE_GAMEPAD:
-               Log.v("SDL", "onTouch source: GAMEPAD" );
+               Log.v("SDL", "onKey source: GAMEPAD "+event.getDevice().getName() );
                break;
             case InputDevice.SOURCE_JOYSTICK:
-               Log.v("SDL", "onTouch source: JOYSTICK" );
+               Log.v("SDL", "onKey source: JOYSTICK "+event.getDevice().getName() );
                break;
         }
+
+        // Default return value
+        retval = false;
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            //Log.v("SDL", "key down: " + keyCode);
+            retval = true;
+            SDLActivity.onNativeKeyDown(keyCode);
+        }
+        else if (event.getAction() == KeyEvent.ACTION_UP) {
+            //Log.v("SDL", "key up: " + keyCode);
+            retval = true;
+            SDLActivity.onNativeKeyUp(keyCode);
+        }
+
         // Send volume key signal but return false, so that
         // Android will set the volume for our app
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
             keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                SDLActivity.onNativeKeyDown(keyCode);
-            }
-            else if (event.getAction() == KeyEvent.ACTION_UP) {
-                SDLActivity.onNativeKeyUp(keyCode);
-            }
-            return false;
+            retval = false;
         }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            //Log.v("SDL", "key down: " + keyCode);
-            SDLActivity.onNativeKeyDown(keyCode);
-            return true;
-        }
-        else if (event.getAction() == KeyEvent.ACTION_UP) {
-            //Log.v("SDL", "key up: " + keyCode);
-            SDLActivity.onNativeKeyUp(keyCode);
-            return true;
-        }
-
-        return false;
+        return retval;
     }
 
     // Touch events
@@ -677,13 +651,13 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             // Dispatch the different events depending on how they come from
              switch ( event.getSource() ) {
                  case InputDevice.SOURCE_TOUCHPAD:
-                    Log.v("SDL", "onTouch source: TOUCHPAD" );
+                    Log.v("SDL", "onTouch source: TOUCHPAD "+event.getDevice().getName() );
                     break;
                  case InputDevice.SOURCE_TOUCHSCREEN:
-                    Log.v("SDL", "onTouch source: TOUCHSCREEN" );
+                    Log.v("SDL", "onTouch source: TOUCHSCREEN "+event.getDevice().getName() );
                     break;
                  case InputDevice.SOURCE_MOUSE:
-                    Log.v("SDL", "onTouch source: MOUSE" );
+                    Log.v("SDL", "onTouch source: MOUSE "+event.getDevice().getName() );
                     break;
              }
 
@@ -734,7 +708,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            SDLActivity.onNativeAccel(event.values[0] / SensorManager.GRAVITY_EARTH,
+            SDLActivity.onNativeAccel(event.sensor.getName(),
+                                      event.values[0] / SensorManager.GRAVITY_EARTH,
                                       event.values[1] / SensorManager.GRAVITY_EARTH,
                                       event.values[2] / SensorManager.GRAVITY_EARTH);
         }
@@ -786,7 +761,7 @@ class DummyEdit extends View implements View.OnKeyListener {
         ic = new SDLInputConnection(this, true);
 
         outAttrs.imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI
-                | 33554432;
+                | 33554432 /* API 11: EditorInfo.IME_FLAG_NO_FULLSCREEN */;
 
         return ic;
     }
