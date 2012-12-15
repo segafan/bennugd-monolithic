@@ -20,7 +20,7 @@ LOCAL_CFLAGS := \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
 	-DVERSION='"1.0.0"' \
-	-DGL_GLEXT_PROTOTYPES
+	-O3
 
 # Add your application source files here...
 LOCAL_SRC_FILES := /../../../../3rdparty/SDL/src/main/android/SDL_android_main.cpp \

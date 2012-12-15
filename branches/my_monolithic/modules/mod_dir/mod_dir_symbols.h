@@ -48,6 +48,7 @@ DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[] =
     {
         /* Archivos y directorios */
         { "CD"      , ""  , TYPE_STRING , 0 },
+        { "CD"      , "S" , TYPE_STRING , 0 },
         { "CHDIR"   , "S" , TYPE_INT    , 0 },
         { "MKDIR"   , "S" , TYPE_INT    , 0 },
         { "RMDIR"   , "S" , TYPE_INT    , 0 },

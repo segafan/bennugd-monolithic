@@ -71,7 +71,8 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
-	-DWITH_GPL_CODE
+	-DWITH_GPL_CODE \
+        -O3
 
 LOCAL_SRC_FILES := \
 	../../../../core/bgdrtm/src/copy.c \

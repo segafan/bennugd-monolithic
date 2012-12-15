@@ -27,7 +27,7 @@ common_C_INCLUDES += $(LOCAL_PATH)/../../../../3rdparty/libpng/\
 # =====================================================
 
 LOCAL_SRC_FILES := $(common_SRC_FILES)
-LOCAL_CFLAGS += $(common_CFLAGS)
+LOCAL_CFLAGS += -O3 $(common_CFLAGS)
 LOCAL_C_INCLUDES += $(common_C_INCLUDES)
 
 LOCAL_MODULE:= png
