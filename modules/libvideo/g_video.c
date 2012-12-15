@@ -274,6 +274,7 @@ int gr_set_icon( GRAPH * map )
         {
             ico = SDL_CreateRGBSurfaceFrom( icon->data, 32, 32, icon->format->depth, icon->pitch, icon->format->Rmask, icon->format->Gmask, icon->format->Bmask, icon->format->Amask ) ;
         }
+
 #if SDL_VERSION_ATLEAST(2,0,0)
         SDL_SetWindowIcon(window, ico);
 #else

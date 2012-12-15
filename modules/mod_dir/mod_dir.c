@@ -282,6 +282,7 @@ DLSYSFUNCS __bgdexport( mod_dir, functions_exports)[] =
     {
         /* Archivos y directorios */
         { "CD"      , ""  , TYPE_STRING , moddir_cd     },
+        { "CD"      , "S" , TYPE_STRING , moddir_chdir  },
         { "CHDIR"   , "S" , TYPE_INT    , moddir_chdir  },
         { "MKDIR"   , "S" , TYPE_INT    , moddir_mkdir  },
         { "RMDIR"   , "S" , TYPE_INT    , moddir_rmdir  },

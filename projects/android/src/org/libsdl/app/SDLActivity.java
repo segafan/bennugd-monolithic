@@ -70,7 +70,7 @@ public class SDLActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
-        
+
         // So we can call stuff from static callbacks
         mSingleton = this;
 
@@ -86,7 +86,7 @@ public class SDLActivity extends Activity {
         setContentView(mLayout);
 
         SurfaceHolder holder = mSurface.getHolder();
-        
+
         // Don't allow the screen lock
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -182,7 +182,7 @@ public class SDLActivity extends Activity {
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
-                                            int action, float x, 
+                                            int action, float x,
                                             float y, float p);
     public static native void onNativeAccel(float x, float y, float z);
     public static native void nativeRunAudioThread();
@@ -228,7 +228,7 @@ public class SDLActivity extends Activity {
             }
         }
     }
-    
+
     static class ShowTextInputHandler implements Runnable {
         /*
          * This is used to regulate the pan&scan method to have some offset from
@@ -399,34 +399,34 @@ public class SDLActivity extends Activity {
 
     // Audio
     private static Object buf;
-    
+
     public static Object audioInit(int sampleRate, boolean is16Bit, boolean isStereo, int desiredFrames) {
         int channelConfig = isStereo ? AudioFormat.CHANNEL_CONFIGURATION_STEREO : AudioFormat.CHANNEL_CONFIGURATION_MONO;
         int audioFormat = is16Bit ? AudioFormat.ENCODING_PCM_16BIT : AudioFormat.ENCODING_PCM_8BIT;
         int frameSize = (isStereo ? 2 : 1) * (is16Bit ? 2 : 1);
-        
+
         Log.v("SDL", "SDL audio: wanted " + (isStereo ? "stereo" : "mono") + " " + (is16Bit ? "16-bit" : "8-bit") + " " + ((float)sampleRate / 1000f) + "kHz, " + desiredFrames + " frames buffer");
-        
+
         // Let the user pick a larger buffer if they really want -- but ye
         // gods they probably shouldn't, the minimums are horrifyingly high
         // latency already
         desiredFrames = Math.max(desiredFrames, (AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat) + frameSize - 1) / frameSize);
-        
+
         mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate,
                 channelConfig, audioFormat, desiredFrames * frameSize, AudioTrack.MODE_STREAM);
-        
+
         audioStartThread();
-        
+
         Log.v("SDL", "SDL audio: got " + ((mAudioTrack.getChannelCount() >= 2) ? "stereo" : "mono") + " " + ((mAudioTrack.getAudioFormat() == AudioFormat.ENCODING_PCM_16BIT) ? "16-bit" : "8-bit") + " " + ((float)mAudioTrack.getSampleRate() / 1000f) + "kHz, " + desiredFrames + " frames buffer");
-        
+
         if (is16Bit) {
             buf = new short[desiredFrames * (isStereo ? 2 : 1)];
         } else {
-            buf = new byte[desiredFrames * (isStereo ? 2 : 1)]; 
+            buf = new byte[desiredFrames * (isStereo ? 2 : 1)];
         }
         return buf;
     }
-    
+
     public static void audioStartThread() {
         mAudioThread = new Thread(new Runnable() {
             public void run() {
@@ -434,12 +434,12 @@ public class SDLActivity extends Activity {
                 nativeRunAudioThread();
             }
         });
-        
+
         // I'd take REALTIME if I could get it!
         mAudioThread.setPriority(Thread.MAX_PRIORITY);
         mAudioThread.start();
     }
-    
+
     public static void audioWriteShortBuffer(short[] buffer) {
         for (int i = 0; i < buffer.length; ) {
             int result = mAudioTrack.write(buffer, i, buffer.length - i);
@@ -457,7 +457,7 @@ public class SDLActivity extends Activity {
             }
         }
     }
-    
+
     public static void audioWriteByteBuffer(byte[] buffer) {
         for (int i = 0; i < buffer.length; ) {
             int result = mAudioTrack.write(buffer, i, buffer.length - i);
@@ -493,11 +493,11 @@ public class SDLActivity extends Activity {
             mAudioTrack = null;
         }
     }
-    
+
     // Taken from
     // http://digitalsynapsesblog.blogspot.com.es/2011/09/cocos2d-x-launching-url-on-android.html
-    public static void openURL(String url) { 
-     Intent i = new Intent(Intent.ACTION_VIEW);  
+    public static void openURL(String url) {
+     Intent i = new Intent(Intent.ACTION_VIEW);
      i.setData(Uri.parse(url));
      mSingleton.startActivity(i);
     }
@@ -518,11 +518,11 @@ class SDLMain implements Runnable {
 
 /**
     SDLSurface. This is what we draw on, so we need to know when it's created
-    in order to do anything useful. 
+    in order to do anything useful.
 
     Because of this, that's where we set up the SDL thread
 */
-class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, 
+class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     View.OnKeyListener, View.OnTouchListener, SensorEventListener  {
 
     // Sensors
@@ -531,16 +531,16 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Keep track of the surface size to normalize touch events
     private static float mWidth, mHeight;
 
-    // Startup    
+    // Startup
     public SDLSurface(Context context) {
         super(context);
-        getHolder().addCallback(this); 
-    
+        getHolder().addCallback(this);
+
         setFocusable(true);
         setFocusableInTouchMode(true);
         requestFocus();
-        setOnKeyListener(this); 
-        setOnTouchListener(this);   
+        setOnKeyListener(this);
+        setOnTouchListener(this);
 
         mSensorManager = (SensorManager)context.getSystemService("sensor");
 
@@ -632,7 +632,18 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
-        
+        // Dispatch the different events depending on how they come from
+        switch ( event.getSource() ) {
+            case InputDevice.SOURCE_KEYBOARD:
+               Log.v("SDL", "onKey source: KEYBOARD" );
+               break;
+            case InputDevice.SOURCE_GAMEPAD:
+               Log.v("SDL", "onTouch source: GAMEPAD" );
+               break;
+            case InputDevice.SOURCE_JOYSTICK:
+               Log.v("SDL", "onTouch source: JOYSTICK" );
+               break;
+        }
         // Send volume key signal but return false, so that
         // Android will set the volume for our app
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
@@ -656,13 +667,26 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             SDLActivity.onNativeKeyUp(keyCode);
             return true;
         }
-        
+
         return false;
     }
 
     // Touch events
     public boolean onTouch(View v, MotionEvent event) {
         {
+            // Dispatch the different events depending on how they come from
+             switch ( event.getSource() ) {
+                 case InputDevice.SOURCE_TOUCHPAD:
+                    Log.v("SDL", "onTouch source: TOUCHPAD" );
+                    break;
+                 case InputDevice.SOURCE_TOUCHSCREEN:
+                    Log.v("SDL", "onTouch source: TOUCHSCREEN" );
+                    break;
+                 case InputDevice.SOURCE_MOUSE:
+                    Log.v("SDL", "onTouch source: MOUSE" );
+                    break;
+             }
+
              final int touchDevId = event.getDeviceId();
              final int pointerCount = event.getPointerCount();
              // touchId, pointerId, action, x, y, pressure
@@ -689,21 +713,21 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
              }
         }
       return true;
-   } 
+    }
 
     // Sensor events
     public void enableSensor(int sensortype, boolean enabled) {
         // TODO: This uses getDefaultSensor - what if we have >1 accels?
         if (enabled) {
-            mSensorManager.registerListener(this, 
-                            mSensorManager.getDefaultSensor(sensortype), 
+            mSensorManager.registerListener(this,
+                            mSensorManager.getDefaultSensor(sensortype),
                             SensorManager.SENSOR_DELAY_GAME, null);
         } else {
-            mSensorManager.unregisterListener(this, 
+            mSensorManager.unregisterListener(this,
                             mSensorManager.getDefaultSensor(sensortype));
         }
     }
-    
+
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
         // TODO
     }
@@ -715,7 +739,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                                       event.values[2] / SensorManager.GRAVITY_EARTH);
         }
     }
-    
+
 }
 
 /* This is a fake invisible editor view that receives the input and defines the
