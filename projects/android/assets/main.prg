@@ -55,8 +55,9 @@ Begin
         delete_text(ALL_TEXT);
         write(0, 320, 0, 2, "Width: "+width+" Height:"+height);
         write(0, 320, 10, 2, "scale_resolution: 0"+scale_resolution);
-        write(0, 0, 0, 0, "Multi: "+multi_info(0, "X")+"x"+multi_info(0, "Y"));
-    write(0, 160, 240, 4, "You can now display ads in BennuGD Android!");
+        write(0, 0, 0,  0, "Multi: "+multi_info(0, "X")+"x"+multi_info(0, "Y"));
+        write(0, 0, 10, 0, "Mouse: "+mouse.x+"x"+mouse.y);
+        write(0, 160, 240, 4, "You can now display ads in BennuGD Android!");
         write(0, 160, 480, 7, joy_name(0));
 
         frame;

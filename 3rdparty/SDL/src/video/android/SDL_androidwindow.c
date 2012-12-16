@@ -48,7 +48,9 @@ Android_CreateWindow(_THIS, SDL_Window * window)
     window->flags |= SDL_WINDOW_FULLSCREEN;     /* window is always fullscreen */
     window->flags &= ~SDL_WINDOW_HIDDEN;
     window->flags |= SDL_WINDOW_SHOWN;          /* only one window on Android */
-    window->flags |= SDL_WINDOW_INPUT_FOCUS;    /* always has input focus */    
+    window->flags |= SDL_WINDOW_INPUT_FOCUS;    /* always has input focus */
+
+    SDL_SetMouseFocus(window);
 
     return 0;
 }

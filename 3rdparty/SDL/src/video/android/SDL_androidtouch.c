@@ -25,7 +25,6 @@
 #include <android/log.h>
 
 #include "SDL_events.h"
-#include "../../events/SDL_mouse_c.h"
 #include "../../events/SDL_touch_c.h"
 
 #include "SDL_androidtouch.h"
@@ -40,15 +39,15 @@
 #define ACTION_POINTER_1_DOWN 5
 #define ACTION_POINTER_1_UP 6
 
-void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int action, float x, float y, float p) 
+void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int action, float x, float y, float p)
 {
     SDL_TouchID touchDeviceId = 0;
     SDL_FingerID fingerId = 0;
-    
+
     if (!Android_Window) {
         return;
     }
-    
+
     touchDeviceId = (SDL_TouchID)touch_device_id_in;
     if (!SDL_GetTouch(touchDeviceId)) {
         SDL_Touch touch;
@@ -68,7 +67,7 @@ void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int actio
         }
     }
 
-    
+
     fingerId = (SDL_FingerID)pointer_finger_id_in;
     switch (action) {
         case ACTION_DOWN:
@@ -84,7 +83,7 @@ void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int actio
             break;
         default:
             break;
-    } 
+    }
 }
 
 #endif /* SDL_VIDEO_DRIVER_ANDROID */

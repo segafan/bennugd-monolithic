@@ -137,10 +137,6 @@ DLVARFIXUP __bgdexport( libmouse, globals_fixup )[] =
 
 static void do_mouse_events()
 {
-    // Don't process mouse events at all
-    SDL_FlushEvents(SDL_MOUSEMOTION, SDL_MOUSEWHEEL);
-    return;
-    
     SDL_Event e ;
     static int last_mouse_x = -1, last_mouse_y = -1 ;
 

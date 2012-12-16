@@ -78,17 +78,17 @@ void convert_coords(float *x, float *y) {
                         *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         break;
-                        
+
                     case    SRO_LEFT:
                         *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         break;
-                        
+
                     case    SRO_DOWN:
                         *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         break;
-                        
+
                     case    SRO_RIGHT:
                         *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
@@ -103,17 +103,17 @@ void convert_coords(float *x, float *y) {
                         *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         break;
-                        
+
                     case    SRO_LEFT:
                         *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         break;
-                        
+
                     case    SRO_DOWN:
                         *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
                         *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         break;
-                        
+
                     case    SRO_RIGHT:
                         *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
                         *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
@@ -129,17 +129,17 @@ void convert_coords(float *x, float *y) {
                     *x = (                           *x ) * ( (double)screen->w / (double)scale_screen->w );
                     *y = (                           *y ) * ( (double)screen->h / (double)scale_screen->h );
                     break;
-                    
+
                 case    SRO_LEFT:
                     *x = ( (double)scale_screen->h - *y ) * ( (double)screen->w / (double)scale_screen->h );
                     *y = (                           *x ) * ( (double)screen->h / (double)scale_screen->w );
                     break;
-                    
+
                 case    SRO_DOWN:
                     *x = ( (double)scale_screen->w - *x ) * ( (double)screen->w / (double)scale_screen->w );
                     *y = ( (double)scale_screen->h - *y ) * ( (double)screen->h / (double)scale_screen->h );
                     break;
-                    
+
                 case    SRO_RIGHT:
                     *x = (                           *y ) * ( (double)screen->w / (double)scale_screen->h );
                     *y = ( (double)scale_screen->w - *x ) * ( (double)screen->h / (double)scale_screen->w );
@@ -166,14 +166,14 @@ int get_sdlfinger_index(SDL_FingerID finger) {
             return n;
         }
     }
-    
+
     // ID not found, try to find a free spot
     for(n=0; n<MAX_POINTERS; n++) {
         if(pointers[n].active == SDL_FALSE) {
             return n;
         }
     }
-    
+
     // Fail
     return -1;
 }
@@ -188,7 +188,7 @@ void parse_input_events() {
     SDL_DisplayMode mode;
     SDL_Event e;
     SDL_Touch *state;
-    
+
     // SDL will give us the touch position relative to the whole window
     // but we might have set a different virtual resolution
     if(scale_screen) {
@@ -202,7 +202,7 @@ void parse_input_events() {
         SDL_Log("Unexpected condition getting resolution, refusing to parse events");
         return;
     }
-    
+
     // Get the size of the SDL window to handle the case when the
     // bennugd window doesn't use all the available screen space
     if (SDL_GetWindowDisplayMode(window, &mode)) {
@@ -214,9 +214,9 @@ void parse_input_events() {
         w_width = mode.w;
         w_height = mode.h;
     }
-    
+
     // Parse the SDL event
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {        
+    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {
         switch ( e.type ) {
             case SDL_FINGERDOWN:
                 // Retrive the touch state, the finger id and the position in the array
@@ -235,29 +235,29 @@ void parse_input_events() {
                 x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
                 y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
-                
+
                 // Convert the touch location taking scaling/rotations into account
                 sdlx = x; sdly = y;
                 convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
-                
+
                 // Fake a mouse click, but only for the first pointer and
                 // if libmouse has been imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX )    = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY )    = pointers[n].y;
                         GLODWORD( libmouse, MOUSELEFT ) = 1 ;
                     }
-                }
+                }*/
                 break;
-            
+
             case SDL_FINGERMOTION:
                 // Retrive the touch state, the finger id and the position in the array
                 state  = SDL_GetTouch(e.tfinger.touchId);
                 n      = get_sdlfinger_index(e.tfinger.fingerId);
-                
+
                 // Quit if fingerid not found
                 if (n == -1)
                     break;
@@ -266,7 +266,7 @@ void parse_input_events() {
                 x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
                 y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
                 pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
-                
+
                 // Convert the touch location taking scaling/rotations into account
                 sdlx = x; sdly = y;
                 convert_coords(&x, &y);
@@ -274,12 +274,12 @@ void parse_input_events() {
                 pointers[n].y = (int)y;
 
                 // Fake a mouse move, but only if libmouse has been imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLOINT32( libmouse, MOUSEX ) = pointers[n].x;
                         GLOINT32( libmouse, MOUSEY ) = pointers[n].y;
                     }
-                }
+                }*/
                 break;
 
             case SDL_FINGERUP:
@@ -289,22 +289,22 @@ void parse_input_events() {
 
                 // Refresh the total number of fingers onscreen
                 numpointers = state->num_fingers;
-                
+
                 // Quit if fingerid not found
                 if (n == -1)
                     break;
-                
+
                 // Remove the data about this finger's position
                 pointers[n].active = SDL_FALSE;
                 pointers[n].pressure = 0.0;
-                
+
                 // Fake a mouse release, but only for the first pointer and
                 // if libmouse is imported
-                if (n == 0) {
+                /*if (n == 0) {
                     if ( GLOEXISTS( libmouse, MOUSEX ) ) {
                         GLODWORD( libmouse, MOUSELEFT ) = 0 ;
                     }
-                }
+                }*/
                 break;
         }
     }
@@ -319,13 +319,13 @@ static int modmulti_numpointers(INSTANCE * my, int * params) {
 static int modmulti_info(INSTANCE * my, int * params) {
     const unsigned char *info = (unsigned char *) string_get(params[1]);
     int n=params[0];
-    
+
     string_discard(params[1]);
-    
+
     // Check for failure
     if (n >= MAX_POINTERS || n < 0) {
         return -1;
-    }    
+    }
 
     // Return the info we were asked for
     if(strncasecmp(info, "X", 1) == 0) {
@@ -374,8 +374,8 @@ char * __bgdexport( mod_multi, modules_dependency )[] =
  SDL_FINGERUP,
  SDL_FINGERMOTION,
  SDL_TOUCHBUTTONDOWN,
- SDL_TOUCHBUTTONUP,    
- 
+ SDL_TOUCHBUTTONUP,
+
  // Gesture events
 SDL_DOLLARGESTURE   = 0x800,
 SDL_DOLLARRECORD,
