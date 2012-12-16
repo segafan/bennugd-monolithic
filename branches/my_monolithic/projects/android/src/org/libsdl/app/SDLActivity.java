@@ -184,6 +184,7 @@ public class SDLActivity extends Activity {
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
                                             int action, float x,
                                             float y, float p);
+    public static native void onNativeMouse(int action, float x, float y);
     public static native void onNativeAccel(float x, float y, float z);
     public static native void nativeRunAudioThread();
 
@@ -674,42 +675,39 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Touch events
     public boolean onTouch(View v, MotionEvent event) {
         {
-            // Dispatch the different events depending on how they come from
-             switch ( event.getSource() ) {
-                 case InputDevice.SOURCE_TOUCHPAD:
-                    Log.v("SDL", "onTouch source: TOUCHPAD" );
-                    break;
-                 case InputDevice.SOURCE_TOUCHSCREEN:
-                    Log.v("SDL", "onTouch source: TOUCHSCREEN" );
-                    break;
-                 case InputDevice.SOURCE_MOUSE:
-                    Log.v("SDL", "onTouch source: MOUSE" );
-                    break;
-             }
-
-             final int touchDevId = event.getDeviceId();
-             final int pointerCount = event.getPointerCount();
-             // touchId, pointerId, action, x, y, pressure
              int actionPointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent. ACTION_POINTER_ID_SHIFT; /* API 8: event.getActionIndex(); */
-             int pointerFingerId = event.getPointerId(actionPointerIndex);
              int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
-
              float x = event.getX(actionPointerIndex) / mWidth;
              float y = event.getY(actionPointerIndex) / mHeight;
-             float p = event.getPressure(actionPointerIndex);
 
-             if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
-                // TODO send motion to every pointer if its position has
-                // changed since prev event.
-                for (int i = 0; i < pointerCount; i++) {
-                    pointerFingerId = event.getPointerId(i);
-                    x = event.getX(i) / mWidth;
-                    y = event.getY(i) / mHeight;
-                    p = event.getPressure(i);
-                    SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
-                }
-             } else {
-                SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+             // Dispatch the different events depending on how they come from
+             switch ( event.getSource() ) {
+                 case InputDevice.SOURCE_TOUCHPAD:
+                 case InputDevice.SOURCE_TOUCHSCREEN:
+                     final int touchDevId = event.getDeviceId();
+                     final int pointerCount = event.getPointerCount();
+                     // touchId, pointerId, action, x, y, pressure
+                     int pointerFingerId = event.getPointerId(actionPointerIndex);
+
+                     float p = event.getPressure(actionPointerIndex);
+
+                     if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
+                        // TODO send motion to every pointer if its position has
+                        // changed since prev event.
+                        for (int i = 0; i < pointerCount; i++) {
+                            pointerFingerId = event.getPointerId(i);
+                            x = event.getX(i) / mWidth;
+                            y = event.getY(i) / mHeight;
+                            p = event.getPressure(i);
+                            SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+                        }
+                     } else {
+                        SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+                     }
+                    break;
+                 case InputDevice.SOURCE_MOUSE:
+                     SDLActivity.onNativeMouse(action, x, y);
+                     break;
              }
         }
       return true;

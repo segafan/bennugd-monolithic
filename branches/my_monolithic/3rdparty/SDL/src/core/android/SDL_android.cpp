@@ -30,6 +30,7 @@ extern "C" {
 #include "../../events/SDL_events_c.h"
 #include "../../video/android/SDL_androidkeyboard.h"
 #include "../../video/android/SDL_androidtouch.h"
+#include "../../video/android/SDL_androidmouse.h"
 #include "../../video/android/SDL_androidvideo.h"
 
 #include <android/log.h>
@@ -114,7 +115,7 @@ extern "C" void SDL_Android_Init(JNIEnv* mEnv, jclass cls)
                                 "createGLContext","(II)Z");
     midFlipBuffers = mEnv->GetStaticMethodID(mActivityClass,
                                 "flipBuffers","()V");
-    midAudioInit = mEnv->GetStaticMethodID(mActivityClass, 
+    midAudioInit = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioInit", "(IZZI)Ljava/lang/Object;");
     midAudioWriteShortBuffer = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioWriteShortBuffer", "([S)V");
@@ -163,6 +164,14 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
     Android_OnTouch(touch_device_id_in, pointer_finger_id_in, action, x, y, p);
 }
 
+// Mouse
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativeMouse(
+                                    JNIEnv* env, jclass jcls,
+                                    jint action, jfloat x, jfloat y)
+{
+    Android_OnMouse(action, x, y);
+}
+
 // Accelerometer
 extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
                                     JNIEnv* env, jclass jcls,
@@ -177,7 +186,7 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
 // Quit
 extern "C" void Java_org_libsdl_app_SDLActivity_nativeQuit(
                                     JNIEnv* env, jclass cls)
-{    
+{
     // Inject a SDL_QUIT event
     SDL_SendQuit();
 }
@@ -294,7 +303,7 @@ extern "C" SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion
 extern "C" void Android_JNI_SwapWindow()
 {
     JNIEnv *mEnv = Android_JNI_GetEnv();
-    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers); 
+    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers);
 }
 
 extern "C" void Android_JNI_SetActivityTitle(const char *title)
@@ -405,7 +414,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     }
     Android_JNI_SetupThread();
 
-    
+
     __android_log_print(ANDROID_LOG_VERBOSE, "SDL", "SDL audio: opening device");
     audioBuffer16Bit = is16Bit;
     audioBufferStereo = channelCount > 1;
@@ -429,7 +438,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     if (audioBufferStereo) {
         audioBufferFrames /= 2;
     }
- 
+
     return audioBufferFrames;
 }
 
@@ -458,7 +467,7 @@ extern "C" void Android_JNI_CloseAudioDevice()
     int status;
     JNIEnv *env = Android_JNI_GetEnv();
 
-    env->CallStaticVoidMethod(mActivityClass, midAudioQuit); 
+    env->CallStaticVoidMethod(mActivityClass, midAudioQuit);
 
     if (audioBuffer) {
         env->DeleteGlobalRef(audioBuffer);
