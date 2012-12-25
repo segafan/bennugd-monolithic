@@ -51,6 +51,7 @@ extern void Android_RunAudioThread();
 *******************************************************************************/
 #include <jni.h>
 #include <android/log.h>
+#include <android/sensor.h>
 
 
 /*******************************************************************************
@@ -961,6 +962,38 @@ extern "C" int Android_JNI_GetNumJoysticks()
         return -1;
     }
 	return env->CallIntMethod(mActivityClass, mid);
+}
+
+// Return the name of joystick number "i"
+extern "C" char* Android_JNI_GetJoystickName(int i)
+{
+	JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return SDL_strdup("");
+    }
+
+	jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
+	if (!mid) {
+		return SDL_strdup("");
+	}
+	jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
+	const char* utf = env->GetStringUTFChars(string, 0);
+	if (!utf) {
+		return SDL_strdup("");
+	}
+
+	char* text = SDL_strdup(utf);
+	env->ReleaseStringUTFChars(string, utf);
+	return text;
+}
+
+// Return the name of the default accelerometer
+extern "C" char* Android_GetAccelName()
+{
+	ASensorManager* mSensorManager = ASensorManager_getInstance();
+	ASensor const* mAccelerometer = ASensorManager_getDefaultSensor(mSensorManager, ASENSOR_TYPE_ACCELEROMETER);
+
+	return SDL_strdup(ASensor_getName(mAccelerometer));
 }
 
 // sends message to be handled on the UI event dispatch thread

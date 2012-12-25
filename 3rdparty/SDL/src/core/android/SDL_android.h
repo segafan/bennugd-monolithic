@@ -58,8 +58,10 @@ SDL_bool Android_JNI_HasClipboardText();
 /* Power support */
 int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery, int* seconds, int* percent);
 
-/* Joystick support */
+/* Joystick/accelerometer support */
 int Android_JNI_GetNumJoysticks();
+char* Android_JNI_GetJoystickName(int i);
+char* Android_GetAccelName();
 
 // Threads
 #include <jni.h>
