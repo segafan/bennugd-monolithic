@@ -214,6 +214,21 @@ public class SDLActivity extends Activity {
 		
 		return numjoys;
 	}
+	
+	public static String getJoystickName(int joy) {
+		int[] deviceIds = InputDevice.getDeviceIds();
+		int numjoys = 0;
+		for(int i=0; i<deviceIds.length; i++) {
+			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
+				if (numjoys == joy) {
+					return InputDevice.getDevice(deviceIds[i]).getName();
+				}
+				numjoys += 1;
+			}
+		}
+		
+		return "";
+	}
 
     public static void sendMessage(int command, int param) {
         mSingleton.sendCommand(command, Integer.valueOf(param));
@@ -509,9 +524,9 @@ public class SDLActivity extends Activity {
     // Taken from
     // http://digitalsynapsesblog.blogspot.com.es/2011/09/cocos2d-x-launching-url-on-android.html
     public static void openURL(String url) {
-     Intent i = new Intent(Intent.ACTION_VIEW);
-     i.setData(Uri.parse(url));
-     mSingleton.startActivity(i);
+		Intent i = new Intent(Intent.ACTION_VIEW);
+		i.setData(Uri.parse(url));
+		mSingleton.startActivity(i);
     }
 }
 

@@ -36,7 +36,6 @@
 #define MAX_JOYSTICKS	8
 
 static char *SYS_JoystickNames[MAX_JOYSTICKS];
-static const char *accelerometerName = "Android accelerometer";
 
 /* Function to scan the system for joysticks.
  * This function should set SDL_numjoysticks to the number of available
@@ -46,9 +45,18 @@ static const char *accelerometerName = "Android accelerometer";
 int
 SDL_SYS_JoystickInit(void)
 {
+	int i = 0;
 	// The latest entry is for the accelerometer
+	// TODO: handle the case where SDL_numjoysticks > MAX_JOYSTICKS
     SDL_numjoysticks = Android_JNI_GetNumJoysticks()+1;
+	SDL_memset(SYS_JoystickNames, 0, (sizeof SYS_JoystickNames));
 	
+	for (i = 0; i < (SDL_numjoysticks-1); i++)
+	{
+		SYS_JoystickNames[i] = Android_JNI_GetJoystickName(i);
+		SDL_Log("Setting joystick %d name: %s\n", i, SYS_JoystickNames[i]);
+	}
+	SYS_JoystickNames[i] = Android_GetAccelName();
 	SDL_Log("Setting total number of joysticks to %d\n", SDL_numjoysticks);
     
     return (SDL_numjoysticks);
@@ -59,12 +67,6 @@ const char *
 SDL_SYS_JoystickName(int index)
 {
 	return SYS_JoystickNames[index];
-    /*if (index == 0) {
-        return accelerometerName;
-    } else {
-        SDL_SetError("No joystick available with that index");
-        return (NULL);
-    }*/
 }
 
 /* Function to open a joystick for use.
@@ -79,7 +81,6 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
     joystick->nhats = 0;
     joystick->nballs = 0;
     joystick->naxes = 3;
-    joystick->name = accelerometerName;
     return 0;
 }
 
@@ -114,6 +115,12 @@ SDL_SYS_JoystickClose(SDL_Joystick * joystick)
 void
 SDL_SYS_JoystickQuit(void)
 {
+	int i;
+	
+	for (i = 0; SYS_JoystickNames[i]; ++i) {
+		SDL_free(SYS_JoystickNames[i]);
+	}
+	SYS_JoystickNames[0] = NULL;
 }
 
 #endif /* SDL_JOYSTICK_NDS */
