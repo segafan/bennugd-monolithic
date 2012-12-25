@@ -167,9 +167,9 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
 // Mouse
 extern "C" void Java_org_libsdl_app_SDLActivity_onNativeMouse(
                                     JNIEnv* env, jclass jcls,
-                                    jint action, jfloat x, jfloat y)
+                                    jint action, jint buttonId, jfloat x, jfloat y)
 {
-    Android_OnMouse(action, x, y);
+    Android_OnMouse(action, buttonId, x, y);
 }
 
 // Accelerometer

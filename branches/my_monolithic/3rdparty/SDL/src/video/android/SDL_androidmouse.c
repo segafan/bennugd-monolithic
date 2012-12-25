@@ -30,8 +30,11 @@
 #include "SDL_androidmouse.h"
 
 #define ACTION_DOWN 0
-#define ACTION_UP 1
+#define ACTION_UP   1
 #define ACTION_MOVE 2
+#define BUTTON_PRIMARY   1
+#define BUTTON_SECONDARY 2
+#define BUTTON_TERTIARY  3
 
 static void Android_GetWindowCoordinates(float x, float y,
                                          int *window_x, int *window_y)
@@ -43,20 +46,32 @@ static void Android_GetWindowCoordinates(float x, float y,
     *window_y = (int)(y * window_h);
 }
 
-void Android_OnMouse(int action, float x, float y)
+void Android_OnMouse(int action, int buttonId, float x, float y)
 {
-    int window_x, window_y;
+    int window_x, window_y, button;
 
     if (!Android_Window) {
         return;
     }
+	
+	switch(buttonId) {
+		case BUTTON_PRIMARY:
+			button = SDL_BUTTON_LEFT;
+			break;
+		case BUTTON_SECONDARY:
+			button = SDL_BUTTON_RIGHT;
+			break;
+		case BUTTON_TERTIARY:
+			button = SDL_BUTTON_MIDDLE;
+			break;
+	}
 
     switch (action) {
         case ACTION_DOWN:
             Android_GetWindowCoordinates(x, y, &window_x, &window_y);
             SDL_Log("Mouse down @ %fx%f", window_x, window_y);
             SDL_SendMouseMotion(NULL, 0, window_x, window_y);
-            SDL_SendMouseButton(NULL, SDL_PRESSED, SDL_BUTTON_LEFT);
+            SDL_SendMouseButton(NULL, SDL_PRESSED, button);
             break;
         case ACTION_MOVE:
             Android_GetWindowCoordinates(x, y, &window_x, &window_y);
@@ -64,7 +79,7 @@ void Android_OnMouse(int action, float x, float y)
             SDL_SendMouseMotion(NULL, 0, window_x, window_y);
             break;
         case ACTION_UP:
-            SDL_SendMouseButton(NULL, SDL_RELEASED, SDL_BUTTON_LEFT);
+            SDL_SendMouseButton(NULL, SDL_RELEASED, button);
             break;
     }
 }
