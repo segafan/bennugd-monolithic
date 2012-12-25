@@ -25,6 +25,8 @@ import android.hardware.*;
 import android.content.*;
 
 import java.lang.*;
+import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -43,6 +45,10 @@ public class SDLActivity extends Activity {
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     private static Thread mSDLThread;
+	
+	// Joystick
+	private static boolean mJoyListCreated;
+	private static List<Integer> mJoyIdList;
 
     // Audio
     private static Thread mAudioThread;
@@ -203,31 +209,38 @@ public class SDLActivity extends Activity {
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
     }
 	
-	public static int getNumJoysticks() {
-		int[] deviceIds = InputDevice.getDeviceIds();
-		int numjoys = 0;
-		for(int i=0; i<deviceIds.length; i++) {
-			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
-				numjoys += 1;
-			}
+	// Create a list of valid ID's the first time this function is called
+	private static void createJoystickList() {
+		if(mJoyListCreated) {
+			return;
 		}
 		
-		return numjoys;
+		mJoyIdList = new ArrayList<Integer>();
+		int[] deviceIds = InputDevice.getDeviceIds();
+		for(int i=0; i<deviceIds.length; i++) {
+			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
+				mJoyIdList.add(deviceIds[i]);
+			}
+		}
+		mJoyListCreated = true;
+	}
+	
+	public static int getNumJoysticks() {
+		createJoystickList();
+		
+		return mJoyIdList.size();
 	}
 	
 	public static String getJoystickName(int joy) {
-		int[] deviceIds = InputDevice.getDeviceIds();
-		int numjoys = 0;
-		for(int i=0; i<deviceIds.length; i++) {
-			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
-				if (numjoys == joy) {
-					return InputDevice.getDevice(deviceIds[i]).getName();
-				}
-				numjoys += 1;
-			}
-		}
+		createJoystickList();
 		
-		return "";
+		return InputDevice.getDevice(mJoyIdList.get(joy)).getName();
+	}
+	
+	public static int getJoystickAxes(int joy) {
+		createJoystickList();
+		
+		return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
 	}
 
     public static void sendMessage(int command, int param) {
@@ -747,6 +760,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 	
 	// Generic Motion (mouse hover, joystick...) events
 	public boolean onGenericMotion(View v, MotionEvent event) {
+		Log.v("SDL", "Generic Motion");
 		int actionPointerIndex = event.getActionIndex();
 		int action = event.getActionMasked();
 		float x = event.getX(actionPointerIndex) / mWidth;
