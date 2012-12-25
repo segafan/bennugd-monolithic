@@ -949,6 +949,20 @@ extern "C" int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery
     return 0;
 }
 
+// return the total number of plugged in joysticks
+extern "C" int Android_JNI_GetNumJoysticks()
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+	jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
+    if (!mid) {
+        return -1;
+    }
+	return env->CallIntMethod(mActivityClass, mid);
+}
+
 // sends message to be handled on the UI event dispatch thread
 extern "C" int Android_JNI_SendMessage(int command, int param)
 {

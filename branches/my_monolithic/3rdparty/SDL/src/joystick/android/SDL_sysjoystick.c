@@ -33,6 +33,9 @@
 #include "../SDL_joystick_c.h"
 #include "../../core/android/SDL_android.h"
 
+#define MAX_JOYSTICKS	8
+
+static char *SYS_JoystickNames[MAX_JOYSTICKS];
 static const char *accelerometerName = "Android accelerometer";
 
 /* Function to scan the system for joysticks.
@@ -43,21 +46,25 @@ static const char *accelerometerName = "Android accelerometer";
 int
 SDL_SYS_JoystickInit(void)
 {
-    SDL_numjoysticks = 1;
+	// The latest entry is for the accelerometer
+    SDL_numjoysticks = Android_JNI_GetNumJoysticks()+1;
+	
+	SDL_Log("Setting total number of joysticks to %d\n", SDL_numjoysticks);
     
-    return (1);
+    return (SDL_numjoysticks);
 }
 
 /* Function to get the device-dependent name of a joystick */
 const char *
 SDL_SYS_JoystickName(int index)
 {
-    if (index == 0) {
+	return SYS_JoystickNames[index];
+    /*if (index == 0) {
         return accelerometerName;
     } else {
         SDL_SetError("No joystick available with that index");
         return (NULL);
-    }
+    }*/
 }
 
 /* Function to open a joystick for use.

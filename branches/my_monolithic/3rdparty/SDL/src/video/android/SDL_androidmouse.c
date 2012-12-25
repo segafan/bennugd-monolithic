@@ -69,7 +69,6 @@ void Android_OnMouse(int action, int buttonId, float x, float y)
     switch (action) {
         case ACTION_DOWN:
             Android_GetWindowCoordinates(x, y, &window_x, &window_y);
-            SDL_Log("Mouse down @ %fx%f", window_x, window_y);
             SDL_SendMouseMotion(NULL, 0, window_x, window_y);
             SDL_SendMouseButton(NULL, SDL_PRESSED, button);
             break;
