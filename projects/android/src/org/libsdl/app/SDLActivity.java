@@ -202,6 +202,18 @@ public class SDLActivity extends Activity {
         // Called from SDLMain() thread and can't directly affect the view
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
     }
+	
+	public static int getNumJoysticks() {
+		int[] deviceIds = InputDevice.getDeviceIds();
+		int numjoys = 0;
+		for(int i=0; i<deviceIds.length; i++) {
+			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
+				numjoys += 1;
+			}
+		}
+		
+		return numjoys;
+	}
 
     public static void sendMessage(int command, int param) {
         mSingleton.sendCommand(command, Integer.valueOf(param));
