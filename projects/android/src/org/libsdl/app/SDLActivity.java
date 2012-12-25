@@ -14,7 +14,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
-import android.widget.LinearLayout;
 import android.os.*;
 import android.net.Uri;
 import android.util.Log;
@@ -184,7 +183,7 @@ public class SDLActivity extends Activity {
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
                                             int action, float x,
                                             float y, float p);
-    public static native void onNativeMouse(int action, float x, float y);
+    public static native void onNativeMouse(int action, int buttonId, float x, float y);
     public static native void onNativeAccel(float x, float y, float z);
     public static native void nativeRunAudioThread();
 
@@ -524,7 +523,8 @@ class SDLMain implements Runnable {
     Because of this, that's where we set up the SDL thread
 */
 class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
-    View.OnKeyListener, View.OnTouchListener, SensorEventListener  {
+    View.OnKeyListener, View.OnTouchListener, View.OnGenericMotionListener,
+	SensorEventListener  {
 
     // Sensors
     private static SensorManager mSensorManager;
@@ -542,6 +542,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         requestFocus();
         setOnKeyListener(this);
         setOnTouchListener(this);
+		setOnGenericMotionListener(this);
 
         mSensorManager = (SensorManager)context.getSystemService("sensor");
 
@@ -675,8 +676,8 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Touch events
     public boolean onTouch(View v, MotionEvent event) {
         {
-             int actionPointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent. ACTION_POINTER_ID_SHIFT; /* API 8: event.getActionIndex(); */
-             int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
+             int actionPointerIndex = event.getActionIndex();
+             int action = event.getActionMasked();
              float x = event.getX(actionPointerIndex) / mWidth;
              float y = event.getY(actionPointerIndex) / mHeight;
 
@@ -706,12 +707,32 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                      }
                     break;
                  case InputDevice.SOURCE_MOUSE:
-                     SDLActivity.onNativeMouse(action, x, y);
+				     int buttonId = 1; /* API 14: BUTTON_PRIMARY */
+					 if(Build.VERSION.SDK_INT >= 14) {
+						buttonId = event.getButtonState();
+					 }
+                     SDLActivity.onNativeMouse(action, buttonId, x, y);
                      break;
              }
         }
       return true;
     }
+	
+	// Generic Motion (mouse hover, joystick...) events
+	public boolean onGenericMotion(View v, MotionEvent event) {
+		int actionPointerIndex = event.getActionIndex();
+		int action = event.getActionMasked();
+		float x = event.getX(actionPointerIndex) / mWidth;
+		float y = event.getY(actionPointerIndex) / mHeight;
+		// Dispatch the different events depending on how they come from
+		switch ( event.getSource() ) {
+			// Event was mouse hover
+			case InputDevice.SOURCE_MOUSE:
+				SDLActivity.onNativeMouse(action, 0, x, y);
+			break;
+		}
+		return true;
+	}
 
     // Sensor events
     public void enableSensor(int sensortype, boolean enabled) {
