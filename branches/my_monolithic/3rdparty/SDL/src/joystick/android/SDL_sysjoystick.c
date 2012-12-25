@@ -53,6 +53,7 @@ SDL_SYS_JoystickInit(void)
 	
 	for (i = 0; i < (SDL_numjoysticks-1); i++)
 	{
+		// SDL_snprintf (SYS_JoystickNames[i], 18, "Android Joystick %d", i);
 		SYS_JoystickNames[i] = Android_JNI_GetJoystickName(i);
 		SDL_Log("Setting joystick %d name: %s\n", i, SYS_JoystickNames[i]);
 	}
