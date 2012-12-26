@@ -61,6 +61,7 @@ int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery, int* seco
 /* Joystick/accelerometer support */
 int Android_JNI_GetNumJoysticks();
 char* Android_JNI_GetJoystickName(int i);
+int Android_JNI_GetJoystickAxes(int index);
 char* Android_GetAccelName();
 
 // Threads

@@ -28,6 +28,7 @@
 
 extern "C" {
 #include "../../events/SDL_events_c.h"
+#include "../../joystick/android/SDL_androidjoystick.h"
 #include "../../video/android/SDL_androidkeyboard.h"
 #include "../../video/android/SDL_androidtouch.h"
 #include "../../video/android/SDL_androidmouse.h"
@@ -140,6 +141,20 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeResize(
                                     jint width, jint height, jint format)
 {
     Android_SetScreenResolution(width, height, format);
+}
+
+// Paddown
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadDown(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadDown(padId, keycode);
+}
+
+// Padup
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadUp(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadUp(padId, keycode);
 }
 
 // Keydown
@@ -964,8 +979,8 @@ extern "C" int Android_JNI_GetNumJoysticks()
 	return env->CallIntMethod(mActivityClass, mid);
 }
 
-// Return the name of joystick number "i"
-extern "C" char* Android_JNI_GetJoystickName(int i)
+// Return the name of joystick number "index"
+extern "C" char* Android_JNI_GetJoystickName(int index)
 {
 	JNIEnv* env = Android_JNI_GetEnv();
     if (!env) {
@@ -976,7 +991,7 @@ extern "C" char* Android_JNI_GetJoystickName(int i)
 	if (!mid) {
 		return SDL_strdup("");
 	}
-	jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
+	jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, index));
 	const char* utf = env->GetStringUTFChars(string, 0);
 	if (!utf) {
 		return SDL_strdup("");
@@ -988,7 +1003,7 @@ extern "C" char* Android_JNI_GetJoystickName(int i)
 }
 
 // return the number of axes in the given joystick
-extern "C" int Android_JNI_GetJoystickAxes(int joy)
+extern "C" int Android_JNI_GetJoystickAxes(int index)
 {
     JNIEnv* env = Android_JNI_GetEnv();
     if (!env) {
@@ -998,7 +1013,7 @@ extern "C" int Android_JNI_GetJoystickAxes(int joy)
     if (!mid) {
         return -1;
     }
-	return env->CallIntMethod(mActivityClass, mid, joy);
+	return env->CallIntMethod(mActivityClass, mid, index);
 }
 
 // Return the name of the default accelerometer

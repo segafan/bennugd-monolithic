@@ -184,6 +184,8 @@ public class SDLActivity extends Activity {
     public static native void nativePause();
     public static native void nativeResume();
     public static native void onNativeResize(int x, int y, int format);
+    public static native void onNativePadDown(int padId, int keycode);
+    public static native void onNativePadUp(int padId, int keycode);
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
@@ -241,6 +243,20 @@ public class SDLActivity extends Activity {
 		createJoystickList();
 		
 		return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
+	}
+	
+	public static int getJoyId(int devId) {
+		int i=0;
+
+		createJoystickList();
+		
+		for(i=0; i<mJoyIdList.size(); i++) {
+			if(mJoyIdList.get(i) == devId) {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 
     public static void sendMessage(int command, int param) {
@@ -675,40 +691,42 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
         // Dispatch the different events depending on how they come from
-        switch ( event.getSource() ) {
-            case InputDevice.SOURCE_KEYBOARD:
-               Log.v("SDL", "onKey source: KEYBOARD" );
-               break;
-            case InputDevice.SOURCE_GAMEPAD:
-               Log.v("SDL", "onTouch source: GAMEPAD" );
-               break;
-            case InputDevice.SOURCE_JOYSTICK:
-               Log.v("SDL", "onTouch source: JOYSTICK" );
-               break;
-        }
-        // Send volume key signal but return false, so that
-        // Android will set the volume for our app
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
-            keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                SDLActivity.onNativeKeyDown(keyCode);
-            }
-            else if (event.getAction() == KeyEvent.ACTION_UP) {
-                SDLActivity.onNativeKeyUp(keyCode);
-            }
-            return false;
-        }
+		if ( (event.getSource() & InputDevice.SOURCE_GAMEPAD) != 0 || 
+		     (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
+			int id = SDLActivity.getJoyId( event.getDeviceId() );
+			if( id != -1 ) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					SDLActivity.onNativePadDown(id, keyCode);
+				}
+				else if (event.getAction() == KeyEvent.ACTION_UP) {
+					SDLActivity.onNativePadUp(id, keyCode);
+				}
+			}
+        } else {
+		    // Send volume key signal but return false, so that
+			// Android will set the volume for our app
+			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+				keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN) {
+					SDLActivity.onNativeKeyDown(keyCode);
+				}
+				else if (event.getAction() == KeyEvent.ACTION_UP) {
+					SDLActivity.onNativeKeyUp(keyCode);
+				}
+				return false;
+			}
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            //Log.v("SDL", "key down: " + keyCode);
-            SDLActivity.onNativeKeyDown(keyCode);
-            return true;
-        }
-        else if (event.getAction() == KeyEvent.ACTION_UP) {
-            //Log.v("SDL", "key up: " + keyCode);
-            SDLActivity.onNativeKeyUp(keyCode);
-            return true;
-        }
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				//Log.v("SDL", "key down: " + keyCode);
+				SDLActivity.onNativeKeyDown(keyCode);
+				return true;
+			}
+			else if (event.getAction() == KeyEvent.ACTION_UP) {
+				//Log.v("SDL", "key up: " + keyCode);
+				SDLActivity.onNativeKeyUp(keyCode);
+				return true;
+			}
+		}
 
         return false;
     }
@@ -722,37 +740,34 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
              float y = event.getY(actionPointerIndex) / mHeight;
 
              // Dispatch the different events depending on how they come from
-             switch ( event.getSource() ) {
-                 case InputDevice.SOURCE_TOUCHPAD:
-                 case InputDevice.SOURCE_TOUCHSCREEN:
-                     final int touchDevId = event.getDeviceId();
-                     final int pointerCount = event.getPointerCount();
-                     // touchId, pointerId, action, x, y, pressure
-                     int pointerFingerId = event.getPointerId(actionPointerIndex);
+             if ( (event.getSource() & InputDevice.SOURCE_TOUCHPAD) != 0 ||
+                  (event.getSource() & InputDevice.SOURCE_TOUCHSCREEN) != 0) {
+				 final int touchDevId = event.getDeviceId();
+				 final int pointerCount = event.getPointerCount();
+				 // touchId, pointerId, action, x, y, pressure
+				 int pointerFingerId = event.getPointerId(actionPointerIndex);
 
-                     float p = event.getPressure(actionPointerIndex);
+				 float p = event.getPressure(actionPointerIndex);
 
-                     if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
-                        // TODO send motion to every pointer if its position has
-                        // changed since prev event.
-                        for (int i = 0; i < pointerCount; i++) {
-                            pointerFingerId = event.getPointerId(i);
-                            x = event.getX(i) / mWidth;
-                            y = event.getY(i) / mHeight;
-                            p = event.getPressure(i);
-                            SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
-                        }
-                     } else {
-                        SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
-                     }
-                    break;
-                 case InputDevice.SOURCE_MOUSE:
-				     int buttonId = 1; /* API 14: BUTTON_PRIMARY */
-					 if(Build.VERSION.SDK_INT >= 14) {
-						buttonId = event.getButtonState();
-					 }
-                     SDLActivity.onNativeMouse(action, buttonId, x, y);
-                     break;
+				 if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
+					// TODO send motion to every pointer if its position has
+					// changed since prev event.
+					for (int i = 0; i < pointerCount; i++) {
+						pointerFingerId = event.getPointerId(i);
+						x = event.getX(i) / mWidth;
+						y = event.getY(i) / mHeight;
+						p = event.getPressure(i);
+						SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+					}
+				 } else {
+					SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+				 }
+			 } else if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
+				 int buttonId = 1; /* API 14: BUTTON_PRIMARY */
+				 if(Build.VERSION.SDK_INT >= 14) {
+					buttonId = event.getButtonState();
+				 }
+				 SDLActivity.onNativeMouse(action, buttonId, x, y);
              }
         }
       return true;
@@ -760,17 +775,14 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 	
 	// Generic Motion (mouse hover, joystick...) events
 	public boolean onGenericMotion(View v, MotionEvent event) {
-		Log.v("SDL", "Generic Motion");
 		int actionPointerIndex = event.getActionIndex();
 		int action = event.getActionMasked();
 		float x = event.getX(actionPointerIndex) / mWidth;
 		float y = event.getY(actionPointerIndex) / mHeight;
 		// Dispatch the different events depending on how they come from
-		switch ( event.getSource() ) {
+		if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
 			// Event was mouse hover
-			case InputDevice.SOURCE_MOUSE:
-				SDLActivity.onNativeMouse(action, 0, x, y);
-			break;
+			SDLActivity.onNativeMouse(action, 0, x, y);
 		}
 		return true;
 	}
