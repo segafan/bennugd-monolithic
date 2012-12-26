@@ -37,6 +37,27 @@
 
 static char *SYS_JoystickNames[MAX_JOYSTICKS];
 
+SDL_Joystick *
+SDL_SYS_JoystickfromIndex(int index)
+{
+	int i = 0;
+	SDL_Joystick * joy;
+	
+	for(i=0; i<SDL_numjoysticks; i++ )
+	{
+		if(SDL_JoystickOpened(i))
+		{
+			joy = SDL_JoystickOpen(i);
+			if (joy->index == index)
+			{
+				SDL_JoystickClose(joy);
+				return joy;
+			}
+			SDL_JoystickClose(joy);
+		}
+	}
+}
+
 /* Function to scan the system for joysticks.
  * This function should set SDL_numjoysticks to the number of available
  * joysticks.  Joystick 0 should be the system default joystick.
@@ -53,12 +74,9 @@ SDL_SYS_JoystickInit(void)
 	
 	for (i = 0; i < (SDL_numjoysticks-1); i++)
 	{
-		// SDL_snprintf (SYS_JoystickNames[i], 18, "Android Joystick %d", i);
 		SYS_JoystickNames[i] = Android_JNI_GetJoystickName(i);
-		SDL_Log("Setting joystick %d name: %s\n", i, SYS_JoystickNames[i]);
 	}
 	SYS_JoystickNames[i] = Android_GetAccelName();
-	SDL_Log("Setting total number of joysticks to %d\n", SDL_numjoysticks);
     
     return (SDL_numjoysticks);
 }
@@ -78,10 +96,28 @@ SDL_SYS_JoystickName(int index)
 int
 SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
 {
-    joystick->nbuttons = 0;
-    joystick->nhats = 0;
-    joystick->nballs = 0;
-    joystick->naxes = 3;
+	// Handle the accelerometer separately
+	if( joystick->index < (SDL_numjoysticks-1) )
+	{
+		// TODO: How to get the rest of the info??
+		// TODO: Don't lie to the user
+		joystick->nbuttons = 8;
+		joystick->nhats = 0;
+		joystick->nballs = 0;
+		joystick->naxes = Android_JNI_GetJoystickAxes(joystick->index);
+	}
+	else if( joystick->index == (SDL_numjoysticks-1) )
+	{
+		joystick->nbuttons = 0;
+		joystick->nhats = 0;
+		joystick->nballs = 0;
+		joystick->naxes = 3;
+	}
+	else
+	{
+		return -1;
+	}
+	
     return 0;
 }
 
@@ -98,12 +134,17 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
     Sint16 value;
     float values[3];
 
-    if (Android_JNI_GetAccelerometerValues(values)) {
-        for ( i = 0; i < 3; i++ ) {
-            value = (Sint16)(values[i] * 32767.0f);
-            SDL_PrivateJoystickAxis(joystick, i, value);
-        }
-    }
+	if( joystick->index == (SDL_numjoysticks-1) )
+	{
+		if (Android_JNI_GetAccelerometerValues(values))
+		{
+			for ( i = 0; i < 3; i++ )
+			{
+				value = (Sint16)(values[i] * 32767.0f);
+				SDL_PrivateJoystickAxis(joystick, i, value);
+			}
+		}
+	}
 }
 
 /* Function to close a joystick after use */
@@ -118,10 +159,29 @@ SDL_SYS_JoystickQuit(void)
 {
 	int i;
 	
-	for (i = 0; SYS_JoystickNames[i]; ++i) {
+	for (i = 0; SYS_JoystickNames[i]; ++i)
+	{
 		SDL_free(SYS_JoystickNames[i]);
 	}
 	SYS_JoystickNames[0] = NULL;
+}
+
+int
+Android_OnPadDown(int padId, int keycode)
+{
+	SDL_Log("Down on joy %d for key %d\n", padId, keycode);
+	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode, SDL_PRESSED);
+	
+	return 0;
+}
+
+int
+Android_OnPadUp(int padId, int keycode)
+{
+	SDL_Log("Up on joy %d for key %d\n", padId, keycode);
+	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode, SDL_RELEASED);
+	
+	return 0;
 }
 
 #endif /* SDL_JOYSTICK_NDS */
