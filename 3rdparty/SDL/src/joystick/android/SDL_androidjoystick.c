@@ -101,7 +101,7 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
 	{
 		// TODO: How to get the rest of the info??
 		// TODO: Don't lie to the user
-		joystick->nbuttons = 8;
+		joystick->nbuttons = 16;
 		joystick->nhats = 0;
 		joystick->nballs = 0;
 		joystick->naxes = Android_JNI_GetJoystickAxes(joystick->index);

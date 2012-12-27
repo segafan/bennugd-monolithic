@@ -694,13 +694,13 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 		if ( (event.getSource() & InputDevice.SOURCE_GAMEPAD) != 0 || 
 		     (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
 			int id = SDLActivity.getJoyId( event.getDeviceId() );
-			if( id != -1 ) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN) {
-					SDLActivity.onNativePadDown(id, keyCode);
-				}
-				else if (event.getAction() == KeyEvent.ACTION_UP) {
-					SDLActivity.onNativePadUp(id, keyCode);
-				}
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				Log.v("SDL", "gamepad down:  "+keyCode);
+				SDLActivity.onNativePadDown(id, keyCode);
+			}
+			else if (event.getAction() == KeyEvent.ACTION_UP) {
+				Log.v("SDL", "gamepad up:    "+keyCode);
+				SDLActivity.onNativePadUp(id, keyCode);
 			}
         } else {
 		    // Send volume key signal but return false, so that
@@ -718,11 +718,13 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				//Log.v("SDL", "key down: " + keyCode);
+				Log.v("SDL", "keyboard down:  "+keyCode);
 				SDLActivity.onNativeKeyDown(keyCode);
 				return true;
 			}
 			else if (event.getAction() == KeyEvent.ACTION_UP) {
 				//Log.v("SDL", "key up: " + keyCode);
+				Log.v("SDL", "keyboard down:  "+keyCode);
 				SDLActivity.onNativeKeyUp(keyCode);
 				return true;
 			}
