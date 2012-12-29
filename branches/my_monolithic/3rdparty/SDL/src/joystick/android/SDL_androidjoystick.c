@@ -58,6 +58,18 @@ SDL_SYS_JoystickfromIndex(int index)
 	}
 }
 
+/* Function to convert Android keyCodes into SDL ones */
+int
+keycode_to_SDL(int keycode)
+{
+	if(keycode < 96)
+		return keycode-19;
+	else if(keycode < 188)
+		return keycode-91;
+	else
+		return keycode-168;
+}
+
 /* Function to scan the system for joysticks.
  * This function should set SDL_numjoysticks to the number of available
  * joysticks.  Joystick 0 should be the system default joystick.
@@ -100,8 +112,8 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick)
 	if( joystick->index < (SDL_numjoysticks-1) )
 	{
 		// TODO: How to get the rest of the info??
-		// TODO: Don't lie to the user
-		joystick->nbuttons = 16;
+		// 36 is the maximum number of handled buttons
+		joystick->nbuttons = 36;
 		joystick->nhats = 0;
 		joystick->nballs = 0;
 		joystick->naxes = Android_JNI_GetJoystickAxes(joystick->index);
@@ -169,8 +181,7 @@ SDL_SYS_JoystickQuit(void)
 int
 Android_OnPadDown(int padId, int keycode)
 {
-	SDL_Log("Down on joy %d for key %d\n", padId, keycode);
-	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode, SDL_PRESSED);
+	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode_to_SDL(keycode), SDL_PRESSED);
 	
 	return 0;
 }
@@ -178,8 +189,7 @@ Android_OnPadDown(int padId, int keycode)
 int
 Android_OnPadUp(int padId, int keycode)
 {
-	SDL_Log("Up on joy %d for key %d\n", padId, keycode);
-	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode, SDL_RELEASED);
+	SDL_PrivateJoystickButton(SDL_SYS_JoystickfromIndex(padId), keycode_to_SDL(keycode), SDL_RELEASED);
 	
 	return 0;
 }

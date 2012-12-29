@@ -210,7 +210,7 @@ public class SDLActivity extends Activity {
         // Called from SDLMain() thread and can't directly affect the view
         mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
     }
-	
+
 	// Create a list of valid ID's the first time this function is called
 	private static void createJoystickList() {
 		if(mJoyListCreated) {
@@ -218,33 +218,36 @@ public class SDLActivity extends Activity {
 		}
 		
 		mJoyIdList = new ArrayList<Integer>();
-		int[] deviceIds = InputDevice.getDeviceIds();
-		for(int i=0; i<deviceIds.length; i++) {
-			if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
-				mJoyIdList.add(deviceIds[i]);
+		// InputDevice.getDeviceIds requires SDK >= 16
+		if(Build.VERSION.SDK_INT >= 16) {
+			int[] deviceIds = InputDevice.getDeviceIds();
+			for(int i=0; i<deviceIds.length; i++) {
+				if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
+					mJoyIdList.add(deviceIds[i]);
+				}
 			}
 		}
 		mJoyListCreated = true;
 	}
-	
+
 	public static int getNumJoysticks() {
 		createJoystickList();
 		
 		return mJoyIdList.size();
 	}
-	
+
 	public static String getJoystickName(int joy) {
 		createJoystickList();
 		
 		return InputDevice.getDevice(mJoyIdList.get(joy)).getName();
 	}
-	
+
 	public static int getJoystickAxes(int joy) {
 		createJoystickList();
 		
 		return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
 	}
-	
+
 	public static int getJoyId(int devId) {
 		int i=0;
 
@@ -695,11 +698,9 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 		     (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
 			int id = SDLActivity.getJoyId( event.getDeviceId() );
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
-				Log.v("SDL", "gamepad down:  "+keyCode);
 				SDLActivity.onNativePadDown(id, keyCode);
 			}
 			else if (event.getAction() == KeyEvent.ACTION_UP) {
-				Log.v("SDL", "gamepad up:    "+keyCode);
 				SDLActivity.onNativePadUp(id, keyCode);
 			}
         } else {
