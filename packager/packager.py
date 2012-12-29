@@ -293,12 +293,12 @@ class packager(QtGui.QMainWindow):
             tpldir = os.path.join(mycwd, 'templates', 'android')
 
             # Copy the template to the workdir and the game into the template
-            pattern = shutil.ignore_patterns('.svn', '.hg*', '*.exe', '*.dll',
+            pattern = shutil.ignore_patterns('.svn', '.hg*', '*.exe', '*.dll', '*.lnk',
                         '*.bat', '*.dylib', '*.sh')
             shutil.copytree(tpldir, workdir, ignore=pattern)
             shutil.copytree(self.appdir, os.path.join(workdir, 'assets'), ignore=pattern)
             shutil.copy(admobjar, os.path.join(workdir, 'libs'))
-            self.uncompresstree( os.path.join(workdir, 'assets'), ('.fpg', '.map', '.fnt') )
+            self.uncompresstree( os.path.join(workdir, 'assets'), ('.fpg', '.map', '.fnt', '.pal') )
 
             # Change what's needed to be changed in the template
             fd = open(os.path.join(workdir, 'local.properties'), 'w')
