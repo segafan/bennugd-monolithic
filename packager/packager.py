@@ -37,7 +37,7 @@ class packager(QtGui.QMainWindow):
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
         self.sdkdir = self.prefs.get('sdkdir')
-        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
+        if not os.path.isdir(self.sdkdir + '/platforms/android-16'):
             self.show_preferences()
             # Reread the user-given value, if any
             self.sdkdir = self.prefs.get('sdkdir')
@@ -224,10 +224,10 @@ class packager(QtGui.QMainWindow):
 
     def package(self):
         'Takes care of packaging the given app'
-        # Check for android-13 SDK platform, refuse to package otherwise
-        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
-            QtGui.QMessageBox.critical(self, 'Android 3.2 SDK Platform not installed',
-                                        'Please install the Android 3.2 (API 13) SDK Platform ' +
+        # Check for android-16 SDK platform, refuse to package otherwise
+        if not os.path.isdir(self.sdkdir + '/platforms/android-16'):
+            QtGui.QMessageBox.critical(self, 'Android 4.1 SDK Platform not installed',
+                                        'Please install the Android 4.1 (API 16) SDK Platform ' +
                                         'from the Android SDK manager before trying to package anything')
             return
 
@@ -261,7 +261,7 @@ class packager(QtGui.QMainWindow):
             return
 
         self.admobid = self.ui.line_admob.text()
-        if self.admobid == '':
+        if self.admobid == '' and self.admob:
             QtGui.QMessageBox.critical(self, 'AdMob ID empty', 'The AdMob Publisher ID cannot be empty.')
             return
 
@@ -313,7 +313,7 @@ class packager(QtGui.QMainWindow):
 
             # Create default.properties
             fd = open(os.path.join(workdir, 'default.properties'), 'w')
-            fd.write('target=android-13\n')
+            fd.write('target=android-16\n')
             fd.close()
 
             # Create strings.xml

@@ -48,10 +48,10 @@ class dialog_preferences(QtGui.QDialog):
     def SDKPath(self):
         self.sdkdir = QtGui.QFileDialog.getExistingDirectory(self, 'Choose Android SDK dir')
         self.sdkdir = str(self.sdkdir)
-        # Try to determine if the user has already installed android-13 in the SDK
-        if not os.path.isdir(self.sdkdir + '/platforms/android-13'):
-            QtGui.QMessageBox.information(self, 'Android 3.2 SDK Platform not installed',
-                                        'Please install the Android 3.2 (API 13) SDK Platform ' +
+        # Try to determine if the user has already installed android-16 in the SDK
+        if not os.path.isdir(self.sdkdir + '/platforms/android-16'):
+            QtGui.QMessageBox.information(self, 'Android 4.1 SDK Platform not installed',
+                                        'Please install the Android 4.1 (API 16) SDK Platform ' +
                                         'from the Android SDK manager before trying to package anything.')
         self.ui.lineSDK.setText(self.sdkdir)
 
