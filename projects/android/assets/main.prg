@@ -25,7 +25,7 @@ Process Main()
 Private
 int song=0, num_fingers=0, num_joys=0, i=0;
 int g_w=0, g_h=0;
-int text1=0, text2=0;
+int text1=0, text2=0, text3=0;
 string text;
 
 Begin
@@ -55,7 +55,6 @@ Begin
 	for(i=0; i<num_joys; i++)
 		write(0, 160, 250+10*i, 4, joy_name(i)+" Axes: "+joy_numaxes(i));
 	end;
-	write_string(0, 160, 260+10*i, 4, &text);
 	
     /* Some touchscreens cannot detect all 5 fingers at once */
     while(num_fingers < 4 && focus_status == 1)
@@ -69,80 +68,128 @@ Begin
 		text = "";
 		if(joy_getbutton(0, 0))
 			text += " UP ";
-		elif(joy_getbutton(0,1))
+		end
+		if(joy_getbutton(0,1))
 			text += " DOWN ";
-		elif(joy_getbutton(0,2))
+		end
+		if(joy_getbutton(0,2))
 			text += " LEFT ";
-		elif(joy_getbutton(0,3))
+		end
+		if(joy_getbutton(0,3))
 			text += " RIGHT ";
-		elif(joy_getbutton(0,4))
+		end
+		if(joy_getbutton(0,4))
 			text += " CENTER ";
-		elif(joy_getbutton(0,5))
+		end
+		if(joy_getbutton(0,5))
 			text += " A ";
-		elif(joy_getbutton(0,6))
+		end
+		if(joy_getbutton(0,6))
 			text += " B ";
-		elif(joy_getbutton(0,7))
+		end
+		if(joy_getbutton(0,7))
 			text += " C ";
-		elif(joy_getbutton(0,8))
+		end
+		if(joy_getbutton(0,8))
 			text += " X ";
-		elif(joy_getbutton(0,9))
+		end
+		if(joy_getbutton(0,9))
 			text += " Y ";
-		elif(joy_getbutton(0,10))
+		end
+		if(joy_getbutton(0,10))
 			text += " Z ";
-		elif(joy_getbutton(0,11))
+		end
+		if(joy_getbutton(0,11))
 			text += " L1 ";
-		elif(joy_getbutton(0,12))
+		end
+		if(joy_getbutton(0,12))
 			text += " R1 ";
-		elif(joy_getbutton(0,13))
+		end
+		if(joy_getbutton(0,13))
 			text += " L2 ";
-		elif(joy_getbutton(0,14))
+		end
+		if(joy_getbutton(0,14))
 			text += " R2 ";
-		elif(joy_getbutton(0,15))
+		end
+		if(joy_getbutton(0,15))
 			text += " THUMBL ";
-		elif(joy_getbutton(0,16))
+		end
+		if(joy_getbutton(0,16))
 			text += " THUMBR ";
-		elif(joy_getbutton(0,17))
+		end
+		if(joy_getbutton(0,17))
 			text += " START ";
-		elif(joy_getbutton(0,18))
+		end
+		if(joy_getbutton(0,18))
 			text += " SELECT ";
-		elif(joy_getbutton(0,19))
+		end
+		if(joy_getbutton(0,19))
 			text += " MODE ";
-		elif(joy_getbutton(0,20))
+		end
+		if(joy_getbutton(0,20))
 			text += " 1 ";
-		elif(joy_getbutton(0,21))
+		end
+		if(joy_getbutton(0,21))
 			text += " 2 ";
-		elif(joy_getbutton(0,22))
+		end
+		if(joy_getbutton(0,22))
 			text += " 3 ";
-		elif(joy_getbutton(0,23))
+		end
+		if(joy_getbutton(0,23))
 			text += " 4 ";
-		elif(joy_getbutton(0,24))
+		end
+		if(joy_getbutton(0,24))
 			text += " 5 ";
-		elif(joy_getbutton(0,25))
+		end
+		if(joy_getbutton(0,25))
 			text += " 6 ";
-		elif(joy_getbutton(0,26))
+		end
+		if(joy_getbutton(0,26))
 			text += " 7 ";
-		elif(joy_getbutton(0,27))
+		end
+		if(joy_getbutton(0,27))
 			text += " 8 ";
-		elif(joy_getbutton(0,28))
+		end
+		if(joy_getbutton(0,28))
 			text += " 9 ";
-		elif(joy_getbutton(0,29))
+		end
+		if(joy_getbutton(0,29))
 			text += " 10 ";
-		elif(joy_getbutton(0,30))
+		end
+		if(joy_getbutton(0,30))
 			text += " 11 ";
-		elif(joy_getbutton(0,31))
+		end
+		if(joy_getbutton(0,31))
 			text += " 12 ";
-		elif(joy_getbutton(0,32))
+		end
+		if(joy_getbutton(0,32))
 			text += " 13 ";
-		elif(joy_getbutton(0,33))
+		end
+		if(joy_getbutton(0,33))
 			text += " 14 ";
-		elif(joy_getbutton(0,34))
+		end
+		if(joy_getbutton(0,34))
 			text += " 15 ";
-		elif(joy_getbutton(0,35))
+		end
+		if(joy_getbutton(0,35))
 			text += " 16 ";
 		end
+		if(mouse.left)
+			say("Left");
+			text += " M.LEFT ";
+		end
+		if(mouse.right)
+			say("Right");
+			text += " M.RIGHT ";
+		end
+		if(mouse.middle)
+			say("middle");
+			text += " M.MIDDLE ";
+		end
+		text3 = write(0, 160, 260+10*i, 4, text);
 		
         frame;
-		delete_text(text1); delete_text(text2);
+		delete_text(text1); delete_text(text2); delete_text(text3);
     End;
 
     unload_map(0, graph);

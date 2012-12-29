@@ -58,7 +58,9 @@ SDL_SYS_JoystickfromIndex(int index)
 	}
 }
 
-/* Function to convert Android keyCodes into SDL ones */
+/* Function to convert Android keyCodes into SDL ones.
+ * This code manipulation is done to get a sequential list of codes.
+ */
 int
 keycode_to_SDL(int keycode)
 {
