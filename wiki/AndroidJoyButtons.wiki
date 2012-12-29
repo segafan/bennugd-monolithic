@@ -1,0 +1,47 @@
+#summary Numerical values for buttons in Android devices.
+#labels Phase-Support
+
+= Introduction =
+
+These are the numerical values of the buttons in Android. You can use the values in the "BennuGD key code" column directly with [http://wiki.bennugd.org/index.php?title=Joy_getbutton joy_getbutton()] in Android.
+The "Android key name" and "Android key code" data were extracted from the Android [http://developer.android.com/reference/android/view/KeyEvent.html docs].
+
+= Details =
+
+||*Android key name*||*Android key code*||*BennuGD key code*||
+||KEYCODE_DPAD_UP||19||0||
+||KEYCODE_DPAD_DOWN ||20||1 ||
+||KEYCODE_DPAD_LEFT ||21||2 ||
+||KEYCODE_DPAD_RIGHT||22||3 ||
+||KEYCODE_DPAD_CENTER ||23||4 ||
+||KEYCODE_BUTTON_A ||96||5||
+||KEYCODE_BUTTON_B||97||6 ||
+||KEYCODE_BUTTON_C||98||7 ||
+||KEYCODE_BUTTON_X||99||8 ||
+||KEYCODE_BUTTON_Y||100||9||
+||KEYCODE_BUTTON_Z||101||10 ||
+||KEYCODE_BUTTON_L1 ||102||11 ||
+||KEYCODE_BUTTON_R1 ||103||12 ||
+||KEYCODE_BUTTON_L2 ||104||13 ||
+||KEYCODE_BUTTON_R2 ||105||14 ||
+||KEYCODE_BUTTON_THUMBL ||106||15 ||
+||KEYCODE_BUTTON_THUMBR ||107||16 ||
+||KEYCODE_BUTTON_START||108||17 ||
+||KEYCODE_BUTTON_SELECT ||109||18 ||
+||KEYCODE_BUTTON_MODE ||110||19 ||
+||KEYCODE_BUTTON_1 ||188||20||
+||KEYCODE_BUTTON_2||189||21 ||
+||KEYCODE_BUTTON_3||190||22 ||
+||KEYCODE_BUTTON_4||191||23 ||
+||KEYCODE_BUTTON_5||192||24 ||
+||KEYCODE_BUTTON_6||193||25 ||
+||KEYCODE_BUTTON_7||194||26 ||
+||KEYCODE_BUTTON_8||195||27 ||
+||KEYCODE_BUTTON_9||196||28 ||
+||KEYCODE_BUTTON_10 ||197||29 ||
+||KEYCODE_BUTTON_11 ||198||30 ||
+||KEYCODE_BUTTON_12 ||199||31 ||
+||KEYCODE_BUTTON_13 ||200||32 ||
+||KEYCODE_BUTTON_14 ||201||33 ||
+||KEYCODE_BUTTON_15 ||202||34 ||
+||KEYCODE_BUTTON_16||203||35||
