@@ -699,8 +699,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 			int id = SDLActivity.getJoyId( event.getDeviceId() );
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				SDLActivity.onNativePadDown(id, keyCode);
-			}
-			else if (event.getAction() == KeyEvent.ACTION_UP) {
+			} else if (event.getAction() == KeyEvent.ACTION_UP) {
 				SDLActivity.onNativePadUp(id, keyCode);
 			}
         } else {
@@ -710,8 +709,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 				keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN) {
 					SDLActivity.onNativeKeyDown(keyCode);
-				}
-				else if (event.getAction() == KeyEvent.ACTION_UP) {
+				} else if (event.getAction() == KeyEvent.ACTION_UP) {
 					SDLActivity.onNativeKeyUp(keyCode);
 				}
 				return false;
@@ -720,16 +718,12 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 			if (event.getAction() == KeyEvent.ACTION_DOWN) {
 				//Log.v("SDL", "key down: " + keyCode);
 				SDLActivity.onNativeKeyDown(keyCode);
-				return true;
-			}
-			else if (event.getAction() == KeyEvent.ACTION_UP) {
+			} else if (event.getAction() == KeyEvent.ACTION_UP) {
 				//Log.v("SDL", "key up: " + keyCode);
 				SDLActivity.onNativeKeyUp(keyCode);
-				return true;
 			}
 		}
-
-        return false;
+		return true;
     }
 
     // Touch events
@@ -763,27 +757,36 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 				 } else {
 					SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
 				 }
-			 } else if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
-				 int buttonId = 1; /* API 14: BUTTON_PRIMARY */
-				 if(Build.VERSION.SDK_INT >= 14) {
-					buttonId = event.getButtonState();
-				 }
-				 SDLActivity.onNativeMouse(action, buttonId, x, y);
-             }
+			 }
         }
       return true;
     }
 	
 	// Generic Motion (mouse hover, joystick...) events
 	public boolean onGenericMotion(View v, MotionEvent event) {
-		int actionPointerIndex = event.getActionIndex();
-		int action = event.getActionMasked();
-		float x = event.getX(actionPointerIndex) / mWidth;
-		float y = event.getY(actionPointerIndex) / mHeight;
-		// Dispatch the different events depending on how they come from
 		if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
-			// Event was mouse hover
-			SDLActivity.onNativeMouse(action, 0, x, y);
+			int actionPointerIndex = event.getActionIndex();
+			int action = event.getActionMasked();
+			float x = event.getX(actionPointerIndex) / mWidth;
+			float y = event.getY(actionPointerIndex) / mHeight;
+			
+			switch(action) {
+				case MotionEvent.ACTION_HOVER_MOVE:
+					// Send mouse motion
+					SDLActivity.onNativeMouse(action, 0, x, y);
+					break;
+				default:
+					// Send mouse click
+					int buttonId = 1; /* API 14: BUTTON_PRIMARY */
+					if(Build.VERSION.SDK_INT >= 14) {
+						buttonId = event.getButtonState();
+					}
+					// Event was mouse hover
+					SDLActivity.onNativeMouse(action, buttonId, x, y);
+					break;
+			}
+		} else if ( (event.getSource() & InputDevice.SOURCE_JOYSTICK) != 0) {
+			Log.v("SDL", "Process joystick here");
 		}
 		return true;
 	}
