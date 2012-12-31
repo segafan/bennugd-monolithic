@@ -693,15 +693,7 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
         // Dispatch the different events depending on how they come from
-		if ( (event.getSource() & InputDevice.SOURCE_GAMEPAD) != 0 || 
-		     (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
-			int id = SDLActivity.getJoyId( event.getDeviceId() );
-			if (event.getAction() == KeyEvent.ACTION_DOWN) {
-				SDLActivity.onNativePadDown(id, keyCode);
-			} else if (event.getAction() == KeyEvent.ACTION_UP) {
-				SDLActivity.onNativePadUp(id, keyCode);
-			}
-        } else {
+		if(event.getSource() == InputDevice.SOURCE_KEYBOARD) {
 		    // Send volume key signal but return false, so that
 			// Android will set the volume for our app
 			if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
@@ -721,7 +713,16 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 				//Log.v("SDL", "key up: " + keyCode);
 				SDLActivity.onNativeKeyUp(keyCode);
 			}
-		}
+		}else if ( (event.getSource() & InputDevice.SOURCE_GAMEPAD) != 0 ||
+                   (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
+			int id = SDLActivity.getJoyId( event.getDeviceId() );
+			if (event.getAction() == KeyEvent.ACTION_DOWN) {
+				SDLActivity.onNativePadDown(id, keyCode);
+			} else if (event.getAction() == KeyEvent.ACTION_UP) {
+				SDLActivity.onNativePadUp(id, keyCode);
+			}
+        }
+        
 		return true;
     }
 
