@@ -22,5 +22,6 @@
 
 extern int Android_OnPadDown(int padId, int keycode);
 extern int Android_OnPadUp(int padId, int keycode);
+extern int Android_OnJoy(int joyId, int action, float x, float y);
 
 /* vi: set ts=4 sw=4 expandtab: */

@@ -157,6 +157,13 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadUp(
     Android_OnPadUp(padId, keycode);
 }
 
+// Padup
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativeJoy(
+                                    JNIEnv* env, jclass jcls, jint joyId, jint action, jfloat x, jfloat y)
+{
+    Android_OnJoy(joyId, action, x, y);
+}
+
 // Keydown
 extern "C" void Java_org_libsdl_app_SDLActivity_onNativeKeyDown(
                                     JNIEnv* env, jclass jcls, jint keycode)
