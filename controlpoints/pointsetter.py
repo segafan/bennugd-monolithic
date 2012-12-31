@@ -51,13 +51,13 @@ class pointsetter(QtGui.QMainWindow):
     
     def add_row(self, ignore, x=-1, y=-1):
         self.ui.table.setRowCount(self.points+1)
-        if x < 0.:
-            x = 0.
-        item = QtGui.QTableWidgetItem( str(x) )
+        if x < 0:
+            x = 0
+        item = QtGui.QTableWidgetItem( str( int(x) ) )
         self.ui.table.setItem(self.points, 0, item)
-        if y < 0.:
-            y = 0.
-        item = QtGui.QTableWidgetItem( str(y) )
+        if y < 0:
+            y = 0
+        item = QtGui.QTableWidgetItem( str( int(y) ) )
         self.ui.table.setItem(self.points, 1, item)
         self.points += 1
     
@@ -72,9 +72,9 @@ class pointsetter(QtGui.QMainWindow):
         row = self.ui.table.currentRow()
         if row > -1:
             item = self.ui.table.item(row, 0)
-            item.setText( str(event.scenePos().x()) )
+            item.setText( str( int(event.scenePos().x()) ) )
             item = self.ui.table.item(row, 1)
-            item.setText( str(event.scenePos().y()) )
+            item.setText( str( int(event.scenePos().y()) ) )
         
     def openimg(self):
         imgpath = QtGui.QFileDialog.getOpenFileName(self, "Choose image file",
@@ -103,12 +103,12 @@ class pointsetter(QtGui.QMainWindow):
         for i in range(n):
             x = str( self.ui.table.item(i, 0).text() )
             y = str( self.ui.table.item(i, 1).text() )
-            img.setText("BennuGD_CP%d" % i, "%s,%s" % (x, y))
+            img.setText("BennuGD_CP%d" % i, "%s;%s" % (x, y))
         if not img.save(outputfname):
             QtGui.QMessageBox.critical(self, 'Cannot write there', 'Cannot write image to given path')
     
     def mousemove(self, event):
-        self.ui.statusbar.showMessage( "X: %.0f Y: %.0f" % (event.scenePos().x(), event.scenePos().y() ) )
+        self.ui.statusbar.showMessage( "X: %d Y: %d" % (int(event.scenePos().x()), int(event.scenePos().y()) ) )
     
     def zoom(self):
         newzoom = self.ui.zoomlevel.value()/(100.*self.zoomlevel)
