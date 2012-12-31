@@ -96,6 +96,7 @@ class pointsetter(QtGui.QMainWindow):
     
     def saveimg(self):
         outputfname = QtGui.QFileDialog.getSaveFileName(self, 'Save PNG as...', self.savedir, "PNG Image (*.png)")
+        self.savedir = os.path.dirname(outputfname)
         # Convert QPixmap to QImage
         img = self.ui.graphicsView.items()[0].pixmap().toImage()
         # Set the text for the image
