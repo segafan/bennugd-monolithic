@@ -103,7 +103,7 @@ class pointsetter(QtGui.QMainWindow):
         for i in range(n):
             x = str( self.ui.table.item(i, 0).text() )
             y = str( self.ui.table.item(i, 1).text() )
-            img.setText("CP%d" % i, "%s,%s" % (x, y))
+            img.setText("BennuGD_CP%d" % i, "%s,%s" % (x, y))
         if not img.save(outputfname):
             QtGui.QMessageBox.critical(self, 'Cannot write there', 'Cannot write image to given path')
     
