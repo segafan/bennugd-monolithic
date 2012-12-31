@@ -45,10 +45,10 @@ public class SDLActivity extends Activity {
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     private static Thread mSDLThread;
-	
-	// Joystick
-	private static boolean mJoyListCreated;
-	private static List<Integer> mJoyIdList;
+
+    // Joystick
+    private static boolean mJoyListCreated;
+    private static List<Integer> mJoyIdList;
 
     // Audio
     private static Thread mAudioThread;
@@ -689,9 +689,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 
     // unused
     public void onDraw(Canvas canvas) {}
-
-
-
 
     // Key events
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
