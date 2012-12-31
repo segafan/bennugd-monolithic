@@ -368,11 +368,9 @@ int libjoy_get_position_specific( int joy, int axis )
     {
         if ( axis >= 0 && axis <= SDL_JoystickNumAxes( _joysticks[ joy ] ) )
         {
-            SDL_Log("Fetching value for joy %d, axis %d", joy, axis);
             return SDL_JoystickGetAxis( _joysticks[ joy ], axis ) ;
         }
     }
-    SDL_Log("Failure");
     return 0 ;
 }
 
