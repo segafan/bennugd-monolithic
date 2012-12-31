@@ -77,10 +77,9 @@ class pointsetter(QtGui.QMainWindow):
             item.setText( str(event.scenePos().y()) )
         
     def openimg(self):
-        #imgpath = QtGui.QFileDialog.getOpenFileName(self, "Choose image file",
-        #                                       self.homepath,
-        #                                       "Images (*.bmp *.gif *.jpg *.png *.tiff *.xpm)");
-        imgpath = "C:/Users/joseba/Desktop/Pincho/Linfedema.jpg"
+        imgpath = QtGui.QFileDialog.getOpenFileName(self, "Choose image file",
+                                               self.homepath,
+                                               "Images (*.bmp *.gif *.jpg *.png *.tiff *.xpm)");
         if os.path.isfile(imgpath):
             scene = QtGui.QGraphicsScene()
             pic   = QtGui.QPixmap(imgpath)
