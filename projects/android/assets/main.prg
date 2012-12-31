@@ -42,11 +42,6 @@ Begin
     drawing_map( 0, 0 );
     draw_box(0, 0, width, height);
 
-    // Load mouse pointer and get its props
-    graph = load_png("mouse.png");
-    g_w = graphic_info(0, graph, G_WIDTH);
-    g_h = graphic_info(0, graph, G_HEIGHT);
-
 	// Write some debug info to the screen
 	num_joys = joy_number();
 	write(0, 320, 0, 2, "Width: "+width+" Height:"+height);
@@ -59,13 +54,31 @@ Begin
     /* Some touchscreens cannot detect all 5 fingers at once */
     while(num_fingers < 4 && focus_status == 1)
         // Position the pointer
-        x = mouse.x+g_w/2; y = mouse.y+g_h/2;
+        x = mouse.x; y = mouse.y;
 		
 		// Write pointer position according to both mod_mouse and mod_multi
 		text1 = write(0, 0, 0,  0, "Multi: "+multi_info(0, "X")+"x"+multi_info(0, "Y"));
 		text2 = write(0, 0, 10, 0, "Mouse: "+mouse.x+"x"+mouse.y);
+        
+        if(mouse.right)
+            point_set(0, graph, 0, 0, 0);
+        end;
 		
 		text = "";
+        /*say("0:0"+joy_getaxis(0, 0));
+        say("0:1"+joy_getaxis(0, 1));*/
+        if(joy_getaxis(0, 0) < -10000)
+            text += " JOY.LEFT "+joy_getaxis(0, 0);
+        end
+        if(joy_getaxis(0, 0) > 10000)
+            text += " JOY.RIGHT "+joy_getaxis(0, 0);
+        end
+        if(joy_getaxis(0, 1) < -10000)
+            text += " JOY.UP "+joy_getaxis(0, 1);
+        end
+        if(joy_getaxis(0, 1) > 10000)
+            text += " JOY.DOWN "+joy_getaxis(0, 1);
+        end
 		if(joy_getbutton(0, 0))
 			text += " UP ";
 		end
@@ -175,15 +188,12 @@ Begin
 			text += " 16 ";
 		end
 		if(mouse.left)
-			say("Left");
 			text += " M.LEFT ";
 		end
 		if(mouse.right)
-			say("Right");
 			text += " M.RIGHT ";
 		end
 		if(mouse.middle)
-			say("middle");
 			text += " M.MIDDLE ";
 		end
 		text3 = write(0, 160, 260+10*i, 4, text);

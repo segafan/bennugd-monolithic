@@ -186,6 +186,8 @@ public class SDLActivity extends Activity {
     public static native void onNativeResize(int x, int y, int format);
     public static native void onNativePadDown(int padId, int keycode);
     public static native void onNativePadUp(int padId, int keycode);
+    public static native void onNativeJoy(int joyId, int action,
+                                            float x, float y);
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
@@ -764,9 +766,10 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 	
 	// Generic Motion (mouse hover, joystick...) events
 	public boolean onGenericMotion(View v, MotionEvent event) {
+        int actionPointerIndex = event.getActionIndex();
+        int action = event.getActionMasked();
+        
 		if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
-			int actionPointerIndex = event.getActionIndex();
-			int action = event.getActionMasked();
 			float x = event.getX(actionPointerIndex) / mWidth;
 			float y = event.getY(actionPointerIndex) / mHeight;
 			
@@ -786,7 +789,15 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
 					break;
 			}
 		} else if ( (event.getSource() & InputDevice.SOURCE_JOYSTICK) != 0) {
-			Log.v("SDL", "Process joystick here");
+            switch(action) {
+                case MotionEvent.ACTION_MOVE:
+                    int id = SDLActivity.getJoyId( event.getDeviceId() );
+                    float x = event.getAxisValue(MotionEvent.AXIS_X, actionPointerIndex);
+                    float y = event.getAxisValue(MotionEvent.AXIS_Y, actionPointerIndex);
+                    SDLActivity.onNativeJoy(id, action, x, y);
+                    
+                    break;
+            }
 		}
 		return true;
 	}

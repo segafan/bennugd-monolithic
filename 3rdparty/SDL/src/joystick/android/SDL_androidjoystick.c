@@ -196,6 +196,17 @@ Android_OnPadUp(int padId, int keycode)
 	return 0;
 }
 
-#endif /* SDL_JOYSTICK_NDS */
+int
+Android_OnJoy(int joyId, int action, float x, float y)
+{
+    // Android gives joy info normalized as [-1.0, 1.0]
+    // TODO: Is this right?
+    SDL_PrivateJoystickAxis(SDL_SYS_JoystickfromIndex(joyId), 0, (Sint16) (32767.*x) );
+    SDL_PrivateJoystickAxis(SDL_SYS_JoystickfromIndex(joyId), 1, (Sint16) (32767.*y) );
+
+    return 0;
+}
+
+#endif /* SDL_JOYSTICK_ANDROID */
 
 /* vi: set ts=4 sw=4 expandtab: */
