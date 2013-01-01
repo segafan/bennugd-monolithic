@@ -82,8 +82,8 @@ g_eventfilter(void *userdata, SDL_Event * event)
 SDL_Surface *
 SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
 {
-    SDL_DisplayMode desktop_mode, current_mode;
-    int display = SDL_GetWindowDisplay(window);
+    SDL_DisplayMode desktop_mode, current_mode, window_mode;
+    int display = SDL_GetWindowDisplayIndex(window);
     int window_x = SDL_WINDOWPOS_UNDEFINED_DISPLAY(display);
     int window_y = SDL_WINDOWPOS_UNDEFINED_DISPLAY(display);
     int window_w;
@@ -97,7 +97,7 @@ SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
         }
     }
 
-    // Just choose the default screen in case SDL_GetWindowDisplay failed
+    // Just choose the default screen in case SDL_GetWindowDisplayIndex failed
     display == -1 ? display = 0 : 1;
     SDL_GetDesktopDisplayMode(display, &desktop_mode);
 
@@ -125,7 +125,6 @@ SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
     }
     if (window) {
         SDL_GetWindowPosition(window, &window_x, &window_y);
-        SDL_DestroyWindow(window);
     }
 
     /* Set up the event filter */
@@ -147,9 +146,18 @@ SDL_SetVideoMode(int width, int height, int bpp, Uint32 flags)
     if (flags & SDL_NOFRAME) {
         window_flags |= SDL_WINDOW_BORDERLESS;
     }
-    window =
-        SDL_CreateWindow("", window_x, window_y, width, height,
+    // Only try to create a new window if it's really needed
+    if (!window) {
+        window = SDL_CreateWindow("", window_x, window_y, width, height,
                          window_flags);
+    } else {
+        SDL_GetWindowDisplayMode(window, &window_mode);
+        if (width != window_mode.w || height != window_mode.h) {
+            SDL_DestroyWindow(window);
+            window = SDL_CreateWindow("", window_x, window_y, width, height,
+                         window_flags);
+        }
+    }
     if (!window) {
         return NULL;
     }
