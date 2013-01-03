@@ -221,6 +221,10 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		HRAWINPUT hRawInput = (HRAWINPUT)lParam;
 		RAWINPUT inp;
 		UINT size = sizeof(inp);
+
+		if(!SDL_GetMouse()->relative_mode)
+			break;
+
 		GetRawInputData(hRawInput, RID_INPUT, &inp, &size, sizeof(RAWINPUTHEADER));
 
 		/* Mouse data */
@@ -229,8 +233,24 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			RAWMOUSE* mouse = &inp.data.mouse;
 
 			if((mouse->usFlags & 0x01) == MOUSE_MOVE_RELATIVE)
+			{
 				SDL_SendMouseMotion(data->window, 1, (int)mouse->lLastX, (int)mouse->lLastY);
+			}
+			else
+			{
+				// synthesize relative moves from the abs position
+				static SDL_Point initialMousePoint;
+				if ( initialMousePoint.x == 0 && initialMousePoint.y == 0 )
+				{
+					initialMousePoint.x = mouse->lLastX;
+					initialMousePoint.y = mouse->lLastY;
+				}
 
+				SDL_SendMouseMotion(data->window, 1, (int)(mouse->lLastX-initialMousePoint.x), (int)(mouse->lLastY-initialMousePoint.y) );
+
+				initialMousePoint.x = mouse->lLastX;
+				initialMousePoint.y = mouse->lLastY;
+			}
 		}
 		break;
 	}
@@ -426,16 +446,14 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             RECT size;
             int x, y;
             int w, h;
+            int min_w, min_h;
+            int max_w, max_h;
             int style;
             BOOL menu;
 
             /* If we allow resizing, let the resize happen naturally */
-            if(SDL_IsShapedWindow(data->window))
+            if (SDL_IsShapedWindow(data->window))
                 Win32_ResizeWindowShape(data->window);
-            if (SDL_GetWindowFlags(data->window) & SDL_WINDOW_RESIZABLE) {
-                returnCode = 0;
-                break;
-            }
 
             /* Get the current position of our window */
             GetWindowRect(hwnd, &size);
@@ -444,11 +462,20 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Calculate current size of our window */
             SDL_GetWindowSize(data->window, &w, &h);
+            SDL_GetWindowMinimumSize(data->window, &min_w, &min_h);
+            SDL_GetWindowMaximumSize(data->window, &max_w, &max_h);
+
+            /* Store in min_w and min_h difference between current size and minimal 
+               size so we don't need to call AdjustWindowRectEx twice */
+            min_w -= w;
+            min_h -= h;
+            max_w -= w;
+            max_h -= h;
+
             size.top = 0;
             size.left = 0;
             size.bottom = h;
             size.right = w;
-
 
             style = GetWindowLong(hwnd, GWL_STYLE);
             /* DJM - according to the docs for GetMenu(), the
@@ -463,14 +490,21 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             /* Fix our size to the current size */
             info = (MINMAXINFO *) lParam;
-            info->ptMaxSize.x = w;
-            info->ptMaxSize.y = h;
-            info->ptMaxPosition.x = x;
-            info->ptMaxPosition.y = y;
-            info->ptMinTrackSize.x = w;
-            info->ptMinTrackSize.y = h;
-            info->ptMaxTrackSize.x = w;
-            info->ptMaxTrackSize.y = h;
+            if (SDL_GetWindowFlags(data->window) & SDL_WINDOW_RESIZABLE) {
+                info->ptMinTrackSize.x = w + min_w;
+                info->ptMinTrackSize.y = h + min_h;
+                info->ptMaxTrackSize.x = w + max_w;
+                info->ptMaxTrackSize.y = h + max_h;
+            } else {
+                info->ptMaxSize.x = w;
+                info->ptMaxSize.y = h;
+                info->ptMaxPosition.x = x;
+                info->ptMaxPosition.y = y;
+                info->ptMinTrackSize.x = w;
+                info->ptMinTrackSize.y = h;
+                info->ptMaxTrackSize.x = w;
+                info->ptMaxTrackSize.y = h;
+            }
         }
         returnCode = 0;
         break;

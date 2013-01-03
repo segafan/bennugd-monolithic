@@ -22,6 +22,6 @@
 
 #include "SDL_androidvideo.h"
 
-extern void Android_OnMouse( int action, int buttonId, float x, float y );
+extern void Android_OnMouse( int action, float x, float y );
 
 /* vi: set ts=4 sw=4 expandtab: */

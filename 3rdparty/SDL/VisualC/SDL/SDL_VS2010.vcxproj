@@ -98,7 +98,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;oleaut32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -129,7 +129,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;oleaut32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -165,7 +165,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;oleaut32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)\lib\x86</AdditionalLibraryDirectories>
@@ -196,7 +196,7 @@
       <Culture>0x0409</Culture>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>winmm.lib;imm32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;imm32.lib;oleaut32.lib;version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>true</IgnoreAllDefaultLibraries>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>$(DXSDK_DIR)\lib\x64</AdditionalLibraryDirectories>
@@ -221,6 +221,7 @@
     <ClInclude Include="..\..\include\SDL_hints.h" />
     <ClInclude Include="..\..\include\SDL_input.h" />
     <ClInclude Include="..\..\include\SDL_joystick.h" />
+    <ClInclude Include="..\..\include\SDL_gamecontroller.h" />
     <ClInclude Include="..\..\include\SDL_keyboard.h" />
     <ClInclude Include="..\..\include\SDL_keycode.h" />
     <ClInclude Include="..\..\include\SDL_loadso.h" />
@@ -317,6 +318,7 @@
     <ClInclude Include="..\..\src\video\windows\SDL_windowsevents.h" />
     <ClInclude Include="..\..\src\video\windows\SDL_windowsframebuffer.h" />
     <ClInclude Include="..\..\src\video\windows\SDL_windowskeyboard.h" />
+    <ClInclude Include="..\..\src\video\windows\SDL_windowsmessagebox.h" />
     <ClInclude Include="..\..\src\video\windows\SDL_windowsmodes.h" />
     <ClInclude Include="..\..\src\video\windows\SDL_windowsmouse.h" />
     <ClInclude Include="..\..\src\video\windows\SDL_windowsopengl.h" />
@@ -398,6 +400,7 @@
     <ClCompile Include="..\..\src\haptic\SDL_haptic.c" />
     <ClCompile Include="..\..\src\stdlib\SDL_iconv.c" />
     <ClCompile Include="..\..\src\joystick\SDL_joystick.c" />
+    <ClCompile Include="..\..\src\joystick\SDL_gamecontroller.c" />
     <ClCompile Include="..\..\src\events\SDL_keyboard.c" />
     <ClCompile Include="..\..\src\stdlib\SDL_malloc.c" />
     <ClCompile Include="..\..\src\audio\SDL_mixer.c" />
@@ -432,6 +435,7 @@
     <ClCompile Include="..\..\src\video\windows\SDL_windowsevents.c" />
     <ClCompile Include="..\..\src\video\windows\SDL_windowsframebuffer.c" />
     <ClCompile Include="..\..\src\video\windows\SDL_windowskeyboard.c" />
+    <ClCompile Include="..\..\src\video\windows\SDL_windowsmessagebox.c" />
     <ClCompile Include="..\..\src\video\windows\SDL_windowsmodes.c" />
     <ClCompile Include="..\..\src\video\windows\SDL_windowsmouse.c" />
     <ClCompile Include="..\..\src\video\windows\SDL_windowsopengl.c" />
