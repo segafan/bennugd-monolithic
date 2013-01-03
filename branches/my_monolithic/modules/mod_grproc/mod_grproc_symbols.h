@@ -70,7 +70,6 @@ char * __bgdexport( mod_grproc, modules_dependency )[] =
 extern char __bgdexport( mod_grproc, locals_def )[];
 extern DLVARFIXUP __bgdexport( mod_grproc, locals_fixup )[];
 extern DLVARFIXUP __bgdexport( mod_grproc, globals_fixup )[];
-extern void __bgdexport( mod_grproc, module_initialize )();
 extern void __bgdexport( mod_grproc, process_exec_hook )( INSTANCE * r );
 extern DLSYSFUNCS  __bgdexport( mod_grproc, functions_exports )[];
 extern char * __bgdexport( mod_grproc, modules_dependency )[];

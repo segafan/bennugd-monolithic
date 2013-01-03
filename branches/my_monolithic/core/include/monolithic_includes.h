@@ -258,7 +258,7 @@ extra_symbols symbol_list_runtime[] =
     { mod_dir_globals_fixup, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_dir
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_text
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_rand
-    { mod_grproc_globals_fixup, mod_grproc_locals_fixup, mod_grproc_module_initialize, NULL, NULL, NULL, mod_grproc_process_exec_hook, NULL }, //mod_grproc
+    { mod_grproc_globals_fixup, mod_grproc_locals_fixup, NULL, NULL, NULL, NULL, mod_grproc_process_exec_hook, NULL }, //mod_grproc
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_scroll
 #ifndef NO_LIBKEY
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_key
@@ -268,7 +268,7 @@ extra_symbols symbol_list_runtime[] =
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_path
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_effects
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_blendop
-    { mod_m7_globals_fixup, mod_m7_locals_fixup, mod_m7_module_initialize, NULL, NULL, NULL, NULL, NULL }, //mod_m7
+    { mod_m7_globals_fixup, mod_m7_locals_fixup, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_m7
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_wm
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sys
 #ifndef NO_MODMEM
