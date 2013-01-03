@@ -72,7 +72,7 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
 	-DWITH_GPL_CODE \
-        -O3
+    -O3
 
 LOCAL_SRC_FILES := \
 	../../../../core/bgdrtm/src/copy.c \
@@ -84,6 +84,7 @@ LOCAL_SRC_FILES := \
 	../../../../core/bgdrtm/src/strings.c \
 	../../../../core/bgdrtm/src/sysprocs.c \
 	../../../../core/bgdrtm/src/varspace_file.c \
+	../../../../core/bgdrtm/src/fmath.c \
 	../../../../core/common/debug.c \
 	../../../../core/common/files.c \
 	../../../../core/common/xctype.c \
@@ -162,6 +163,6 @@ LOCAL_SRC_FILES := \
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png
-LOCAL_STATIC_LIBRARIES += curl 
+LOCAL_STATIC_LIBRARIES += curl
 
 include $(BUILD_SHARED_LIBRARY)
