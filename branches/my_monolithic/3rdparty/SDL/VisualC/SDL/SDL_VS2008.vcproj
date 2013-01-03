@@ -412,6 +412,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\include\SDL_gamecontroller.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\include\SDL_gesture.h"
 				>
 			</File>
@@ -449,6 +453,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\SDL_main.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\SDL_messagebox.h"
 				>
 			</File>
 			<File
@@ -857,6 +865,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\..\src\joystick\SDL_gamecontroller.c"
+			>
+		</File>
+		<File
 			RelativePath="..\..\src\events\SDL_gesture.c"
 			>
 		</File>
@@ -1214,6 +1226,14 @@
 		</File>
 		<File
 			RelativePath="..\..\src\video\windows\SDL_windowskeyboard.h"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\video\windows\SDL_windowsmessagebox.c"
+			>
+		</File>
+		<File
+			RelativePath="..\..\src\video\windows\SDL_windowsmessagebox.h"
 			>
 		</File>
 		<File
