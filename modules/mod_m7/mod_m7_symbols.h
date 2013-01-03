@@ -69,13 +69,13 @@ DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[] =
     { "MODE7_START" , "IIIIIIII"    , TYPE_INT , 0 },
     { "MODE7_START" , "IIIIII"      , TYPE_INT , 0 },
     { "MODE7_STOP"  , "I"           , TYPE_INT , 0 },
-    
+
     { "START_MODE7" , "IIIIIIII"    , TYPE_INT , 0 },
     { "START_MODE7" , "IIIIII"      , TYPE_INT , 0 },
     { "STOP_MODE7"  , "I"           , TYPE_INT , 0 },
-    
+
     { NULL          , NULL          , 0        , NULL }
-    
+
 };
 
 /* --------------------------------------------------------------------------- */
@@ -93,7 +93,6 @@ extern char       __bgdexport( mod_m7, globals_def )[];
 extern char       __bgdexport( mod_m7, locals_def )[];
 extern DLVARFIXUP __bgdexport( mod_m7, globals_fixup )[];
 extern DLVARFIXUP __bgdexport( mod_m7, locals_fixup )[];
-extern void __bgdexport( mod_m7, module_initialize )();
 extern DLSYSFUNCS  __bgdexport( mod_m7, functions_exports )[];
 extern char * __bgdexport( mod_m7, modules_dependency )[];
 #endif
