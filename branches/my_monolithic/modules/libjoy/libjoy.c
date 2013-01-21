@@ -84,7 +84,11 @@ int libjoy_num( void )
 int libjoy_name( int joy )
 {
     int result;
+#if SDL_VERSION_ATLEAST(2,0,0)
+    result = string_new( SDL_JoystickNameForIndex( joy ) );
+#else
     result = string_new( SDL_JoystickName( joy ) );
+#endif
     string_use( result );
     return result;
 }
@@ -447,7 +451,7 @@ int libjoy_get_accel_specific( int joy, int * x, int * y, int * z )
     if ( joy == 0 )
     {
         KIONIX_ACCEL_read_LPF_g( x, y, z );
-	    return 0;
+        return 0;
     }
 #endif
     return -1;
