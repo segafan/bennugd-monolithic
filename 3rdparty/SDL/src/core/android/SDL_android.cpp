@@ -31,6 +31,7 @@
 
 extern "C" {
 #include "../../events/SDL_events_c.h"
+#include "../../joystick/android/SDL_androidjoystick.h"
 #include "../../video/android/SDL_androidkeyboard.h"
 #include "../../video/android/SDL_androidtouch.h"
 #include "../../video/android/SDL_androidvideo.h"
@@ -146,6 +147,27 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeResize(
                                     jint width, jint height, jint format)
 {
     Android_SetScreenResolution(width, height, format);
+}
+
+// Paddown
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadDown(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadDown(padId, keycode);
+}
+
+// Padup
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadUp(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadUp(padId, keycode);
+}
+
+// Joysticks
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativeJoy(
+                                    JNIEnv* env, jclass jcls, jint joyId, jint action, jfloat x, jfloat y)
+{
+    Android_OnJoy(joyId, action, x, y);
 }
 
 // Keydown
