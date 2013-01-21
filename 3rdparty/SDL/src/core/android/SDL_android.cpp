@@ -57,6 +57,7 @@ extern void Android_RunAudioThread();
 *******************************************************************************/
 #include <jni.h>
 #include <android/log.h>
+#include <android/sensor.h>
 
 
 /*******************************************************************************
@@ -121,7 +122,7 @@ extern "C" void SDL_Android_Init(JNIEnv* mEnv, jclass cls)
                                 "createGLContext","(II[I)Z");
     midFlipBuffers = mEnv->GetStaticMethodID(mActivityClass,
                                 "flipBuffers","()V");
-    midAudioInit = mEnv->GetStaticMethodID(mActivityClass, 
+    midAudioInit = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioInit", "(IZZI)V");
     midAudioWriteShortBuffer = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioWriteShortBuffer", "([S)V");
@@ -184,7 +185,7 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
 // Quit
 extern "C" void Java_org_libsdl_app_SDLActivity_nativeQuit(
                                     JNIEnv* env, jclass cls)
-{    
+{
     // Inject a SDL_QUIT event
     SDL_SendQuit();
 }
@@ -332,7 +333,7 @@ extern "C" SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion
 extern "C" void Android_JNI_SwapWindow()
 {
     JNIEnv *mEnv = Android_JNI_GetEnv();
-    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers); 
+    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers);
 }
 
 extern "C" void Android_JNI_SetActivityTitle(const char *title)
@@ -442,7 +443,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     }
     Android_JNI_SetupThread();
 
-    
+
     __android_log_print(ANDROID_LOG_VERBOSE, "SDL", "SDL audio: opening device");
     audioBuffer16Bit = is16Bit;
     audioBufferStereo = channelCount > 1;
@@ -451,7 +452,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
 
     /* Allocating the audio buffer from the Java side and passing it as the return value for audioInit no longer works on
      * Android >= 4.2 due to a "stale global reference" error. So now we allocate this buffer directly from this side. */
-    
+
     if (is16Bit) {
         jshortArray audioBufferLocal = env->NewShortArray(desiredBufferFrames * (audioBufferStereo ? 2 : 1));
         if (audioBufferLocal) {
@@ -483,7 +484,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     if (audioBufferStereo) {
         audioBufferFrames /= 2;
     }
- 
+
     return audioBufferFrames;
 }
 
@@ -512,7 +513,7 @@ extern "C" void Android_JNI_CloseAudioDevice()
     int status;
     JNIEnv *env = Android_JNI_GetEnv();
 
-    env->CallStaticVoidMethod(mActivityClass, midAudioQuit); 
+    env->CallStaticVoidMethod(mActivityClass, midAudioQuit);
 
     if (audioBuffer) {
         env->DeleteGlobalRef(audioBuffer);
@@ -589,7 +590,7 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
     mid = mEnv->GetStaticMethodID(mActivityClass,
             "getContext","()Landroid/content/Context;");
     context = mEnv->CallStaticObjectMethod(mActivityClass, mid);
-    
+
 
     // assetManager = context.getAssets();
     mid = mEnv->GetMethodID(mEnv->GetObjectClass(context),
@@ -614,7 +615,7 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
 
     mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream), "getDeclaredLength", "()J");
     ctx->hidden.androidio.size = mEnv->CallLongMethod(inputStream, mid);
-    
+
     if (Android_JNI_ExceptionOccurred()) {
         goto fallback;
     }
@@ -775,7 +776,7 @@ extern "C" size_t Android_JNI_FileRead(SDL_RWops* ctx, void* buffer,
             ctx->hidden.androidio.position += result;
         }
         return bytesRead / size;
-    }    
+    }
 }
 
 extern "C" size_t Android_JNI_FileWrite(SDL_RWops* ctx, const void* buffer,
@@ -920,7 +921,7 @@ extern "C" Sint64 Android_JNI_FileSeek(SDL_RWops* ctx, Sint64 offset, int whence
     }
 
     return ctx->hidden.androidio.position;
-    
+
 }
 
 extern "C" int Android_JNI_FileClose(SDL_RWops* ctx)
@@ -1094,6 +1095,67 @@ extern "C" int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery
     env->DeleteLocalRef(intent);
 
     return 0;
+}
+
+// return the total number of plugged in joysticks
+extern "C" int Android_JNI_GetNumJoysticks()
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
+    if (!mid) {
+        return -1;
+    }
+        return env->CallIntMethod(mActivityClass, mid);
+}
+
+// Return the name of joystick number "index"
+extern "C" char* Android_JNI_GetJoystickName(int index)
+{
+        JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return SDL_strdup("");
+    }
+
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
+        if (!mid) {
+                return SDL_strdup("");
+        }
+        jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, index));
+        const char* utf = env->GetStringUTFChars(string, 0);
+        if (!utf) {
+                return SDL_strdup("");
+        }
+
+        char* text = SDL_strdup(utf);
+        env->ReleaseStringUTFChars(string, utf);
+        return text;
+}
+
+// return the number of axes in the given joystick
+extern "C" int Android_JNI_GetJoystickAxes(int index)
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickAxes", "(I)I");
+    if (!mid) {
+        return -1;
+    }
+        return env->CallIntMethod(mActivityClass, mid, index);
+}
+
+// Return the name of the default accelerometer
+// This is much easier to be done with NDK than with JNI
+extern "C" char* Android_GetAccelName()
+{
+        ASensorManager* mSensorManager = ASensorManager_getInstance();
+        ASensor const* mAccelerometer = ASensorManager_getDefaultSensor(mSensorManager, ASENSOR_TYPE_ACCELEROMETER);
+
+        return SDL_strdup(ASensor_getName(mAccelerometer));
 }
 
 // sends message to be handled on the UI event dispatch thread
