@@ -37,6 +37,8 @@ extern "C" {
 
 #include <android/log.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <unistd.h>
 #define LOG_TAG "SDL_android"
 //#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 //#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
@@ -119,8 +121,8 @@ extern "C" void SDL_Android_Init(JNIEnv* mEnv, jclass cls)
                                 "createGLContext","(II[I)Z");
     midFlipBuffers = mEnv->GetStaticMethodID(mActivityClass,
                                 "flipBuffers","()V");
-    midAudioInit = mEnv->GetStaticMethodID(mActivityClass,
-                                "audioInit", "(IZZI)Ljava/lang/Object;");
+    midAudioInit = mEnv->GetStaticMethodID(mActivityClass, 
+                                "audioInit", "(IZZI)V");
     midAudioWriteShortBuffer = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioWriteShortBuffer", "([S)V");
     midAudioWriteByteBuffer = mEnv->GetStaticMethodID(mActivityClass,
@@ -182,7 +184,7 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
 // Quit
 extern "C" void Java_org_libsdl_app_SDLActivity_nativeQuit(
                                     JNIEnv* env, jclass cls)
-{
+{    
     // Inject a SDL_QUIT event
     SDL_SendQuit();
 }
@@ -330,7 +332,7 @@ extern "C" SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion
 extern "C" void Android_JNI_SwapWindow()
 {
     JNIEnv *mEnv = Android_JNI_GetEnv();
-    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers);
+    mEnv->CallStaticVoidMethod(mActivityClass, midFlipBuffers); 
 }
 
 extern "C" void Android_JNI_SetActivityTitle(const char *title)
@@ -440,18 +442,35 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     }
     Android_JNI_SetupThread();
 
-
+    
     __android_log_print(ANDROID_LOG_VERBOSE, "SDL", "SDL audio: opening device");
     audioBuffer16Bit = is16Bit;
     audioBufferStereo = channelCount > 1;
 
-    audioBuffer = env->CallStaticObjectMethod(mActivityClass, midAudioInit, sampleRate, audioBuffer16Bit, audioBufferStereo, desiredBufferFrames);
+    env->CallStaticObjectMethod(mActivityClass, midAudioInit, sampleRate, audioBuffer16Bit, audioBufferStereo, desiredBufferFrames);
+
+    /* Allocating the audio buffer from the Java side and passing it as the return value for audioInit no longer works on
+     * Android >= 4.2 due to a "stale global reference" error. So now we allocate this buffer directly from this side. */
+    
+    if (is16Bit) {
+        jshortArray audioBufferLocal = env->NewShortArray(desiredBufferFrames * (audioBufferStereo ? 2 : 1));
+        if (audioBufferLocal) {
+            audioBuffer = env->NewGlobalRef(audioBufferLocal);
+            env->DeleteLocalRef(audioBufferLocal);
+        }
+    }
+    else {
+        jbyteArray audioBufferLocal = env->NewByteArray(desiredBufferFrames * (audioBufferStereo ? 2 : 1));
+        if (audioBufferLocal) {
+            audioBuffer = env->NewGlobalRef(audioBufferLocal);
+            env->DeleteLocalRef(audioBufferLocal);
+        }
+    }
 
     if (audioBuffer == NULL) {
-        __android_log_print(ANDROID_LOG_WARN, "SDL", "SDL audio: didn't get back a good audio buffer!");
+        __android_log_print(ANDROID_LOG_WARN, "SDL", "SDL audio: could not allocate an audio buffer!");
         return 0;
     }
-    audioBuffer = env->NewGlobalRef(audioBuffer);
 
     jboolean isCopy = JNI_FALSE;
     if (audioBuffer16Bit) {
@@ -464,7 +483,7 @@ extern "C" int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int chan
     if (audioBufferStereo) {
         audioBufferFrames /= 2;
     }
-
+ 
     return audioBufferFrames;
 }
 
@@ -493,7 +512,7 @@ extern "C" void Android_JNI_CloseAudioDevice()
     int status;
     JNIEnv *env = Android_JNI_GetEnv();
 
-    env->CallStaticVoidMethod(mActivityClass, midAudioQuit);
+    env->CallStaticVoidMethod(mActivityClass, midAudioQuit); 
 
     if (audioBuffer) {
         env->DeleteGlobalRef(audioBuffer);
@@ -554,6 +573,9 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
     jclass channels;
     jobject readableByteChannel;
     jstring fileNameJString;
+    jobject fd;
+    jclass fdCls;
+    jfieldID descriptor;
 
     JNIEnv *mEnv = Android_JNI_GetEnv();
     if (!refs.init(mEnv)) {
@@ -561,61 +583,100 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
     }
 
     fileNameJString = (jstring)ctx->hidden.androidio.fileNameRef;
+    ctx->hidden.androidio.position = 0;
 
     // context = SDLActivity.getContext();
     mid = mEnv->GetStaticMethodID(mActivityClass,
             "getContext","()Landroid/content/Context;");
     context = mEnv->CallStaticObjectMethod(mActivityClass, mid);
+    
 
     // assetManager = context.getAssets();
     mid = mEnv->GetMethodID(mEnv->GetObjectClass(context),
             "getAssets", "()Landroid/content/res/AssetManager;");
     assetManager = mEnv->CallObjectMethod(context, mid);
 
-    // inputStream = assetManager.open(<filename>);
-    mid = mEnv->GetMethodID(mEnv->GetObjectClass(assetManager),
-            "open", "(Ljava/lang/String;)Ljava/io/InputStream;");
+    /* First let's try opening the file to obtain an AssetFileDescriptor.
+    * This method reads the files directly from the APKs using standard *nix calls
+    */
+    mid = mEnv->GetMethodID(mEnv->GetObjectClass(assetManager), "openFd", "(Ljava/lang/String;)Landroid/content/res/AssetFileDescriptor;");
     inputStream = mEnv->CallObjectMethod(assetManager, mid, fileNameJString);
     if (Android_JNI_ExceptionOccurred()) {
-        goto failure;
+        goto fallback;
     }
 
-    ctx->hidden.androidio.inputStreamRef = mEnv->NewGlobalRef(inputStream);
-
-    // Despite all the visible documentation on [Asset]InputStream claiming
-    // that the .available() method is not guaranteed to return the entire file
-    // size, comments in <sdk>/samples/<ver>/ApiDemos/src/com/example/ ...
-    // android/apis/content/ReadAsset.java imply that Android's
-    // AssetInputStream.available() /will/ always return the total file size
-
-    // size = inputStream.available();
-    mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
-            "available", "()I");
-    ctx->hidden.androidio.size = mEnv->CallIntMethod(inputStream, mid);
+    ctx->hidden.androidio.assetFileDescriptorRef = mEnv->NewGlobalRef(inputStream);
+    mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream), "getStartOffset", "()J");
+    ctx->hidden.androidio.offset = mEnv->CallLongMethod(inputStream, mid);
     if (Android_JNI_ExceptionOccurred()) {
-        goto failure;
+        goto fallback;
     }
 
-    // readableByteChannel = Channels.newChannel(inputStream);
-    channels = mEnv->FindClass("java/nio/channels/Channels");
-    mid = mEnv->GetStaticMethodID(channels,
-            "newChannel",
-            "(Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;");
-    readableByteChannel = mEnv->CallStaticObjectMethod(
-            channels, mid, inputStream);
+    mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream), "getDeclaredLength", "()J");
+    ctx->hidden.androidio.size = mEnv->CallLongMethod(inputStream, mid);
+    
     if (Android_JNI_ExceptionOccurred()) {
-        goto failure;
+        goto fallback;
     }
 
-    ctx->hidden.androidio.readableByteChannelRef =
-        mEnv->NewGlobalRef(readableByteChannel);
+    mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream), "getFileDescriptor", "()Ljava/io/FileDescriptor;");
+    fd = mEnv->CallObjectMethod(inputStream, mid);
+    fdCls = mEnv->GetObjectClass(fd);
+    descriptor = mEnv->GetFieldID(fdCls, "descriptor", "I");
+    ctx->hidden.androidio.fd = mEnv->GetIntField(fd, descriptor);
 
-    // Store .read id for reading purposes
-    mid = mEnv->GetMethodID(mEnv->GetObjectClass(readableByteChannel),
-            "read", "(Ljava/nio/ByteBuffer;)I");
-    ctx->hidden.androidio.readMethod = mid;
+    // Seek to the correct offset in the file.
+    lseek(ctx->hidden.androidio.fd, (off_t)ctx->hidden.androidio.offset, SEEK_SET);
 
-    ctx->hidden.androidio.position = 0;
+    if (false) {
+fallback:
+        __android_log_print(ANDROID_LOG_DEBUG, "SDL", "Falling back to legacy InputStream method for opening file");
+        /* Try the old method using InputStream */
+        ctx->hidden.androidio.assetFileDescriptorRef = NULL;
+
+        // inputStream = assetManager.open(<filename>);
+        mid = mEnv->GetMethodID(mEnv->GetObjectClass(assetManager),
+                "open", "(Ljava/lang/String;I)Ljava/io/InputStream;");
+        inputStream = mEnv->CallObjectMethod(assetManager, mid, fileNameJString, 1 /*ACCESS_RANDOM*/);
+        if (Android_JNI_ExceptionOccurred()) {
+            goto failure;
+        }
+
+        ctx->hidden.androidio.inputStreamRef = mEnv->NewGlobalRef(inputStream);
+
+        // Despite all the visible documentation on [Asset]InputStream claiming
+        // that the .available() method is not guaranteed to return the entire file
+        // size, comments in <sdk>/samples/<ver>/ApiDemos/src/com/example/ ...
+        // android/apis/content/ReadAsset.java imply that Android's
+        // AssetInputStream.available() /will/ always return the total file size
+
+        // size = inputStream.available();
+        mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
+                "available", "()I");
+        ctx->hidden.androidio.size = (long)mEnv->CallIntMethod(inputStream, mid);
+        if (Android_JNI_ExceptionOccurred()) {
+            goto failure;
+        }
+
+        // readableByteChannel = Channels.newChannel(inputStream);
+        channels = mEnv->FindClass("java/nio/channels/Channels");
+        mid = mEnv->GetStaticMethodID(channels,
+                "newChannel",
+                "(Ljava/io/InputStream;)Ljava/nio/channels/ReadableByteChannel;");
+        readableByteChannel = mEnv->CallStaticObjectMethod(
+                channels, mid, inputStream);
+        if (Android_JNI_ExceptionOccurred()) {
+            goto failure;
+        }
+
+        ctx->hidden.androidio.readableByteChannelRef =
+            mEnv->NewGlobalRef(readableByteChannel);
+
+        // Store .read id for reading purposes
+        mid = mEnv->GetMethodID(mEnv->GetObjectClass(readableByteChannel),
+                "read", "(Ljava/nio/ByteBuffer;)I");
+        ctx->hidden.androidio.readMethod = mid;
+    }
 
     if (false) {
 failure:
@@ -629,6 +690,10 @@ failure:
 
         if(ctx->hidden.androidio.readableByteChannelRef != NULL) {
             mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.readableByteChannelRef);
+        }
+
+        if(ctx->hidden.androidio.assetFileDescriptorRef != NULL) {
+            mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.assetFileDescriptorRef);
         }
 
     }
@@ -655,6 +720,7 @@ extern "C" int Android_JNI_FileOpen(SDL_RWops* ctx,
     ctx->hidden.androidio.inputStreamRef = NULL;
     ctx->hidden.androidio.readableByteChannelRef = NULL;
     ctx->hidden.androidio.readMethod = NULL;
+    ctx->hidden.androidio.assetFileDescriptorRef = NULL;
 
     return Android_JNI_FileOpen(ctx);
 }
@@ -663,40 +729,53 @@ extern "C" size_t Android_JNI_FileRead(SDL_RWops* ctx, void* buffer,
         size_t size, size_t maxnum)
 {
     LocalReferenceHolder refs(__FUNCTION__);
-    jlong bytesRemaining = (jlong) (size * maxnum);
-    jlong bytesMax = (jlong) (ctx->hidden.androidio.size -  ctx->hidden.androidio.position);
-    int bytesRead = 0;
 
-    /* Don't read more bytes than those that remain in the file, otherwise we get an exception */
-    if (bytesRemaining >  bytesMax) bytesRemaining = bytesMax;
+    if (ctx->hidden.androidio.assetFileDescriptorRef) {
+        size_t bytesMax = size * maxnum;
+        if (ctx->hidden.androidio.size != -1 /*UNKNOWN_LENGTH*/ && ctx->hidden.androidio.position + bytesMax > ctx->hidden.androidio.size) {
+            bytesMax = ctx->hidden.androidio.size - ctx->hidden.androidio.position;
+        }
+        size_t result = read(ctx->hidden.androidio.fd, buffer, bytesMax );
+        if (result > 0) {
+            ctx->hidden.androidio.position += result;
+            return result / size;
+        }
+        return 0;
+    } else {
+        jlong bytesRemaining = (jlong) (size * maxnum);
+        jlong bytesMax = (jlong) (ctx->hidden.androidio.size -  ctx->hidden.androidio.position);
+        int bytesRead = 0;
 
-    JNIEnv *mEnv = Android_JNI_GetEnv();
-    if (!refs.init(mEnv)) {
-        return -1;
-    }
+        /* Don't read more bytes than those that remain in the file, otherwise we get an exception */
+        if (bytesRemaining >  bytesMax) bytesRemaining = bytesMax;
 
-    jobject readableByteChannel = (jobject)ctx->hidden.androidio.readableByteChannelRef;
-    jmethodID readMethod = (jmethodID)ctx->hidden.androidio.readMethod;
-    jobject byteBuffer = mEnv->NewDirectByteBuffer(buffer, bytesRemaining);
-
-    while (bytesRemaining > 0) {
-        // result = readableByteChannel.read(...);
-        int result = mEnv->CallIntMethod(readableByteChannel, readMethod, byteBuffer);
-
-        if (Android_JNI_ExceptionOccurred()) {
-            return 0;
+        JNIEnv *mEnv = Android_JNI_GetEnv();
+        if (!refs.init(mEnv)) {
+            return -1;
         }
 
-        if (result < 0) {
-            break;
+        jobject readableByteChannel = (jobject)ctx->hidden.androidio.readableByteChannelRef;
+        jmethodID readMethod = (jmethodID)ctx->hidden.androidio.readMethod;
+        jobject byteBuffer = mEnv->NewDirectByteBuffer(buffer, bytesRemaining);
+
+        while (bytesRemaining > 0) {
+            // result = readableByteChannel.read(...);
+            int result = mEnv->CallIntMethod(readableByteChannel, readMethod, byteBuffer);
+
+            if (Android_JNI_ExceptionOccurred()) {
+                return 0;
+            }
+
+            if (result < 0) {
+                break;
+            }
+
+            bytesRemaining -= result;
+            bytesRead += result;
+            ctx->hidden.androidio.position += result;
         }
-
-        bytesRemaining -= result;
-        bytesRead += result;
-        ctx->hidden.androidio.position += result;
-    }
-
-    return bytesRead / size;
+        return bytesRead / size;
+    }    
 }
 
 extern "C" size_t Android_JNI_FileWrite(SDL_RWops* ctx, const void* buffer,
@@ -722,16 +801,28 @@ static int Android_JNI_FileClose(SDL_RWops* ctx, bool release)
             mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.fileNameRef);
         }
 
-        jobject inputStream = (jobject)ctx->hidden.androidio.inputStreamRef;
+        if (ctx->hidden.androidio.assetFileDescriptorRef) {
+            jobject inputStream = (jobject)ctx->hidden.androidio.assetFileDescriptorRef;
+            jmethodID mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
+                    "close", "()V");
+            mEnv->CallVoidMethod(inputStream, mid);
+            mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.assetFileDescriptorRef);
+            if (Android_JNI_ExceptionOccurred()) {
+                result = -1;
+            }
+        }
+        else {
+            jobject inputStream = (jobject)ctx->hidden.androidio.inputStreamRef;
 
-        // inputStream.close();
-        jmethodID mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
-                "close", "()V");
-        mEnv->CallVoidMethod(inputStream, mid);
-        mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.inputStreamRef);
-        mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.readableByteChannelRef);
-        if (Android_JNI_ExceptionOccurred()) {
-            result = -1;
+            // inputStream.close();
+            jmethodID mid = mEnv->GetMethodID(mEnv->GetObjectClass(inputStream),
+                    "close", "()V");
+            mEnv->CallVoidMethod(inputStream, mid);
+            mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.inputStreamRef);
+            mEnv->DeleteGlobalRef((jobject)ctx->hidden.androidio.readableByteChannelRef);
+            if (Android_JNI_ExceptionOccurred()) {
+                result = -1;
+            }
         }
 
         if (release) {
@@ -750,60 +841,86 @@ extern "C" Sint64 Android_JNI_FileSize(SDL_RWops* ctx)
 
 extern "C" Sint64 Android_JNI_FileSeek(SDL_RWops* ctx, Sint64 offset, int whence)
 {
-    Sint64 newPosition;
-
-    switch (whence) {
-        case RW_SEEK_SET:
-            newPosition = offset;
-            break;
-        case RW_SEEK_CUR:
-            newPosition = ctx->hidden.androidio.position + offset;
-            break;
-        case RW_SEEK_END:
-            newPosition = ctx->hidden.androidio.size + offset;
-            break;
-        default:
-            SDL_SetError("Unknown value for 'whence'");
-            return -1;
-    }
-
-    /* Validate the new position */
-    if (newPosition < 0) {
-        SDL_Error(SDL_EFSEEK);
-        return -1;
-    }
-    if (newPosition > ctx->hidden.androidio.size) {
-        newPosition = ctx->hidden.androidio.size;
-    }
-
-    Sint64 movement = newPosition - ctx->hidden.androidio.position;
-    if (movement > 0) {
-        unsigned char buffer[4096];
-
-        // The easy case where we're seeking forwards
-        while (movement > 0) {
-            Sint64 amount = sizeof (buffer);
-            if (amount > movement) {
-                amount = movement;
-            }
-            size_t result = Android_JNI_FileRead(ctx, buffer, 1, amount);
-            if (result <= 0) {
-                // Failed to read/skip the required amount, so fail
+    if (ctx->hidden.androidio.assetFileDescriptorRef) {
+        switch (whence) {
+            case RW_SEEK_SET:
+                if (ctx->hidden.androidio.size != -1 /*UNKNOWN_LENGTH*/ && offset > ctx->hidden.androidio.size) offset = ctx->hidden.androidio.size;
+                offset += ctx->hidden.androidio.offset;
+                break;
+            case RW_SEEK_CUR:
+                offset += ctx->hidden.androidio.position;
+                if (ctx->hidden.androidio.size != -1 /*UNKNOWN_LENGTH*/ && offset > ctx->hidden.androidio.size) offset = ctx->hidden.androidio.size;
+                offset += ctx->hidden.androidio.offset;
+                break;
+            case RW_SEEK_END:
+                offset = ctx->hidden.androidio.offset + ctx->hidden.androidio.size + offset;
+                break;
+            default:
+                SDL_SetError("Unknown value for 'whence'");
                 return -1;
-            }
+        }
+        whence = SEEK_SET;
 
-            movement -= result;
+        off_t ret = lseek(ctx->hidden.androidio.fd, (off_t)offset, SEEK_SET);
+        if (ret == -1) return -1;
+        ctx->hidden.androidio.position = ret - ctx->hidden.androidio.offset;
+    } else {
+        Sint64 newPosition;
+
+        switch (whence) {
+            case RW_SEEK_SET:
+                newPosition = offset;
+                break;
+            case RW_SEEK_CUR:
+                newPosition = ctx->hidden.androidio.position + offset;
+                break;
+            case RW_SEEK_END:
+                newPosition = ctx->hidden.androidio.size + offset;
+                break;
+            default:
+                SDL_SetError("Unknown value for 'whence'");
+                return -1;
         }
 
-    } else if (movement < 0) {
-        // We can't seek backwards so we have to reopen the file and seek
-        // forwards which obviously isn't very efficient
-        Android_JNI_FileClose(ctx, false);
-        Android_JNI_FileOpen(ctx);
-        Android_JNI_FileSeek(ctx, newPosition, RW_SEEK_SET);
+        /* Validate the new position */
+        if (newPosition < 0) {
+            SDL_Error(SDL_EFSEEK);
+            return -1;
+        }
+        if (newPosition > ctx->hidden.androidio.size) {
+            newPosition = ctx->hidden.androidio.size;
+        }
+
+        Sint64 movement = newPosition - ctx->hidden.androidio.position;
+        if (movement > 0) {
+            unsigned char buffer[4096];
+
+            // The easy case where we're seeking forwards
+            while (movement > 0) {
+                Sint64 amount = sizeof (buffer);
+                if (amount > movement) {
+                    amount = movement;
+                }
+                size_t result = Android_JNI_FileRead(ctx, buffer, 1, amount);
+                if (result <= 0) {
+                    // Failed to read/skip the required amount, so fail
+                    return -1;
+                }
+
+                movement -= result;
+            }
+
+        } else if (movement < 0) {
+            // We can't seek backwards so we have to reopen the file and seek
+            // forwards which obviously isn't very efficient
+            Android_JNI_FileClose(ctx, false);
+            Android_JNI_FileOpen(ctx);
+            Android_JNI_FileSeek(ctx, newPosition, RW_SEEK_SET);
+        }
     }
 
     return ctx->hidden.androidio.position;
+    
 }
 
 extern "C" int Android_JNI_FileClose(SDL_RWops* ctx)
