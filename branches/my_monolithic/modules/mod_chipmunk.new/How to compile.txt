@@ -1,0 +1,3 @@
+Use CP_USE_DOUBLES=0 to compile libchipmunk and mod_chipmunk or your programs will have memory errors.
+
+Compile as always :)
