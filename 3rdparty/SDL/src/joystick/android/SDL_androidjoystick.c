@@ -63,17 +63,15 @@ int
 SDL_SYS_JoystickInit(void)
 {
     int i = 0;
-    // The latest entry is for the accelerometer
     // TODO: handle the case where SYS_numjoysticks > MAX_JOYSTICKS
-    SYS_numjoysticks = Android_JNI_GetNumJoysticks()+1;
+    SYS_numjoysticks = Android_JNI_GetNumJoysticks();
     SDL_memset(SYS_JoystickNames, 0, (sizeof SYS_JoystickNames));
     SDL_memset(SYS_Joysticks, 0, (sizeof SYS_Joysticks));
 
-    for (i = 0; i < (SYS_numjoysticks-1); i++)
+    for (i = 0; i < (SYS_numjoysticks); i++)
     {
         SYS_JoystickNames[i] = Android_JNI_GetJoystickName(i);
     }
-    SYS_JoystickNames[i] = Android_GetAccelName();
 
     return (SYS_numjoysticks);
 }
@@ -113,8 +111,7 @@ SDL_JoystickID SDL_SYS_GetInstanceIdOfDeviceIndex(int device_index)
 int
 SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
 {
-    // Handle the accelerometer separately
-    if( device_index < (SYS_numjoysticks-1) )
+    if( device_index < SYS_numjoysticks )
     {
         // TODO: How to get the rest of the info??
         // 36 is the maximum number of handled buttons
@@ -122,13 +119,6 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
         joystick->nhats = 0;
         joystick->nballs = 0;
         joystick->naxes = Android_JNI_GetJoystickAxes(device_index);
-    }
-    else if( device_index == (SYS_numjoysticks-1) )
-    {
-        joystick->nbuttons = 0;
-        joystick->nhats = 0;
-        joystick->nballs = 0;
-        joystick->naxes = 3;
     }
     else
     {
@@ -150,21 +140,6 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
 void
 SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 {
-    int i;
-    Sint16 value;
-    float values[3];
-
-    if( joystick->instance_id == (SYS_numjoysticks-1) )
-    {
-        if (Android_JNI_GetAccelerometerValues(values))
-        {
-            for ( i = 0; i < 3; i++ )
-            {
-                value = (Sint16)(values[i] * 32767.0f);
-                SDL_PrivateJoystickAxis(joystick, i, value);
-            }
-        }
-    }
 }
 
 /* Function to determine is this joystick is attached to the system right now */
