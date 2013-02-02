@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012 Joseba García Echebarria. All rights reserved.
+ *  Copyright (c) 2011-2013 Joseba García Echebarria. All rights reserved.
  *
  *  This software is provided 'as-is', without any express or implied
  *  warranty. In no event will the authors be held liable for any damages
@@ -149,7 +149,7 @@ DLCONSTANT  __bgdexport( mod_curl, constants_def )[] = {
 // Find the first free curl_info index, return numeric index
 int findindex() {
     int i=0;
-    
+
     for (i=0; i<MAX_DOWNLOADS; i++) {
         if (download_info[i].used == 0) {
             // Initialize values, just in case they haven't been already
@@ -170,18 +170,18 @@ WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
     size_t realsize = size * nmemb;
     struct MemoryStruct *mem = (struct MemoryStruct *)userp;
-    
+
     mem->memory = realloc(mem->memory, mem->size + realsize + 1);
     if (mem->memory == NULL) {
-        /* out of memory! */ 
+        /* out of memory! */
         printf("not enough memory (realloc returned NULL)\n");
         exit(EXIT_FAILURE);
     }
-    
+
     memcpy(&(mem->memory[mem->size]), contents, realsize);
     mem->size += realsize;
     mem->memory[mem->size] = 0;
-    
+
     return realsize;
 }
 
@@ -224,17 +224,17 @@ static int bgd_curl_formadd(INSTANCE * my, int * params) {
 
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     // Actually perform curl_formadd
     retval = curl_formadd(&download_info[params[0]].formpost,
                  &download_info[params[0]].lastptr,
                  params[1], string_get(params[2]),
                  params[3], string_get(params[4]),
                  CURLFORM_END);
-    
+
     string_discard(params[2]);
     string_discard(params[4]);
-    
+
     return retval;
 }
 
@@ -242,23 +242,23 @@ static int bgd_curl_formadd(INSTANCE * my, int * params) {
 static int bgd_curl_formfree(INSTANCE * my, int * params) {
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     // Actually perform curl_formfree
     curl_formfree(download_info[params[0]].formpost);
-    
+
     return 0;
 }
 
 // Maps curl_easy_init
 static int bgd_curl_easy_init(INSTANCE * my, int * params) {
     int i;
-    
+
     // Get the index of the connection
     if( (i = findindex()) == -1)
         return -1;
-    
+
     download_info[i].curl = curl_easy_init();
-    
+
     if (download_info[i].curl == NULL)
         return -1;
 
@@ -269,9 +269,9 @@ static int bgd_curl_easy_init(INSTANCE * my, int * params) {
 static int bgd_curl_easy_cleanup(INSTANCE * my, int * params) {
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     download_info[params[0]].used = 0;
-    
+
     curl_easy_cleanup(download_info[params[0]].curl);
 
     return 0;
@@ -281,9 +281,9 @@ static int bgd_curl_easy_cleanup(INSTANCE * my, int * params) {
 static int bgd_curl_easy_setopt(INSTANCE * my, int * params) {
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     CURLcode retval;
-    
+
     // Actually perform curl_easy_setopt
     switch (params[1]) {
         case CURLOPT_HTTPPOST:
@@ -298,7 +298,7 @@ static int bgd_curl_easy_setopt(INSTANCE * my, int * params) {
                                       params[2]);
             break;
     }
-    
+
     return (int)retval;
 }
 
@@ -306,9 +306,9 @@ static int bgd_curl_easy_setopt(INSTANCE * my, int * params) {
 static int bgd_curl_easy_setopt2(INSTANCE * my, int * params) {
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     CURLcode retval;
-    
+
     // Actually perform curl_easy_setopt
     switch (params[1]) {
             // Handle some special cases
@@ -318,12 +318,12 @@ static int bgd_curl_easy_setopt2(INSTANCE * my, int * params) {
             string_discard(params[2]);
             if(download_info[params[0]].outfd == NULL)
                 return -1;
-            
+
             retval = curl_easy_setopt(download_info[params[0]].curl,
                                       CURLOPT_WRITEDATA,
                                       download_info[params[0]].outfd);
             break;
-            
+
         default:
             retval = curl_easy_setopt(download_info[params[0]].curl,
                                       params[1],
@@ -331,7 +331,7 @@ static int bgd_curl_easy_setopt2(INSTANCE * my, int * params) {
             string_discard(params[2]);
             break;
     }
-    
+
     return (int)retval;
 }
 
@@ -339,16 +339,16 @@ static int bgd_curl_easy_setopt2(INSTANCE * my, int * params) {
 static int bgd_curl_easy_setopt3(INSTANCE * my, int * params) {
     if(params[0] == -1 || params[0] > MAX_DOWNLOADS)
         return -1;
-    
+
     CURLcode retval;
-    
+
     // Actually perform curl_easy_setopt
     switch (params[1]) {
         // When called with an integer, download to a string
         case CURLOPT_WRITEDATA:
             // Initialization
             download_info[params[0]].chunk.memory = malloc(1);
-            
+
             // Set writefunction and writedata to the appropriate values
             curl_easy_setopt(download_info[params[0]].curl,
                              CURLOPT_WRITEFUNCTION,
@@ -363,7 +363,7 @@ static int bgd_curl_easy_setopt3(INSTANCE * my, int * params) {
             retval = -1;
             break;
     }
-    
+
     return (int)retval;
 }
 
@@ -371,12 +371,12 @@ static int bgd_curl_easy_setopt3(INSTANCE * my, int * params) {
 int curl_perform(int id) {
     if(download_info[id].curl == NULL)
         return -1;
-    
+
     int retval = 0;
-    
+
     // Perform download, this function won't quit until it's done
     retval = curl_easy_perform(download_info[id].curl);
-    
+
     // If downloading to a file, close its file descriptor
     if (download_info[id].outfd != NULL) {
         fclose(download_info[id].outfd);
@@ -389,7 +389,7 @@ int curl_perform(int id) {
         // Free used memory
         free(download_info[id].chunk.memory);
     }
-    
+
     return retval;
 }
 
@@ -397,13 +397,13 @@ int curl_perform(int id) {
 static int bgd_curl_easy_perform(INSTANCE * my, int * params) {
     bgdata *t = prep( params );
     t->fn = curl_perform;
-    
+
 #if SDL_VERSION_ATLEAST(2,0,0)
     SDL_CreateThread( bgDoLoad, "CURL perform thread", (void *)t );
 #else
     SDL_CreateThread( bgDoLoad, (void *)t );
 #endif
-    
+
     return 0;
 }
 
