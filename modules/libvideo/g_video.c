@@ -295,6 +295,8 @@ int gr_set_mode( int width, int height, int depth )
     int sdl_flags = 0;
     int surface_width = width;
     int surface_height = height;
+    int free_scale_screen = 1;
+    int free_screen       = 1;
     char * e;
 
     enable_scale = ( GLODWORD( libvideo, GRAPH_MODE ) & MODE_2XSCALE ) ? 1 : 0 ;
@@ -356,11 +358,33 @@ int gr_set_mode( int width, int height, int depth )
     {
         surface_width  = scale_resolution / 10000 ;
         surface_height = scale_resolution % 10000 ;
+
+        // Try to re-use surfaces, if possible
+        if ( scale_screen )
+        {
+            if( scale_scren->format->BitsPerPixel == depth && (
+             (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
+             (scale_screen->w == surface_height && scale_screen->h == surface_width &&
+             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            {
+                free_scale_screen == 0;
+            }
+        }
+        else
+        {
+            if( scren->format->BitsPerPixel == depth && (
+             (screen->w == surface_width && screen->h == surface_height) ||
+             (screen->w == surface_height && screen->h == surface_width &&
+             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            {
+                scale_screen = screen;
+                screen = NULL;
+                free_scale_screen = 0;
+            }
+        }
     }
     else
     {
-        scale_resolution = -1;
-
         if ( scale_mode != SCALE_NONE ) enable_scale = 1;
         if ( enable_scale && scale_mode == SCALE_NONE ) scale_mode = SCALE_SCALE2X;
 
@@ -371,6 +395,31 @@ int gr_set_mode( int width, int height, int depth )
 
             surface_width  *= 2;
             surface_height *= 2;
+        }
+
+        // Try to re-use surfaces, if possible
+        if ( scale_screen )
+        {
+            if( scale_scren->format->BitsPerPixel == depth && (
+             (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
+             (scale_screen->w == surface_height && scale_screen->h == surface_width &&
+             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            {
+                if ( screen ) SDL_FreeSurface( screen );
+                screen = scale_screen;
+                scale_screen = NULL;
+                free_screen = 0;
+            }
+        }
+        else
+        {
+            if( scren->format->BitsPerPixel == depth && (
+             (screen->w == surface_width && screen->h == surface_height) ||
+             (screen->w == surface_height && screen->h == surface_width &&
+             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            {
+                free_screen = 0;
+            }
         }
     }
 
@@ -391,12 +440,12 @@ int gr_set_mode( int width, int height, int depth )
 
     sdl_flags |= hardware_scr ? SDL_HWSURFACE : SDL_SWSURFACE;
 
-    if ( scale_screen )
+    if ( scale_screen && free_scale_screen )
     {
         SDL_FreeSurface( scale_screen );
         scale_screen = NULL;
     }
-    if ( screen )
+    if ( screen && free_screen )
     {
         SDL_FreeSurface( screen );
         screen = NULL;

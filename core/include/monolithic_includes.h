@@ -198,7 +198,6 @@ basic_symbols symbol_list[] =
 #ifndef NO_MODIMAGE
     { "image.fakelib"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
 #endif
-    //{ "mod_sqlite3.fakelib"        , NULL, mod_sqlite3_constants_def, mod_sqlite3_types_def, NULL, NULL, mod_sqlite3_functions_exports },
 #ifndef NO_MODCHIPMUNK
     { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency, mod_chipmunk_constants_def, mod_chipmunk_types_def, mod_chipmunk_globals_def, mod_chipmunk_locals_def, mod_chipmunk_functions_exports },
 #endif
@@ -286,7 +285,6 @@ extra_symbols symbol_list_runtime[] =
 #ifndef NO_MODIMAGE
     { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_image
 #endif
-    //{ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //mod_sqlite3
 #ifndef NO_MODCHIPMUNK
     { mod_chipmunk_globals_fixup, mod_chipmunk_locals_fixup, mod_chipmunk_module_initialize, mod_chipmunk_module_finalize, NULL, NULL, NULL, mod_chipmunk_handler_hooks }, //mod_chipmunk
 #endif
