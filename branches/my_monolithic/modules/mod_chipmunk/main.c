@@ -1069,6 +1069,22 @@ static int modActivate(INSTANCE * my, int * params)
     return 0;
 }
 
+static int modSleepWithGroup(INSTANCE * my, int * params)
+{
+    INSTANCE * b = instance_get( params[0] ) ;
+    INSTANCE * c = instance_get( params[1] ) ;
+    if (!cpBodyIsSleeping(LOCDWORD(mod_chipmunk, b,LOC_BODY)))
+        cpBodySleepWithGroup(LOCDWORD(mod_chipmunk, b,LOC_BODY),LOCDWORD(mod_chipmunk, c,LOC_BODY));
+    return 0;
+}
+
+static int modActivateStatic(INSTANCE * my, int * params)
+{
+    INSTANCE * b = instance_get( params[0] ) ;
+        cpBodyActivateStatic(LOCDWORD(mod_chipmunk, b,LOC_BODY),params[1]);
+    return 0;
+}
+
 
 static int modIsStatic(INSTANCE * my, int * params)
 {
@@ -2267,6 +2283,9 @@ DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
     {"EMULATE_WATER" , "P",   TYPE_INT, modChipmunkEmulateAgua},
 
     {"BBFORCIRCLE" , "FFF",   TYPE_INT, modcpBBNewCircle},
+
+    {"ACTIVATESTATIC" , "II",   TYPE_INT, modActivateStatic},
+    {"SLEEPWITHGROUP" , "II",   TYPE_INT, modSleepWithGroup },
 
 
     {0, 0, 0, 0}//TYPE_POINTER

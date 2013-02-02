@@ -13,6 +13,9 @@ import "mod_screen";
 import "mod_rand";
 import "mod_chipmunk";
 
+#define alto 700
+#define ancho 1280
+
 global
 	float u = 0.6;       //fricción para algunos cuerpos
 
@@ -21,24 +24,24 @@ private
 	press;               //Se usa en las pulsaciones de espacio
 
 Begin
-if (mode_is_ok(1280,800,32,MODE_FULLSCREEN ))            //Si el modo de video está soportado
+/*if (mode_is_ok(1280,800,32,MODE_FULLSCREEN ))            //Si el modo de video está soportado
 	set_mode(1280,800,32,MODE_FULLSCREEN );          //Lo define
 elseif (mode_is_ok(1280,800,32,0))
 	set_mode(1280,800,32);
 else
 exit("El modo de video no está soportado, intenta cambiarlo");
 end
-
+  */
+  set_mode(ancho,alto,32);
 	pelota=load_png("pelota.png");
 
-	gphysics.gravity_y=300;           //Define gravedad
-        gphysics.iterations=30;           //Aumenta el número de iteraciones para cada cuerpo, mejorando la simulación pero haciéndola más tardada. El número de iteraciones por frame será este valor multiplicado por phresolution, por lo general x3
-
-        //Estas funciones mejoran el rendimiento del motor, vésase la descripción de cada una en la ayuda para más información
-        gphysics.sleepTimeThreshold=0.5;
-        gphysics.collision_slop=0.5;
-//	SpaceResizeActiveHash( 30.0, 2999);
-//	SpaceResizeStaticHash( 30.0, 999);
+    gphysics.interval=1.0/25.0;                   //Velocidad en que el motor está actuando, normalmente se usa la inversa del valor de las imágenes por segundo
+    gphysics.SLEEPTIMETHRESHOLD=5;      //Time a group of bodies must remain idle in order to fall asleep
+    gphysics.bias_coef=0.3;
+    gphysics.gravity_Y=500;
+    gphysics.damping=1;
+    gphysics.collision_slop=0.5;
+    gphysics.iterations=30;
 
 	plano();               //Se pone el piso
 	creaPiramide();        //Se crea la pirámide de dominós
@@ -65,9 +68,9 @@ begin
 	lphysics.static=true;                        //Que sea un cuerpo estático (Nada lo mueve excepto tú con x o incr_x)
 	lphysics.ShapeType=TYPE_LINE;                //Le agrega un cuerpo tipo línea
 
-	graph=new_map(1200,20,32);
+	graph=new_map(ancho,20,32);
 	map_clear(file,graph,rgb(0,255,0));
-	x=640;	y=780;	z=15;
+	x=ancho/2;	y=alto-10;	z=15;
 	loop
 		frame;
 	end
@@ -78,24 +81,20 @@ process dominos(x,y,angle)
 begin
 	graph=new_map(6,40,32);
 	map_clear(file,graph,rgb(100,255,255));
-        priority=father.priority;
-
+    priority=father.priority;
 	lphysics.ShapeType=TYPE_box;      //Le crea un cuerpo poligonal, es el más caro computacionalmente hablando, pero es el más exacto para ajustarle una forma
 	lphysics.elasticity=0;                     //Define su elasticidad
 	lphysics.friction=u;                         //Define su coeficiente de fricción
-
-        forceCreateBody();                 //Se forza la creación del cuerpo
-
-        //Antes de llamar a getOptimalInertia hay que actualizar el cuerpo, ya sea forzando su creación (cuando éste aún no existe) o haciendo un frame(v) antes, con v igual a cualquier valor o sin v.
+    forceCreateBody();                 //Se forza la creación del cuerpo
+    //Antes de llamar a getOptimalInertia hay que actualizar el cuerpo, ya sea forzando su creación (cuando éste aún no existe) o haciendo un frame(v) antes, con v igual a cualquier valor o sin v.
 	lphysics.inertia=GETOPTIMALINERTIA(lphysics.ShapeType,lphysics.shape);
+    //sleep(id);      //sleeptimetreshold <>infinityf();
 	loop
 		frame;
 
 	end
 end
 
-#define reajuste 770
-#define n 9
 
 //Crea la pirámide, por se código bennu no comentaré nada
 function creaPiramide()
@@ -103,28 +102,16 @@ private
 cpVect offs,pos,aux;
 begin
 
-for(x=n; x>0; x--)
-		cpv(-x*60/2.0, (n - x)*52 +240,&offs);
-		for(y=x-1; y>=0; y--)
-                        cpvadd(cpv(y*60, -220,aux), &offs,&pos);
-			dominos(640+pos.x,reajuste-pos.y,0);
-
-                        cpvadd(cpv(y*60, -197,aux), &offs,&pos);
-			dominos(640+pos.x,reajuste-pos.y,PI/2.0);
-
-
-			if(y == (x - 1)) continue;  end
-                        cpvadd(cpv(y*60 + 30, -191,aux), &offs,&pos);
-			dominos(640+pos.x,reajuste-pos.y,PI/2.0);
-
-                end
-                cpvadd(cpv(-17, -174,aux), &offs,&pos);
-		dominos(640+pos.x,reajuste-pos.y,0);
-
-                cpvadd(cpv((x - 1)*60 + 17, -174,aux), &offs,&pos);
-		dominos(640+pos.x,reajuste-pos.y,0);
+from x=300 to ancho-300 step 40;
+    from y=alto-40 to 300 step -46;
+        z=dominos(x,y,0);
+        sleep(z);
+        if (x<ancho-300)
+            z=dominos(x+20,y-23,90000);
+            sleep(z);
         end
-
+    end
+end
 end
 
 process cubo()
@@ -141,9 +128,9 @@ begin
         FORCECREATEBODY(); //forza la creación del cuerpo físico inmediatamente para comenzar a usarlo
         Slew( rand(300,900),500, 1);  //Mueve la pelóta hacia el punto ( rand[300,900] ,500)
 	loop
-                if (out_region(id,0))
-			signal(id,s_kill);
-		end
+            if (out_region(id,0))
+    			signal(id,s_kill);
+    		end
 		frame;
 
 	end
