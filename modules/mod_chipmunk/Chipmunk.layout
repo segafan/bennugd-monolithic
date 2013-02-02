@@ -7,14 +7,14 @@
 	<File name="Arreglos.h" open="0" top="0" tabpos="5">
 		<Cursor position="231" topLine="2" />
 	</File>
-	<File name="Constraints.c" open="0" top="0" tabpos="7">
-		<Cursor position="1295" topLine="27" />
+	<File name="Constraints.c" open="1" top="0" tabpos="9">
+		<Cursor position="20746" topLine="859" />
 	</File>
 	<File name="Constraints.h" open="0" top="0" tabpos="10">
 		<Cursor position="374" topLine="1" />
 	</File>
 	<File name="Cuerpo.c" open="1" top="0" tabpos="2">
-		<Cursor position="19817" topLine="671" />
+		<Cursor position="4346" topLine="182" />
 	</File>
 	<File name="Cuerpo.h" open="0" top="0" tabpos="15">
 		<Cursor position="1808" topLine="26" />
@@ -47,7 +47,7 @@
 		<Cursor position="71" topLine="0" />
 	</File>
 	<File name="agua.c" open="1" top="0" tabpos="8">
-		<Cursor position="7134" topLine="238" />
+		<Cursor position="7134" topLine="223" />
 	</File>
 	<File name="agua.h" open="0" top="0" tabpos="4">
 		<Cursor position="248" topLine="0" />
@@ -62,7 +62,7 @@
 		<Cursor position="7436" topLine="238" />
 	</File>
 	<File name="automGenTerr.h" open="1" top="0" tabpos="4">
-		<Cursor position="826" topLine="1" />
+		<Cursor position="826" topLine="0" />
 	</File>
 	<File name="constantes.h" open="0" top="0" tabpos="2">
 		<Cursor position="752" topLine="27" />
@@ -74,7 +74,7 @@
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="estructuras.h" open="1" top="0" tabpos="7">
-		<Cursor position="1547" topLine="55" />
+		<Cursor position="1547" topLine="39" />
 	</File>
 	<File name="globales.h" open="1" top="0" tabpos="6">
 		<Cursor position="597" topLine="0" />
@@ -82,10 +82,10 @@
 	<File name="inl.h" open="0" top="0" tabpos="5">
 		<Cursor position="17" topLine="0" />
 	</File>
-	<File name="locales.h" open="0" top="0" tabpos="10">
-		<Cursor position="483" topLine="11" />
+	<File name="locales.h" open="1" top="0" tabpos="10">
+		<Cursor position="926" topLine="0" />
 	</File>
 	<File name="main.c" open="1" top="1" tabpos="1">
-		<Cursor position="7000" topLine="193" />
+		<Cursor position="76508" topLine="2257" />
 	</File>
 </CodeBlocks_layout_file>
