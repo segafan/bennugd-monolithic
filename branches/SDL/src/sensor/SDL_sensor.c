@@ -108,7 +108,7 @@ SDL_SensorOpen(int device_index)
     }
 
     SDL_memset(sensor, 0, (sizeof *sensor));
-    if (SDL_SYS_sensorOpen(sensor, device_index) < 0) {
+    if (SDL_SYS_SensorOpen(sensor, device_index) < 0) {
         SDL_free(sensor);
         return NULL;
     }
@@ -235,7 +235,7 @@ SDL_SensorGetAttached(SDL_Sensor * sensor)
         return SDL_FALSE;
     }
 
-    return SDL_SYS_sensorAttached(sensor);
+    return SDL_SYS_SensorAttached(sensor);
 }
 
 /*
@@ -286,7 +286,7 @@ SDL_SensorClose(SDL_Sensor * sensor)
         return;
     }
 
-    SDL_SYS_sensorClose(sensor);
+    SDL_SYS_SensorClose(sensor);
 
     sensorlist = SDL_sensors;
     sensorlistprev = NULL;
@@ -459,41 +459,5 @@ SDL_PrivatesensorNeedsPolling()
         return SDL_SYS_SensorNeedsPolling();
     }
 }
-
-
-/* return the guid for this index */
-SDL_SensorGUID SDL_SensorGetDeviceGUID(int device_index)
-{
-    return SDL_SYS_SensorGetDeviceGUID( device_index );
-}
-
-/* return the guid for this opened device */
-SDL_SensorGUID SDL_SensorGetGUID(SDL_Sensor * sensor)
-{
-    return SDL_SYS_SensorGetGUID( sensor );
-}
-
-/* convert the guid to a printable string */
-void SDL_SensorGetGUIDString( SDL_SensorGUID guid, char *pszGUID, int cbGUID )
-{
-    static const char k_rgchHexToASCII[] = "0123456789abcdef";
-    int i;
-
-    if ((pszGUID == NULL) || (cbGUID <= 0)) {
-        return;
-    }
-
-    for ( i = 0; i < sizeof(guid.data) && i < (cbGUID-1); i++ )
-    {
-        // each input byte writes 2 ascii chars, and might write a null byte.
-        // If we don't have room for next input byte, stop
-        unsigned char c = guid.data[i];
-
-        *pszGUID++ = k_rgchHexToASCII[ c >> 4 ];
-        *pszGUID++ = k_rgchHexToASCII[ c & 0x0F ];
-    }
-    *pszGUID = '\0';
-}
-
 
 /* vi: set ts=4 sw=4 expandtab: */
