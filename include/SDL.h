@@ -92,6 +92,7 @@
 #include "SDL_thread.h"
 #include "SDL_timer.h"
 #include "SDL_version.h"
+#include "SDL_sensor.h"
 #include "SDL_video.h"
 
 #include "begin_code.h"
@@ -117,6 +118,7 @@ extern "C" {
 #define SDL_INIT_JOYSTICK       0x00000200
 #define SDL_INIT_HAPTIC         0x00001000
 #define SDL_INIT_GAMECONTROLLER 0x00002000		/**< turn on game controller also implicitly does JOYSTICK */
+#define SDL_INIT_SENSOR         0x00004000
 #define SDL_INIT_NOPARACHUTE    0x00100000      /**< Don't catch fatal signals */
 #define SDL_INIT_EVERYTHING     0x0000FFFF
 /*@}*/

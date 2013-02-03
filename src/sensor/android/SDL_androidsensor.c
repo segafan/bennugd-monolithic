@@ -64,14 +64,14 @@ SDL_bool SDL_SYS_SensorNeedsPolling()
 /* Function to get the device-dependent name of a sensor
  * Should be callable even before opening the sensor */
 const char *
-SDL_SYS_SensorNameForIndex(int device_index)
+SDL_SYS_SensorNameForDeviceIndex(int device_index)
 {
     int n=0;
     ASensorList list;
 
     n = ASensorManager_getSensorList(mSensorManager, &list);
     if (device_index > n || ! list) {
-        return -1;
+        return "";
     }
 
     return ASensor_getName(list[device_index]);
@@ -101,7 +101,6 @@ SDL_SYS_SensorOpen(SDL_Sensor * sensor, int device_index)
 
     sensor->hwdata = (struct sensor_hwdata *)
         SDL_malloc(sizeof(*sensor->hwdata));
-
     if (sensor->hwdata == NULL) {
         SDL_OutOfMemory();
         return -1;
@@ -110,7 +109,7 @@ SDL_SYS_SensorOpen(SDL_Sensor * sensor, int device_index)
     sensor->hwdata->asensor = list[device_index];
     sensor->naxes = 3;  /* 3 is the maximum we'll find */
 
-    type = ASensor_getType(ASensor const* sensor);
+    type = ASensor_getType(list[device_index]);
     switch(type) {
         case 1:
             sensor->type = SDL_SENSOR_ACCEL;
@@ -173,13 +172,6 @@ SDL_SYS_SensorClose(SDL_Sensor * sensor)
 void
 SDL_SYS_SensorQuit(void)
 {
-    int i;
-
-    for (i = 0; i<SDL_SYS_NumSensors(); ++i)
-    {
-        SDL_free(SYS_Sensors[i]);
-    }
-    SYS_Sensors[0] = NULL;
 }
 
 SDL_SensorGUID SDL_SYS_SensorGetDeviceGUID( int device_index )
