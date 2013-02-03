@@ -152,6 +152,25 @@ SDL_InitSubSystem(Uint32 flags)
     }
 #endif
 
+#if !SDL_SENSOR_DISABLED
+    /* Initialize the sensor subsystem */
+    if ((flags & SDL_INIT_SENSOR) ) {
+		SDL_SubsystemRefCount[ msb32_idx(SDL_INIT_SENSOR) ]++;
+		SDL_assert( SDL_SubsystemRefCount[ msb32_idx(SDL_INIT_SENSOR) ] < 254 );
+		if ( !(SDL_initialized & SDL_INIT_SENSOR)) {
+			if (SDL_SensorInit(NULL) < 0) {
+				return (-1);
+			}
+			SDL_initialized |= SDL_INIT_SENSOR;
+		}
+    }
+#else
+    if (flags & SDL_INIT_SENSOR) {
+        SDL_SetError("SDL not built with sensor support");
+        return (-1);
+    }
+#endif
+
 #if !SDL_HAPTIC_DISABLED
     /* Initialize the haptic subsystem */
     if ((flags & SDL_INIT_HAPTIC) ) {

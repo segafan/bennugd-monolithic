@@ -64,7 +64,7 @@ SDL_SensorNameForIndex(int device_index)
         SDL_SetError("There are %d sensors available", SDL_NumSensors());
         return (NULL);
     }
-    return (SDL_SYS_SensorNameForIndex(device_index));
+    return (SDL_SYS_SensorNameForDeviceIndex(device_index));
 }
 
 /*
@@ -113,7 +113,7 @@ SDL_SensorOpen(int device_index)
         return NULL;
     }
 
-    sensorname = SDL_SYS_sensorNameForDeviceIndex( device_index );
+    sensorname = SDL_SYS_SensorNameForDeviceIndex( device_index );
     if ( sensorname )
         sensor->name = SDL_strdup( sensorname );
     else
@@ -134,16 +134,16 @@ SDL_SensorOpen(int device_index)
         SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(Sint16));
     }
     if (sensor->resolutions) {
-        SDL_memset(sensor->resolutions, 0, sensor->resolutions * sizeof(Sint16));
+        SDL_memset(sensor->resolutions, 0, sensor->naxes * sizeof(Sint16));
     }
 
     /* Add sensor to list */
     ++sensor->ref_count;
     /* Link the sensor in the list */
-    sensor->next = SDL_Sensors;
-    SDL_Sensors = sensor;
+    sensor->next = SDL_sensors;
+    SDL_sensors = sensor;
 
-    SDL_SYS_sensorUpdate( sensor );
+    SDL_SYS_SensorUpdate( sensor );
 
     return (sensor);
 }
@@ -216,7 +216,7 @@ SDL_SensorGetResolution(SDL_Sensor * sensor, int axis)
         return (0);
     }
     if (axis < sensor->naxes) {
-        state = sensor->resolution[axis];
+        state = sensor->resolutions[axis];
     } else {
         SDL_SetError("sensor only has %d axes", sensor->naxes);
         state = 0;
@@ -288,7 +288,7 @@ SDL_SensorClose(SDL_Sensor * sensor)
 
     SDL_SYS_sensorClose(sensor);
 
-    sensorlist = SDL_Sensors;
+    sensorlist = SDL_sensors;
     sensorlistprev = NULL;
     while ( sensorlist )
     {
@@ -301,7 +301,7 @@ SDL_SensorClose(SDL_Sensor * sensor)
             }
             else
             {
-                SDL_Sensors = sensor->next;
+                SDL_sensors = sensor->next;
             }
 
             break;
@@ -330,14 +330,14 @@ SDL_SensorQuit(void)
     SDL_assert(!SDL_updating_sensor);
 
     /* Stop the event polling */
-    while ( SDL_Sensors )
+    while ( SDL_sensors )
     {
-        SDL_Sensors->ref_count = 1;
-        SDL_SensorClose(SDL_Sensors);
+        SDL_sensors->ref_count = 1;
+        SDL_SensorClose(SDL_sensors);
     }
 
     /* Quit the sensor setup */
-    SDL_SYS_sensorQuit();
+    SDL_SYS_SensorQuit();
 }
 
 
@@ -410,7 +410,7 @@ SDL_SensorUpdate(void)
 {
     SDL_Sensor *sensor;
 
-    sensor = SDL_Sensors;
+    sensor = SDL_sensors;
     while ( sensor )
     {
         SDL_Sensor *sensornext;
@@ -421,7 +421,7 @@ SDL_SensorUpdate(void)
 
         SDL_updating_sensor = sensor;
 
-        SDL_SYS_sensorUpdate( sensor );
+        SDL_SYS_SensorUpdate( sensor );
 
         if ( sensor->closed && sensor->uncentered )
         {
@@ -446,17 +446,17 @@ SDL_SensorUpdate(void)
         sensor = sensornext;
     }
 
-    SDL_SYS_sensorDetect();
+    SDL_SYS_SensorDetect();
 }
 
 /* return 1 if you want to run the sensor update loop this frame, used by hotplug support */
 SDL_bool
 SDL_PrivatesensorNeedsPolling()
 {
-    if (SDL_Sensors != NULL) {
+    if (SDL_sensors != NULL) {
         return SDL_TRUE;
     } else {
-        return SDL_SYS_sensorNeedsPolling();
+        return SDL_SYS_SensorNeedsPolling();
     }
 }
 
@@ -464,13 +464,13 @@ SDL_PrivatesensorNeedsPolling()
 /* return the guid for this index */
 SDL_SensorGUID SDL_SensorGetDeviceGUID(int device_index)
 {
-    return SDL_SYS_sensorGetDeviceGUID( device_index );
+    return SDL_SYS_SensorGetDeviceGUID( device_index );
 }
 
 /* return the guid for this opened device */
 SDL_SensorGUID SDL_SensorGetGUID(SDL_Sensor * sensor)
 {
-    return SDL_SYS_sensorGetGUID( sensor );
+    return SDL_SYS_SensorGetGUID( sensor );
 }
 
 /* convert the guid to a printable string */
