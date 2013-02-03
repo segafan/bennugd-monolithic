@@ -362,7 +362,7 @@ int gr_set_mode( int width, int height, int depth )
         // Try to re-use surfaces, if possible
         if ( scale_screen )
         {
-            if( scale_scren->format->BitsPerPixel == depth && (
+            if( scale_screen->format->BitsPerPixel == depth && (
              (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
              (scale_screen->w == surface_height && scale_screen->h == surface_width &&
              (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
@@ -372,7 +372,7 @@ int gr_set_mode( int width, int height, int depth )
         }
         else
         {
-            if( scren->format->BitsPerPixel == depth && (
+            if( screen->format->BitsPerPixel == depth && (
              (screen->w == surface_width && screen->h == surface_height) ||
              (screen->w == surface_height && screen->h == surface_width &&
              (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
@@ -400,7 +400,7 @@ int gr_set_mode( int width, int height, int depth )
         // Try to re-use surfaces, if possible
         if ( scale_screen )
         {
-            if( scale_scren->format->BitsPerPixel == depth && (
+            if( scale_screen->format->BitsPerPixel == depth && (
              (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
              (scale_screen->w == surface_height && scale_screen->h == surface_width &&
              (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
@@ -413,7 +413,7 @@ int gr_set_mode( int width, int height, int depth )
         }
         else
         {
-            if( scren->format->BitsPerPixel == depth && (
+            if( screen->format->BitsPerPixel == depth && (
              (screen->w == surface_width && screen->h == surface_height) ||
              (screen->w == surface_height && screen->h == surface_width &&
              (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
