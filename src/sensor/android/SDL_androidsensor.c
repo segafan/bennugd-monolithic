@@ -30,6 +30,7 @@
 #include "SDL_error.h"
 #include "SDL_events.h"
 #include "SDL_sensor.h"
+#include "SDL_androidsensor.h"
 #include "../SDL_syssensor.h"
 #include "../SDL_sensor_c.h"
 #include "../../core/android/SDL_android.h"
@@ -77,19 +78,13 @@ SDL_SYS_SensorNameForDeviceIndex(int device_index)
     return ASensor_getName(list[device_index]);
 }
 
-/* Function to perform the mapping from device index to the instance id for this index */
-SDL_SensorID SDL_SYS_GetInstanceIdOfDeviceIndex(int device_index)
-{
-    return device_index;
-}
-
 /* Function to open a sensor for use.
    The sensor to open is specified by the index field of the sensor.
    This should fill the naxes fields of the sensor structure.
    It returns 0, or -1 if there is an error.
  */
 int
-SDL_SYS_SensorOpen(SDL_Sensor * sensor, int device_index)
+SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
 {
     int n=0, type=0;
     ASensorList list;
@@ -106,7 +101,7 @@ SDL_SYS_SensorOpen(SDL_Sensor * sensor, int device_index)
         return -1;
     }
 
-    sensor->hwdata->asensor = list[device_index];
+    //sensor->hwdata->asensor = list[device_index];
     sensor->naxes = 3;  /* 3 is the maximum we'll find */
 
     type = ASensor_getType(list[device_index]);
@@ -143,7 +138,7 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
 {
     int i;
     Sint16 value;
-    float values[3];
+    /*float values[3];
 
     if (Android_JNI_GetAccelerometerValues(values))
     {
@@ -152,7 +147,7 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
             value = (Sint16)(values[i] * 32767.0f);
             SDL_PrivateSensorAxis(sensor, i, value);
         }
-    }
+    }*/
 }
 
 /* Function to determine is this sensor is attached to the system right now */
@@ -165,33 +160,13 @@ SDL_bool SDL_SYS_SensorAttached(SDL_Sensor *sensor)
 void
 SDL_SYS_SensorClose(SDL_Sensor * sensor)
 {
-    SDL_Free(sensor->hwdata);
+    SDL_free(sensor->hwdata);
 }
 
 /* Function to perform any system-specific sensor related cleanup */
 void
 SDL_SYS_SensorQuit(void)
 {
-}
-
-SDL_SensorGUID SDL_SYS_SensorGetDeviceGUID( int device_index )
-{
-    SDL_SensorGUID guid;
-    // the GUID is just the first 16 chars of the name for now
-    const char *name = SDL_SYS_SensorNameForDeviceIndex( device_index );
-    SDL_zero( guid );
-    SDL_memcpy( &guid, name, SDL_min( sizeof(guid), SDL_strlen( name ) ) );
-    return guid;
-}
-
-SDL_SensorGUID SDL_SYS_SensorGetGUID(SDL_Sensor * sensor)
-{
-    SDL_SensorGUID guid;
-    // the GUID is just the first 16 chars of the name for now
-    const char *name = sensor->name;
-    SDL_zero( guid );
-    SDL_memcpy( &guid, name, SDL_min( sizeof(guid), SDL_strlen( name ) ) );
-    return guid;
 }
 
 #endif /* SDL_SENSOR_ANDROID */

@@ -64,9 +64,6 @@ extern SDL_bool SDL_SYS_SensorNeedsPolling();
 /* Function to get the device-dependent name of a sensor */
 extern const char *SDL_SYS_SensorNameForDeviceIndex(int device_index);
 
-/* Function to get the current instance id of the sensor located at device_index */
-extern SDL_SensorID SDL_SYS_GetInstanceIdOfDeviceIndex(int device_index);
-
 /* Function to open a sensor for use.
    The sensor to open is specified by the index field of the sensor.
    This should fill the nbuttons and naxes fields of the sensor structure.
@@ -91,11 +88,5 @@ extern void SDL_SYS_SensorClose(SDL_Sensor * sensor);
 
 /* Function to perform any system-specific sensor related cleanup */
 extern void SDL_SYS_SensorQuit(void);
-
-/* Function to return the stable GUID for a plugged in device */
-extern SDL_SensorGUID SDL_SYS_SensorGetDeviceGUID(int device_index);
-
-/* Function to return the stable GUID for a opened sensor */
-extern SDL_SensorGUID SDL_SYS_SensorGetGUID(SDL_Sensor * sensor);
 
 /* vi: set ts=4 sw=4 expandtab: */
