@@ -101,25 +101,46 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
         return -1;
     }
 
-    //sensor->hwdata->asensor = list[device_index];
+    sensor->hwdata->asensor = list[device_index];
     sensor->naxes = 3;  /* 3 is the maximum we'll find */
 
     type = ASensor_getType(list[device_index]);
     switch(type) {
-        case 1:
+        case 0x00000001:
             sensor->type = SDL_SENSOR_ACCEL;
             break;
-        case 2:
+        case 0x00000002:
             sensor->type = SDL_SENSOR_MAGNET;
             break;
-        case 4:
+        case 0x00000003:
+            sensor->type = SDL_SENSOR_ORIENTATION;
+            break;
+        case 0x00000004:
             sensor->type = SDL_SENSOR_GYRO;
             break;
-        case 5:
+        case 0x00000005:
             sensor->type = SDL_SENSOR_LIGHT;
             break;
-        case 8:
+        case 0x00000006:
+            sensor->type = SDL_SENSOR_PRESSURE;
+            break;
+        case 0x00000007:
+            sensor->type = SDL_SENSOR_TEMPERATURE;
+            break;
+        case 0x00000008:
             sensor->type = SDL_SENSOR_PROXIMITY;
+            break;
+        case 0x00000009:
+            sensor->type = SDL_SENSOR_GRAVITY;
+            break;
+        case 0x0000000a:
+            sensor->type = SDL_SENSOR_LACCEL;
+            break;
+        case 0x0000000b:
+            sensor->type = SDL_SENSOR_ROTVECTOR;
+            break;
+        case 0x0000000c:
+            sensor->type = SDL_SENSOR_RHUMIDITY;
             break;
         default:
             sensor->type = SDL_SENSOR_UNKNOWN;

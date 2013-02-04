@@ -75,9 +75,16 @@ typedef enum
     SDL_SENSOR_UNKNOWN = 0x00000000,            /**< unknown sensor type */
     SDL_SENSOR_ACCEL = 0x00000001,              /**< accelerometer */
     SDL_SENSOR_MAGNET = 0x00000002,             /**< magnetometer */
+    SDL_SENSOR_ORIENTATION = 0x00000003,        /**< orientation sensor */
     SDL_SENSOR_GYRO = 0x00000004,               /**< gyroscope */
     SDL_SENSOR_LIGHT = 0x00000005,              /**< light sensor */
-    SDL_SENSOR_PROXIMITY = 0x00000008           /**< proximity sensor */
+    SDL_SENSOR_PRESSURE = 0x00000006,           /**< pressure sensor */
+    SDL_SENSOR_TEMPERATURE = 0x00000007,        /**< temperature sensor */
+    SDL_SENSOR_PROXIMITY = 0x00000008,          /**< proximity sensor */
+    SDL_SENSOR_GRAVITY = 0x00000009,            /**< gravity sensor */
+    SDL_SENSOR_LACCEL = 0x0000000a,             /**< linear acceleration sensor */
+    SDL_SENSOR_ROTVECTOR = 0x0000000b,          /**< rotation vector sensor */
+    SDL_SENSOR_RHUMIDITY = 0x0000000c           /**< relative humidity sensor */
 } SDL_SensorFlags;
 
 /* Function prototypes */
@@ -107,28 +114,7 @@ extern DECLSPEC SDL_Sensor *SDLCALL SDL_SensorOpen(int device_index);
  *  Return the name for this currently opened sensor.
  *  If no name can be found, this function returns NULL.
  */
-extern DECLSPEC const char *SDLCALL SDL_SensorName(SDL_Sensor * joystick);
-
-/**
- *  Return the GUID for the joystick at this index
- */
-extern DECLSPEC SDL_SensorGUID SDLCALL SDL_SensorGetDeviceGUID(int device_index);
-
-/**
- *  Return the GUID for this opened sensor
- */
-extern DECLSPEC SDL_SensorGUID SDLCALL SDL_SensorGetGUID(SDL_Sensor * sensor);
-
-/**
- *  Return a string representation for this guid. pszGUID must point to at least 33 bytes
- *  (32 for the string plus a NULL terminator).
- */
-extern DECLSPEC void SDL_SensorGetGUIDString(SDL_SensorGUID guid, char *pszGUID, int cbGUID);
-
-/**
- *  convert a string into a sensor formatted guid
- */
-extern DECLSPEC SDL_SensorGUID SDLCALL SDL_SensorGetGUIDFromString(const char *pchGUID);
+extern DECLSPEC const char *SDLCALL SDL_SensorName(SDL_Sensor * sensor);
 
 /**
  *  Returns SDL_TRUE if the sensor has been opened and currently connected, or SDL_FALSE if it has not.
@@ -144,6 +130,11 @@ extern DECLSPEC SDL_SensorID SDLCALL SDL_SensorInstanceID(SDL_Sensor * sensor);
  *  Get the number of general axis controls on a sensor.
  */
 extern DECLSPEC int SDLCALL SDL_SensorNumAxes(SDL_Sensor * sensor);
+
+/**
+ *  Get the sensor type for an opened sensor.
+ */
+extern DECLSPEC Uint8 SDL_SensorType(SDL_Sensor * sensor);
 
 /**
  *  Update the current state of the open sensors.
@@ -172,6 +163,16 @@ extern DECLSPEC int SDLCALL SDL_SensorEventState(int state);
  *  The axis indices start at index 0.
  */
 extern DECLSPEC Sint16 SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
+                                                   int axis);
+
+/**
+ *  Get the current resolution of an axis on a sensor.
+ *
+ *  The state is a value ranging from -32768 to 32767.
+ *
+ *  The axis indices start at index 0.
+ */
+extern DECLSPEC Sint16 SDLCALL SDL_SensorGetResolution(SDL_Sensor * sensor,
                                                    int axis);
 
 /**
