@@ -57,7 +57,8 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_flic/ \
 	$(MODULES_PATH)/mod_regex/ \
 	$(MODULES_PATH)/mod_multi/ \
-	$(MODULES_PATH)/mod_curl/
+	$(MODULES_PATH)/mod_curl/ \
+	$(MODULES_PATH)/mod_sensor/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-D__BGDRTM__ \
@@ -159,7 +160,8 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_regex/mod_regex.c \
 	../../../../modules/mod_regex/regex.c \
 	../../../../modules/mod_multi/mod_multi.c \
-	../../../../modules/mod_curl/mod_curl.c
+	../../../../modules/mod_curl/mod_curl.c \
+	../../../../modules/mod_sensor/mod_sensor.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png
