@@ -36,6 +36,9 @@
 #include "../../core/android/SDL_android.h"
 
 static ASensorManager* mSensorManager;
+static ASensorEventQueue* eventqueue;
+static ALooper* looper;
+static int open_sensors=0;
 
 /* Function to scan the system for sensors.
  * Sensor 0 should be the system default sensor.
@@ -45,6 +48,14 @@ int
 SDL_SYS_SensorInit(void)
 {
     mSensorManager = ASensorManager_getInstance();
+    looper = ALooper_forThread();
+    if(! looper) {
+        looper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
+        if(! looper) {
+            return -1;
+        }
+    }
+
     return 0;
 }
 
@@ -86,11 +97,10 @@ SDL_SYS_SensorNameForDeviceIndex(int device_index)
 int
 SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
 {
-    int n=0, type=0;
+    int type=0;
     ASensorList list;
 
-    n = ASensorManager_getSensorList(mSensorManager, &list);
-    if (device_index > n || ! list) {
+    if (device_index > ASensorManager_getSensorList(mSensorManager, &list) || ! list) {
         return -1;
     }
 
@@ -102,53 +112,76 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
     }
 
     sensor->hwdata->asensor = list[device_index];
-    sensor->naxes = 3;  /* 3 is the maximum we'll find */
 
     type = ASensor_getType(list[device_index]);
     switch(type) {
         case 0x00000001:
             sensor->type = SDL_SENSOR_ACCEL;
+            sensor->naxes = 3;
             break;
         case 0x00000002:
             sensor->type = SDL_SENSOR_MAGNET;
+            sensor->naxes = 3;
             break;
         case 0x00000003:
             sensor->type = SDL_SENSOR_ORIENTATION;
+            sensor->naxes = 3;
             break;
         case 0x00000004:
             sensor->type = SDL_SENSOR_GYRO;
+            sensor->naxes = 3;
             break;
         case 0x00000005:
             sensor->type = SDL_SENSOR_LIGHT;
+            sensor->naxes = 1;
             break;
         case 0x00000006:
             sensor->type = SDL_SENSOR_PRESSURE;
+            sensor->naxes = 1;
             break;
         case 0x00000007:
             sensor->type = SDL_SENSOR_TEMPERATURE;
+            sensor->naxes = 1;
             break;
         case 0x00000008:
             sensor->type = SDL_SENSOR_PROXIMITY;
+            sensor->naxes = 1;
             break;
         case 0x00000009:
             sensor->type = SDL_SENSOR_GRAVITY;
+            sensor->naxes = 1;
             break;
         case 0x0000000a:
             sensor->type = SDL_SENSOR_LACCEL;
+            sensor->naxes = 1;
             break;
         case 0x0000000b:
             sensor->type = SDL_SENSOR_ROTVECTOR;
+            sensor->naxes = 3;
             break;
         case 0x0000000c:
             sensor->type = SDL_SENSOR_RHUMIDITY;
+            sensor->naxes = 1;
             break;
         default:
             sensor->type = SDL_SENSOR_UNKNOWN;
+            sensor->naxes = 3;  // Just in case
     }
+    
+    sensor->resolution = ASensor_getResolution(list[device_index]);
+    
+    // If there were no open sensors, open the event queue and associate
+    // it to the looper
+    if(open_sensors == 0) {
+        eventqueue = ASensorManager_createEventQueue(mSensorManager, looper, 3 /* LOOPER_ID_USER */, NULL, NULL);
+    }
+    open_sensors++;
+    
+    ASensorEventQueue_enableSensor(eventqueue, list[device_index]);
 
     return 0;
 }
-
+    
 /* Function to update the state of a sensor - called as a device poll.
  * This function shouldn't update the sensor structure directly,
  * but instead should call SDL_PrivateSensor*() to deliver events
@@ -157,18 +190,73 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
 void
 SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
 {
-    /*int i;
-    Sint16 value;
-    float values[3];
+    int events;
+    ASensorEvent event;
+    struct android_poll_source* source;
 
-    if (Android_JNI_GetAccelerometerValues(values))
-    {
-        for ( i = 0; i < 3; i++ )
-        {
-            value = (Sint16)(values[i] * 32767.0f);
-            SDL_PrivateSensorAxis(sensor, i, value);
+    while (ALooper_pollAll(0, NULL, &events, (void**)&source) == 3 /* LOOPER_ID_USER */ ) {
+        // If a sensor has data, process it now.
+        // TODO: Make some sense from this data...
+        while (ASensorEventQueue_getEvents(eventqueue,
+                                           &event, 1) > 0) {
+            switch(event.type) {
+                case 0x00000001:
+                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
+                    break;
+                case 0x00000002:
+                    SDL_PrivatesensorAxis(sensor, 0, event.magnetic.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.magnetic.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.magnetic.z);
+                    break;
+                case 0x00000003:
+                    SDL_PrivatesensorAxis(sensor, 0, event.vector.azimuth);
+                    SDL_PrivatesensorAxis(sensor, 1, event.vector.pitch);
+                    SDL_PrivatesensorAxis(sensor, 2, event.vector.roll);
+                    break;
+                case 0x00000004:
+                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    break;
+                /*case 0x00000005:
+                    sensor->type = SDL_SENSOR_LIGHT;
+                    sensor->naxes = 1;
+                    break;
+                case 0x00000006:
+                    sensor->type = SDL_SENSOR_PRESSURE;
+                    sensor->naxes = 1;
+                    break;
+                case 0x00000007:
+                    sensor->type = SDL_SENSOR_TEMPERATURE;
+                    sensor->naxes = 1;
+                    break;
+                case 0x00000008:
+                    sensor->type = SDL_SENSOR_PROXIMITY;
+                    sensor->naxes = 1;
+                    break;
+                case 0x00000009:
+                    sensor->type = SDL_SENSOR_GRAVITY;
+                    sensor->naxes = 1;
+                    break;
+                case 0x0000000a:
+                    sensor->type = SDL_SENSOR_LACCEL;
+                    sensor->naxes = 1;
+                    break;
+                case 0x0000000b:
+                    sensor->type = SDL_SENSOR_ROTVECTOR;
+                    sensor->naxes = 3;
+                    break;
+                case 0x0000000c:
+                    sensor->type = SDL_SENSOR_RHUMIDITY;
+                    sensor->naxes = 1;
+                    break;*/
+                default:
+                    break;
+            }
         }
-    }*/
+    }
 }
 
 /* Function to determine is this sensor is attached to the system right now */
@@ -182,6 +270,14 @@ void
 SDL_SYS_SensorClose(SDL_Sensor * sensor)
 {
     SDL_free(sensor->hwdata);
+    open_sensors--;
+    
+    ASensorEventQueue_enableSensor(eventqueue, sensor->hwdata->asensor);
+    
+    // Don't read the sensors if no SDL_Sensor is open
+    if(! open_sensors) {
+        ASensorManager_destroyEventQueue(mSensorManager, eventqueue);
+    }
 }
 
 /* Function to perform any system-specific sensor related cleanup */

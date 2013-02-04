@@ -172,8 +172,7 @@ extern DECLSPEC Sint16 SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
  *
  *  The axis indices start at index 0.
  */
-extern DECLSPEC Sint16 SDLCALL SDL_SensorGetResolution(SDL_Sensor * sensor,
-                                                   int axis);
+extern DECLSPEC float SDLCALL SDL_SensorGetResolution(SDL_Sensor * sensor);
 
 /**
  *  Close a sensor previously opened with SDL_SensorOpen().

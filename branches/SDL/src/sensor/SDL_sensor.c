@@ -122,19 +122,14 @@ SDL_SensorOpen(int device_index)
     if (sensor->naxes > 0) {
         sensor->axes = (Sint16 *) SDL_malloc
             (sensor->naxes * sizeof(Sint16));
-        sensor->resolutions = (Sint16 *) SDL_malloc
-            (sensor->naxes * sizeof(Sint16));
     }
-    if ( (sensor->naxes > 0) && (!sensor->axes || !sensor->resolutions) ) {
+    if ( (sensor->naxes > 0) && (!sensor->axes) ) {
         SDL_OutOfMemory();
         SDL_SensorClose(sensor);
         return NULL;
     }
     if (sensor->axes) {
         SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(Sint16));
-    }
-    if (sensor->resolutions) {
-        SDL_memset(sensor->resolutions, 0, sensor->naxes * sizeof(Sint16));
     }
 
     /* Add sensor to list */
@@ -219,21 +214,16 @@ SDL_SensorGetAxis(SDL_Sensor * sensor, int axis)
 /*
  * Get the current resolution of an axis control on a sensor
  */
-Sint16
-SDL_SensorGetResolution(SDL_Sensor * sensor, int axis)
+float
+SDL_SensorGetResolution(SDL_Sensor * sensor)
 {
-    Sint16 state;
+    float state;
 
     if (!SDL_PrivatesensorValid(sensor)) {
         return (0);
     }
-    if (axis < sensor->naxes) {
-        state = sensor->resolutions[axis];
-    } else {
-        SDL_SetError("sensor only has %d axes", sensor->naxes);
-        state = 0;
-    }
-    return (state);
+    
+    return sensor->resolution;
 }
 
 /*
@@ -329,9 +319,6 @@ SDL_SensorClose(SDL_Sensor * sensor)
     if (sensor->axes) {
         SDL_free(sensor->axes);
     }
-    if (sensor->resolutions) {
-        SDL_free(sensor->resolutions);
-    }
     SDL_free(sensor);
 }
 
@@ -373,47 +360,6 @@ SDL_PrivatesensorAxis(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
 
     /* Post the event, if desired */
     posted = 0;
-#if !SDL_EVENTS_DISABLED
-    if (SDL_GetEventState(SDL_JOYAXISMOTION) == SDL_ENABLE) {
-        SDL_Event event;
-        event.type = SDL_JOYAXISMOTION;
-        event.jaxis.which = sensor->instance_id;
-        event.jaxis.axis = axis;
-        event.jaxis.value = value;
-        posted = SDL_PushEvent(&event) == 1;
-    }
-#endif /* !SDL_EVENTS_DISABLED */
-    return (posted);
-}
-
-int
-SDL_PrivatesensorResolution(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
-{
-    int posted;
-
-    /* Make sure we're not getting garbage events */
-    if (axis >= sensor->naxes) {
-        return 0;
-    }
-
-    /* Update internal sensor state */
-    if (value == sensor->resolutions[axis]) {
-        return 0;
-    }
-    sensor->resolutions[axis] = value;
-
-    /* Post the event, if desired */
-    posted = 0;
-#if !SDL_EVENTS_DISABLED
-    if (SDL_GetEventState(SDL_JOYAXISMOTION) == SDL_ENABLE) {
-        SDL_Event event;
-        event.type = SDL_JOYAXISMOTION;
-        event.jaxis.which = sensor->instance_id;
-        event.jaxis.axis = axis;
-        event.jaxis.value = value;
-        posted = SDL_PushEvent(&event) == 1;
-    }
-#endif /* !SDL_EVENTS_DISABLED */
     return (posted);
 }
 
@@ -444,7 +390,6 @@ SDL_SensorUpdate(void)
             for (i = 0; i < sensor->naxes; i++)
             {
                 SDL_PrivatesensorAxis(sensor, i, 0);
-                SDL_PrivatesensorResolution(sensor, i, 0);
             }
         }
 

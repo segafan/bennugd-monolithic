@@ -34,7 +34,7 @@ struct _SDL_Sensor
 
     int naxes;                      /* Number of axis controls on the sensor */
     Sint16 *axes;                   /* Current axis states */
-    Sint16 *resolutions;            /* Resolution for each axis */
+    float resolution;               /* Resolution for this sensor */
 
     struct sensor_hwdata *hwdata;   /* Driver dependent information */
 

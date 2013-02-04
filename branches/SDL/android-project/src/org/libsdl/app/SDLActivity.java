@@ -161,7 +161,6 @@ public class SDLActivity extends Activity {
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
                                             int action, float x, 
                                             float y, float p);
-    public static native void onNativeAccel(float x, float y, float z);
     public static native void nativeRunAudioThread();
 
 
@@ -461,10 +460,7 @@ class SDLMain implements Runnable {
     Because of this, that's where we set up the SDL thread
 */
 class SDLSurface extends SurfaceView implements SurfaceHolder.Callback, 
-    View.OnKeyListener, View.OnTouchListener, SensorEventListener  {
-
-    // Sensors
-    private static SensorManager mSensorManager;
+    View.OnKeyListener, View.OnTouchListener  {
 
     // Keep track of the surface size to normalize touch events
     private static float mWidth, mHeight;
@@ -480,8 +476,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         setOnKeyListener(this); 
         setOnTouchListener(this);   
 
-        mSensorManager = (SensorManager)context.getSystemService("sensor");
-
         // Some arbitrary defaults to avoid a potential division by zero
         mWidth = 1.0f;
         mHeight = 1.0f;
@@ -491,7 +485,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     public void surfaceCreated(SurfaceHolder holder) {
         Log.v("SDL", "surfaceCreated()");
         holder.setType(SurfaceHolder.SURFACE_TYPE_GPU);
-        enableSensor(Sensor.TYPE_ACCELEROMETER, true);
     }
 
     // Called when we lose the surface
@@ -501,7 +494,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
             SDLActivity.mIsPaused = true;
             SDLActivity.nativePause();
         }
-        enableSensor(Sensor.TYPE_ACCELEROMETER, false);
     }
 
     // Called when the surface is resized
@@ -616,31 +608,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
       return true;
    } 
 
-    // Sensor events
-    public void enableSensor(int sensortype, boolean enabled) {
-        // TODO: This uses getDefaultSensor - what if we have >1 accels?
-        if (enabled) {
-            mSensorManager.registerListener(this, 
-                            mSensorManager.getDefaultSensor(sensortype), 
-                            SensorManager.SENSOR_DELAY_GAME, null);
-        } else {
-            mSensorManager.unregisterListener(this, 
-                            mSensorManager.getDefaultSensor(sensortype));
-        }
-    }
-    
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-        // TODO
-    }
-
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            SDLActivity.onNativeAccel(event.values[0] / SensorManager.GRAVITY_EARTH,
-                                      event.values[1] / SensorManager.GRAVITY_EARTH,
-                                      event.values[2] / SensorManager.GRAVITY_EARTH);
-        }
-    }
-    
 }
 
 /* This is a fake invisible editor view that receives the input and defines the
