@@ -136,9 +136,9 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
 void
 SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
 {
-    int i;
+    /*int i;
     Sint16 value;
-    /*float values[3];
+    float values[3];
 
     if (Android_JNI_GetAccelerometerValues(values))
     {
