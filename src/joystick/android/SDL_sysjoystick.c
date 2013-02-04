@@ -33,8 +33,6 @@
 #include "../SDL_joystick_c.h"
 #include "../../core/android/SDL_android.h"
 
-static const char *accelerometerName = "Android accelerometer";
-
 /* Function to scan the system for joysticks.
  * This function should set SDL_numjoysticks to the number of available
  * joysticks.  Joystick 0 should be the system default joystick.
@@ -48,7 +46,7 @@ SDL_SYS_JoystickInit(void)
 
 int SDL_SYS_NumJoysticks()
 {
-    return 1;
+    return 0;
 }
 
 void SDL_SYS_JoystickDetect()
@@ -64,7 +62,8 @@ SDL_bool SDL_SYS_JoystickNeedsPolling()
 const char *
 SDL_SYS_JoystickNameForDeviceIndex(int device_index)
 {
-    return accelerometerName;
+    SDL_SetError("Logic error: No joysticks available");
+    return (NULL);
 }
 
 /* Function to perform the mapping from device index to the instance id for this index */
@@ -81,16 +80,8 @@ SDL_JoystickID SDL_SYS_GetInstanceIdOfDeviceIndex(int device_index)
 int
 SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
 {
-    if (device_index == 0) {
-        joystick->nbuttons = 0;
-        joystick->nhats = 0;
-        joystick->nballs = 0;
-        joystick->naxes = 3;
-        return 0;
-	} else {
-		SDL_SetError("No joystick available with that index");
-		return (-1);
-	}
+    SDL_SetError("Logic error: No joysticks available");
+    return (-1);
 }
 
 /* Function to determine is this joystick is attached to the system right now */
@@ -107,28 +98,21 @@ SDL_bool SDL_SYS_JoystickAttached(SDL_Joystick *joystick)
 void
 SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 {
-    int i;
-    Sint16 value;
-    float values[3];
-
-    if (Android_JNI_GetAccelerometerValues(values)) {
-        for ( i = 0; i < 3; i++ ) {
-            value = (Sint16)(values[i] * 32767.0f);
-            SDL_PrivateJoystickAxis(joystick, i, value);
-        }
-    }
+    return;
 }
 
 /* Function to close a joystick after use */
 void
 SDL_SYS_JoystickClose(SDL_Joystick * joystick)
 {
+    return;
 }
 
 /* Function to perform any system-specific joystick related cleanup */
 void
 SDL_SYS_JoystickQuit(void)
 {
+    return;
 }
 
 SDL_JoystickGUID SDL_SYS_JoystickGetDeviceGUID( int device_index )

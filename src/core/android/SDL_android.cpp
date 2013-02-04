@@ -76,10 +76,6 @@ static jmethodID midAudioWriteShortBuffer;
 static jmethodID midAudioWriteByteBuffer;
 static jmethodID midAudioQuit;
 
-// Accelerometer data storage
-static float fLastAccelerometer[3];
-static bool bHasNewData;
-
 /*******************************************************************************
                  Functions called by JNI
 *******************************************************************************/
@@ -130,8 +126,6 @@ extern "C" void SDL_Android_Init(JNIEnv* mEnv, jclass cls)
     midAudioQuit = mEnv->GetStaticMethodID(mActivityClass,
                                 "audioQuit", "()V");
 
-    bHasNewData = false;
-
     if(!midCreateGLContext || !midFlipBuffers || !midAudioInit ||
        !midAudioWriteShortBuffer || !midAudioWriteByteBuffer || !midAudioQuit) {
         __android_log_print(ANDROID_LOG_WARN, "SDL", "SDL: Couldn't locate Java callbacks, check that they're named and typed correctly");
@@ -168,17 +162,6 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
                                     jint action, jfloat x, jfloat y, jfloat p)
 {
     Android_OnTouch(touch_device_id_in, pointer_finger_id_in, action, x, y, p);
-}
-
-// Accelerometer
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
-                                    JNIEnv* env, jclass jcls,
-                                    jfloat x, jfloat y, jfloat z)
-{
-    fLastAccelerometer[0] = x;
-    fLastAccelerometer[1] = y;
-    fLastAccelerometer[2] = z;
-    bHasNewData = true;
 }
 
 // Quit
@@ -345,22 +328,6 @@ extern "C" void Android_JNI_SetActivityTitle(const char *title)
         mEnv->CallStaticVoidMethod(mActivityClass, mid, jtitle);
         mEnv->DeleteLocalRef(jtitle);
     }
-}
-
-extern "C" SDL_bool Android_JNI_GetAccelerometerValues(float values[3])
-{
-    int i;
-    SDL_bool retval = SDL_FALSE;
-
-    if (bHasNewData) {
-        for (i = 0; i < 3; ++i) {
-            values[i] = fLastAccelerometer[i];
-        }
-        bHasNewData = false;
-        retval = SDL_TRUE;
-    }
-
-    return retval;
 }
 
 extern "C" void Android_JNI_openURL(const char* url)
