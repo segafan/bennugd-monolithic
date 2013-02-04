@@ -185,6 +185,18 @@ SDL_SensorNumAxes(SDL_Sensor * sensor)
 }
 
 /*
+ * Get the number of multi-dimensional axis controls on a sensor
+ */
+Uint8
+SDL_SensorType(SDL_Sensor * sensor)
+{
+    if (!SDL_PrivatesensorValid(sensor)) {
+        return (-1);
+    }
+    return (sensor->type);
+}
+
+/*
  * Get the current state of an axis control on a sensor
  */
 Sint16
