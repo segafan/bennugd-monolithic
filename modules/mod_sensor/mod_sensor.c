@@ -35,30 +35,17 @@
 #endif
 
 #include "bgddl.h"
+#include "xstrings.h"
 
 /* ---------------------------------------------------------------------- */
 
-static int modsensor_say( INSTANCE * my, int * params )
+static int modsensor_number( INSTANCE * my, int * params )
 {
+    int n=0;
 #ifndef FAKE
-    /* Show debugging info also in stdout */
-    SDL_Log( "%s\n", string_get( params[0] ) );
+    n = SDL_NumSensors();
 #endif
-    fflush( stdout );
-    string_discard( params[0] ) ;
-    return 1 ;
-}
-
-/* ---------------------------------------------------------------------- */
-
-static int modsensor_say_fast( INSTANCE * my, int * params )
-{
-#ifndef FAKE
-    /* Show debugging info also in stdout */
-    SDL_Log( "%s\n", string_get( params[0] ) );
-#endif
-    string_discard( params[0] ) ;
-    return 1 ;
+    return n ;
 }
 
 /* ----------------------------------------------------------------- */
@@ -66,8 +53,7 @@ static int modsensor_say_fast( INSTANCE * my, int * params )
 
 DLSYSFUNCS  __bgdexport( mod_sensor, functions_exports )[] =
 {
-    { "SSAY"     , "S", TYPE_UNDEFINED, modsensor_say     },
-    { "SSAY_FAST", "S", TYPE_UNDEFINED, modsensor_say_fast},
+    { "SENSOR_NUMBER", "S", TYPE_UNDEFINED, modsensor_number     },
     { 0         , 0  , 0             , 0              }
 };
 
@@ -76,7 +62,9 @@ DLSYSFUNCS  __bgdexport( mod_sensor, functions_exports )[] =
 void  __bgdexport( mod_sensor, module_initialize )()
 {
 #ifndef FAKE
-    int n;
+    int n, i;
+    Uint8 type;
+    SDL_Sensor * sensor;
 
     if ( !SDL_WasInit( SDL_INIT_SENSOR ) )
     {
@@ -84,21 +72,13 @@ void  __bgdexport( mod_sensor, module_initialize )()
     }
 
     n = SDL_NumSensors();
-    SDL_Log("I found %d sensors in your system", n);
-    /* Open all joysticks
-    if (( _max_joys = SDL_NumJoysticks() ) > MAX_JOYS )
-    {
-        printf( "[JOY] Warning: maximum number of joysticks exceeded (%i>%i)", _max_joys, MAX_JOYS );
-        _max_joys = MAX_JOYS;
+    SDL_Log("I found %d sensors in your system\nHere they are:", n);
+    for(i=0; i<n; i++) {
+        sensor = SDL_SensorOpen(i);
+        type = SDL_SensorType(sensor);
+        SDL_SensorClose(sensor);
+        SDL_Log("Sensor %d: '%s' of type: %d", i, SDL_SensorNameForIndex(i), type);
     }
-
-    for ( i = 0; i < _max_joys; i++ )
-    {
-        _joysticks[i] = SDL_JoystickOpen( i ) ;
-        if ( !_joysticks[ i ] ) printf( "[JOY] Failed to open joystick '%i'", i );
-    }
-
-    SDL_JoystickUpdate() ;*/
 #endif
 }
 

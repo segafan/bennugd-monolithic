@@ -362,7 +362,7 @@ int gr_set_mode( int width, int height, int depth )
         // Try to re-use surfaces, if possible
         if ( scale_screen )
         {
-            if( scale_screen->format->BitsPerPixel == depth && (
+            if ( scale_screen->format->BitsPerPixel == depth && (
              (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
              (scale_screen->w == surface_height && scale_screen->h == surface_width &&
              (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
@@ -372,14 +372,16 @@ int gr_set_mode( int width, int height, int depth )
         }
         else
         {
-            if( screen->format->BitsPerPixel == depth && (
-             (screen->w == surface_width && screen->h == surface_height) ||
-             (screen->w == surface_height && screen->h == surface_width &&
-             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
-            {
-                scale_screen = screen;
-                screen = NULL;
-                free_scale_screen = 0;
+            if (screen) {
+                if ( screen->format->BitsPerPixel == depth && (
+                                                               (screen->w == surface_width && screen->h == surface_height) ||
+                                                               (screen->w == surface_height && screen->h == surface_width &&
+                                                                (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+                {
+                    scale_screen = screen;
+                    screen = NULL;
+                    free_scale_screen = 0;
+                }
             }
         }
     }
@@ -400,10 +402,9 @@ int gr_set_mode( int width, int height, int depth )
         // Try to re-use surfaces, if possible
         if ( scale_screen )
         {
-            if( scale_screen->format->BitsPerPixel == depth && (
-             (scale_screen->w == surface_width && scale_screen->h == surface_height) ||
-             (scale_screen->w == surface_height && scale_screen->h == surface_width &&
-             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            if( scale_screen->format->BitsPerPixel == depth && 
+                scale_screen->w == surface_width &&
+                scale_screen->h == surface_height )
             {
                 if ( screen ) SDL_FreeSurface( screen );
                 screen = scale_screen;
@@ -413,10 +414,9 @@ int gr_set_mode( int width, int height, int depth )
         }
         else
         {
-            if( screen->format->BitsPerPixel == depth && (
-             (screen->w == surface_width && screen->h == surface_height) ||
-             (screen->w == surface_height && screen->h == surface_width &&
-             (scale_resolution_orientation == SRO_LEFT || scale_resolution_orientation == SRO_RIGHT) ) ) )
+            if( screen && screen && screen->format->BitsPerPixel == depth &&
+               screen->w == surface_width &&
+               screen->h == surface_height )
             {
                 free_screen = 0;
             }

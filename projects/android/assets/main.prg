@@ -12,6 +12,7 @@ import "mod_file"
 import "mod_text"
 import "mod_wm"
 import "mod_multi"
+import "mod_sensor"
 import "mod_mouse"
 import "mod_joy"
 
@@ -44,7 +45,6 @@ Begin
 
     // Write some debug info to the screen
     num_joys = joy_number();
-    say("There are "+num_joys+" joysticks present");
     write(0, 320, 0, 2, "Width: "+width+" Height:"+height);
     write(0, 320, 10, 2, "scale_resolution: 0"+scale_resolution);
     write(0, 160, 240, 4, "Detected joysticks: "+num_joys);
