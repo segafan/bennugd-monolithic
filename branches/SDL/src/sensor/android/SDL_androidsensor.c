@@ -153,7 +153,7 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
             break;
         case 0x0000000a:
             sensor->type = SDL_SENSOR_LACCEL;
-            sensor->naxes = 1;
+            sensor->naxes = 3;
             break;
         case 0x0000000b:
             sensor->type = SDL_SENSOR_ROTVECTOR;
@@ -220,38 +220,37 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
                     SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
                     SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
                     break;
-                /*case 0x00000005:
-                    sensor->type = SDL_SENSOR_LIGHT;
-                    sensor->naxes = 1;
+                case 0x00000005:
+                    SDL_PrivatesensorAxis(sensor, 0, event.light);
                     break;
                 case 0x00000006:
-                    sensor->type = SDL_SENSOR_PRESSURE;
-                    sensor->naxes = 1;
+                    SDL_PrivatesensorAxis(sensor, 0, event.pressure);
                     break;
                 case 0x00000007:
-                    sensor->type = SDL_SENSOR_TEMPERATURE;
-                    sensor->naxes = 1;
+                    SDL_PrivatesensorAxis(sensor, 0, event.temperature);
                     break;
                 case 0x00000008:
-                    sensor->type = SDL_SENSOR_PROXIMITY;
-                    sensor->naxes = 1;
+                    SDL_PrivatesensorAxis(sensor, 0, event.distance);
                     break;
                 case 0x00000009:
-                    sensor->type = SDL_SENSOR_GRAVITY;
-                    sensor->naxes = 1;
+                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000a:
-                    sensor->type = SDL_SENSOR_LACCEL;
-                    sensor->naxes = 1;
+                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
                     break;
                 case 0x0000000b:
-                    sensor->type = SDL_SENSOR_ROTVECTOR;
-                    sensor->naxes = 3;
+                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000c:
-                    sensor->type = SDL_SENSOR_RHUMIDITY;
-                    sensor->naxes = 1;
-                    break;*/
+                    // Is this OK?
+                    SDL_PrivatesensorAxis(sensor, 0, event.data[0]);
+                    break;
                 default:
                     break;
             }
