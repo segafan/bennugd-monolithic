@@ -465,7 +465,10 @@ int gr_set_mode( int width, int height, int depth )
             }
         }
 
-        scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        if(free_scale_screen)  // Otherwise scale_screen has been reused
+        {
+            scale_screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        }
 
         if ( !scale_screen ) return -1;
 
@@ -582,7 +585,10 @@ int gr_set_mode( int width, int height, int depth )
     }
     else
     {
-        screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        if(free_screen)
+        {
+            screen = SDL_SetVideoMode( surface_width, surface_height, depth, sdl_flags );
+        }
     }
 
     if ( !screen ) return -1;
