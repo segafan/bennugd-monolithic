@@ -37,9 +37,13 @@
 #include "bgddl.h"
 #include "xstrings.h"
 
+#ifndef FAKE
+static SDL_Sensor * sensor;
+#endif
+
 /* ---------------------------------------------------------------------- */
 
-static int modsensor_number( INSTANCE * my, int * params )
+int modsensor_number( INSTANCE * my, int * params )
 {
     int n=0;
 #ifndef FAKE
@@ -48,12 +52,20 @@ static int modsensor_number( INSTANCE * my, int * params )
     return n ;
 }
 
+void modsensor_log( INSTANCE * my, int * params )
+{
+#ifndef FAKE
+    SDL_SensorUpdate();
+#endif
+}
+
 /* ----------------------------------------------------------------- */
 /* Declaracion de funciones                                          */
 
 DLSYSFUNCS  __bgdexport( mod_sensor, functions_exports )[] =
 {
-    { "SENSOR_NUMBER", "S", TYPE_UNDEFINED, modsensor_number     },
+    { "SENSOR_NUMBER", "", TYPE_INT, modsensor_number     },
+    { "SENSOR_LOG", "", TYPE_UNDEFINED, modsensor_log     },
     { 0         , 0  , 0             , 0              }
 };
 
@@ -63,21 +75,10 @@ void  __bgdexport( mod_sensor, module_initialize )()
 {
 #ifndef FAKE
     int n, i;
-    Uint8 type;
-    SDL_Sensor * sensor;
 
     if ( !SDL_WasInit( SDL_INIT_SENSOR ) )
     {
         SDL_InitSubSystem( SDL_INIT_SENSOR );
-    }
-
-    n = SDL_NumSensors();
-    SDL_Log("I found %d sensors in your system\nHere they are:", n);
-    for(i=0; i<n; i++) {
-        sensor = SDL_SensorOpen(i);
-        type = SDL_SensorType(sensor);
-        SDL_SensorClose(sensor);
-        SDL_Log("Sensor %d: '%s' of type: %d", i, SDL_SensorNameForIndex(i), type);
     }
 #endif
 }
@@ -87,6 +88,7 @@ void  __bgdexport( mod_sensor, module_initialize )()
 void  __bgdexport( mod_sensor, module_finalize )()
 {
 #ifndef FAKE
+    SDL_SensorClose(sensor);
     if ( SDL_WasInit( SDL_INIT_SENSOR ) ) SDL_QuitSubSystem( SDL_INIT_SENSOR );
 #endif
 }
