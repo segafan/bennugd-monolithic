@@ -111,6 +111,7 @@
 /* Enable various input drivers */
 #define SDL_JOYSTICK_ANDROID	1
 #define SDL_HAPTIC_DUMMY	1
+#define SDL_SENSOR_ANDROID	1
 
 /* Enable various shared object loading systems */
 #define SDL_LOADSO_DLOPEN	1
