@@ -13,6 +13,7 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(LOCAL_PATH)/../../../../3rdparty/libpng/ \
 	$(LOCAL_PATH)/../../../../3rdparty/libglob-bsd/include/ \
 	$(LOCAL_PATH)/../../../../3rdparty/curl-7.23.1/include/ \
+	$(LOCAL_PATH)/../../../../3rdparty/Chipmunk-6.1.3/include/chipmunk/ \
 	$(MODULES_PATH)/libbgload/ \
 	$(MODULES_PATH)/mod_say/ \
 	$(MODULES_PATH)/mod_string/ \
@@ -58,22 +59,24 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_regex/ \
 	$(MODULES_PATH)/mod_multi/ \
 	$(MODULES_PATH)/mod_curl/ \
-	$(MODULES_PATH)/mod_sensor/
+	$(MODULES_PATH)/mod_sensor/ \
+	$(MODULES_PATH)/mod_chipmunk/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-D__BGDRTM__ \
 	-D__MONOLITHIC__ \
 	-DNO_MODMATHI \
 	-DNO_MODIMAGE \
-	-DNO_MODCHIPMUNK \
 	-DNO_MODICONV \
 	-DNO_MODMEM \
 	-DNO_MODFMODEX \
+	-DCP_USE_DOUBLES=0 \
 	-DTARGET_LINUX \
 	-DTARGET_ANDROID \
 	-DWITH_SDLRWOPS \
 	-DWITH_GPL_CODE \
-    -O3
+	-ffast-math \
+	-O3
 
 LOCAL_SRC_FILES := \
 	../../../../core/bgdrtm/src/copy.c \
@@ -161,10 +164,23 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_regex/regex.c \
 	../../../../modules/mod_multi/mod_multi.c \
 	../../../../modules/mod_curl/mod_curl.c \
-	../../../../modules/mod_sensor/mod_sensor.c
+	../../../../modules/mod_sensor/mod_sensor.c \
+	../../../../modules/mod_chipmunk/Arreglos.c \
+	../../../../modules/mod_chipmunk/Constraints.c \
+	../../../../modules/mod_chipmunk/Cuerpo.c \
+	../../../../modules/mod_chipmunk/Espacio.c \
+	../../../../modules/mod_chipmunk/Handlers.c \
+	../../../../modules/mod_chipmunk/HeapSort.c \
+	../../../../modules/mod_chipmunk/LL.c \
+	../../../../modules/mod_chipmunk/Miscelanea.c \
+	../../../../modules/mod_chipmunk/agua.c \
+	../../../../modules/mod_chipmunk/arbitros.c \
+	../../../../modules/mod_chipmunk/automGenTerr.c \
+	../../../../modules/mod_chipmunk/convexHull.c \
+	../../../../modules/mod_chipmunk/main.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png
-LOCAL_STATIC_LIBRARIES += curl
+LOCAL_STATIC_LIBRARIES += curl chipmunk
 
 include $(BUILD_SHARED_LIBRARY)

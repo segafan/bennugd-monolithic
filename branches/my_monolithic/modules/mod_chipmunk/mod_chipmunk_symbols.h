@@ -35,7 +35,7 @@
 #include <bgddl.h>
 
 #ifdef __BGDC__
-char * __bgdexport( mod_chipmunk, globals_def ) =
+char __bgdexport( mod_chipmunk, globals_def )[] =
     "STRUCT gphysics\n"
     "int space;\n"
     "float gravity_X;\n"                                                  /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_GRAVITY_X)) */
@@ -55,7 +55,7 @@ char * __bgdexport( mod_chipmunk, globals_def ) =
 
     ;
 
-char * __bgdexport( mod_chipmunk, locals_def ) =
+char __bgdexport( mod_chipmunk, locals_def )[] =
     "STRUCT lphysics\n"
     "int body=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
     "int shape=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
@@ -76,7 +76,7 @@ char * __bgdexport( mod_chipmunk, locals_def ) =
 
     ;
 
-char * __bgdexport( mod_chipmunk, types_def ) =
+char __bgdexport( mod_chipmunk, types_def )[] =
     "TYPE cpVect\n"
         " float x;\n"
         " float y;\n"
@@ -439,11 +439,11 @@ DLSYSFUNCS __bgdexport( mod_chipmunk, functions_exports) [] =
     {0, 0, 0, 0}//TYPE_POINTER
 };
 #else
-extern char * __bgdexport( mod_chipmunk, globals_def );
+extern char __bgdexport( mod_chipmunk, globals_def )[];
 extern DLVARFIXUP __bgdexport( mod_chipmunk, globals_fixup )[];
-extern char * __bgdexport( mod_chipmunk, locals_def );
+extern char __bgdexport( mod_chipmunk, locals_def )[];
 extern DLVARFIXUP __bgdexport( mod_chipmunk, locals_fixup )[];
-extern char * __bgdexport( mod_chipmunk, types_def );
+extern char __bgdexport( mod_chipmunk, types_def )[];
 extern DLCONSTANT __bgdexport( mod_chipmunk, constants_def )[];
 extern HOOK __bgdexport (mod_chipmunk , handler_hooks ) [];
 extern void __bgdexport( mod_chipmunk, module_initialize )();
