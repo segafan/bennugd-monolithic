@@ -99,7 +99,9 @@
 #ifndef NO_MODCURL
 #   include <mod_curl_symbols.h>
 #endif
-//#include <mod_sqlite3_symbols.h>
+#ifndef NO_MODSENSOR
+#   include <mod_sensor_symbols.h>
+#endif
 
 typedef struct
 {
@@ -199,7 +201,12 @@ basic_symbols symbol_list[] =
     { "image.fakelib"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
 #endif
 #ifndef NO_MODCHIPMUNK
-    { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency, mod_chipmunk_constants_def, mod_chipmunk_types_def, mod_chipmunk_globals_def, mod_chipmunk_locals_def, mod_chipmunk_functions_exports },
+    { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency,
+    mod_chipmunk_constants_def,
+    mod_chipmunk_types_def,
+    mod_chipmunk_globals_def,
+    mod_chipmunk_locals_def,
+    mod_chipmunk_functions_exports },
 #endif
 #ifndef NO_MODMULTI
     { "mod_multi.fakelib" , mod_multi_modules_dependency, NULL, NULL, NULL, NULL, mod_multi_functions_exports },
@@ -209,6 +216,9 @@ basic_symbols symbol_list[] =
 #endif
 #ifndef NO_MODCURL
     { "mod_curl.fakelib" , NULL, mod_curl_constants_def, NULL, NULL, NULL, mod_curl_functions_exports },
+#endif
+#ifndef NO_MODSENSOR
+    { "mod_sensor.fakelib" , NULL, NULL, NULL, NULL, NULL, mod_sensor_functions_exports },
 #endif
     { NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
@@ -295,7 +305,10 @@ extra_symbols symbol_list_runtime[] =
     { mod_fmodex_globals_fixup, NULL, mod_fmodex_module_initialize, mod_fmodex_module_finalize, NULL, NULL, NULL, mod_fmodex_handler_hooks }, //mod_fmodex
 #endif
 #ifndef NO_MODCURL
-    { NULL, NULL, mod_curl_module_initialize, mod_curl_module_finalize, NULL, NULL, NULL, NULL } //mod_curl
+    { NULL, NULL, mod_curl_module_initialize, mod_curl_module_finalize, NULL, NULL, NULL, NULL }, //mod_curl
+#endif
+#ifndef NO_MODSENSOR
+    { NULL, NULL, mod_sensor_module_initialize, mod_sensor_module_finalize, NULL, NULL, NULL, NULL } //mod_sensor
 #endif
 };
 #endif

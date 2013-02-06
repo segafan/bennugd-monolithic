@@ -77,7 +77,7 @@ int modChipmunk_Crear=1;
 int modChipmunk_numLista=0;
 cpBool modChipmunk_elim=0;
 
-char * __bgdexport( mod_chipmunk, globals_def ) =
+char __bgdexport( mod_chipmunk, globals_def )[] =
     "STRUCT gphysics\n"
     "int space;\n"
     "float gravity_X;\n"                                                  /* Access and set with *(FLOAT *)GLOADDR(mod_chipmunk,GLO_GRAVITY_X)) */
@@ -115,7 +115,7 @@ DLVARFIXUP __bgdexport( mod_chipmunk, globals_fixup )[] =
     { NULL, NULL, -1, -1 }
 };
 
-char * __bgdexport( mod_chipmunk, locals_def ) =
+char __bgdexport( mod_chipmunk, locals_def )[] =
     "STRUCT lphysics\n"
     "int body=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
     "int shape=0;\n"                                                        /* Access and set with GLODWORD(mod_chipmunk,GLO_SPACE) */
@@ -165,7 +165,7 @@ DLVARFIXUP __bgdexport( mod_chipmunk, locals_fixup )[] =
     { NULL, NULL, -1, -1 }
 };
 
-char * __bgdexport( mod_chipmunk, types_def ) =
+char __bgdexport( mod_chipmunk, types_def )[] =
     "TYPE cpVect\n"
         " float x;\n"
         " float y;\n"
