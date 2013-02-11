@@ -64,10 +64,6 @@ int SDL_SYS_NumSensors()
     return ASensorManager_getSensorList(mSensorManager, NULL);
 }
 
-void SDL_SYS_SensorDetect()
-{
-}
-
 SDL_bool SDL_SYS_SensorNeedsPolling()
 {
     return SDL_FALSE;
