@@ -134,7 +134,7 @@ extern DECLSPEC int SDLCALL SDL_SensorNumAxes(SDL_Sensor * sensor);
 /**
  *  Get the sensor type for an opened sensor.
  */
-extern DECLSPEC Uint8 SDL_SensorType(SDL_Sensor * sensor);
+extern DECLSPEC Uint8 SDLCALL SDL_SensorType(SDL_Sensor * sensor);
 
 /**
  *  Update the current state of the open sensors.
