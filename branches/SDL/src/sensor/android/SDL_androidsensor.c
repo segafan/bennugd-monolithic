@@ -182,6 +182,8 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
  * This function shouldn't update the sensor structure directly,
  * but instead should call SDL_PrivateSensor*() to deliver events
  * and update sensor device state.
+ * There's some useful information on what the Android sensors give you at:
+ * http://developer.android.com/reference/android/hardware/SensorEvent.html
  */
 void
 SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
