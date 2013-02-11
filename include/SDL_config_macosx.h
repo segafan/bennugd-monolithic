@@ -117,6 +117,9 @@
 #define SDL_JOYSTICK_IOKIT	1
 #define SDL_HAPTIC_IOKIT	1
 
+/* use dummy sensor driver */
+#define SDL_SENSOR_DUMMY	1
+
 /* Enable various shared object loading systems */
 #define SDL_LOADSO_DLOPEN	1
 

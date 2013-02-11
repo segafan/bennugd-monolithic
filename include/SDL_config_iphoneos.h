@@ -143,6 +143,9 @@
 /* enable joystick subsystem */
 #define SDL_JOYSTICK_DISABLED 0
 
+/* use dummy sensor driver */
+#define SDL_SENSOR_DUMMY	1
+
 /* Set max recognized G-force from accelerometer
    See src/joystick/uikit/SDLUIAccelerationDelegate.m for notes on why this is needed
  */
