@@ -55,9 +55,6 @@ extern int SDL_SYS_SensorInit(void);
 /* Function to return the number of sensor devices plugged in right now */
 extern int SDL_SYS_NumSensors();
 
-/* Function to cause any queued sensor insertions to be processed */
-extern void SDL_SYS_SensorDetect();
-
 /* Function to determine if the sensor loop needs to run right now */
 extern SDL_bool SDL_SYS_SensorNeedsPolling();
 
