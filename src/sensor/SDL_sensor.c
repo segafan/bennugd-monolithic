@@ -402,8 +402,6 @@ SDL_SensorUpdate(void)
 
         sensor = sensornext;
     }
-
-    SDL_SYS_SensorDetect();
 }
 
 /* return 1 if you want to run the sensor update loop this frame, used by hotplug support */
