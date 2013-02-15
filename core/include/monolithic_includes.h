@@ -201,12 +201,7 @@ basic_symbols symbol_list[] =
     { "image.fakelib"        , image_modules_dependency, NULL, NULL, NULL, NULL, image_functions_exports },
 #endif
 #ifndef NO_MODCHIPMUNK
-    { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency,
-    mod_chipmunk_constants_def,
-    mod_chipmunk_types_def,
-    mod_chipmunk_globals_def,
-    mod_chipmunk_locals_def,
-    mod_chipmunk_functions_exports },
+    { "mod_chipmunk.fakelib" , mod_chipmunk_modules_dependency, mod_chipmunk_constants_def, mod_chipmunk_types_def, mod_chipmunk_globals_def, mod_chipmunk_locals_def, mod_chipmunk_functions_exports },
 #endif
 #ifndef NO_MODMULTI
     { "mod_multi.fakelib" , mod_multi_modules_dependency, NULL, NULL, NULL, NULL, mod_multi_functions_exports },
@@ -218,7 +213,7 @@ basic_symbols symbol_list[] =
     { "mod_curl.fakelib" , NULL, mod_curl_constants_def, NULL, NULL, NULL, mod_curl_functions_exports },
 #endif
 #ifndef NO_MODSENSOR
-    { "mod_sensor.fakelib" , NULL, NULL, NULL, NULL, NULL, mod_sensor_functions_exports },
+    { "mod_sensor.fakelib" , NULL, mod_sensor_constants_def, NULL, NULL, NULL, mod_sensor_functions_exports },
 #endif
     { NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
