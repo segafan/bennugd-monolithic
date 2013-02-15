@@ -39,6 +39,7 @@ public class SDLActivity extends Activity {
 
     // Main components
     private static SDLActivity mSingleton;
+    private static _SDLSurface _mSurface;
     private static SDLSurface mSurface;
     private static View mTextEdit;
     public static ViewGroup mLayout;
@@ -83,14 +84,23 @@ public class SDLActivity extends Activity {
         mIsPaused = false;
 
         // Set up the surface
-        mSurface = new SDLSurface(getApplication());
-
-        mLayout = new AbsoluteLayout(this);
-        mLayout.addView(mSurface);
-
-        setContentView(mLayout);
-
-        SurfaceHolder holder = mSurface.getHolder();
+        if(Build.VERSION.SDK_INT >= 12) {
+            _mSurface = new _SDLSurface(getApplication());
+            mLayout = new AbsoluteLayout(this);
+            mLayout.addView(_mSurface);
+            
+            setContentView(mLayout);
+            
+            SurfaceHolder holder = _mSurface.getHolder();
+        } else {
+            mSurface = new SDLSurface(getApplication());
+            mLayout = new AbsoluteLayout(this);
+            mLayout.addView(mSurface);
+            
+            setContentView(mLayout);
+            
+            SurfaceHolder holder = mSurface.getHolder();
+        }
 
         // Don't allow the screen lock
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -230,7 +240,13 @@ public class SDLActivity extends Activity {
     public static int getJoystickAxes(int joy) {
         createJoystickList();
 
-        return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
+         // In newer Android versions we can get a real value
+         // In older versions, we can assume a sane X-Y default configuration
+         if(Build.VERSION.SDK_INT >= 12) {
+            return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
+         } else {
+            return 2;
+         }
     }
 
     public static int getJoyId(int devId) {
@@ -367,12 +383,17 @@ public class SDLActivity extends Activity {
     }
 
     public static boolean createEGLSurface() {
+        EGLSurface surface;
         if (SDLActivity.mEGLDisplay != null && SDLActivity.mEGLConfig != null) {
             EGL10 egl = (EGL10)EGLContext.getEGL();
             if (SDLActivity.mEGLContext == null) createEGLContext();
 
             Log.v("SDL", "Creating new EGL Surface");
-            EGLSurface surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
+            if(Build.VERSION.SDK_INT >= 12) {
+                surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity._mSurface, null);
+            } else {
+                surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
+            }
             if (surface == EGL10.EGL_NO_SURFACE) {
                 Log.e("SDL", "Couldn't create surface");
                 return false;
@@ -528,6 +549,60 @@ class SDLMain implements Runnable {
     }
 }
 
+class _SDLSurface extends SDLSurface implements View.OnGenericMotionListener {
+    // Keep track of the surface size to normalize touch events
+    private static float mWidth, mHeight;
+    
+    // Startup
+    public _SDLSurface(Context context) {
+        super(context);
+        getHolder().addCallback(this);
+        setOnGenericMotionListener(this);
+        
+        // Some arbitrary defaults to avoid a potential division by zero
+        mWidth = 1.0f;
+        mHeight = 1.0f;
+    }
+    
+    // Generic Motion (mouse hover, joystick...) events
+    public boolean onGenericMotion(View v, MotionEvent event) {
+        int actionPointerIndex = event.getActionIndex();
+        int action = event.getActionMasked();
+        
+        if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
+            float x = event.getX(actionPointerIndex) / mWidth;
+            float y = event.getY(actionPointerIndex) / mHeight;
+            
+            switch(action) {
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    // Send mouse motion
+                    SDLActivity.onNativeMouse(action, 0, x, y);
+                    break;
+                default:
+                    // Send mouse click
+                    int buttonId = 1; /* API 14: BUTTON_PRIMARY */
+                    if(Build.VERSION.SDK_INT >= 14) {
+                        buttonId = event.getButtonState();
+                    }
+                    // Event was mouse hover
+                    SDLActivity.onNativeMouse(action, buttonId, x, y);
+                    break;
+            }
+        } else if ( (event.getSource() & InputDevice.SOURCE_JOYSTICK) != 0) {
+            switch(action) {
+                case MotionEvent.ACTION_MOVE:
+                    int id = SDLActivity.getJoyId( event.getDeviceId() );
+                    float x = event.getAxisValue(MotionEvent.AXIS_X, actionPointerIndex);
+                    float y = event.getAxisValue(MotionEvent.AXIS_Y, actionPointerIndex);
+                    SDLActivity.onNativeJoy(id, action, x, y);
+                    
+                    break;
+            }
+        }
+        return true;
+    }
+}
+
 
 /**
     SDLSurface. This is what we draw on, so we need to know when it's created
@@ -536,10 +611,7 @@ class SDLMain implements Runnable {
     Because of this, that's where we set up the SDL thread
 */
 class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
-    View.OnKeyListener, View.OnTouchListener, View.OnGenericMotionListener  {
-
-    // Sensors
-    private static SensorManager mSensorManager;
+    View.OnKeyListener, View.OnTouchListener  {
 
     // Keep track of the surface size to normalize touch events
     private static float mWidth, mHeight;
@@ -554,9 +626,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
         requestFocus();
         setOnKeyListener(this);
         setOnTouchListener(this);
-        setOnGenericMotionListener(this);
-
-        mSensorManager = (SensorManager)context.getSystemService("sensor");
 
         // Some arbitrary defaults to avoid a potential division by zero
         mWidth = 1.0f;
@@ -712,44 +781,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
              }
         }
       return true;
-    }
-
-    // Generic Motion (mouse hover, joystick...) events
-    public boolean onGenericMotion(View v, MotionEvent event) {
-        int actionPointerIndex = event.getActionIndex();
-        int action = event.getActionMasked();
-
-        if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
-            float x = event.getX(actionPointerIndex) / mWidth;
-            float y = event.getY(actionPointerIndex) / mHeight;
-
-            switch(action) {
-                case MotionEvent.ACTION_HOVER_MOVE:
-                    // Send mouse motion
-                    SDLActivity.onNativeMouse(action, 0, x, y);
-                    break;
-                default:
-                    // Send mouse click
-                    int buttonId = 1; /* API 14: BUTTON_PRIMARY */
-                    if(Build.VERSION.SDK_INT >= 14) {
-                        buttonId = event.getButtonState();
-                    }
-                    // Event was mouse hover
-                    SDLActivity.onNativeMouse(action, buttonId, x, y);
-                    break;
-            }
-        } else if ( (event.getSource() & InputDevice.SOURCE_JOYSTICK) != 0) {
-            switch(action) {
-                case MotionEvent.ACTION_MOVE:
-                    int id = SDLActivity.getJoyId( event.getDeviceId() );
-                    float x = event.getAxisValue(MotionEvent.AXIS_X, actionPointerIndex);
-                    float y = event.getAxisValue(MotionEvent.AXIS_Y, actionPointerIndex);
-                    SDLActivity.onNativeJoy(id, action, x, y);
-
-                    break;
-            }
-        }
-        return true;
     }
 }
 

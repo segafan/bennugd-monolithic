@@ -24,9 +24,9 @@ quit   = 0;
 
 Process Main()
 Private
-int song=0, num_fingers=0, num_joys=0, i=0;
+int song=0, num_fingers=0, num_joys=0, num_sensors=0, i=0;
 int g_w=0, g_h=0;
-int text1=0, text2=0, text3=0;
+int text1=0, text2=0, text3=0, text4=0;
 string text;
 
 Begin
@@ -45,15 +45,20 @@ Begin
 
     // Write some debug info to the screen
     num_joys = joy_number();
+    num_sensors = sensor_number();
     write(0, 320, 0, 2, "Width: "+width+" Height:"+height);
     write(0, 320, 10, 2, "scale_resolution: 0"+scale_resolution);
     write(0, 160, 240, 4, "Detected joysticks: "+num_joys);
+    for(i=0; i<num_sensors; i++)
+        say(i+": "+sensor_name(i));
+    end;
     for(i=0; i<num_joys; i++)
         write(0, 160, 250+10*i, 4, joy_name(i)+" Axes: "+joy_numaxes(i));
     end;
 
     /* Some touchscreens cannot detect all 5 fingers at once */
     while(num_fingers < 4 && focus_status == 1)
+        sensor_log();
         // Position the pointer
         x = mouse.x; y = mouse.y;
 
@@ -66,8 +71,6 @@ Begin
         end;
 
         text = "";
-        /*say("0:0"+joy_getaxis(0, 0));
-        say("0:1"+joy_getaxis(0, 1));*/
         if(joy_getaxis(0, 0) < -10000)
             text += " JOY.LEFT "+joy_getaxis(0, 0);
         end
@@ -198,9 +201,10 @@ Begin
             text += " M.MIDDLE ";
         end
         text3 = write(0, 160, 260+10*i, 4, text);
+        text4 = write(0, 160, 260+11*i, 4, sensor_getaxis(1,0));
 
         frame;
-        delete_text(text1); delete_text(text2); delete_text(text3);
+        delete_text(text1); delete_text(text2); delete_text(text3); delete_text(text4);
     End;
 
     unload_map(0, graph);
