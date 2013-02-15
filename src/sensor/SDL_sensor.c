@@ -120,8 +120,8 @@ SDL_SensorOpen(int device_index)
         sensor->name = NULL;
 
     if (sensor->naxes > 0) {
-        sensor->axes = (Sint16 *) SDL_malloc
-            (sensor->naxes * sizeof(Sint16));
+        sensor->axes = (float *) SDL_malloc
+            (sensor->naxes * sizeof(float));
     }
     if ( (sensor->naxes > 0) && (!sensor->axes) ) {
         SDL_OutOfMemory();
@@ -129,7 +129,7 @@ SDL_SensorOpen(int device_index)
         return NULL;
     }
     if (sensor->axes) {
-        SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(Sint16));
+        SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(float));
     }
 
     /* Add sensor to list */
@@ -194,19 +194,18 @@ SDL_SensorType(SDL_Sensor * sensor)
 /*
  * Get the current state of an axis control on a sensor
  */
-Sint16
+float
 SDL_SensorGetAxis(SDL_Sensor * sensor, int axis)
 {
-    Sint16 state;
+    float state;
 
     if (!SDL_PrivatesensorValid(sensor)) {
-        return (0);
+        return (0.0);
     }
     if (axis < sensor->naxes) {
         state = sensor->axes[axis];
     } else {
-        SDL_SetError("sensor only has %d axes", sensor->naxes);
-        state = 0;
+        state = 0.0;
     }
     return (state);
 }
@@ -343,10 +342,8 @@ SDL_SensorQuit(void)
 /* These are global for SDL_syssensor.c and SDL_events.c */
 
 int
-SDL_PrivatesensorAxis(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
+SDL_PrivateSensorAxis(SDL_Sensor * sensor, Uint8 axis, float value)
 {
-    int posted;
-
     /* Make sure we're not getting garbage events */
     if (axis >= sensor->naxes) {
         return 0;
@@ -359,8 +356,7 @@ SDL_PrivatesensorAxis(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
     sensor->axes[axis] = value;
 
     /* Post the event, if desired */
-    posted = 0;
-    return (posted);
+    return 0;
 }
 
 void
@@ -389,7 +385,7 @@ SDL_SensorUpdate(void)
             /* Tell the app that everything is centered/unpressed...  */
             for (i = 0; i < sensor->naxes; i++)
             {
-                SDL_PrivatesensorAxis(sensor, i, 0);
+                SDL_PrivateSensorAxis(sensor, i, 0.0);
             }
         }
 

@@ -330,6 +330,18 @@ extern "C" void Android_JNI_SetActivityTitle(const char *title)
     }
 }
 
+extern "C" void Android_JNI_openURL(const char* url)
+{
+    jmethodID mid;
+    JNIEnv *mEnv = Android_JNI_GetEnv();
+    mid = mEnv->GetStaticMethodID(mActivityClass,"openURL", "(Ljava/lang/String;)V");
+    if (mid) {
+        jstring Url = mEnv->NewStringUTF(url);
+        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
+        mEnv->DeleteLocalRef(Url);
+    }
+}
+
 static void Android_JNI_ThreadDestroyed(void* value) {
     /* The thread is being destroyed, detach it from the Java VM and set the mThreadKey value to NULL as required */
     JNIEnv *env = (JNIEnv*) value;
@@ -584,7 +596,7 @@ static int Android_JNI_FileOpen(SDL_RWops* ctx)
 
     if (false) {
 fallback:
-        __android_log_print(ANDROID_LOG_DEBUG, "SDL", "Falling back to legacy InputStream method for opening file");
+        //__android_log_print(ANDROID_LOG_DEBUG, "SDL", "Falling back to legacy InputStream method for opening file");
         /* Try the old method using InputStream */
         ctx->hidden.androidio.assetFileDescriptorRef = NULL;
 

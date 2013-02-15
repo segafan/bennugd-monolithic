@@ -33,6 +33,7 @@ extern "C" {
 extern SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion, int red, int green, int blue, int alpha, int buffer, int depth, int stencil, int buffers, int samples);
 extern void Android_JNI_SwapWindow();
 extern void Android_JNI_SetActivityTitle(const char *title);
+extern void Android_JNI_openURL(const char* url);
 extern SDL_bool Android_JNI_GetAccelerometerValues(float values[3]);
 extern void Android_JNI_ShowTextInput(SDL_Rect *inputRect);
 extern void Android_JNI_HideTextInput();

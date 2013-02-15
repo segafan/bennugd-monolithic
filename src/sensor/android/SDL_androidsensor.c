@@ -166,6 +166,8 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
     
     sensor->resolution = ASensor_getResolution(list[device_index]);
     
+    sensor->instance_id = device_index;
+    
     // If there were no open sensors, open the event queue and associate
     // it to the looper
     if(open_sensors == 0) {
@@ -199,55 +201,55 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
                                            &event, 1) > 0) {
             switch(event.type) {
                 case 0x00000001:
-                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.acceleration.z);
                     break;
                 case 0x00000002:
-                    SDL_PrivatesensorAxis(sensor, 0, event.magnetic.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.magnetic.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.magnetic.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.magnetic.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.magnetic.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.magnetic.z);
                     break;
                 case 0x00000003:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.azimuth);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.pitch);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.roll);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.azimuth);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.pitch);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.roll);
                     break;
                 case 0x00000004:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x00000005:
-                    SDL_PrivatesensorAxis(sensor, 0, event.light);
+                    SDL_PrivateSensorAxis(sensor, 0, event.light);
                     break;
                 case 0x00000006:
-                    SDL_PrivatesensorAxis(sensor, 0, event.pressure);
+                    SDL_PrivateSensorAxis(sensor, 0, event.pressure);
                     break;
                 case 0x00000007:
-                    SDL_PrivatesensorAxis(sensor, 0, event.temperature);
+                    SDL_PrivateSensorAxis(sensor, 0, event.temperature);
                     break;
                 case 0x00000008:
-                    SDL_PrivatesensorAxis(sensor, 0, event.distance);
+                    SDL_PrivateSensorAxis(sensor, 0, event.distance);
                     break;
                 case 0x00000009:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000a:
-                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.acceleration.z);
                     break;
                 case 0x0000000b:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000c:
                     // Is this OK?
-                    SDL_PrivatesensorAxis(sensor, 0, event.data[0]);
+                    SDL_PrivateSensorAxis(sensor, 0, event.data[0]);
                     break;
                 default:
                     break;
