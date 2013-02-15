@@ -33,7 +33,7 @@ struct _SDL_Sensor
     Uint8 type;                     /* Type of sensor */
 
     int naxes;                      /* Number of axis controls on the sensor */
-    Sint16 *axes;                   /* Current axis states */
+    float *axes;                   /* Current axis states */
     float resolution;               /* Resolution for this sensor */
 
     struct sensor_hwdata *hwdata;   /* Driver dependent information */

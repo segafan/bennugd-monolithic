@@ -162,7 +162,7 @@ extern DECLSPEC int SDLCALL SDL_SensorEventState(int state);
  *
  *  The axis indices start at index 0.
  */
-extern DECLSPEC Sint16 SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
+extern DECLSPEC float SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
                                                    int axis);
 
 /**

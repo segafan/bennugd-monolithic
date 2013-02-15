@@ -27,6 +27,9 @@
 extern int SDL_SensorInit(void);
 extern void SDL_SensorQuit(void);
 
+/* Internal event queueing functions */
+extern int SDL_PrivateSensorAxis(SDL_Sensor * sensor,
+                                   Uint8 axis, float value);
 
 /* Helper function to let lower sys layer tell the event system if the joystick code needs to think */
 extern SDL_bool SDL_PrivateSensorNeedsPolling();
