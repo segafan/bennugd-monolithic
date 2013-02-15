@@ -1,7 +1,5 @@
 /*
- *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
+ *  Copyright © 2013 Joseba García Etxebarria <joseba.gar@gmail.com>
  *
  *  This file is part of Bennu - Game Development
  *
@@ -32,13 +30,37 @@
 #include <bgddl.h>
 
 #ifdef __BGDC__
+
+DLCONSTANT  __bgdexport( mod_sensor, constants_def )[] = {
+    { "SENSOR_UNKNOWN"              , TYPE_DWORD    , 0               },
+    { "SENSOR_ACCEL"                , TYPE_DWORD    , 1               },
+    { "SENSOR_MAGNET"               , TYPE_DWORD    , 2               },
+    { "SENSOR_ORIENTATION"          , TYPE_DWORD    , 3               },
+    { "SENSOR_GYRO"                 , TYPE_DWORD    , 4               },
+    { "SENSOR_LIGHT"                , TYPE_DWORD    , 5               },
+    { "SENSOR_PRESSURE"             , TYPE_DWORD    , 6               },
+    { "SENSOR_TEMPERATURE"          , TYPE_DWORD    , 7               },
+    { "SENSOR_PROXIMITY"            , TYPE_DWORD    , 8               },
+    { "SENSOR_GRAVITY"              , TYPE_DWORD    , 9               },
+    { "SENSOR_LACCEL"               , TYPE_DWORD    , 10              },
+    { "SENSOR_ROTVECTOR"            , TYPE_DWORD    , 11              },
+    { "SENSOR_RHUMIDITY"            , TYPE_DWORD    , 12              },
+};
+
 DLSYSFUNCS  __bgdexport( mod_sensor, functions_exports )[] =
 {
-    { "SSAY"     , "S", TYPE_UNDEFINED, 0              },
-    { "SSAY_FAST", "S", TYPE_UNDEFINED, 0              },
-    { 0         , 0  , 0             , 0              }
+    { "SENSOR_NUMBER",  "",    TYPE_INT,       0 },
+    { "SENSOR_OPEN",    "I",   TYPE_INT,       0 },
+    { "SENSOR_CLOSE",   "I",   TYPE_UNDEFINED, 0 },
+    { "SENSOR_NAME",    "I",   TYPE_STRING,    0 },
+    { "SENSOR_NUMAXES", "I",   TYPE_INT,       0 },
+    { "SENSOR_GETAXIS", "II",  TYPE_FLOAT,     0 },
+    { "SENSOR_TYPE",    "I",   TYPE_INT,       0 },
+    { "SENSOR_LOG",     "",    TYPE_UNDEFINED, 0 },
+    { 0           ,     0,     0             , 0 }
 };
 #else
+extern DLCONSTANT  __bgdexport( mod_sensor, constants_def )[];
 extern DLSYSFUNCS __bgdexport( mod_sensor, functions_exports )[];
 extern void __bgdexport( mod_sensor, module_initialize )();
 extern void __bgdexport( mod_sensor, module_finalize )();
