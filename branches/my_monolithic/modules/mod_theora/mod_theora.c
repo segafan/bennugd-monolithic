@@ -49,6 +49,7 @@ struct ctx video;
 
 int playing_video=0;
 
+// Paint the current video frame onscreen, skipping those that we already missed
 static int refresh_video()
 {
     if(! playing_video) {
@@ -64,7 +65,6 @@ static int refresh_video()
     // Play video frames when it's time.
     if (video.frame && (video.frame->playms <= now))
     {
-        //printf("Play video frame (%u ms)!\n", video->playms);
         if ( video.framems && ((now - video.frame->playms) >= video.framems) )
         {
             // Skip frames to catch up, but keep track of the last one
@@ -96,7 +96,7 @@ static int refresh_video()
         else
         {
             memcpy(video.graph->data, video.frame->pixels, video.graph->height * video.graph->pitch);
-            // Mark the video GRAPH as dirty
+            // Mark the video GRAPH as dirty so that BennuGD redraws it
             video.graph->modified = 1;
             video.graph->info_flags &=~GI_CLEAN;
         }
@@ -135,7 +135,7 @@ static int video_play(INSTANCE *my, int * params)
         return -1;
 
     /* Start the graphics mode, if not initialized yet */
-	if(! scr_initialized) gr_init(320, 240);
+	if(! scr_initialized) return (-1);
 	
     /* Lock the video playback */
     playing_video = 1;
