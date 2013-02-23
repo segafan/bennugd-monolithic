@@ -45,27 +45,12 @@ Begin
     
     while(! key(_esc))
         if(timer[0] > time+delay)
-            if(key(_space))
-                time = timer[0];
-            end;
             if(key(_right))
                 angle += 100;
                 time = timer[0];
             end;
             if(key(_left))
                 angle -= 100;
-                time = timer[0];
-            end;
-            if(key(_m))
-                time = timer[0];
-            end;
-            if(key(_up))
-                time = timer[0];
-            end;
-            if(key(_down))
-                time = timer[0];
-            end;
-            if(key(_enter))
                 time = timer[0];
             end;
         end;
