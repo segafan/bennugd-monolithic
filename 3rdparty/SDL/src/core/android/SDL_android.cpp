@@ -57,7 +57,7 @@ extern void Android_RunAudioThread();
 *******************************************************************************/
 #include <jni.h>
 #include <android/log.h>
-
+#include <android/sensor.h>
 
 /*******************************************************************************
                                Globals
@@ -1060,6 +1060,67 @@ extern "C" int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery
     env->DeleteLocalRef(intent);
 
     return 0;
+}
+
+// return the total number of plugged in joysticks
+extern "C" int Android_JNI_GetNumJoysticks()
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
+    if (!mid) {
+        return -1;
+    }
+    return env->CallIntMethod(mActivityClass, mid);
+}
+
+// Return the name of joystick number "i"
+extern "C" char* Android_JNI_GetJoystickName(int i)
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return SDL_strdup("");
+    }
+
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
+    if (!mid) {
+        return SDL_strdup("");
+    }
+    jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
+    const char* utf = env->GetStringUTFChars(string, 0);
+    if (!utf) {
+        return SDL_strdup("");
+    }
+
+    char* text = SDL_strdup(utf);
+    env->ReleaseStringUTFChars(string, utf);
+    return text;
+}
+
+// return the number of axes in the given joystick
+extern "C" int Android_JNI_GetJoystickAxes(int joy)
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickAxes", "(I)I");
+    if (!mid) {
+        return -1;
+    }
+    return env->CallIntMethod(mActivityClass, mid, joy);
+}
+
+// Return the name of the default accelerometer
+// This is much easier to be done with NDK than with JNI
+extern "C" char* Android_GetAccelName()
+{
+    ASensorManager* mSensorManager = ASensorManager_getInstance();
+    ASensor const* mAccelerometer = ASensorManager_getDefaultSensor(mSensorManager, ASENSOR_TYPE_ACCELEROMETER);
+
+    return SDL_strdup(ASensor_getName(mAccelerometer));
 }
 
 // sends message to be handled on the UI event dispatch thread
