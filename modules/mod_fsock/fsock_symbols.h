@@ -42,7 +42,7 @@ DLSYSFUNCS  __bgdexport( fsock, functions_exports )[] =
     { 0                     , 0      , 0        , 0 }
 };
 #else
-extern DLSYSFUNCS  __bgdexport( mod_sound, functions_exports )[];
+extern DLSYSFUNCS  __bgdexport( fsock, functions_exports )[];
 #endif
 
 #endif
