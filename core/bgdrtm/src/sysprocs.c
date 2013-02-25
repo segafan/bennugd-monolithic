@@ -461,7 +461,7 @@ void sysproc_init()
 
         if ( !library )
         {
-            fprintf( stderr, "%s\n", dliberror() ) ;
+            SDL_Log( "%s\n", dliberror() ) ;
             exit( 0 );
         }
 
