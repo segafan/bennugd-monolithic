@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DEPS="bennugd-core bennugd-module-mod_video sdl"
+DEPS="bennugd-core bennugd-module-mod_video sdl theora vorbis"
 MODULE="mod_theora"
 
 # Clean previous module files
@@ -13,13 +13,13 @@ gcc -c -Wall $(pkg-config --cflags $DEPS) $MODULE.c theoraplay.c
 
 # Link the module
 if [ -f $MODULE.o ]; then
-	gcc -o$MODULE.so $MODULE.o theoraplay.o -shared $(pkg-config --libs $DEPS) -Wl,-soname -Wl,$MODULE.so
+	gcc -olib$MODULE.so $MODULE.o theoraplay.o -shared $(pkg-config --libs $DEPS) -Wl,-soname -Wl,lib$MODULE.so -logg -lvorbis -ltheoradec 
 fi
 
 # Strip and remove compilation files
-if [ -f $MODULE.so ]; then
+if [ -f lib$MODULE.so ]; then
 	rm $MODULE.o
     rm theoraplay.o
-	strip $MODULE.so
+	strip lib$MODULE.so
 fi
 
