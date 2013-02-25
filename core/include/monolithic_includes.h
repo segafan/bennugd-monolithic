@@ -102,6 +102,9 @@
 #ifndef NO_MODSENSOR
 #   include <mod_sensor_symbols.h>
 #endif
+#ifndef NO_FSOCK
+#   include <fsock_symbols.h>
+#endif
 
 typedef struct
 {
@@ -215,6 +218,9 @@ basic_symbols symbol_list[] =
 #ifndef NO_MODSENSOR
     { "mod_sensor.fakelib" , NULL, mod_sensor_constants_def, NULL, NULL, NULL, mod_sensor_functions_exports },
 #endif
+#ifndef NO_FSOCK
+    { "fsock.fakelib" , NULL, NULL, NULL, NULL, NULL, mod_sensor_functions_exports },
+#endif
     { NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -303,7 +309,10 @@ extra_symbols symbol_list_runtime[] =
     { NULL, NULL, mod_curl_module_initialize, mod_curl_module_finalize, NULL, NULL, NULL, NULL }, //mod_curl
 #endif
 #ifndef NO_MODSENSOR
-    { NULL, NULL, mod_sensor_module_initialize, mod_sensor_module_finalize, NULL, NULL, NULL, NULL } //mod_sensor
+    { NULL, NULL, mod_sensor_module_initialize, mod_sensor_module_finalize, NULL, NULL, NULL, NULL }, //mod_sensor
+#endif
+#ifndef NO_FSOCK
+    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL } //fsock
 #endif
 };
 #endif
