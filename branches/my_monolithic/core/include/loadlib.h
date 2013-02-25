@@ -235,8 +235,7 @@ static dlibhandle * dlibopen( const char * fname )
 				        return NULL;
 			      }
 			
-      			dlib->index = i;
-      			
+      		dlib->index = i;
             return ( dlib );
         }
 		

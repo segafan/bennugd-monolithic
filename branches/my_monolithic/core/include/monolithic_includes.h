@@ -219,7 +219,7 @@ basic_symbols symbol_list[] =
     { "mod_sensor.fakelib" , NULL, mod_sensor_constants_def, NULL, NULL, NULL, mod_sensor_functions_exports },
 #endif
 #ifndef NO_FSOCK
-    { "fsock.fakelib" , NULL, NULL, NULL, NULL, NULL, mod_sensor_functions_exports },
+    { "fsock.fakelib" , NULL, NULL, NULL, NULL, NULL, fsock_functions_exports },
 #endif
     { NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
