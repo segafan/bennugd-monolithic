@@ -20,16 +20,16 @@
 */
 #include "SDL_config.h"
 
-/* Useful functions and variables from SDL_joystick.c */
+/* Useful functions and variables from SDL_sensor.c */
 #include "SDL_sensor.h"
 
 /* Initialization and shutdown functions */
 extern int SDL_SensorInit(void);
 extern void SDL_SensorQuit(void);
 
-
-/* Helper function to let lower sys layer tell the event system if the joystick code needs to think */
-extern SDL_bool SDL_PrivateSensorNeedsPolling();
+/* Internal event queueing functions */
+extern int SDL_PrivateSensorAxis(SDL_Sensor * sensor,
+                                   Uint8 axis, float value);
 
 /* Internal sanity checking functions */
 extern int SDL_PrivateSensorValid(SDL_Sensor * sensor);

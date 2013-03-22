@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -148,7 +148,7 @@ X11_CreateWindowFramebuffer(_THIS, SDL_Window * window, Uint32 * format,
 }
 
 int
-X11_UpdateWindowFramebuffer(_THIS, SDL_Window * window, SDL_Rect * rects,
+X11_UpdateWindowFramebuffer(_THIS, SDL_Window * window, const SDL_Rect * rects,
                             int numrects)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;

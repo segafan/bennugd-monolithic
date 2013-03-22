@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -522,7 +522,17 @@ X11_VideoInit(_THIS)
     GET_ATOM(_NET_WM_ICON_NAME);
     GET_ATOM(_NET_WM_ICON);
     GET_ATOM(_NET_WM_PING);
+    GET_ATOM(_NET_ACTIVE_WINDOW);
     GET_ATOM(UTF8_STRING);
+    GET_ATOM(PRIMARY);
+    GET_ATOM(XdndEnter);
+    GET_ATOM(XdndPosition);
+    GET_ATOM(XdndStatus);
+    GET_ATOM(XdndTypeList);
+    GET_ATOM(XdndActionCopy);
+    GET_ATOM(XdndDrop);
+    GET_ATOM(XdndFinished);
+    GET_ATOM(XdndSelection);
 
     /* Detect the window manager */
     X11_CheckWindowManager(_this);

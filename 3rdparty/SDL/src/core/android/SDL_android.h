@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -33,7 +33,13 @@ extern "C" {
 extern SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion, int red, int green, int blue, int alpha, int buffer, int depth, int stencil, int buffers, int samples);
 extern void Android_JNI_SwapWindow();
 extern void Android_JNI_SetActivityTitle(const char *title);
+#ifdef ENABLE_ACCELOMETER_AS_EMULATED_JOYSTICK
 extern SDL_bool Android_JNI_GetAccelerometerValues(float values[3]);
+<<<<<<< local
+extern SDL_bool Android_JNI_HasAccelerometer();
+=======
+#endif
+>>>>>>> other
 extern void Android_JNI_ShowTextInput(SDL_Rect *inputRect);
 extern void Android_JNI_HideTextInput();
 
@@ -59,6 +65,16 @@ SDL_bool Android_JNI_HasClipboardText();
 
 /* Power support */
 int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery, int* seconds, int* percent);
+
+/* Joystick/accelerometer support */
+int Android_JNI_JoystickInit();
+int Android_JNI_JoystickQuit();
+int Android_JNI_GetNumJoysticks();
+char* Android_JNI_GetJoystickName(int i);
+int Android_JNI_GetJoystickNumOfAxes(int index);
+#ifdef ENABLE_ACCELOMETER_AS_EMULATED_JOYSTICK
+char* Android_GetAccelName();
+#endif
 
 // Threads
 #include <jni.h>

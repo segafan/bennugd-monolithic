@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -69,14 +69,14 @@ static VideoBootStrap *bootstrap[] = {
 #if SDL_VIDEO_DRIVER_PANDORA
     &PND_bootstrap,
 #endif
-#if SDL_VIDEO_DRIVER_NDS
-    &NDS_bootstrap,
-#endif
 #if SDL_VIDEO_DRIVER_UIKIT
     &UIKIT_bootstrap,
 #endif
 #if SDL_VIDEO_DRIVER_ANDROID
     &Android_bootstrap,
+#endif
+#if SDL_VIDEO_DRIVER_PSP
+    &PSP_bootstrap,
 #endif
 #if SDL_VIDEO_DRIVER_DUMMY
     &DUMMY_bootstrap,
@@ -308,7 +308,7 @@ SDL_CreateWindowTexture(_THIS, SDL_Window * window, Uint32 * format, void ** pix
 }
 
 static int
-SDL_UpdateWindowTexture(_THIS, SDL_Window * window, SDL_Rect * rects, int numrects)
+SDL_UpdateWindowTexture(_THIS, SDL_Window * window, const SDL_Rect * rects, int numrects)
 {
     SDL_WindowTextureData *data;
     SDL_Rect rect;
@@ -437,7 +437,7 @@ SDL_VideoInit(const char *driver_name)
     }
     if (driver_name != NULL) {
         for (i = 0; bootstrap[i]; ++i) {
-            if (SDL_strcasecmp(bootstrap[i]->name, driver_name) == 0) {
+            if (SDL_strncasecmp(bootstrap[i]->name, driver_name, SDL_strlen(driver_name)) == 0) {
                 video = bootstrap[i]->create(index);
                 break;
             }
@@ -1020,6 +1020,11 @@ SDL_GetWindowDisplayMode(SDL_Window * window, SDL_DisplayMode * mode)
     SDL_DisplayMode fullscreen_mode;
 	SDL_VideoDisplay *display;
 
+    if (!mode) {
+      SDL_InvalidParamError("mode");
+      return -1;
+    }
+    
     CHECK_WINDOW_MAGIC(window, -1);
 
     fullscreen_mode = window->fullscreen_mode;
@@ -1519,18 +1524,16 @@ SDL_SetWindowPosition(SDL_Window * window, int x, int y)
 void
 SDL_GetWindowPosition(SDL_Window * window, int *x, int *y)
 {
-    /* Clear the values */
-    if (x) {
-        *x = 0;
-    }
-    if (y) {
-        *y = 0;
-    }
-
     CHECK_WINDOW_MAGIC(window, );
 
     /* Fullscreen windows are always at their display's origin */
     if (window->flags & SDL_WINDOW_FULLSCREEN) {
+        if (x) {
+            *x = 0;
+        }
+        if (y) {
+            *y = 0;
+        }
     } else {
         if (x) {
             *x = window->x;
@@ -1563,6 +1566,14 @@ void
 SDL_SetWindowSize(SDL_Window * window, int w, int h)
 {
     CHECK_WINDOW_MAGIC(window, );
+    if (w <= 0) {
+        SDL_InvalidParamError("w");
+        return;
+    }
+    if (h <= 0) {
+        SDL_InvalidParamError("h");
+        return;
+    }
 
     /* FIXME: Should this change fullscreen modes? */
     if (!(window->flags & SDL_WINDOW_FULLSCREEN)) {
@@ -1581,30 +1592,27 @@ SDL_SetWindowSize(SDL_Window * window, int w, int h)
 void
 SDL_GetWindowSize(SDL_Window * window, int *w, int *h)
 {
-    int dummy;
-
-    if (!w) {
-        w = &dummy;
-    }
-    if (!h) {
-        h = &dummy;
-    }
-
-    *w = 0;
-    *h = 0;
-
     CHECK_WINDOW_MAGIC(window, );
-
-    if (_this && window && window->magic == &_this->window_magic) {
+    if (w) {
         *w = window->w;
-        *h = window->h;
     }
+    if (h) {
+        *h = window->h;
+    }                                
 }
 
 void
 SDL_SetWindowMinimumSize(SDL_Window * window, int min_w, int min_h)
 {
     CHECK_WINDOW_MAGIC(window, );
+    if (min_w <= 0) {
+        SDL_InvalidParamError("min_w");
+        return;
+    }
+    if (min_h <= 0) {
+        SDL_InvalidParamError("min_h");
+        return;
+    }
     
     if (!(window->flags & SDL_WINDOW_FULLSCREEN)) {
         window->min_w = min_w;
@@ -1620,22 +1628,11 @@ SDL_SetWindowMinimumSize(SDL_Window * window, int min_w, int min_h)
 void
 SDL_GetWindowMinimumSize(SDL_Window * window, int *min_w, int *min_h)
 {
-    int dummy;
-    
-    if (!min_w) {
-        min_w = &dummy;
-    }
-    if (!min_h) {
-        min_h = &dummy;
-    }
-    
-    *min_w = 0;
-    *min_h = 0;
-    
     CHECK_WINDOW_MAGIC(window, );
-    
-    if (_this && window && window->magic == &_this->window_magic) {
+    if (min_w) {
         *min_w = window->min_w;
+    }
+    if (min_h) {
         *min_h = window->min_h;
     }
 }
@@ -1644,6 +1641,14 @@ void
 SDL_SetWindowMaximumSize(SDL_Window * window, int max_w, int max_h)
 {
     CHECK_WINDOW_MAGIC(window, );
+    if (max_w <= 0) {
+        SDL_InvalidParamError("max_w");
+        return;
+    }
+    if (max_h <= 0) {
+        SDL_InvalidParamError("max_h");
+        return;
+    }
     
     if (!(window->flags & SDL_WINDOW_FULLSCREEN)) {
         window->max_w = max_w;
@@ -1659,22 +1664,11 @@ SDL_SetWindowMaximumSize(SDL_Window * window, int max_w, int max_h)
 void
 SDL_GetWindowMaximumSize(SDL_Window * window, int *max_w, int *max_h)
 {
-    int dummy;
-    
-    if (!max_w) {
-        max_w = &dummy;
-    }
-    if (!max_h) {
-        max_h = &dummy;
-    }
-    
-    *max_w = 0;
-    *max_h = 0;
-    
     CHECK_WINDOW_MAGIC(window, );
-    
-    if (_this && window && window->magic == &_this->window_magic) {
+    if (max_w) {
         *max_w = window->max_w;
+    }
+    if (max_h) {
         *max_h = window->max_h;
     }
 }
@@ -1847,7 +1841,7 @@ SDL_UpdateWindowSurface(SDL_Window * window)
 }
 
 int
-SDL_UpdateWindowSurfaceRects(SDL_Window * window, SDL_Rect * rects,
+SDL_UpdateWindowSurfaceRects(SDL_Window * window, const SDL_Rect * rects,
                              int numrects)
 {
     CHECK_WINDOW_MAGIC(window, -1);
@@ -2991,40 +2985,51 @@ int
 SDL_ShowMessageBox(const SDL_MessageBoxData *messageboxdata, int *buttonid)
 {
     int dummybutton;
+	int retval = -1;
+	SDL_bool relative_mode = SDL_GetRelativeMouseMode();
+	int show_cursor_prev = SDL_ShowCursor( 1 );
+
+	SDL_SetRelativeMouseMode( SDL_FALSE );
 
     if (!buttonid) {
         buttonid = &dummybutton;
     }
     if (_this && _this->ShowMessageBox) {
         if (_this->ShowMessageBox(_this, messageboxdata, buttonid) == 0) {
-            return 0;
+			retval = 0;
         }
     }
 
     /* It's completely fine to call this function before video is initialized */
 #if SDL_VIDEO_DRIVER_WINDOWS
-    if (WIN_ShowMessageBox(messageboxdata, buttonid) == 0) {
-        return 0;
+    if ((retval == -1) && (WIN_ShowMessageBox(messageboxdata, buttonid) == 0)) {
+        retval = 0;
     }
 #endif
 #if SDL_VIDEO_DRIVER_COCOA
-    if (Cocoa_ShowMessageBox(messageboxdata, buttonid) == 0) {
-        return 0;
+    if ((retval == -1) && (Cocoa_ShowMessageBox(messageboxdata, buttonid) == 0)) {
+        retval = 0;
     }
 #endif
 #if SDL_VIDEO_DRIVER_UIKIT
-    if (UIKit_ShowMessageBox(messageboxdata, buttonid) == 0) {
-        return 0;
+    if ((retval == -1) && (UIKit_ShowMessageBox(messageboxdata, buttonid) == 0)) {
+        retval = 0;
     }
 #endif
 #if SDL_VIDEO_DRIVER_X11
-    if (X11_ShowMessageBox(messageboxdata, buttonid) == 0) {
-        return 0;
+    if ((retval == -1) && (X11_ShowMessageBox(messageboxdata, buttonid) == 0)) {
+        retval = 0;
     }
 #endif
 
-    SDL_SetError("No message system available");
-    return -1;
+	SDL_ShowCursor( show_cursor_prev );
+	SDL_SetRelativeMouseMode( relative_mode );
+
+	if(retval == -1)
+	{
+		SDL_SetError("No message system available");
+	}
+    return retval;
 }
 
 int

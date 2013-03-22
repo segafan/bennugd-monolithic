@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -36,11 +36,6 @@
 #ifdef ANDROID
 #include "../core/android/SDL_android.h"
 #endif
-
-#ifdef __NDS__
-/* include libfat headers for fatInitDefault(). */
-#include <fat.h>
-#endif /* __NDS__ */
 
 #ifdef __WIN32__
 
@@ -451,7 +446,7 @@ static size_t SDLCALL
 mem_writeconst(SDL_RWops * context, const void *ptr, size_t size, size_t num)
 {
     SDL_SetError("Can't write to read-only memory");
-    return (-1);
+    return (0);
 }
 
 static int SDLCALL
@@ -513,6 +508,7 @@ SDL_RWFromFile(const char *file, const char *mode)
     rwops->read = Android_JNI_FileRead;
     rwops->write = Android_JNI_FileWrite;
     rwops->close = Android_JNI_FileClose;
+    rwops->type = SDL_RWOPS_JNIFILE;
 
 #elif defined(__WIN32__)
     rwops = SDL_AllocRW();
@@ -527,6 +523,7 @@ SDL_RWFromFile(const char *file, const char *mode)
     rwops->read = windows_file_read;
     rwops->write = windows_file_write;
     rwops->close = windows_file_close;
+    rwops->type = SDL_RWOPS_WINFILE;
 
 #elif HAVE_STDIO_H
     {
@@ -554,13 +551,6 @@ SDL_RWFromFP(FILE * fp, SDL_bool autoclose)
 {
     SDL_RWops *rwops = NULL;
 
-#if 0
-/*#ifdef __NDS__*/
-    /* set it up so we can use stdio file function */
-    fatInitDefault();
-    printf("called fatInitDefault()");
-#endif /* __NDS__ */
-
     rwops = SDL_AllocRW();
     if (rwops != NULL) {
         rwops->size = stdio_size;
@@ -570,6 +560,7 @@ SDL_RWFromFP(FILE * fp, SDL_bool autoclose)
         rwops->close = stdio_close;
         rwops->hidden.stdio.fp = fp;
         rwops->hidden.stdio.autoclose = autoclose;
+        rwops->type = SDL_RWOPS_STDFILE;
     }
     return (rwops);
 }
@@ -585,7 +576,15 @@ SDL_RWFromFP(void * fp, SDL_bool autoclose)
 SDL_RWops *
 SDL_RWFromMem(void *mem, int size)
 {
-    SDL_RWops *rwops;
+    SDL_RWops *rwops = NULL;
+    if (!mem) {
+      SDL_InvalidParamError("mem");
+      return (rwops);
+    }
+    if (!size) {
+      SDL_InvalidParamError("size");
+      return (rwops);
+    }
 
     rwops = SDL_AllocRW();
     if (rwops != NULL) {
@@ -597,6 +596,7 @@ SDL_RWFromMem(void *mem, int size)
         rwops->hidden.mem.base = (Uint8 *) mem;
         rwops->hidden.mem.here = rwops->hidden.mem.base;
         rwops->hidden.mem.stop = rwops->hidden.mem.base + size;
+        rwops->type = SDL_RWOPS_MEMORY;
     }
     return (rwops);
 }
@@ -604,7 +604,15 @@ SDL_RWFromMem(void *mem, int size)
 SDL_RWops *
 SDL_RWFromConstMem(const void *mem, int size)
 {
-    SDL_RWops *rwops;
+    SDL_RWops *rwops = NULL;
+    if (!mem) {
+      SDL_InvalidParamError("mem");
+      return (rwops);
+    }
+    if (!size) {
+      SDL_InvalidParamError("size");
+      return (rwops);
+    }
 
     rwops = SDL_AllocRW();
     if (rwops != NULL) {
@@ -616,6 +624,7 @@ SDL_RWFromConstMem(const void *mem, int size)
         rwops->hidden.mem.base = (Uint8 *) mem;
         rwops->hidden.mem.here = rwops->hidden.mem.base;
         rwops->hidden.mem.stop = rwops->hidden.mem.base + size;
+        rwops->type = SDL_RWOPS_MEMORY_RO;
     }
     return (rwops);
 }
@@ -629,6 +638,7 @@ SDL_AllocRW(void)
     if (area == NULL) {
         SDL_OutOfMemory();
     }
+    area->type = SDL_RWOPS_UNKNOWN;
     return (area);
 }
 

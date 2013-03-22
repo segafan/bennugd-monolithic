@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -199,7 +199,7 @@ struct SDL_VideoDevice
     void (*SetWindowGrab) (_THIS, SDL_Window * window, SDL_bool grabbed);
     void (*DestroyWindow) (_THIS, SDL_Window * window);
     int (*CreateWindowFramebuffer) (_THIS, SDL_Window * window, Uint32 * format, void ** pixels, int *pitch);
-    int (*UpdateWindowFramebuffer) (_THIS, SDL_Window * window, SDL_Rect * rects, int numrects);
+    int (*UpdateWindowFramebuffer) (_THIS, SDL_Window * window, const SDL_Rect * rects, int numrects);
     void (*DestroyWindowFramebuffer) (_THIS, SDL_Window * window);
 
     /* * * */
@@ -341,14 +341,14 @@ extern VideoBootStrap BWINDOW_bootstrap;
 #if SDL_VIDEO_DRIVER_PANDORA
 extern VideoBootStrap PND_bootstrap;
 #endif
-#if SDL_VIDEO_DRIVER_NDS
-extern VideoBootStrap NDS_bootstrap;
-#endif
 #if SDL_VIDEO_DRIVER_UIKIT
 extern VideoBootStrap UIKIT_bootstrap;
 #endif
 #if SDL_VIDEO_DRIVER_ANDROID
 extern VideoBootStrap Android_bootstrap;
+#endif
+#if SDL_VIDEO_DRIVER_PSP
+extern VideoBootStrap PSP_bootstrap;
 #endif
 #if SDL_VIDEO_DRIVER_DUMMY
 extern VideoBootStrap DUMMY_bootstrap;

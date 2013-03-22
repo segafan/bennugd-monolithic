@@ -64,15 +64,6 @@ int SDL_SYS_NumSensors()
     return ASensorManager_getSensorList(mSensorManager, NULL);
 }
 
-void SDL_SYS_SensorDetect()
-{
-}
-
-SDL_bool SDL_SYS_SensorNeedsPolling()
-{
-    return SDL_FALSE;
-}
-
 /* Function to get the device-dependent name of a sensor
  * Should be callable even before opening the sensor */
 const char *
@@ -83,10 +74,17 @@ SDL_SYS_SensorNameForDeviceIndex(int device_index)
 
     n = ASensorManager_getSensorList(mSensorManager, &list);
     if (device_index > n || ! list) {
-        return "";
+        SDL_SetError("Sensor index higher    than available sensor number");
+        return NULL;
     }
 
     return ASensor_getName(list[device_index]);
+}
+
+/* Function to perform the mapping from device index to the instance id for this index */
+SDL_SensorID SDL_SYS_SensorGetInstanceIdOfDeviceIndex(int device_index)
+{
+    return device_index;
 }
 
 /* Function to open a sensor for use.
@@ -170,6 +168,8 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
     
     sensor->resolution = ASensor_getResolution(list[device_index]);
     
+    sensor->instance_id = device_index;
+    
     // If there were no open sensors, open the event queue and associate
     // it to the looper
     if(open_sensors == 0) {
@@ -186,6 +186,8 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
  * This function shouldn't update the sensor structure directly,
  * but instead should call SDL_PrivateSensor*() to deliver events
  * and update sensor device state.
+ * There's some useful information on what the Android sensors give you at:
+ * http://developer.android.com/reference/android/hardware/SensorEvent.html
  */
 void
 SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
@@ -196,60 +198,59 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
 
     while (ALooper_pollAll(0, NULL, &events, (void**)&source) == 3 /* LOOPER_ID_USER */ ) {
         // If a sensor has data, process it now.
-        // TODO: Make some sense from this data...
         while (ASensorEventQueue_getEvents(eventqueue,
                                            &event, 1) > 0) {
             switch(event.type) {
                 case 0x00000001:
-                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.acceleration.z);
                     break;
                 case 0x00000002:
-                    SDL_PrivatesensorAxis(sensor, 0, event.magnetic.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.magnetic.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.magnetic.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.magnetic.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.magnetic.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.magnetic.z);
                     break;
                 case 0x00000003:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.azimuth);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.pitch);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.roll);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.azimuth);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.pitch);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.roll);
                     break;
                 case 0x00000004:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x00000005:
-                    SDL_PrivatesensorAxis(sensor, 0, event.light);
+                    SDL_PrivateSensorAxis(sensor, 0, event.light);
                     break;
                 case 0x00000006:
-                    SDL_PrivatesensorAxis(sensor, 0, event.pressure);
+                    SDL_PrivateSensorAxis(sensor, 0, event.pressure);
                     break;
                 case 0x00000007:
-                    SDL_PrivatesensorAxis(sensor, 0, event.temperature);
+                    SDL_PrivateSensorAxis(sensor, 0, event.temperature);
                     break;
                 case 0x00000008:
-                    SDL_PrivatesensorAxis(sensor, 0, event.distance);
+                    SDL_PrivateSensorAxis(sensor, 0, event.distance);
                     break;
                 case 0x00000009:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000a:
-                    SDL_PrivatesensorAxis(sensor, 0, event.acceleration.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.acceleration.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.acceleration.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.acceleration.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.acceleration.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.acceleration.z);
                     break;
                 case 0x0000000b:
-                    SDL_PrivatesensorAxis(sensor, 0, event.vector.x);
-                    SDL_PrivatesensorAxis(sensor, 1, event.vector.y);
-                    SDL_PrivatesensorAxis(sensor, 2, event.vector.z);
+                    SDL_PrivateSensorAxis(sensor, 0, event.vector.x);
+                    SDL_PrivateSensorAxis(sensor, 1, event.vector.y);
+                    SDL_PrivateSensorAxis(sensor, 2, event.vector.z);
                     break;
                 case 0x0000000c:
                     // Is this OK?
-                    SDL_PrivatesensorAxis(sensor, 0, event.data[0]);
+                    SDL_PrivateSensorAxis(sensor, 0, event.data[0]);
                     break;
                 default:
                     break;
@@ -258,7 +259,10 @@ SDL_SYS_SensorUpdate(SDL_Sensor* sensor)
     }
 }
 
-/* Function to determine is this sensor is attached to the system right now */
+/* Function to determine is this sensor is attached to the system right now
+ * Right now we're assuming Android sensors are always attached.
+ * TODO: Is there any way to know this info in Android?
+ */
 SDL_bool SDL_SYS_SensorAttached(SDL_Sensor *sensor)
 {
     return SDL_TRUE;
@@ -268,10 +272,10 @@ SDL_bool SDL_SYS_SensorAttached(SDL_Sensor *sensor)
 void
 SDL_SYS_SensorClose(SDL_Sensor * sensor)
 {
+    ASensorEventQueue_disableSensor(eventqueue, sensor->hwdata->asensor);
+    
     SDL_free(sensor->hwdata);
     open_sensors--;
-    
-    ASensorEventQueue_enableSensor(eventqueue, sensor->hwdata->asensor);
     
     // Don't read the sensors if no SDL_Sensor is open
     if(! open_sensors) {

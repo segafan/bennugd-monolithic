@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -42,7 +42,11 @@ SDL_SYS_JoystickInit(void)
 
 int SDL_SYS_NumJoysticks()
 {
-    return 1;
+    if(SDL_PrivateAccelAsJoy()) {
+        return 1;
+    }
+
+    return 0;
 }
 
 void SDL_SYS_JoystickDetect()
@@ -58,7 +62,12 @@ SDL_bool SDL_SYS_JoystickNeedsPolling()
 const char *
 SDL_SYS_JoystickNameForDeviceIndex(int device_index)
 {
-    return accelerometerName;
+    if(SDL_PrivateAccelAsJoy()) {
+        return accelerometerName;
+    }
+
+    SDL_SetError("Logic error: No joysticks available");
+    return (NULL);
 }
 
 /* Function to perform the mapping from device index to the instance id for this index */
@@ -75,12 +84,17 @@ SDL_JoystickID SDL_SYS_GetInstanceIdOfDeviceIndex(int device_index)
 int
 SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
 {
-    joystick->naxes = 3;
-    joystick->nhats = 0;
-    joystick->nballs = 0;
-    joystick->nbuttons = 0;
-    [[SDLUIAccelerationDelegate sharedDelegate] startup];
-    return 0;
+    if (device_index == 0 && SDL_PrivateAccelAsJoy()) {
+        joystick->naxes = 3;
+        joystick->nhats = 0;
+        joystick->nballs = 0;
+        joystick->nbuttons = 0;
+        [[SDLUIAccelerationDelegate sharedDelegate] startup];
+        return 0;
+    } else {
+        SDL_SetError("No joystick available with that index");
+        return (-1);
+    }
 }
 
 /* Function to determine is this joystick is attached to the system right now */
@@ -99,17 +113,19 @@ SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 {
 	
 	Sint16 orientation[3];
-	
-	if ([[SDLUIAccelerationDelegate sharedDelegate] hasNewData]) {
-	
-		[[SDLUIAccelerationDelegate sharedDelegate] getLastOrientation: orientation];
-		[[SDLUIAccelerationDelegate sharedDelegate] setHasNewData: NO];
-		
-		SDL_PrivateJoystickAxis(joystick, 0, orientation[0]);
-		SDL_PrivateJoystickAxis(joystick, 1, orientation[1]);
-		SDL_PrivateJoystickAxis(joystick, 2, orientation[2]);
 
-	}
+    if(SDL_PrivateAccelAsJoy()) {
+        if ([[SDLUIAccelerationDelegate sharedDelegate] hasNewData]) {
+	
+            [[SDLUIAccelerationDelegate sharedDelegate] getLastOrientation: orientation];
+            [[SDLUIAccelerationDelegate sharedDelegate] setHasNewData: NO];
+		
+            SDL_PrivateJoystickAxis(joystick, 0, orientation[0]);
+            SDL_PrivateJoystickAxis(joystick, 1, orientation[1]);
+            SDL_PrivateJoystickAxis(joystick, 2, orientation[2]);
+
+        }
+    }
 	
     return;
 }
