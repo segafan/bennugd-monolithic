@@ -24,16 +24,6 @@
  *
  *  Include file for SDL sensor event handling
  *
- * The term "device_index" identifies currently plugged in joystick devices between 0 and SDL_NumJoysticks, with the exact joystick
- *   behind a device_index changing as joysticks are plugged and unplugged.
- *
- * The term "instance_id" is the current instantiation of a joystick device in the system, if the joystick is removed and then re-inserted
- *   then it will get a new instance_id, instance_id's are monotonically increasing identifiers of a joystick plugged in.
- *
- * The term JoystickGUID is a stable 128-bit identifier for a joystick device that does not change over time, it identifies class of
- *   the device (a X360 wired controller for example). This identifier is platform dependent.
- *
- *
  */
 
 #ifndef _SDL_sensor_h
@@ -54,15 +44,15 @@ extern "C" {
  *  \file SDL_sensor.h
  *
  *  In order to use these functions, SDL_Init() must have been called
- *  with the ::SDL_INIT_JOYSTICK flag.  This causes SDL to scan the system
- *  for joysticks, and load appropriate drivers.
+ *  with the ::SDL_INIT_SENSOR flag.  This causes SDL to scan the system
+ *  for sensors, and load appropriate drivers.
  */
 
-/* The joystick structure used to identify an SDL joystick */
+/* The sensor structure used to identify an SDL sensor */
 struct _SDL_Sensor;
 typedef struct _SDL_Sensor SDL_Sensor;
 
-/* A structure that encodes the stable unique id for a joystick device */
+/* A structure that encodes the stable unique id for a sensor device */
 typedef struct {
     Uint8 data[16];
 } SDL_SensorGUID;
@@ -134,7 +124,7 @@ extern DECLSPEC int SDLCALL SDL_SensorNumAxes(SDL_Sensor * sensor);
 /**
  *  Get the sensor type for an opened sensor.
  */
-extern DECLSPEC Uint8 SDL_SensorType(SDL_Sensor * sensor);
+extern DECLSPEC SDL_SensorFlags SDLCALL SDL_SensorType(SDL_Sensor * sensor);
 
 /**
  *  Update the current state of the open sensors.
@@ -145,32 +135,22 @@ extern DECLSPEC Uint8 SDL_SensorType(SDL_Sensor * sensor);
 extern DECLSPEC void SDLCALL SDL_SensorUpdate(void);
 
 /**
- *  Enable/disable sensor event polling.
- *
- *  If sensor events are disabled, you must call SDL_SensorUpdate()
- *  yourself and check the state of the sensor when you want sensor
- *  information.
- *
- *  The state can be one of ::SDL_QUERY, ::SDL_ENABLE or ::SDL_IGNORE.
- */
-extern DECLSPEC int SDLCALL SDL_SensorEventState(int state);
-
-/**
  *  Get the current state of an axis on a sensor.
  *
- *  The state is a value ranging from -32768 to 32767.
+ *  The returned value is a physical magnitude dependant on the
+ *  type of sensor.
  *
  *  The axis indices start at index 0.
  */
-extern DECLSPEC Sint16 SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
+extern DECLSPEC float SDLCALL SDL_SensorGetAxis(SDL_Sensor * sensor,
                                                    int axis);
 
 /**
  *  Get the current resolution of an axis on a sensor.
  *
- *  The state is a value ranging from -32768 to 32767.
- *
- *  The axis indices start at index 0.
+ *  The returned value is the resolution for that sensor
+ *  (the minimum change in the measured magnitude discernible
+ *   by the sensor).
  */
 extern DECLSPEC float SDLCALL SDL_SensorGetResolution(SDL_Sensor * sensor);
 

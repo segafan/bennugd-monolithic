@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -142,6 +142,9 @@
 
 /* enable joystick subsystem */
 #define SDL_JOYSTICK_DISABLED 0
+
+/* use dummy sensor driver */
+#define SDL_SENSOR_DUMMY 1
 
 /* Set max recognized G-force from accelerometer
    See src/joystick/uikit/SDLUIAccelerationDelegate.m for notes on why this is needed

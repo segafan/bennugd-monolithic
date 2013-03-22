@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -223,13 +223,15 @@ Cocoa_HandleMouseEvent(_THIS, NSEvent *event)
          [event type] == NSOtherMouseDragged)) {
         float x = [event deltaX];
         float y = [event deltaY];
-        SDL_SendMouseMotion(mouse->focus, 1, (int)x, (int)y);
+        SDL_SendMouseMotion(mouse->focus, mouse->mouseID, 1, (int)x, (int)y);
     }
 }
 
 void
 Cocoa_HandleMouseWheel(SDL_Window *window, NSEvent *event)
 {
+    SDL_Mouse *mouse = SDL_GetMouse();
+
     float x = [event deltaX];
     float y = [event deltaY];
 
@@ -243,7 +245,7 @@ Cocoa_HandleMouseWheel(SDL_Window *window, NSEvent *event)
     } else if (y < 0) {
         y -= 0.9f;
     }
-    SDL_SendMouseWheel(window, (int)x, (int)y);
+    SDL_SendMouseWheel(window, mouse->mouseID, (int)x, (int)y);
 }
 
 void

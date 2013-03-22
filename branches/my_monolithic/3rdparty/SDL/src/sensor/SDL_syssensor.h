@@ -33,7 +33,7 @@ struct _SDL_Sensor
     Uint8 type;                     /* Type of sensor */
 
     int naxes;                      /* Number of axis controls on the sensor */
-    Sint16 *axes;                   /* Current axis states */
+    float *axes;                   /* Current axis states */
     float resolution;               /* Resolution for this sensor */
 
     struct sensor_hwdata *hwdata;   /* Driver dependent information */
@@ -55,14 +55,11 @@ extern int SDL_SYS_SensorInit(void);
 /* Function to return the number of sensor devices plugged in right now */
 extern int SDL_SYS_NumSensors();
 
-/* Function to cause any queued sensor insertions to be processed */
-extern void SDL_SYS_SensorDetect();
-
-/* Function to determine if the sensor loop needs to run right now */
-extern SDL_bool SDL_SYS_SensorNeedsPolling();
-
 /* Function to get the device-dependent name of a sensor */
 extern const char *SDL_SYS_SensorNameForDeviceIndex(int device_index);
+
+/* Function to get the current instance id of the sensor located at device_index */
+extern SDL_SensorID SDL_SYS_SensorGetInstanceIdOfDeviceIndex(int device_index);
 
 /* Function to open a sensor for use.
    The sensor to open is specified by the index field of the sensor.
@@ -72,7 +69,7 @@ extern const char *SDL_SYS_SensorNameForDeviceIndex(int device_index);
 extern int SDL_SYS_SensorOpen(SDL_Sensor * sensor, int device_index);
 
 /* Function to query if the sensor is currently attached
- *   It returns 1 if attached, 0 otherwise.
+ *   It returns SDL_TRUE if attached, SDL_FALSE otherwise.
  */
 extern SDL_bool SDL_SYS_SensorAttached(SDL_Sensor * sensor);
 

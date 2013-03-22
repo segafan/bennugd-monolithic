@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -25,6 +25,7 @@
 #include "SDL_events.h"
 #include "SDL_sysjoystick.h"
 #include "SDL_assert.h"
+#include "SDL_hints.h"
 
 #if !SDL_EVENTS_DISABLED
 #include "../events/SDL_events_c.h"
@@ -768,5 +769,24 @@ SDL_JoystickGUID SDL_JoystickGetGUIDFromString(const char *pchGUID)
 	return guid;
 }
 
+/* Function to determine if SDL should fake the accelerometer as the last joystick
+ * based on SDL_HINT_ACCELASJOY value and compilation preprocessor options.
+ */
+SDL_bool SDL_PrivateAccelAsJoy()
+{
+#ifdef SDL_SENSOR_DISABLED
+    return SDL_FALSE;
+#else
+    const char *hint = SDL_GetHint(SDL_HINT_ACCELASJOY);
+    if (hint) {
+        if (*hint == '0') {
+            return SDL_FALSE;
+        } else {
+            return SDL_TRUE;
+        }
+    }
+    return SDL_TRUE;
+#endif
+}
 
 /* vi: set ts=4 sw=4 expandtab: */

@@ -20,7 +20,11 @@
 */
 #include "SDL_config.h"
 
-/* This is the sensor API for Simple DirectMedia Layer */
+/* This is the sensor API for Simple DirectMedia Layer.
+ * It calls the platform-specific SDL_SYS_* functions.
+ * It's a design requirement that the data passed to those SDL_SYS_*
+ * functions must not be NULL.
+ */
 
 #include "SDL_events.h"
 #include "SDL_syssensor.h"
@@ -92,7 +96,7 @@ SDL_SensorOpen(int device_index)
     */
     while ( sensorlist )
     {
-        if ( SDL_SYS_GetInstanceIdOfDeviceIndex(device_index) == sensorlist->instance_id ) {
+        if ( SDL_SYS_SensorGetInstanceIdOfDeviceIndex(device_index) == sensorlist->instance_id ) {
                 sensor = sensorlist;
                 ++sensor->ref_count;
                 return (sensor);
@@ -120,8 +124,8 @@ SDL_SensorOpen(int device_index)
         sensor->name = NULL;
 
     if (sensor->naxes > 0) {
-        sensor->axes = (Sint16 *) SDL_malloc
-            (sensor->naxes * sizeof(Sint16));
+        sensor->axes = (float *) SDL_malloc
+            (sensor->naxes * sizeof(float));
     }
     if ( (sensor->naxes > 0) && (!sensor->axes) ) {
         SDL_OutOfMemory();
@@ -129,7 +133,7 @@ SDL_SensorOpen(int device_index)
         return NULL;
     }
     if (sensor->axes) {
-        SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(Sint16));
+        SDL_memset(sensor->axes, 0, sensor->naxes * sizeof(float));
     }
 
     /* Add sensor to list */
@@ -182,7 +186,7 @@ SDL_SensorNumAxes(SDL_Sensor * sensor)
 /*
  * Get the number of multi-dimensional axis controls on a sensor
  */
-Uint8
+SDL_SensorFlags
 SDL_SensorType(SDL_Sensor * sensor)
 {
     if (!SDL_PrivatesensorValid(sensor)) {
@@ -194,19 +198,18 @@ SDL_SensorType(SDL_Sensor * sensor)
 /*
  * Get the current state of an axis control on a sensor
  */
-Sint16
+float
 SDL_SensorGetAxis(SDL_Sensor * sensor, int axis)
 {
-    Sint16 state;
+    float state;
 
     if (!SDL_PrivatesensorValid(sensor)) {
-        return (0);
+        return (0.0);
     }
     if (axis < sensor->naxes) {
         state = sensor->axes[axis];
     } else {
-        SDL_SetError("sensor only has %d axes", sensor->naxes);
-        state = 0;
+        state = 0.0;
     }
     return (state);
 }
@@ -220,7 +223,7 @@ SDL_SensorGetResolution(SDL_Sensor * sensor)
     float state;
 
     if (!SDL_PrivatesensorValid(sensor)) {
-        return (0);
+        return (0.0);
     }
     
     return sensor->resolution;
@@ -228,7 +231,7 @@ SDL_SensorGetResolution(SDL_Sensor * sensor)
 
 /*
  * Return if the sensor in question is currently attached to the system,
- *  \return 0 if not plugged in, 1 if still present.
+ *  \return SDL_FALSE if not plugged in, SDL_TRUE if still present.
  */
 SDL_bool
 SDL_SensorGetAttached(SDL_Sensor * sensor)
@@ -275,7 +278,7 @@ SDL_SensorClose(SDL_Sensor * sensor)
     SDL_Sensor *sensorlist;
     SDL_Sensor *sensorlistprev;
 
-    if (!sensor) {
+    if (!SDL_PrivatesensorValid(sensor)) {
         return;
     }
 
@@ -343,9 +346,11 @@ SDL_SensorQuit(void)
 /* These are global for SDL_syssensor.c and SDL_events.c */
 
 int
-SDL_PrivatesensorAxis(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
+SDL_PrivateSensorAxis(SDL_Sensor * sensor, Uint8 axis, float value)
 {
-    int posted;
+    if (!SDL_PrivatesensorValid(sensor)) {
+        return 0;
+    }
 
     /* Make sure we're not getting garbage events */
     if (axis >= sensor->naxes) {
@@ -358,9 +363,7 @@ SDL_PrivatesensorAxis(SDL_Sensor * sensor, Uint8 axis, Sint16 value)
     }
     sensor->axes[axis] = value;
 
-    /* Post the event, if desired */
-    posted = 0;
-    return (posted);
+    return 0;
 }
 
 void
@@ -389,7 +392,7 @@ SDL_SensorUpdate(void)
             /* Tell the app that everything is centered/unpressed...  */
             for (i = 0; i < sensor->naxes; i++)
             {
-                SDL_PrivatesensorAxis(sensor, i, 0);
+                SDL_PrivateSensorAxis(sensor, i, 0.0);
             }
         }
 
@@ -401,19 +404,6 @@ SDL_SensorUpdate(void)
         }
 
         sensor = sensornext;
-    }
-
-    SDL_SYS_SensorDetect();
-}
-
-/* return 1 if you want to run the sensor update loop this frame, used by hotplug support */
-SDL_bool
-SDL_PrivatesensorNeedsPolling()
-{
-    if (SDL_sensors != NULL) {
-        return SDL_TRUE;
-    } else {
-        return SDL_SYS_SensorNeedsPolling();
     }
 }
 

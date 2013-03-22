@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2012 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -173,8 +173,8 @@ extern SDL_RenderDriver GLES_RenderDriver;
 #if SDL_VIDEO_RENDER_DIRECTFB
 extern SDL_RenderDriver DirectFB_RenderDriver;
 #endif
-#if SDL_VIDEO_RENDER_NDS
-extern SDL_RenderDriver NDS_RenderDriver;
+#if SDL_VIDEO_RENDER_PSP
+extern SDL_RenderDriver PSP_RenderDriver;
 #endif
 extern SDL_RenderDriver SW_RenderDriver;
 
