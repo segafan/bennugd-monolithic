@@ -364,6 +364,7 @@ class packager(QtGui.QMainWindow):
             fd.write('<manifest xmlns:android="http://schemas.android.com/apk/res/android"\n')
             fd.write('      package="%s"\n' % self.appdescriptor)
             fd.write('      android:versionCode="1"\n')
+            fd.write('      android:installLocation="preferExternal"\n')
             fd.write('      android:versionName="1.0">\n')
             fd.write('        <application android:label="@string/app_name" android:icon="@drawable/icon" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">\n')
             fd.write('        <activity android:name="MyGame"\n')
@@ -375,6 +376,7 @@ class packager(QtGui.QMainWindow):
             fd.write('            <intent-filter>\n')
             fd.write('                <action android:name="android.intent.action.MAIN" />\n')
             fd.write('                <category android:name="android.intent.category.LAUNCHER" />\n')
+            fd.write('                <category android:name="tv.ouya.intent.category.GAME"/>\n')
             fd.write('            </intent-filter>\n')
             fd.write('        </activity>\n')
             if self.admob:
