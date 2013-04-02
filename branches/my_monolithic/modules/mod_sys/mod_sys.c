@@ -45,8 +45,6 @@
 #include <ogc/wiilaunch.h>
 #elif defined(TARGET_IOS)
 #import <UIKit/UIKit.h>
-#elif defined(TARGET_ANDROID)
-extern void Android_JNI_openURL(const char* url);
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -88,9 +86,6 @@ static int modsys_exec( INSTANCE * my, int * params )
     string_discard(params[1]);
 
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-#elif defined(TARGET_ANDROID)
-    Android_JNI_openURL(string_get(params[1]));
-    string_discard(params[1]);
 #else
     int mode = params[0];
     char * filename = ( char * ) string_get( params[1] );

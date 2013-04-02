@@ -9,7 +9,7 @@ if [ -f $MODULE.so ]; then
 fi
 
 # Compile the source code
-gcc -c -Wall $(pkg-config --cflags $DEPS) $MODULE.c theoraplay.c
+gcc -c -Wall $(pkg-config --cflags $DEPS) -I. $MODULE.c theoraplay.c
 
 # Link the module
 if [ -f $MODULE.o ]; then
@@ -18,8 +18,8 @@ fi
 
 # Strip and remove compilation files
 if [ -f lib$MODULE.so ]; then
-	rm $MODULE.o
+    rm $MODULE.o
     rm theoraplay.o
-	strip lib$MODULE.so
+    strip lib$MODULE.so
 fi
 

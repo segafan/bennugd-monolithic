@@ -8,6 +8,7 @@ import "mod_proc"
 import "mod_timers"
 import "mod_wm"
 import "mod_theora"
+import "mod_sound"
 
 /* Player main window */
 Process main()
@@ -15,6 +16,7 @@ Private
     string fname="";
     int time=0, delay=30, track=1;
     int resx=640, resy=480;
+    int song;
 
 Begin
     // Handle the command line
@@ -32,7 +34,10 @@ Begin
 
     /* Start the graphics subsystem */
     resx=640; resy=480;
-    set_mode(resx, resy, 32, MODE_WINDOW);
+    set_mode(resx, resy, 16, MODE_WINDOW);
+    
+    song = load_song("1.ogg");
+    play_song(song, 0);
 
     if((graph = video_play(fname)) == -1)
         say("Sorry, I couldn't play your video :(");
@@ -40,17 +45,15 @@ Begin
     end;
 
     x = resx/2; y = resy/2;
-    
-    say("Playing");
-    
+
     while(! key(_esc))
         if(timer[0] > time+delay)
             if(key(_right))
-                angle += 100;
+                angle += 1000;
                 time = timer[0];
             end;
             if(key(_left))
-                angle -= 100;
+                angle -= 1000;
                 time = timer[0];
             end;
         end;
@@ -58,6 +61,7 @@ Begin
     end;
 
     video_stop();
+
     while(! key(_q))
         // If you press space bar, we start over
         if(key(_space))
@@ -66,6 +70,8 @@ Begin
         end;
         FRAME;
     end;
+    
+    unload_song(song);
     
     exit();
 End;
