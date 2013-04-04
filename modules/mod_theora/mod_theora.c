@@ -40,11 +40,13 @@
 struct ctx
 {
     GRAPH *graph;
-    THEORAPLAY_VideoFrame *frame;
-    THEORAPLAY_AudioPacket *audio;
+    SDL_AudioCVT cvt;
+    const THEORAPLAY_VideoFrame *frame;
+    const THEORAPLAY_AudioPacket *audio;
     THEORAPLAY_Decoder *decoder;
     Uint32 baseticks;
     Uint32 framems;
+    int convertaudio;
 };
 
 typedef struct AudioQueue
@@ -56,6 +58,9 @@ typedef struct AudioQueue
 
 static volatile AudioQueue *audio_queue = NULL;
 static volatile AudioQueue *audio_queue_tail = NULL;
+
+int mixer_freq, mixer_channels;
+Uint16 mixer_format;
 
 struct ctx video;
 
@@ -70,9 +75,8 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
     // !!! FIXME: this should refuse to play if item->playms is in the future.
     //const Uint32 now = SDL_GetTicks() - baseticks;
     Sint16 *dst = (Sint16 *) stream;
-    int freq = (int *)userdata;
     
-    while (audio_queue && (len > 0))
+    while (audio_queue && (len > 3))
     {
         volatile AudioQueue *item = audio_queue;
         AudioQueue *next = item->next;
@@ -80,7 +84,7 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
         
         const float *src = item->audio->samples + (item->offset * channels);
         int cpy = (item->audio->frames - item->offset) * channels;
-        int i;
+        int i, parsed_len;
         
         if (cpy > (len / sizeof (Sint16)))
             cpy = len / sizeof (Sint16);
@@ -96,8 +100,25 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
                 *(dst++) = (Sint16) (val * 32767.0f);
         } // for
         
+        parsed_len = cpy * sizeof (Sint16);
+        
+        if (video.convertaudio) {
+            dst -= cpy;
+            video.cvt.buf = malloc(cpy * sizeof (Sint16) * video.cvt.len_mult);
+            video.cvt.len = cpy * sizeof (Sint16) ;
+            memcpy(video.cvt.buf, dst, cpy * sizeof (Sint16));
+            SDL_ConvertAudio(&video.cvt);
+            if(video.cvt.len_cvt) {
+                memcpy(dst, video.cvt.buf, video.cvt.len_cvt);
+                dst += (int) (video.cvt.len_cvt) / sizeof (Sint16);
+            }
+            free(video.cvt.buf);
+            
+            parsed_len = (int) (video.cvt.len_cvt);
+        }
+        
         item->offset += (cpy / channels);
-        len -= cpy * sizeof (Sint16);
+        len -= (parsed_len == 0) ? (cpy * video.cvt.len_ratio) * sizeof (Sint16) : parsed_len ;
         
         if (item->offset >= item->audio->frames)
         {
@@ -138,10 +159,10 @@ static void queue_audio(const THEORAPLAY_AudioPacket *audio)
 } // queue_audio
 
 // Paint the current video frame onscreen, skipping those that we already missed
-static int refresh_video()
+void refresh_video()
 {
     if(! playing_video) {
-        return 0;
+        return;
     }
         
     const Uint32 now = SDL_GetTicks() - video.baseticks;
@@ -196,7 +217,7 @@ static int refresh_video()
         queue_audio(video.audio);
 
     
-    return 0;
+    return;
 }
 
 /* Checks wether the current video is being played */
@@ -213,7 +234,6 @@ static int video_is_playing() {
 static int video_play(INSTANCE *my, int * params)
 {
     int bpp;
-    int freq;
     const int MAX_FRAMES = 30;
 
     // Get the current screen bpp
@@ -273,17 +293,19 @@ static int video_play(INSTANCE *my, int * params)
     
     video.framems = (video.frame->fps == 0.0) ? 0 : ((Uint32) (1000.0 / video.frame->fps));
     
-    // Create the graph holding the video surface
-    video.graph = bitmap_new_syslib(video.frame->width, video.frame->height, bpp);
-    THEORAPLAY_freeVideo(video.frame);
-    video.frame = NULL;
-    if(! video.graph) {
-        THEORAPLAY_stopDecode(video.decoder);
-        video.decoder = NULL;
-    }
+    Mix_QuerySpec(&mixer_freq, &mixer_format, &mixer_channels);
     
-    Mix_QuerySpec(&freq, NULL, NULL);
-    Mix_HookMusic(audio_callback, &freq);
+    video.convertaudio = 0;
+    
+    if ( video.audio && (video.audio->freq != mixer_freq || video.audio->channels != mixer_channels) ) {
+        if (SDL_BuildAudioCVT(&video.cvt,
+                              AUDIO_S16, video.audio->channels, video.audio->freq,
+                              mixer_format, mixer_channels, mixer_freq) == -1) {
+            fprintf(stderr, "Couldn't create required audio conversion SDL_AudioCVT, sorry\n");
+        } else {
+            video.convertaudio = 1;
+        }
+    }
     
     while (video.audio)
     {
@@ -293,7 +315,16 @@ static int video_play(INSTANCE *my, int * params)
     
     video.baseticks = SDL_GetTicks();
     
-    SDL_PauseAudio(0);
+    // Create the graph holding the video surface
+    video.graph = bitmap_new_syslib(video.frame->width, video.frame->height, bpp);
+    THEORAPLAY_freeVideo(video.frame);
+    video.frame = NULL;
+    if(! video.graph) {
+        THEORAPLAY_stopDecode(video.decoder);
+        video.decoder = NULL;
+    }
+    
+    Mix_HookMusic(audio_callback, NULL);
     
     playing_video = 1;
     
@@ -306,6 +337,9 @@ static int video_stop(INSTANCE *my, int * params)
     if(! playing_video) {
         return 0;
     }
+    
+    /* Release the video playback lock */
+    playing_video = 0;
 
     if(video.graph) {
         grlib_unload_map(0, video.graph->code);
@@ -317,10 +351,19 @@ static int video_stop(INSTANCE *my, int * params)
         video.decoder = NULL;
     }
     
-    Mix_HookMusic(NULL, NULL);
+    /* Empty the audio queue */
+    while (audio_queue) {
+        volatile AudioQueue *item = audio_queue;
+        AudioQueue *next = item->next;
+        THEORAPLAY_freeAudio(item->audio);
+        free((void *) item);
+        audio_queue = next;
+    } // while
+    
+    if (!audio_queue)
+        audio_queue_tail = NULL;
 
-    /* Release the video playback lock */
-    playing_video = 0;        
+    Mix_HookMusic(NULL, NULL);
 
     return 0;
 }
