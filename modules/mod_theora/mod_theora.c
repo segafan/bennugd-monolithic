@@ -76,7 +76,9 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
     //const Uint32 now = SDL_GetTicks() - baseticks;
     Sint16 *dst = (Sint16 *) stream;
     
-    while (audio_queue && (len > 3))
+    float remaining = len, parsed_len = 0.0f;
+    
+    while (audio_queue && (remaining > 0.0f))
     {
         volatile AudioQueue *item = audio_queue;
         AudioQueue *next = item->next;
@@ -84,7 +86,7 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
         
         const float *src = item->audio->samples + (item->offset * channels);
         int cpy = (item->audio->frames - item->offset) * channels;
-        int i, parsed_len;
+        int i;
         
         if (cpy > (len / sizeof (Sint16)))
             cpy = len / sizeof (Sint16);
@@ -98,7 +100,7 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
                 *(dst++) = 32767;
             else
                 *(dst++) = (Sint16) (val * 32767.0f);
-        } // for
+        }
         
         parsed_len = cpy * sizeof (Sint16);
         
@@ -110,15 +112,15 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
             SDL_ConvertAudio(&video.cvt);
             if(video.cvt.len_cvt) {
                 memcpy(dst, video.cvt.buf, video.cvt.len_cvt);
-                dst += (int) (video.cvt.len_cvt) / sizeof (Sint16);
+                dst += (video.cvt.len_cvt) / sizeof (Sint16);
             }
             free(video.cvt.buf);
             
-            parsed_len = (int) (video.cvt.len_cvt);
+            parsed_len = video.cvt.len_cvt;
         }
         
         item->offset += (cpy / channels);
-        len -= (parsed_len == 0) ? (cpy * video.cvt.len_ratio) * sizeof (Sint16) : parsed_len ;
+        remaining -= parsed_len;
         
         if (item->offset >= item->audio->frames)
         {
@@ -131,8 +133,8 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
     if (!audio_queue)
         audio_queue_tail = NULL;
     
-    if (len > 0)
-        memset(dst, '\0', len);
+    if (remaining > 0)
+        memset(dst, '\0', (int)remaining);
 } // audio_callback
 
 
@@ -149,13 +151,11 @@ static void queue_audio(const THEORAPLAY_AudioPacket *audio)
     item->offset = 0;
     item->next = NULL;
     
-    SDL_LockAudio();
     if (audio_queue_tail)
         audio_queue_tail->next = item;
     else
         audio_queue = item;
     audio_queue_tail = item;
-    SDL_UnlockAudio();
 } // queue_audio
 
 // Paint the current video frame onscreen, skipping those that we already missed
@@ -225,28 +225,18 @@ static int video_is_playing() {
     return playing_video;
 }
 
-
-/*********************************************/
-/* Plays the given video with theoraplay     */
-/* Must be given:                            */
-/*    filename to be played                  */
-/*********************************************/
 static int video_play(INSTANCE *my, int * params)
 {
     int bpp;
     const int MAX_FRAMES = 30;
 
-    // Get the current screen bpp
     bpp = screen->format->BitsPerPixel;
 
-    /* Ensure we're not playing a video already */
     if(playing_video == 1)
         return -1;
 
-    /* Video mode must've already been initialized (we depend on mod_video) */
 	if(! scr_initialized) return (-1);
 	
-    /* Lock the video playback */
     playing_video = 1;
  
     /* Start the decoding, 8bpp not supported */
