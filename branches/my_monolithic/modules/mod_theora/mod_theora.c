@@ -1,4 +1,7 @@
-/* Theora module for BennuGD
+/*  Theora module for BennuGD
+ *
+ *  Originally written by Joseba García Etxebarria <joseba.gar@gmail.com>
+ *  based on the simplesdl.c example included with theoraplay
  *
  *  This software is provided 'as-is', without any express or implied
  *  warranty. In no event will the authors be held liable for any damages
@@ -72,55 +75,60 @@ static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len)
         return;
     }
     
-    // !!! FIXME: this should refuse to play if item->playms is in the future.
-    //const Uint32 now = SDL_GetTicks() - baseticks;
     Sint16 *dst = (Sint16 *) stream;
     
     float remaining = len, parsed_len = 0.0f;
     
     while (audio_queue && (remaining > 0.0f))
     {
+        const Uint32 now = SDL_GetTicks() - video.baseticks;
         volatile AudioQueue *item = audio_queue;
         AudioQueue *next = item->next;
+
         const int channels = item->audio->channels;
-        
+            
         const float *src = item->audio->samples + (item->offset * channels);
         int cpy = (item->audio->frames - item->offset) * channels;
-        int i;
         
         if (cpy > (len / sizeof (Sint16)))
             cpy = len / sizeof (Sint16);
-        
-        for (i = 0; i < cpy; i++)
-        {
-            const float val = *(src++);
-            if (val < -1.0f)
-                *(dst++) = -32768;
-            else if (val > 1.0f)
-                *(dst++) = 32767;
-            else
-                *(dst++) = (Sint16) (val * 32767.0f);
-        }
-        
-        parsed_len = cpy * sizeof (Sint16);
-        
-        if (video.convertaudio) {
-            dst -= cpy;
-            video.cvt.buf = malloc(cpy * sizeof (Sint16) * video.cvt.len_mult);
-            video.cvt.len = cpy * sizeof (Sint16) ;
-            memcpy(video.cvt.buf, dst, cpy * sizeof (Sint16));
-            SDL_ConvertAudio(&video.cvt);
-            if(video.cvt.len_cvt) {
-                memcpy(dst, video.cvt.buf, video.cvt.len_cvt);
-                dst += (video.cvt.len_cvt) / sizeof (Sint16);
-            }
-            free(video.cvt.buf);
+
+        // Drop audio packets if we're out of sync
+        if ( next->audio->playms > now ) {
+            int i;
             
-            parsed_len = video.cvt.len_cvt;
+            for (i = 0; i < cpy; i++)
+            {
+                const float val = *(src++);
+                if (val < -1.0f)
+                    *(dst++) = -32768;
+                else if (val > 1.0f)
+                    *(dst++) = 32767;
+                else
+                    *(dst++) = (Sint16) (val * 32767.0f);
+            }
+            
+            parsed_len = cpy * sizeof (Sint16);
+            
+            if (video.convertaudio) {
+                dst -= cpy;
+                video.cvt.buf = malloc(cpy * sizeof (Sint16) * video.cvt.len_mult);
+                video.cvt.len = cpy * sizeof (Sint16) ;
+                memcpy(video.cvt.buf, dst, cpy * sizeof (Sint16));
+                SDL_ConvertAudio(&video.cvt);
+                if(video.cvt.len_cvt) {
+                    memcpy(dst, video.cvt.buf, video.cvt.len_cvt);
+                    dst += (video.cvt.len_cvt) / sizeof (Sint16);
+                }
+                free(video.cvt.buf);
+                
+                parsed_len = video.cvt.len_cvt;
+            }
+            
+            remaining -= parsed_len;
         }
         
         item->offset += (cpy / channels);
-        remaining -= parsed_len;
         
         if (item->offset >= item->audio->frames)
         {
@@ -358,7 +366,7 @@ static int video_stop(INSTANCE *my, int * params)
     return 0;
 }
 
-/* Pause the currently playing video */
+/* TODO: Pause the currently playing video */
 static int video_pause() {
     return 0;
 }
