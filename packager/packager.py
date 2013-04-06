@@ -255,8 +255,8 @@ class packager(QtGui.QMainWindow):
             QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
             return
 
-        admobjar = self.sdkdir + '/extras/google/admob_ads_sdk/GoogleAdMobAdsSdk-6.2.1.jar'
-        if not os.path.isfile(admobjar):
+        admobjar = self.sdkdir + '/extras/google/admob_ads_sdk/GoogleAdMobAdsSdk-6.3.1.jar'
+        if not os.path.isfile(admobjar) and self.admob:
             QtGui.QMessageBox.critical(self, 'Google AdMob Ads SDK', 'Please install the Google AdMob Ads SDK from the Android SDK')
             return
 
