@@ -144,8 +144,8 @@ int mod_fmodex_load_song(INSTANCE * i, int * params)
     /* Now start playback of the song, inmediately pause it */
     result = FMOD_System_PlaySound(fsystem, FMOD_CHANNEL_FREE, sound, 1, &channel);
     ERRCHECK_RETURN("FMODEX_LOAD_SONG", -1);
-	// Return the internal FMOD Ex channel id
-	result = FMOD_Channel_GetIndex(channel, &channel_index);
+    // Return the internal FMOD Ex channel id
+    result = FMOD_Channel_GetIndex(channel, &channel_index);
     ERRCHECK_RETURN("FMODEX_LOAD_SONG", -1);
     string_discard(params[0]);
 
@@ -158,19 +158,19 @@ int mod_fmodex_pause_song(INSTANCE * i, int * params)
 {
     FMOD_RESULT              result;
     FMOD_CHANNEL            *channel = 0;
-	int paused;
+    int paused;
 
     /* Retrieve the channel from the given ID */
     result = FMOD_System_GetChannel(fsystem, params[0], &channel);
     ERRCHECK_RETURN("FMODEX_PAUSE_SONG", -1);
 
     /* Now set the channel status to paused/unpaused */
-	result = FMOD_Channel_GetPaused(channel, &paused);
-	if ( result == FMOD_OK )
-		result = FMOD_Channel_SetPaused(channel, !paused);
+    result = FMOD_Channel_GetPaused(channel, &paused);
+    if ( result == FMOD_OK )
+        result = FMOD_Channel_SetPaused(channel, !paused);
     else
         ERRCHECK_RETURN("FMODEX_PAUSE_SONG", -1);
-	return 0;
+    return 0;
 }
 
 /* Check wether a given song is playing */
@@ -178,16 +178,16 @@ int mod_fmodex_is_playing_song(INSTANCE * i, int * params)
 {
     FMOD_RESULT              result;
     FMOD_CHANNEL            *channel = 0;
-	int	playing=0;
-	
-	/* Retrieve the channel from the given ID */
+    int playing=0;
+    
+    /* Retrieve the channel from the given ID */
     result = FMOD_System_GetChannel(fsystem, params[0], &channel);
     ERRCHECK_RETURN("FMODEX_IS_PLAYING_SONG", -1);
 
-	result = FMOD_Channel_IsPlaying(channel, &playing);
+    result = FMOD_Channel_IsPlaying(channel, &playing);
     ERRCHECK_RETURN("FMODEX_IS_PLAYING_SONG", -1);
-	
-	return playing;
+    
+    return playing;
 }
 
 /* Stop song playback */
@@ -206,14 +206,14 @@ int mod_fmodex_stop_song(INSTANCE * i, int * params)
     ERRCHECK_RETURN("FMODEX_SONG_STOP", -1);
 
     /* Tell the channel to stop playback */
-	result = FMOD_Channel_Stop(channel);
+    result = FMOD_Channel_Stop(channel);
     ERRCHECK_RETURN("FMODEX_SONG_STOP", -1);
 
     /* Release the FMOD_SOUND */
     result = FMOD_Sound_Release( sound );
     ERRCHECK_RETURN("FMODEX_SONG_STOP", -1);
-	
-	return 0;
+    
+    return 0;
 }
 
 /* Initialize spectrum analysis for a song that's already playing
@@ -222,20 +222,20 @@ int mod_fmodex_song_get_spectrum(INSTANCE * i, int * params)
 {
     FMOD_RESULT              result;
     FMOD_CHANNEL            *channel = 0;
-	int	                     playing = 0;
-	
-	if( analyzing_spectrum != 0 )
+    int                      playing = 0;
+    
+    if( analyzing_spectrum != 0 )
         return -1;
-	
-	// Check the given channel is actually playing a song
+    
+    // Check the given channel is actually playing a song
     result = FMOD_System_GetChannel(fsystem, params[0], &channel);
     ERRCHECK_RETURN("FMODEX_IS_PLAYING_SONG", -1);
-	
-	result = FMOD_Channel_IsPlaying(channel, &playing);
+    
+    result = FMOD_Channel_IsPlaying(channel, &playing);
     ERRCHECK_RETURN("FMODEX_IS_PLAYING_SONG", -1);
-	
+    
     spectrum_channel = channel;
-	
+    
     analyzing_spectrum = 2;
     
     return 0;
@@ -295,17 +295,17 @@ void spectrum_update()
     if (analyzing_spectrum == 0)
         return;
 
-	result = FMOD_Channel_GetSpectrum(spectrum_channel, fmodex_spectrum, SPECTRUMSIZE, 0,
+    result = FMOD_Channel_GetSpectrum(spectrum_channel, fmodex_spectrum, SPECTRUMSIZE, 0,
                         FMOD_DSP_FFT_WINDOW_TRIANGLE ); 
-	ERRCHECK("FMODEX_GET_SPECTRUM");
+    ERRCHECK("FMODEX_GET_SPECTRUM");
 
-	spectrum = ( float * ) ( &GLODWORD( mod_fmodex, FMODEX_SPECTRUM ) );
-	for(i=0; i < SPECTRUMSIZE; i++) {
-		// Choose this is you want the spectrum in dBs
-		// spectrum[i] = 10.0f * (float)log10(fmodex_spectrum[i]) * 2.0f;
-		// Absolute value (0.0 <-> 1.0)
-		spectrum[i] = fmodex_spectrum[i];
-	}
+    spectrum = ( float * ) ( &GLODWORD( mod_fmodex, FMODEX_SPECTRUM ) );
+    for(i=0; i < SPECTRUMSIZE; i++) {
+        // Choose this is you want the spectrum in dBs
+        // spectrum[i] = 10.0f * (float)log10(fmodex_spectrum[i]) * 2.0f;
+        // Absolute value (0.0 <-> 1.0)
+        spectrum[i] = fmodex_spectrum[i];
+    }
 }
 
 /* Stop spectrum analysis */
@@ -315,13 +315,13 @@ void fmodex_stop_spectrum_analysis()
 
     if (analyzing_spectrum == 0)
         return;
-	else if (analyzing_spectrum == 1) {
-		/* Stop the recording */
-		result = FMOD_Sound_Release(mic_sound);
-		ERRCHECK("FMODEX_STOP_SPECTRUM");
+    else if (analyzing_spectrum == 1) {
+        /* Stop the recording */
+        result = FMOD_Sound_Release(mic_sound);
+        ERRCHECK("FMODEX_STOP_SPECTRUM");
     
-		FMOD_System_RecordStop(fsystem, 0);
-	}
+        FMOD_System_RecordStop(fsystem, 0);
+    }
 
     analyzing_spectrum = 0;
 }
@@ -359,18 +359,18 @@ int mod_fmodex_mic_get_spectrum(INSTANCE * i, int * params)
     /* Now, start recording, updating the spectrum matrix is done separately */
     result = FMOD_System_RecordStart(fsystem, params[0], mic_sound, 1);
     ERRCHECK("FMODEX_GET_SPECTRUM");
-	
-	result = FMOD_System_PlaySound(fsystem, FMOD_CHANNEL_FREE,
-								   mic_sound, 0, &spectrum_channel);
-	ERRCHECK("FMODEX_GET_SPECTRUM");
-	
-	/* Dont hear what is being recorded otherwise it will feedback.
-	 Spectrum analysis is done before volume scaling in the DSP chain */
-	result = FMOD_Channel_SetVolume(spectrum_channel, 0);
-	ERRCHECK("FMODEX_GET_SPECTRUM");
+    
+    result = FMOD_System_PlaySound(fsystem, FMOD_CHANNEL_FREE,
+                                   mic_sound, 0, &spectrum_channel);
+    ERRCHECK("FMODEX_GET_SPECTRUM");
+    
+    /* Dont hear what is being recorded otherwise it will feedback.
+     Spectrum analysis is done before volume scaling in the DSP chain */
+    result = FMOD_Channel_SetVolume(spectrum_channel, 0);
+    ERRCHECK("FMODEX_GET_SPECTRUM");
 
-	// Announce we're doing spectrum analysis, so that we don't start
-	// two separate ones.
+    // Announce we're doing spectrum analysis, so that we don't start
+    // two separate ones.
     analyzing_spectrum = 1;
     
     return 0;
@@ -397,20 +397,20 @@ DLSYSFUNCS __bgdexport( mod_fmodex, functions_exports )[] =
     {"FMODEX_MIC_NAME",          "I", TYPE_STRING,    mod_fmodex_mic_name },
     {"FMODEX_MIC_GET_SPECTRUM",  "I", TYPE_UNDEFINED, mod_fmodex_mic_get_spectrum },
     {"FMODEX_STOP_SPECTRUM",     "",  TYPE_UNDEFINED, mod_fmodex_stop_spectrum },
-	{0, 0, 0, 0}
+    {0, 0, 0, 0}
 };
 
 /* Routines to be run when the library is imported */
 void __bgdexport( mod_fmodex, module_initialize )()
 {
-	fmodex_init();
+    fmodex_init();
 }
 
 /* Routines to be run when the library is closed */
 void __bgdexport( mod_fmodex, module_finalize )()
 {
     fmodex_stop_spectrum_analysis();
-	FMOD_System_Release(fsystem);
+    FMOD_System_Release(fsystem);
 }
 
 /* Bigest priority first execute
