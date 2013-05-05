@@ -4,6 +4,7 @@ usr/share/bennugd-packager/templates
 usr/share/bennugd-packager/templates/android
 usr/share/bennugd-packager/templates/android/layout
 usr/share/bennugd-packager/templates/android/res/values
+usr/share/bennugd-packager/templates/android/res/drawable-xhdpi
 usr/share/bennugd-packager/templates/android/res/drawable-hdpi
 usr/share/bennugd-packager/templates/android/res/drawable-ldpi
 usr/share/bennugd-packager/templates/android/res/drawable-mdpi

@@ -5,7 +5,6 @@
 /usr/share/bennugd-packager/ui_mainwindow.py
 /usr/share/bennugd-packager/ui_preferences.py
 /usr/share/bennugd-packager/res/icon.png
-/usr/share/bennugd-packager/templates/android/AndroidManifest.xml
 /usr/share/bennugd-packager/templates/android/build.properties
 /usr/share/bennugd-packager/templates/android/build.xml
 /usr/share/bennugd-packager/templates/android/libs/armeabi-v7a/libpng.so
