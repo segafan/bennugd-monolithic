@@ -8,7 +8,7 @@ REM Remove any previous output before creating the new one
 RMDIR /S /Q output\win32
 
 REM Package the program
-CALL c:\Python27\Scripts\cxfreeze.bat main.py --target-dir="output\win32" --base-name="Win32GUI" --include-modules="atexit,PyQt4.QtCore,PyQt4.QtGui,sqlite3,os,sys,uuid,shutil,subprocess" --icon="res/icon.ico"
+CALL c:\Python27\Scripts\cxfreeze.bat main.py --target-dir="output\win32" --include-modules="atexit,PyQt4.QtCore,PyQt4.QtGui,sqlite3,os,sys,uuid,shutil,subprocess" --icon="res/icon.ico"
 
 REM Copy the templates to the output dir
 XCOPY templates output\win32\templates /E /I
@@ -18,4 +18,4 @@ DEL output\win32\res\BennuGD_Packager.tar.bz2
 MOVE output\win32\main.exe "output\win32\BennuGD_Packager.exe"
 
 REM Copy binary ANT to the output folder
-XCOPY 3rdparty\ant_win\winant-install-v7.exe output\win32\winant-install-v7.exe /E /I
+XCOPY 3rdparty\ant_win\winant-install-v7.exe output\win32\ /E /I
