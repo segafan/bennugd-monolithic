@@ -55,6 +55,7 @@ class packager(QtGui.QMainWindow):
         self.ui.icon_hdpi.clicked.connect(self.update_icon)
         self.ui.icon_mdpi.clicked.connect(self.update_icon)
         self.ui.icon_ldpi.clicked.connect(self.update_icon)
+        self.ui.appOSselector.activated.connect(self.oschanged)
 
         # Set default values
         self.appdir = ''
@@ -68,6 +69,9 @@ class packager(QtGui.QMainWindow):
             action.setText(avd)
             action.triggered.connect(self.launch_emulator)
             self.ui.menuAVD.addAction(action)
+    
+    def oschanged(self):
+        sys.stdout.write("OS changed to %s\n" % self.sender().currentText())
 
     def menuitem(self):
         'Takes care of handling miscellaneous menu item actions'
@@ -156,37 +160,38 @@ class packager(QtGui.QMainWindow):
         self.appdir = str(self.appdir)
         self.ui.line_appdir.setText(self.appdir)
 
-        # Populate the QListWidget
-        self.ui.filelist.clear()
-        row=0
-
-        has_maindcb = False
-
-        for root, dirs, files in os.walk(self.appdir):
-            if '.svn' in dirs:
-                dirs.remove('.svn')
-
-            for file in files:
-                fpath = os.path.join(root, file)
-                fname = fpath[(len(self.appdir)+1):]
-                newItem = QtGui.QListWidgetItem()
-                newIcon = self.ui.iconprovider.icon(QtCore.QFileInfo(fpath))
-                newItem.setText(fname)
-                newItem.setIcon(newIcon)
-                self.ui.filelist.insertItem(row, newItem)
-                if file == 'main.dcb':
-                    has_maindcb = True
-                row += 1
-
-        # Don't allow game directories that don't contain main.dcb
-        if not has_maindcb:
-            self.appdir = ''
-            self.ui.line_appdir.setText(self.appdir)
+        if self.appdir != '':
+            # Populate the QListWidget
             self.ui.filelist.clear()
-            QtGui.QMessageBox.critical(self, "Couldn't find main.dcb",
-                            "Your app's main DCB file was not found in given directory\n\n"+
-                            "BennuGD for Android requires your main DCB file to be named 'main.dcb'"+
-                            "and it must be located at the given directory\n")
+            row=0
+
+            has_maindcb = False
+
+            for root, dirs, files in os.walk(self.appdir):
+                if '.svn' in dirs:
+                    dirs.remove('.svn')
+
+                for file in files:
+                    fpath = os.path.join(root, file)
+                    fname = fpath[(len(self.appdir)+1):]
+                    newItem = QtGui.QListWidgetItem()
+                    newIcon = self.ui.iconprovider.icon(QtCore.QFileInfo(fpath))
+                    newItem.setText(fname)
+                    newItem.setIcon(newIcon)
+                    self.ui.filelist.insertItem(row, newItem)
+                    if file == 'main.dcb':
+                        has_maindcb = True
+                    row += 1
+
+            # Don't allow game directories that don't contain main.dcb
+            if not has_maindcb:
+                self.appdir = ''
+                self.ui.line_appdir.setText(self.appdir)
+                self.ui.filelist.clear()
+                QtGui.QMessageBox.critical(self, "Couldn't find main.dcb",
+                                "Your app's main DCB file was not found in given directory\n\n"+
+                                "BennuGD for Android requires your main DCB file to be named 'main.dcb'"+
+                                "and it must be located at the given directory\n")
 
     def uncompresstree(self, src, exts=None):
         """Handles uncompression of gzip files with given extensions in given dir

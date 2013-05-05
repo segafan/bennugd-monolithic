@@ -61,6 +61,16 @@
             <string>Android</string>
            </property>
           </item>
+          <item>
+           <property name="text">
+            <string>Ouya</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Windows</string>
+           </property>
+          </item>
          </widget>
         </item>
        </layout>
@@ -442,7 +452,7 @@
      <x>0</x>
      <y>0</y>
      <width>966</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
