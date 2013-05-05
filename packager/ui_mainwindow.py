@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui_mainwindow.ui'
 #
-# Created: Thu Dec 13 19:40:27 2012
-#      by: PyQt4 UI code generator 4.9.3
+# Created: Sun May  5 01:44:02 2013
+#      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -106,6 +115,20 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.label_icons)
         self.horizontalLayout_8 = QtGui.QHBoxLayout()
         self.horizontalLayout_8.setObjectName(_fromUtf8("horizontalLayout_8"))
+        self.icon_xhdpi = QtGui.QPushButton(self.centralwidget)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.icon_xhdpi.sizePolicy().hasHeightForWidth())
+        self.icon_xhdpi.setSizePolicy(sizePolicy)
+        self.icon_xhdpi.setMinimumSize(QtCore.QSize(96, 96))
+        self.icon_xhdpi.setMaximumSize(QtCore.QSize(96, 96))
+        self.icon_xhdpi.setText(_fromUtf8(""))
+        self.icon_xhdpi.setIcon(icon)
+        self.icon_xhdpi.setIconSize(QtCore.QSize(96, 96))
+        self.icon_xhdpi.setFlat(True)
+        self.icon_xhdpi.setObjectName(_fromUtf8("icon_xhdpi"))
+        self.horizontalLayout_8.addWidget(self.icon_xhdpi)
         self.icon_hdpi = QtGui.QPushButton(self.centralwidget)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -175,7 +198,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addLayout(self.verticalLayout)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 27))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 966, 25))
         self.menubar.setObjectName(_fromUtf8("menubar"))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuFile.setObjectName(_fromUtf8("menuFile"))
@@ -214,50 +237,51 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QtGui.QApplication.translate("MainWindow", "BennuGD Packager", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_appfiles.setText(QtGui.QApplication.translate("MainWindow", "Detected game files:", None, QtGui.QApplication.UnicodeUTF8))
-        self.filelist.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>The list of files that will get packed.</p><p>Please note that some files (*.exe, *.dll...) will not actually be copied.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_appOSselector.setText(QtGui.QApplication.translate("MainWindow", "Target OS:", None, QtGui.QApplication.UnicodeUTF8))
-        self.appOSselector.setToolTip(QtGui.QApplication.translate("MainWindow", "The OS you\'re packaging your app for", None, QtGui.QApplication.UnicodeUTF8))
-        self.appOSselector.setItemText(0, QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_appdir.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Please choose a dir", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_appdirselector.setText(QtGui.QApplication.translate("MainWindow", "Select game directory...", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_applabel.setText(QtGui.QApplication.translate("MainWindow", "App descriptor:", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_applabel.setToolTip(QtGui.QApplication.translate("MainWindow", "<html><head/><body><p>Unique ID for your app, should include your company\'s name and you game\'s name.</p></body></html>", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_applabel.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "com.yourcompany.gamename", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_appname.setText(QtGui.QApplication.translate("MainWindow", "App name:", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_appname.setToolTip(QtGui.QApplication.translate("MainWindow", "User-visible name for your app", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_appname.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "Name to be shown to the user", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_orientation.setText(QtGui.QApplication.translate("MainWindow", "Orientation:", None, QtGui.QApplication.UnicodeUTF8))
-        self.combo_orientation.setItemText(0, QtGui.QApplication.translate("MainWindow", "Portrait", None, QtGui.QApplication.UnicodeUTF8))
-        self.combo_orientation.setItemText(1, QtGui.QApplication.translate("MainWindow", "Landscape", None, QtGui.QApplication.UnicodeUTF8))
-        self.check_admob.setText(QtGui.QApplication.translate("MainWindow", "Show AdMob ads:", None, QtGui.QApplication.UnicodeUTF8))
-        self.line_admob.setPlaceholderText(QtGui.QApplication.translate("MainWindow", "AdMob publisher ID", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_icons.setText(QtGui.QApplication.translate("MainWindow", "Icons:", None, QtGui.QApplication.UnicodeUTF8))
-        self.icon_hdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for high resolution displays", None, QtGui.QApplication.UnicodeUTF8))
-        self.icon_mdpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for medium resolution displays", None, QtGui.QApplication.UnicodeUTF8))
-        self.icon_ldpi.setToolTip(QtGui.QApplication.translate("MainWindow", "Icon for low resolution displays", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_debug.setText(QtGui.QApplication.translate("MainWindow", "Package for:", None, QtGui.QApplication.UnicodeUTF8))
-        self.combo_debug.setToolTip(QtGui.QApplication.translate("MainWindow", "Choose if you want to package for debug or for release", None, QtGui.QApplication.UnicodeUTF8))
-        self.combo_debug.setItemText(0, QtGui.QApplication.translate("MainWindow", "Debug", None, QtGui.QApplication.UnicodeUTF8))
-        self.combo_debug.setItemText(1, QtGui.QApplication.translate("MainWindow", "Release", None, QtGui.QApplication.UnicodeUTF8))
-        self.check_install.setToolTip(QtGui.QApplication.translate("MainWindow", "Install resulting APK to device or emulator", None, QtGui.QApplication.UnicodeUTF8))
-        self.check_install.setText(QtGui.QApplication.translate("MainWindow", "Install APK", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_package.setToolTip(QtGui.QApplication.translate("MainWindow", "Click when you feel ready to package your app", None, QtGui.QApplication.UnicodeUTF8))
-        self.button_package.setText(QtGui.QApplication.translate("MainWindow", "Package && Install", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuEmulator.setTitle(QtGui.QApplication.translate("MainWindow", "&Android", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuAVD.setTitle(QtGui.QApplication.translate("MainWindow", "AVD", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionPreferences.setText(QtGui.QApplication.translate("MainWindow", "Preferences", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionPreferences.setToolTip(QtGui.QApplication.translate("MainWindow", "Preferences dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionPreferences.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+,", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionQuit.setShortcut(QtGui.QApplication.translate("MainWindow", "Ctrl+Q", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAndroid.setText(QtGui.QApplication.translate("MainWindow", "Android", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSDK_Manager.setText(QtGui.QApplication.translate("MainWindow", "SDK Manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSDK_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the Android SDK manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAVD_Manager.setText(QtGui.QApplication.translate("MainWindow", "AVD Manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionAVD_Manager.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch the android AVD manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDDMS.setText(QtGui.QApplication.translate("MainWindow", "Monitor", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionDDMS.setToolTip(QtGui.QApplication.translate("MainWindow", "Launch Android Monitor", None, QtGui.QApplication.UnicodeUTF8))
+        MainWindow.setWindowTitle(_translate("MainWindow", "BennuGD Packager", None))
+        self.label_appfiles.setText(_translate("MainWindow", "Detected game files:", None))
+        self.filelist.setToolTip(_translate("MainWindow", "<html><head/><body><p>The list of files that will get packed.</p><p>Please note that some files (*.exe, *.dll...) will not actually be copied.</p></body></html>", None))
+        self.label_appOSselector.setText(_translate("MainWindow", "Target OS:", None))
+        self.appOSselector.setToolTip(_translate("MainWindow", "The OS you\'re packaging your app for", None))
+        self.appOSselector.setItemText(0, _translate("MainWindow", "Android", None))
+        self.line_appdir.setPlaceholderText(_translate("MainWindow", "Please choose a dir", None))
+        self.button_appdirselector.setText(_translate("MainWindow", "Select game directory...", None))
+        self.label_applabel.setText(_translate("MainWindow", "App descriptor:", None))
+        self.line_applabel.setToolTip(_translate("MainWindow", "<html><head/><body><p>Unique ID for your app, should include your company\'s name and you game\'s name.</p></body></html>", None))
+        self.line_applabel.setPlaceholderText(_translate("MainWindow", "com.yourcompany.gamename", None))
+        self.label_appname.setText(_translate("MainWindow", "App name:", None))
+        self.line_appname.setToolTip(_translate("MainWindow", "User-visible name for your app", None))
+        self.line_appname.setPlaceholderText(_translate("MainWindow", "Name to be shown to the user", None))
+        self.label_orientation.setText(_translate("MainWindow", "Orientation:", None))
+        self.combo_orientation.setItemText(0, _translate("MainWindow", "Portrait", None))
+        self.combo_orientation.setItemText(1, _translate("MainWindow", "Landscape", None))
+        self.check_admob.setText(_translate("MainWindow", "Show AdMob ads:", None))
+        self.line_admob.setPlaceholderText(_translate("MainWindow", "AdMob publisher ID", None))
+        self.label_icons.setText(_translate("MainWindow", "Icons:", None))
+        self.icon_xhdpi.setToolTip(_translate("MainWindow", "Icon for high resolution displays", None))
+        self.icon_hdpi.setToolTip(_translate("MainWindow", "Icon for high resolution displays", None))
+        self.icon_mdpi.setToolTip(_translate("MainWindow", "Icon for medium resolution displays", None))
+        self.icon_ldpi.setToolTip(_translate("MainWindow", "Icon for low resolution displays", None))
+        self.label_debug.setText(_translate("MainWindow", "Package for:", None))
+        self.combo_debug.setToolTip(_translate("MainWindow", "Choose if you want to package for debug or for release", None))
+        self.combo_debug.setItemText(0, _translate("MainWindow", "Debug", None))
+        self.combo_debug.setItemText(1, _translate("MainWindow", "Release", None))
+        self.check_install.setToolTip(_translate("MainWindow", "Install resulting APK to device or emulator", None))
+        self.check_install.setText(_translate("MainWindow", "Install APK", None))
+        self.button_package.setToolTip(_translate("MainWindow", "Click when you feel ready to package your app", None))
+        self.button_package.setText(_translate("MainWindow", "Package && Install", None))
+        self.menuFile.setTitle(_translate("MainWindow", "&File", None))
+        self.menuEmulator.setTitle(_translate("MainWindow", "&Android", None))
+        self.menuAVD.setTitle(_translate("MainWindow", "AVD", None))
+        self.actionPreferences.setText(_translate("MainWindow", "Preferences", None))
+        self.actionPreferences.setToolTip(_translate("MainWindow", "Preferences dialog", None))
+        self.actionPreferences.setShortcut(_translate("MainWindow", "Ctrl+,", None))
+        self.actionQuit.setText(_translate("MainWindow", "Quit", None))
+        self.actionQuit.setShortcut(_translate("MainWindow", "Ctrl+Q", None))
+        self.actionAndroid.setText(_translate("MainWindow", "Android", None))
+        self.actionSDK_Manager.setText(_translate("MainWindow", "SDK Manager", None))
+        self.actionSDK_Manager.setToolTip(_translate("MainWindow", "Launch the Android SDK manager", None))
+        self.actionAVD_Manager.setText(_translate("MainWindow", "AVD Manager", None))
+        self.actionAVD_Manager.setToolTip(_translate("MainWindow", "Launch the android AVD manager", None))
+        self.actionDDMS.setText(_translate("MainWindow", "Monitor", None))
+        self.actionDDMS.setToolTip(_translate("MainWindow", "Launch Android Monitor", None))
 

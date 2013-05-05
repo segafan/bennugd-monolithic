@@ -37,7 +37,7 @@ class packager(QtGui.QMainWindow):
         # Initialize the preferences, display dialog in case SDK dir nonexistant
         self.prefs = preferences()
         self.sdkdir = self.prefs.get('sdkdir')
-        if not os.path.isdir(self.sdkdir + '/platforms/android-16'):
+        if not os.path.isdir(os.path.join(self.sdkdir, 'platforms/android-16')):
             self.show_preferences()
             # Reread the user-given value, if any
             self.sdkdir = self.prefs.get('sdkdir')
@@ -59,6 +59,7 @@ class packager(QtGui.QMainWindow):
         self.ui.button_package.clicked.connect(self.package)
         self.ui.check_admob.stateChanged.connect(self.check_admob_changed)
         self.ui.check_install.stateChanged.connect(self.check_install_changed)
+        self.ui.icon_xhdpi.clicked.connect(self.update_icon)
         self.ui.icon_hdpi.clicked.connect(self.update_icon)
         self.ui.icon_mdpi.clicked.connect(self.update_icon)
         self.ui.icon_ldpi.clicked.connect(self.update_icon)
@@ -166,6 +167,9 @@ class packager(QtGui.QMainWindow):
         # Populate the QListWidget
         self.ui.filelist.clear()
         row=0
+
+        has_maindcb = False
+
         for root, dirs, files in os.walk(self.appdir):
             if '.svn' in dirs:
                 dirs.remove('.svn')
@@ -178,7 +182,19 @@ class packager(QtGui.QMainWindow):
                 newItem.setText(fname)
                 newItem.setIcon(newIcon)
                 self.ui.filelist.insertItem(row, newItem)
+                if file == 'main.dcb':
+                    has_maindcb = True
                 row += 1
+
+        # Don't allow game directories that don't contain main.dcb
+        if not has_maindcb:
+            self.appdir = ''
+            self.ui.line_appdir.setText(self.appdir)
+            self.ui.filelist.clear()
+            QtGui.QMessageBox.critical(self, "Couldn't find main.dcb",
+                            "Your app's main DCB file was not found in given directory\n\n"+
+                            "BennuGD for Android requires your main DCB file to be named 'main.dcb'"+
+                            "and it must be located at the given directory\n")
 
     def uncompresstree(self, src, exts=None):
         """Handles uncompression of gzip files with given extensions in given dir
@@ -255,10 +271,22 @@ class packager(QtGui.QMainWindow):
             QtGui.QMessageBox.critical(self, 'App name empty', 'The app name cannot be left empty.')
             return
 
-        admobjar = self.sdkdir + '/extras/google/admob_ads_sdk/GoogleAdMobAdsSdk-6.3.1.jar'
-        if not os.path.isfile(admobjar) and self.admob:
-            QtGui.QMessageBox.critical(self, 'Google AdMob Ads SDK', 'Please install the Google AdMob Ads SDK from the Android SDK')
-            return
+        # Try to find the AdMob Ads SDK JAR in the SDK dir
+        if self.admob:
+            sys.stdout.write('Looking for AdMob Ads SDK\n')
+            admobdir = os.path.join(self.sdkdir, 'extras/google/admob_ads_sdk/')
+            if os.path.isdir(admobdir):
+                for root, dirs, files in os.walk(admobdir):
+                    for file in files:
+                        if file.startswith('GoogleAdMobAdsSdk') and file.endswith('.jar'):
+                            admobjar = os.path.join(root, file)
+                            break
+
+            if not os.path.isfile(admobjar):
+                QtGui.QMessageBox.critical(self, 'Google AdMob Ads SDK', 'Please install the Google AdMob Ads SDK from the Android SDK')
+                return
+
+        sys.stdout.write('Admobs Ads SDK: %s\n' % admobjar)
 
         self.admobid = self.ui.line_admob.text()
         if self.admobid == '' and self.admob:
@@ -392,6 +420,8 @@ class packager(QtGui.QMainWindow):
             fd.close()
 
 
+            self.ui.icon_hdpi.icon().pixmap(96, 96).save(
+                        os.path.join(workdir, 'res', 'drawable-xhdpi', 'icon.png'))
             self.ui.icon_hdpi.icon().pixmap(72, 72).save(
                         os.path.join(workdir, 'res', 'drawable-hdpi', 'icon.png'))
             self.ui.icon_mdpi.icon().pixmap(48, 48).save(
