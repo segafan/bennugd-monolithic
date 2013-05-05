@@ -410,25 +410,27 @@ public class SDLActivity extends Activity {
             EGL10 egl = (EGL10)EGLContext.getEGL();
             if (SDLActivity.mEGLContext == null) createEGLContext();
 
-            Log.v("SDL", "Creating new EGL Surface");
-            EGLSurface surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
-            if (surface == EGL10.EGL_NO_SURFACE) {
-                Log.e("SDL", "Couldn't create surface");
-                return false;
-            }
+            if (SDLActivity.mEGLSurface == null) {
+                Log.v("SDL", "Creating new EGL Surface");
+                EGLSurface surface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
+                if (surface == EGL10.EGL_NO_SURFACE) {
+                    Log.e("SDL", "Couldn't create surface");
+                    return false;
+                }
 
-            if (egl.eglGetCurrentContext() != SDLActivity.mEGLContext) {
-                if (!egl.eglMakeCurrent(SDLActivity.mEGLDisplay, surface, surface, SDLActivity.mEGLContext)) {
-                    Log.e("SDL", "Old EGL Context doesnt work, trying with a new one");
-                    // TODO: Notify the user via a message that the old context could not be restored, and that textures need to be manually restored.
-                    createEGLContext();
+                if (egl.eglGetCurrentContext() != SDLActivity.mEGLContext) {
                     if (!egl.eglMakeCurrent(SDLActivity.mEGLDisplay, surface, surface, SDLActivity.mEGLContext)) {
-                        Log.e("SDL", "Failed making EGL Context current");
-                        return false;
+                        Log.e("SDL", "Old EGL Context doesnt work, trying with a new one");
+                        // TODO: Notify the user via a message that the old context could not be restored, and that textures need to be manually restored.
+                        createEGLContext();
+                        if (!egl.eglMakeCurrent(SDLActivity.mEGLDisplay, surface, surface, SDLActivity.mEGLContext)) {
+                            Log.e("SDL", "Failed making EGL Context current");
+                            return false;
+                        }
                     }
                 }
+                SDLActivity.mEGLSurface = surface;
             }
-            SDLActivity.mEGLSurface = surface;
             return true;
         }
         return false;
