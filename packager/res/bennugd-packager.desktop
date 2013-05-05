@@ -1,7 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=BennuGD Packager
-Comment=BennuGD Packager
-Categories=Utility;Archiving;Compression;
-Exec=/usr/share/bennugd-packager/main.py
-Icon=/usr/share/bennugd-packager/res/icon.png
