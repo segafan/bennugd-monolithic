@@ -76,8 +76,7 @@ int
 SDL_SYS_JoystickInit(void)
 {
     int i = 0;
-    if (Android_JNI_JoystickInit() < 0)
-        return (-1);
+
     SYS_numjoysticks = Android_JNI_GetNumJoysticks();
     SYS_Joysticks = (SDL_Joystick **)SDL_malloc(SYS_numjoysticks*sizeof(SDL_Joystick *));
     if (SYS_Joysticks == NULL)
@@ -190,7 +189,6 @@ SDL_SYS_JoystickQuit(void)
     SDL_free(SYS_Joysticks);
     SYS_JoystickNames = NULL;
     SYS_Joysticks = NULL;
-    Android_JNI_JoystickQuit();
 }
 
 SDL_JoystickGUID SDL_SYS_JoystickGetDeviceGUID( int device_index )
