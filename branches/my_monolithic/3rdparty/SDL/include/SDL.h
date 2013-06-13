@@ -75,11 +75,8 @@
 #include "SDL_events.h"
 #include "SDL_joystick.h"
 #include "SDL_gamecontroller.h"
-<<<<<<< local
 #include "SDL_sensor.h"
-=======
 #include "SDL_haptic.h"
->>>>>>> other
 #include "SDL_hints.h"
 #include "SDL_loadso.h"
 #include "SDL_log.h"
