@@ -178,10 +178,12 @@ SDL_InitSubSystem(Uint32 flags)
 #endif
     }
 
-    if (SDL_PrivateShouldInitSubsystem(flags, SDL_INIT_SENSOR)) {
+    if ((flags & SDL_INIT_SENSOR) ){
 #if !SDL_SENSOR_DISABLED
-        if (SDL_SensorInit() < 0) {
-            return (-1);
+        if (SDL_PrivateShouldInitSubsystem(SDL_INIT_SENSOR)) {
+            if (SDL_SensorInit() < 0) {
+                return (-1);
+            }
         }
         SDL_PrivateSubsystemRefCountIncr(SDL_INIT_SENSOR);
 #else
