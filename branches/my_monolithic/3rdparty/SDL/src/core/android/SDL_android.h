@@ -66,7 +66,7 @@ int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery, int* seco
 /* Joystick/accelerometer support */
 int Android_JNI_GetNumJoysticks();
 char* Android_JNI_GetJoystickName(int i);
-int Android_JNI_GetJoystickNumOfAxes(int index);
+int Android_JNI_GetJoystickAxes(int index);
 #ifdef ENABLE_ACCELOMETER_AS_EMULATED_JOYSTICK
 char* Android_GetAccelName();
 #endif

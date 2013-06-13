@@ -145,7 +145,7 @@ SDL_SYS_JoystickOpen(SDL_Joystick * joystick, int device_index)
         joystick->nbuttons = 36;
         joystick->nhats = 0;
         joystick->nballs = 0;
-        joystick->naxes = Android_JNI_GetJoystickNumOfAxes(device_index);
+        joystick->naxes = Android_JNI_GetJoystickAxes(device_index);
     }
     else
     {
