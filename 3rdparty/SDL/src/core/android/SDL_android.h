@@ -35,11 +35,8 @@ extern void Android_JNI_SwapWindow();
 extern void Android_JNI_SetActivityTitle(const char *title);
 #ifdef ENABLE_ACCELOMETER_AS_EMULATED_JOYSTICK
 extern SDL_bool Android_JNI_GetAccelerometerValues(float values[3]);
-<<<<<<< local
 extern SDL_bool Android_JNI_HasAccelerometer();
-=======
 #endif
->>>>>>> other
 extern void Android_JNI_ShowTextInput(SDL_Rect *inputRect);
 extern void Android_JNI_HideTextInput();
 
