@@ -42,7 +42,8 @@ static void  dump_new_events()
     // Otherwise some events seem to get discarded
     SDL_FlushEvents(SDL_SYSWMEVENT, SDL_SYSWMEVENT);
     SDL_FlushEvents(SDL_TEXTEDITING, SDL_TEXTINPUT);
-    SDL_FlushEvents(SDL_INPUTMOTION, SDL_LASTEVENT);
+    SDL_FlushEvents(SDL_JOYDEVICEADDED, SDL_CONTROLLERDEVICEREMAPPED);
+    SDL_FlushEvents(SDL_DOLLARGESTURE, SDL_LASTEVENT);
 #else
     while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
 #endif
