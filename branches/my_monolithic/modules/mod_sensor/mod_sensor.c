@@ -1,5 +1,5 @@
 /*
- *  Copyright © 2013 Joseba Garc’a Etxebarria <joseba.gar@gmail.com>
+ *  Copyright © 2013 Joseba García Etxebarria <joseba.gar@gmail.com>
  *
  *  This file is part of Bennu - Game Development
  *
