@@ -2331,11 +2331,8 @@ void gr_rotated_blit( GRAPH * dest, REGION * clip, int scrx, int scry, int flags
 //    half_texel_size_y = 50.0 / scaley;
 
 
-//    half_texel_size_x = 0.5 / scalex;
-//    half_texel_size_y = 0.5 / scaley;
-
-    half_texel_size_x = 0;
-    half_texel_size_y = 0;
+    half_texel_size_x = 0.5 / scalex;
+    half_texel_size_y = 0.5 / scaley;
 
     /* Fill the vertex array with the four obtained points */
 

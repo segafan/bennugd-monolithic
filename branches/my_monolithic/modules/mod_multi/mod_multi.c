@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2011 Joseba García Echebarria. All rights reserved.
+ *  Copyright (C) 2013 Joseba García Etxebarria. All rights reserved.
  *
  *  This software is provided 'as-is', without any express or implied
  *  warranty. In no event will the authors be held liable for any damages
@@ -187,7 +187,6 @@ void parse_input_events() {
     double w_width=0, w_height=0;
     SDL_DisplayMode mode;
     SDL_Event e;
-    SDL_Touch *state;
 
     // SDL will give us the touch position relative to the whole window
     // but we might have set a different virtual resolution
@@ -219,25 +218,23 @@ void parse_input_events() {
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_FINGERDOWN, SDL_FINGERMOTION ) > 0 ) {
         switch ( e.type ) {
             case SDL_FINGERDOWN:
-                // Retrive the touch state, the finger id and the position in the array
-                state  = SDL_GetTouch(e.tfinger.touchId);
-                n      = get_sdlfinger_index(e.tfinger.fingerId);
+                // Retrive the the position in the array
+                n = get_sdlfinger_index(e.tfinger.fingerId);
 
-                // Quit if fingerid not found
+                // Quit if fingerId not found or array full
                 if (n == -1)
                     break;
 
                 // Store the amount of fingers onscreen
-                numpointers = state->num_fingers;
+                numpointers = SDL_GetNumTouchFingers(e.tfinger.touchId);
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
-                y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
-                pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
+                x = ( (float)e.tfinger.x + (float)width  / ( 2.0 * (float)w_width  ) - 0.5 ) * w_width;
+                y = ( (float)e.tfinger.y + (float)height / ( 2.0 * (float)w_height ) - 0.5 ) * w_height;
+                pointers[n].pressure = (float)e.tfinger.pressure * 255;
 
                 // Convert the touch location taking scaling/rotations into account
-                sdlx = x; sdly = y;
                 convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
@@ -255,20 +252,18 @@ void parse_input_events() {
 
             case SDL_FINGERMOTION:
                 // Retrive the touch state, the finger id and the position in the array
-                state  = SDL_GetTouch(e.tfinger.touchId);
-                n      = get_sdlfinger_index(e.tfinger.fingerId);
+                n = get_sdlfinger_index(e.tfinger.fingerId);
 
                 // Quit if fingerid not found
                 if (n == -1)
                     break;
 
                 // Update the data about this finger's position
-                x = ( (float)e.tfinger.x / state->xres + (float)width/(2.0 * (float)w_width) - 0.5 ) * w_width;
-                y = ( (float)e.tfinger.y / state->yres + (float)height/(2.0 * (float)w_height) - 0.5 ) * w_height;
-                pointers[n].pressure = ( (float)e.tfinger.pressure / state->pressure_max ) * 255;
+                x = ( (float)e.tfinger.x + (float)width  / ( 2.0 * (float)w_width  ) - 0.5 ) * w_width;
+                y = ( (float)e.tfinger.y + (float)height / ( 2.0 * (float)w_height ) - 0.5 ) * w_height;
+                pointers[n].pressure = (float)e.tfinger.pressure * 255;
 
                 // Convert the touch location taking scaling/rotations into account
-                sdlx = x; sdly = y;
                 convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
@@ -284,11 +279,10 @@ void parse_input_events() {
 
             case SDL_FINGERUP:
                 // Retrive the touch state, the finger id and the position in the array
-                state  = SDL_GetTouch(e.tfinger.touchId);
-                n      = get_sdlfinger_index(e.tfinger.fingerId);
+                n = get_sdlfinger_index(e.tfinger.fingerId);
 
                 // Refresh the total number of fingers onscreen
-                numpointers = state->num_fingers;
+                numpointers = SDL_GetNumTouchFingers(e.tfinger.touchId);
 
                 // Quit if fingerid not found
                 if (n == -1)

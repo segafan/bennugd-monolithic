@@ -629,9 +629,9 @@ static void process_key_events()
                 if ( !keypress )
                 {
                     GLODWORD( libkey,  SCANCODE )  = k ;
-                    if ( e.key.keysym.unicode )
+                    if ( e.key.keysym.scancode )
                     {
-                        asc = win_to_dos[e.key.keysym.unicode & 0xFF] ;
+                        asc = win_to_dos[e.key.keysym.scancode & 0xFF] ;
 
                         /* ascii mayusculas */
                         if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )
@@ -648,9 +648,9 @@ static void process_key_events()
                 else
                 {
                     keyring[keyring_tail].scancode = k ;
-                    if ( e.key.keysym.unicode )
+                    if ( e.key.keysym.scancode )
                     {
-                        asc = win_to_dos[e.key.keysym.unicode & 0x7F] ;
+                        asc = win_to_dos[e.key.keysym.scancode & 0x7F] ;
 
                         /*ascii mayusculas */
                         if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )

@@ -36,6 +36,7 @@ extern "C" {
 #include "../../video/android/SDL_androidvideo.h"
 
 #include <android/log.h>
+#include <android/sensor.h>
 #include <pthread.h>
 #include <sys/types.h>
 #include <unistd.h>
@@ -362,6 +363,18 @@ extern "C" void Android_JNI_SetActivityTitle(const char *title)
         jstring jtitle = reinterpret_cast<jstring>(mEnv->NewStringUTF(title));
         mEnv->CallStaticBooleanMethod(mActivityClass, mid, jtitle);
         mEnv->DeleteLocalRef(jtitle);
+    }
+}
+
+extern "C" void Android_JNI_openURL(const char* url)
+{
+    jmethodID mid;
+    JNIEnv *mEnv = Android_JNI_GetEnv();
+    mid = mEnv->GetStaticMethodID(mActivityClass,"openURL", "(Ljava/lang/String;)V");
+    if (mid) {
+        jstring Url = mEnv->NewStringUTF(url);
+        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
+        mEnv->DeleteLocalRef(Url);
     }
 }
 
@@ -1096,6 +1109,16 @@ extern "C" int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery
     env->DeleteLocalRef(intent);
 
     return 0;
+}
+
+// Return the name of the default accelerometer
+// This is much easier to be done with NDK than with JNI
+extern "C" char* Android_GetAccelName()
+{
+    ASensorManager* mSensorManager = ASensorManager_getInstance();
+    ASensor const* mAccelerometer = ASensorManager_getDefaultSensor(mSensorManager, ASENSOR_TYPE_ACCELEROMETER);
+
+    return SDL_strdup(ASensor_getName(mAccelerometer));
 }
 
 // sends message to be handled on the UI event dispatch thread
