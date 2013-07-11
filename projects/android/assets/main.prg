@@ -202,7 +202,7 @@ Begin
             text += " M.MIDDLE ";
         end
         text3 = write(0, 160, 140+10*(num_sensors+num_joys), 4, text);
-        text4 = write(0, 160, 150+10*(num_sensors+num_joys), 4, "Sensor 1 reading: "+sensor_getaxis(1,0));
+        text4 = write(0, 160, 150+10*(num_sensors+num_joys), 4, "Sensor 2 reading: "+sensor_getaxis(2,0));
 
         frame;
         delete_text(text1); delete_text(text2); delete_text(text3); delete_text(text4);

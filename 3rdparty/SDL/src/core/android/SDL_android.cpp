@@ -31,8 +31,10 @@
 
 extern "C" {
 #include "../../events/SDL_events_c.h"
+#include "../../joystick/android/SDL_androidjoystick.h"
 #include "../../video/android/SDL_androidkeyboard.h"
 #include "../../video/android/SDL_androidtouch.h"
+#include "../../video/android/SDL_androidmouse.h"
 #include "../../video/android/SDL_androidvideo.h"
 
 #include <android/log.h>
@@ -150,6 +152,27 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeResize(
     Android_SetScreenResolution(width, height, format);
 }
 
+// Paddown
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadDown(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadDown(padId, keycode);
+}
+
+// Padup
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativePadUp(
+                                    JNIEnv* env, jclass jcls, jint padId, jint keycode)
+{
+    Android_OnPadUp(padId, keycode);
+}
+
+// Padup
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativeJoy(
+                                    JNIEnv* env, jclass jcls, jint joyId, jint axis, jfloat value)
+{
+    Android_OnJoy(joyId, axis, value);
+}
+
 // Keydown
 extern "C" void Java_org_libsdl_app_SDLActivity_onNativeKeyDown(
                                     JNIEnv* env, jclass jcls, jint keycode)
@@ -173,15 +196,12 @@ extern "C" void Java_org_libsdl_app_SDLActivity_onNativeTouch(
     Android_OnTouch(touch_device_id_in, pointer_finger_id_in, action, x, y, p);
 }
 
-// Accelerometer
-extern "C" void Java_org_libsdl_app_SDLActivity_onNativeAccel(
+// Mouse
+extern "C" void Java_org_libsdl_app_SDLActivity_onNativeMouse(
                                     JNIEnv* env, jclass jcls,
-                                    jfloat x, jfloat y, jfloat z)
+                                    jint action, jint buttonId, jfloat x, jfloat y)
 {
-    fLastAccelerometer[0] = x;
-    fLastAccelerometer[1] = y;
-    fLastAccelerometer[2] = z;
-    bHasNewData = true;
+    Android_OnMouse(action, buttonId, x, y);
 }
 
 // Low memory
@@ -1111,8 +1131,59 @@ extern "C" int Android_JNI_GetPowerInfo(int* plugged, int* charged, int* battery
     return 0;
 }
 
+// return the total number of plugged in joysticks
+extern "C" int Android_JNI_GetNumJoysticks()
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
+    if (!mid) {
+        return -1;
+    }
+        return env->CallIntMethod(mActivityClass, mid);
+}
+
+// Return the name of joystick number "i"
+extern "C" char* Android_JNI_GetJoystickName(int i)
+{
+        JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return SDL_strdup("");
+    }
+
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
+        if (!mid) {
+                return SDL_strdup("");
+        }
+        jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
+        const char* utf = env->GetStringUTFChars(string, 0);
+        if (!utf) {
+                return SDL_strdup("");
+        }
+
+        char* text = SDL_strdup(utf);
+        env->ReleaseStringUTFChars(string, utf);
+        return text;
+}
+
+// return the number of axes in the given joystick
+extern "C" int Android_JNI_GetJoystickAxes(int joy)
+{
+    JNIEnv* env = Android_JNI_GetEnv();
+    if (!env) {
+        return -1;
+    }
+        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickAxes", "(I)I");
+    if (!mid) {
+        return -1;
+    }
+        return env->CallIntMethod(mActivityClass, mid, joy);
+}
+
 // Return the name of the default accelerometer
-// This is much easier to be done with NDK than with JNI
+// This is much easily done with NDK than with JNI
 extern "C" char* Android_GetAccelName()
 {
     ASensorManager* mSensorManager = ASensorManager_getInstance();
