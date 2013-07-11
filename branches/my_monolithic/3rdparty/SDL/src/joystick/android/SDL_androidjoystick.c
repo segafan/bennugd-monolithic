@@ -50,7 +50,7 @@ keycode_to_SDL(int keycode)
      * KEYCODE_DPAD_LEFT, KEYCODE_DPAD_RIGHT, KEYCODE_DPAD_CENTER
      */
     if(keycode < 96)
-        final = keycode-19;
+        return keycode-19;
     /* Some gamepad buttons (API 9):
      * KEYCODE_BUTTON_A=96, KEYCODE_BUTTON_B, KEYCODE_BUTTON_C,
      * KEYCODE_BUTTON_X, KEYCODE_BUTTON_Y, KEYCODE_BUTTON_Z,
@@ -60,15 +60,12 @@ keycode_to_SDL(int keycode)
      * KEYCODE_BUTTON_START, KEYCODE_BUTTON_SELECT, KEYCODE_BUTTON_MODE
      */
     else if(keycode < 188)
-        final = keycode-91;
+        return keycode-91;
     /* More gamepad buttons (API 12):
      * KEYCODE_BUTTON_1=188 to KEYCODE_BUTTON_16
      */
     else
-        final = keycode-168;
-
-    SDL_Log("Final keycode: %d\n", final);
-    return final;
+        return keycode-168;
 }
 
 /* Function to scan the system for joysticks.

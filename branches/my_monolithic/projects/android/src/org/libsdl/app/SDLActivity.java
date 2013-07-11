@@ -600,9 +600,6 @@ class SDLMain implements Runnable {
 /* This code will only execute on API >= 12 */
 class _SDLSurface extends SDLSurface implements SurfaceHolder.Callback,
     View.OnKeyListener, View.OnTouchListener, View.OnGenericMotionListener {
-
-    // Keep track of the surface size to normalize touch events
-    protected static float mWidth, mHeight;
     
     // Startup
     public _SDLSurface(Context context) {
@@ -610,10 +607,6 @@ class _SDLSurface extends SDLSurface implements SurfaceHolder.Callback,
         getHolder().addCallback(this);
         
         setOnGenericMotionListener(this);
-        
-        // Some arbitrary defaults to avoid a potential division by zero
-        mWidth = 1.0f;
-        mHeight = 1.0f;
     }
     
     // Generic Motion (mouse hover, joystick...) events
@@ -623,8 +616,8 @@ class _SDLSurface extends SDLSurface implements SurfaceHolder.Callback,
         int action = event.getActionMasked();
         
         if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
-            float x = event.getX(actionPointerIndex) / mWidth;
-            float y = event.getY(actionPointerIndex) / mHeight;
+            float x = event.getX(actionPointerIndex);
+            float y = event.getY(actionPointerIndex);
             
             switch(action) {
                 case MotionEvent.ACTION_HOVER_MOVE:
@@ -820,7 +813,6 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
                    (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
             int id = SDLActivity.getJoyId( event.getDeviceId() );
             if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                Log.v("SDL", "key down: " + keyCode);
                 SDLActivity.onNativePadDown(id, keyCode);
             } else if (event.getAction() == KeyEvent.ACTION_UP) {
                 SDLActivity.onNativePadUp(id, keyCode);
