@@ -22,8 +22,6 @@
 
 #if SDL_VIDEO_DRIVER_ANDROID
 
-#include <android/log.h>
-
 #include "SDL_events.h"
 #include "../../events/SDL_mouse_c.h"
 

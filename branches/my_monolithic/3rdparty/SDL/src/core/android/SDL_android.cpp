@@ -1138,34 +1138,36 @@ extern "C" int Android_JNI_GetNumJoysticks()
     if (!env) {
         return -1;
     }
-        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
+    
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getNumJoysticks", "()I");
     if (!mid) {
         return -1;
     }
-        return env->CallIntMethod(mActivityClass, mid);
+    
+    return env->CallStaticIntMethod(mActivityClass, mid);
 }
 
 // Return the name of joystick number "i"
 extern "C" char* Android_JNI_GetJoystickName(int i)
 {
-        JNIEnv* env = Android_JNI_GetEnv();
+    JNIEnv* env = Android_JNI_GetEnv();
     if (!env) {
         return SDL_strdup("");
     }
 
-        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
-        if (!mid) {
-                return SDL_strdup("");
-        }
-        jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
-        const char* utf = env->GetStringUTFChars(string, 0);
-        if (!utf) {
-                return SDL_strdup("");
-        }
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickName", "(I)Ljava/lang/String;");
+    if (!mid) {
+        return SDL_strdup("");
+    }
+    jstring string = reinterpret_cast<jstring>(env->CallStaticObjectMethod(mActivityClass, mid, i));
+    const char* utf = env->GetStringUTFChars(string, 0);
+    if (!utf) {
+        return SDL_strdup("");
+    }
 
-        char* text = SDL_strdup(utf);
-        env->ReleaseStringUTFChars(string, utf);
-        return text;
+    char* text = SDL_strdup(utf);
+    env->ReleaseStringUTFChars(string, utf);
+    return text;
 }
 
 // return the number of axes in the given joystick
@@ -1175,11 +1177,13 @@ extern "C" int Android_JNI_GetJoystickAxes(int joy)
     if (!env) {
         return -1;
     }
-        jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickAxes", "(I)I");
+    
+    jmethodID mid = env->GetStaticMethodID(mActivityClass, "getJoystickAxes", "(I)I");
     if (!mid) {
         return -1;
     }
-        return env->CallIntMethod(mActivityClass, mid, joy);
+    
+    return env->CallIntMethod(mActivityClass, mid, joy);
 }
 
 // Return the name of the default accelerometer
