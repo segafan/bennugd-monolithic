@@ -69,11 +69,9 @@ int SDL_SYS_NumSensors()
 const char *
 SDL_SYS_SensorNameForDeviceIndex(int device_index)
 {
-    int n=0;
     ASensorList list;
 
-    n = ASensorManager_getSensorList(mSensorManager, &list);
-    if (device_index > n || ! list) {
+    if (device_index >= ASensorManager_getSensorList(mSensorManager, &list) || ! list) {
         SDL_SetError("Sensor index higher than available sensor number");
         return NULL;
     }
@@ -98,7 +96,7 @@ SDL_SYS_SensorOpen(SDL_Sensor *sensor, int device_index)
     int type=0;
     ASensorList list;
 
-    if (device_index > ASensorManager_getSensorList(mSensorManager, &list) || ! list) {
+    if (device_index >= ASensorManager_getSensorList(mSensorManager, &list) || ! list) {
         return -1;
     }
 
