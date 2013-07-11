@@ -21,6 +21,10 @@ import android.graphics.*;
 import android.media.*;
 import android.hardware.*;
 
+import java.lang.*;
+import java.util.List;
+import java.util.ArrayList;
+
 
 /**
     SDL Activity
@@ -34,11 +38,16 @@ public class SDLActivity extends Activity {
     // Main components
     protected static SDLActivity mSingleton;
     protected static SDLSurface mSurface;
+    protected static _SDLSurface _mSurface;
     protected static View mTextEdit;
     protected static ViewGroup mLayout;
 
     // This is what SDL runs in. It invokes SDL_main(), eventually
     protected static Thread mSDLThread;
+
+    // Joystick
+    private static boolean mJoyListCreated;
+    private static List<Integer> mJoyIdList;
 
     // Audio
     protected static Thread mAudioThread;
@@ -72,10 +81,15 @@ public class SDLActivity extends Activity {
 
         // Set up the surface
         mEGLSurface = EGL10.EGL_NO_SURFACE;
-        mSurface = new SDLSurface(getApplication());
-
-        mLayout = new AbsoluteLayout(this);
-        mLayout.addView(mSurface);
+        if(Build.VERSION.SDK_INT >= 12) {
+            _mSurface = new _SDLSurface(getApplication());
+            mLayout   = new AbsoluteLayout(this);
+            mLayout.addView(_mSurface);
+        } else {
+            mSurface = new SDLSurface(getApplication());
+            mLayout = new AbsoluteLayout(this);
+            mLayout.addView(mSurface);
+        }
 
         // Don't allow the screen lock
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -224,6 +238,10 @@ public class SDLActivity extends Activity {
     public static native void nativePause();
     public static native void nativeResume();
     public static native void onNativeResize(int x, int y, int format);
+    public static native void onNativePadDown(int padId, int keycode);
+    public static native void onNativePadUp(int padId, int keycode);
+    public static native void onNativeJoy(int joyId, int axis,
+                                            float value);
     public static native void onNativeKeyDown(int keycode);
     public static native void onNativeKeyUp(int keycode);
     public static native void onNativeTouch(int touchDevId, int pointerFingerId,
@@ -246,6 +264,63 @@ public class SDLActivity extends Activity {
     public static boolean setActivityTitle(String title) {
         // Called from SDLMain() thread and can't directly affect the view
         return mSingleton.sendCommand(COMMAND_CHANGE_TITLE, title);
+    }
+
+    // Create a list of valid ID's the first time this function is called
+    private static void createJoystickList() {
+        if(mJoyListCreated) {
+            return;
+        }
+
+        mJoyIdList = new ArrayList<Integer>();
+        // InputDevice.getDeviceIds requires SDK >= 16
+        if(Build.VERSION.SDK_INT >= 16) {
+            int[] deviceIds = InputDevice.getDeviceIds();
+            for(int i=0; i<deviceIds.length; i++) {
+                if( (InputDevice.getDevice(deviceIds[i]).getSources() & InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
+                    mJoyIdList.add(deviceIds[i]);
+                }
+            }
+        }
+        mJoyListCreated = true;
+    }
+
+    public static int getNumJoysticks() {
+        createJoystickList();
+
+        return mJoyIdList.size();
+    }
+
+    public static String getJoystickName(int joy) {
+        createJoystickList();
+
+        return InputDevice.getDevice(mJoyIdList.get(joy)).getName();
+    }
+
+    public static int getJoystickAxes(int joy) {
+        createJoystickList();
+
+         // In newer Android versions we can get a real value
+         // In older versions, we can assume a sane X-Y default configuration
+         if(Build.VERSION.SDK_INT >= 12) {
+            return InputDevice.getDevice(mJoyIdList.get(joy)).getMotionRanges().size();
+         } else {
+            return 2;
+         }
+    }
+
+    public static int getJoyId(int devId) {
+        int i=0;
+
+        createJoystickList();
+
+        for(i=0; i<mJoyIdList.size(); i++) {
+            if(mJoyIdList.get(i) == devId) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     public static boolean sendMessage(int command, int param) {
@@ -356,7 +431,11 @@ public class SDLActivity extends Activity {
 
             if (SDLActivity.mEGLSurface == EGL10.EGL_NO_SURFACE) {
                 Log.v("SDL", "Creating new EGL Surface");
-                SDLActivity.mEGLSurface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
+                if(Build.VERSION.SDK_INT >= 12) {
+                    SDLActivity.mEGLSurface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity._mSurface, null);
+                } else { 
+                    SDLActivity.mEGLSurface = egl.eglCreateWindowSurface(SDLActivity.mEGLDisplay, SDLActivity.mEGLConfig, SDLActivity.mSurface, null);
+                }
                 if (SDLActivity.mEGLSurface == EGL10.EGL_NO_SURFACE) {
                     Log.e("SDL", "Couldn't create surface");
                     return false;
@@ -518,6 +597,66 @@ class SDLMain implements Runnable {
     }
 }
 
+/* This code will only execute on API >= 12 */
+class _SDLSurface extends SDLSurface implements SurfaceHolder.Callback,
+    View.OnKeyListener, View.OnTouchListener, View.OnGenericMotionListener {
+
+    // Keep track of the surface size to normalize touch events
+    protected static float mWidth, mHeight;
+    
+    // Startup
+    public _SDLSurface(Context context) {
+        super(context);
+        getHolder().addCallback(this);
+        
+        setOnGenericMotionListener(this);
+        
+        // Some arbitrary defaults to avoid a potential division by zero
+        mWidth = 1.0f;
+        mHeight = 1.0f;
+    }
+    
+    // Generic Motion (mouse hover, joystick...) events
+    @Override
+    public boolean onGenericMotion(View v, MotionEvent event) {
+        int actionPointerIndex = event.getActionIndex();
+        int action = event.getActionMasked();
+        
+        if ( (event.getSource() & InputDevice.SOURCE_MOUSE) != 0 ) {
+            float x = event.getX(actionPointerIndex) / mWidth;
+            float y = event.getY(actionPointerIndex) / mHeight;
+            
+            switch(action) {
+                case MotionEvent.ACTION_HOVER_MOVE:
+                    // Send mouse motion
+                    SDLActivity.onNativeMouse(action, 0, x, y);
+                    break;
+                default:
+                    // Send mouse click
+                    int buttonId = 1; /* API 14: BUTTON_PRIMARY */
+                    if(Build.VERSION.SDK_INT >= 14) {
+                        buttonId = event.getButtonState();
+                    }
+                    // Event was mouse hover
+                    SDLActivity.onNativeMouse(action, buttonId, x, y);
+                    break;
+            }
+        } else if ( (event.getSource() & InputDevice.SOURCE_JOYSTICK) != 0) {
+            switch(action) {
+                case MotionEvent.ACTION_MOVE:
+                    int id = SDLActivity.getJoyId( event.getDeviceId() );
+                    float x = event.getAxisValue(MotionEvent.AXIS_X, actionPointerIndex);
+                    float y = event.getAxisValue(MotionEvent.AXIS_Y, actionPointerIndex);
+                    SDLActivity.onNativeJoy(id, 0, x);
+                    SDLActivity.onNativeJoy(id, 1, y);
+                    
+                    break;
+            }
+        }
+        return true;
+    }
+}
+
 
 /**
     SDLSurface. This is what we draw on, so we need to know when it's created
@@ -656,49 +795,69 @@ class SDLSurface extends SurfaceView implements SurfaceHolder.Callback,
     // Key events
     @Override
     public boolean onKey(View  v, int keyCode, KeyEvent event) {
+        // Dispatch the different events depending on where they come from
+        if(event.getSource() == InputDevice.SOURCE_KEYBOARD) {
+            // Send volume key signal but return false, so that
+            // Android will set the volume for our app
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN ||
+                keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    SDLActivity.onNativeKeyDown(keyCode);
+                } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                    SDLActivity.onNativeKeyUp(keyCode);
+                }
+                return false;
+            }
 
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            //Log.v("SDL", "key down: " + keyCode);
-            SDLActivity.onNativeKeyDown(keyCode);
-            return true;
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                //Log.v("SDL", "key down: " + keyCode);
+                SDLActivity.onNativeKeyDown(keyCode);
+            } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                //Log.v("SDL", "key up: " + keyCode);
+                SDLActivity.onNativeKeyUp(keyCode);
+            }
+        }else if ( (event.getSource() & 0x00000401) != 0 || /* API 12: SOURCE_GAMEPAD */
+                   (event.getSource() & InputDevice.SOURCE_DPAD) != 0 ) {
+            int id = SDLActivity.getJoyId( event.getDeviceId() );
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                Log.v("SDL", "key down: " + keyCode);
+                SDLActivity.onNativePadDown(id, keyCode);
+            } else if (event.getAction() == KeyEvent.ACTION_UP) {
+                SDLActivity.onNativePadUp(id, keyCode);
+            }
         }
-        else if (event.getAction() == KeyEvent.ACTION_UP) {
-            //Log.v("SDL", "key up: " + keyCode);
-            SDLActivity.onNativeKeyUp(keyCode);
-            return true;
-        }
-        
-        return false;
+
+        return true;
     }
 
     // Touch events
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-             final int touchDevId = event.getDeviceId();
-             final int pointerCount = event.getPointerCount();
-             // touchId, pointerId, action, x, y, pressure
-             int actionPointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent.ACTION_POINTER_ID_SHIFT; /* API 8: event.getActionIndex(); */
-             int pointerFingerId = event.getPointerId(actionPointerIndex);
-             int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
+        final int touchDevId = event.getDeviceId();
+        final int pointerCount = event.getPointerCount();
+        // touchId, pointerId, action, x, y, pressure
+        int actionPointerIndex = (event.getAction() & MotionEvent.ACTION_POINTER_ID_MASK) >> MotionEvent.ACTION_POINTER_ID_SHIFT; /* API 8: event.getActionIndex(); */
+        int pointerFingerId = event.getPointerId(actionPointerIndex);
+        int action = (event.getAction() & MotionEvent.ACTION_MASK); /* API 8: event.getActionMasked(); */
 
-             float x = event.getX(actionPointerIndex) / mWidth;
-             float y = event.getY(actionPointerIndex) / mHeight;
-             float p = event.getPressure(actionPointerIndex);
+        float x = event.getX(actionPointerIndex) / mWidth;
+        float y = event.getY(actionPointerIndex) / mHeight;
+        float p = event.getPressure(actionPointerIndex);
 
-             if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
-                // TODO send motion to every pointer if its position has
-                // changed since prev event.
-                for (int i = 0; i < pointerCount; i++) {
-                    pointerFingerId = event.getPointerId(i);
-                    x = event.getX(i) / mWidth;
-                    y = event.getY(i) / mHeight;
-                    p = event.getPressure(i);
-                    SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
-                }
-             } else {
+        if (action == MotionEvent.ACTION_MOVE && pointerCount > 1) {
+            // TODO send motion to every pointer if its position has
+            // changed since prev event.
+            for (int i = 0; i < pointerCount; i++) {
+                pointerFingerId = event.getPointerId(i);
+                x = event.getX(i) / mWidth;
+                y = event.getY(i) / mHeight;
+                p = event.getPressure(i);
                 SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
-             }
-      return true;
+            }
+        } else {
+            SDLActivity.onNativeTouch(touchDevId, pointerFingerId, action, x, y, p);
+        }
+        return true;
     }
 }
 
