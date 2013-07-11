@@ -77,8 +77,7 @@ void Android_OnMouse(int action, int buttonId, float x, float y)
             SDL_SendMouseButton(Android_Window, mouse->mouseID, SDL_PRESSED, button);
             break;
         case ACTION_HOVER_MOVE:
-            Android_GetWindowCoordinates(x, y, &window_x, &window_y);
-            SDL_SendMouseMotion(Android_Window, mouse->mouseID, 0, window_x, window_y);
+            SDL_SendMouseMotion(Android_Window, mouse->mouseID, 0, x, y);
             break;
         case ACTION_MOUSE_UP:
             SDL_SendMouseButton(Android_Window, mouse->mouseID, SDL_RELEASED, button);
