@@ -48,12 +48,13 @@ Begin
     num_sensors = sensor_number();
     write(0, 320, 0, 2, "Width: "+width+" Height:"+height);
     write(0, 320, 10, 2, "scale_resolution: 0"+scale_resolution);
-    write(0, 160, 240, 4, "Detected joysticks: "+num_joys);
+    write(0, 160, 100, 4, "Detected sensors: "+num_sensors);
     for(i=0; i<num_sensors; i++)
-        say(i+": "+sensor_name(i));
+        write(0, 160, 110+10*i, 4, "Sensor "+i+": "+sensor_name(i));
     end;
+    write(0, 160, 120+10*num_sensors, 4, "Detected joysticks: "+num_joys);
     for(i=0; i<num_joys; i++)
-        write(0, 160, 250+10*i, 4, joy_name(i)+" Axes: "+joy_numaxes(i));
+        write(0, 160, 130+10*(num_sensors+i), 4, "Joy "+i+": "+joy_name(i)+" Axes: "+joy_numaxes(i));
     end;
 
     /* Some touchscreens cannot detect all 5 fingers at once */
@@ -200,8 +201,8 @@ Begin
         if(mouse.middle)
             text += " M.MIDDLE ";
         end
-        text3 = write(0, 160, 260+10*i, 4, text);
-        text4 = write(0, 160, 260+11*i, 4, sensor_getaxis(1,0));
+        text3 = write(0, 160, 140+10*(num_sensors+num_joys), 4, text);
+        text4 = write(0, 160, 150+10*(num_sensors+num_joys), 4, "Sensor 0 reading: "+sensor_getaxis(1,0));
 
         frame;
         delete_text(text1); delete_text(text2); delete_text(text3); delete_text(text4);

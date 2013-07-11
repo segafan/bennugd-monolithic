@@ -74,7 +74,7 @@ SDL_SYS_SensorNameForDeviceIndex(int device_index)
 
     n = ASensorManager_getSensorList(mSensorManager, &list);
     if (device_index > n || ! list) {
-        SDL_SetError("Sensor index higher    than available sensor number");
+        SDL_SetError("Sensor index higher than available sensor number");
         return NULL;
     }
 
