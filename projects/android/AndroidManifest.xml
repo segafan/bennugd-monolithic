@@ -12,10 +12,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.google.ads.AdActivity"
-              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-
     </application>
-    <uses-sdk android:minSdkVersion="9" />
+    <uses-sdk android:minSdkVersion="10" />
     <uses-feature android:glEsVersion="0x00020000" />
 </manifest> 
