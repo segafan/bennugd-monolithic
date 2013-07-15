@@ -30,6 +30,7 @@
 #include "events/SDL_events_c.h"
 #include "haptic/SDL_haptic_c.h"
 #include "joystick/SDL_joystick_c.h"
+#include "sensor/SDL_sensor_c.h"
 
 /* Initialization/Cleanup routines */
 #if !SDL_TIMERS_DISABLED
