@@ -34,7 +34,7 @@
 		9232A5F31396D56A00058FDB /* registry.h in Headers */ = {isa = PBXBuildFile; fileRef = 9232A5E61396D56A00058FDB /* registry.h */; };
 		9232A5F41396D56A00058FDB /* window_lookup.h in Headers */ = {isa = PBXBuildFile; fileRef = 9232A5E71396D56A00058FDB /* window_lookup.h */; };
 		9232A5F51396D56A00058FDB /* window.h in Headers */ = {isa = PBXBuildFile; fileRef = 9232A5E81396D56A00058FDB /* window.h */; };
-		92A632CE13BD30BE00382D60 /* libOgg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A632CD13BD30BE00382D60 /* libOgg.a */; };
+		923C7EC817946F0200E88B25 /* libOgg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920719DF15EADABC002C2A74 /* libOgg.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				92A632CE13BD30BE00382D60 /* libOgg.a in Frameworks */,
+				923C7EC817946F0200E88B25 /* libOgg.a in Frameworks */,
 				9232A5B71396D47300058FDB /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

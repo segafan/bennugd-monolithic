@@ -69,16 +69,16 @@ int modChipmunkGeneraTerreno(INSTANCE * my, int * params){
 
 }
 
-INLINE float cuad(float v){
+static inline float cuad(float v){
     return v*v;
 }
 
-INLINE float fdist(float ix,float iy,float fx,float fy){
+static inline float fdist(float ix,float iy,float fx,float fy){
     return sqrt(cuad(ix-fx) + cuad(iy-fy));
 }
 
 //x3,y3 son las coordenadas del punto
-INLINE float rectdist(float x1,float y1,float x2,float y2,float x3,float y3){
+static inline float rectdist(float x1,float y1,float x2,float y2,float x3,float y3){
     float up=(y1-y2);
     float down=(x1-x2);
     if (up==0)  //la misma y
@@ -116,7 +116,7 @@ int maxV(float v[],int c){
     return maxV;
 }
 
-INLINE int iguales(cpVect *a, cpVect *b,float c){
+static inline int iguales(cpVect *a, cpVect *b,float c){
     return (fabs(a->x - b->x)+fabs(a->y - b->y))<c;
 }
 
