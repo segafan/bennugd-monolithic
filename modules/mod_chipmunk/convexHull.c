@@ -34,7 +34,7 @@
 
 //===================================================================
 
-inline float isLeft( modChipmunkStruct_Point P0, modChipmunkStruct_Point P1, modChipmunkStruct_Point P2 )
+static inline float isLeft( modChipmunkStruct_Point P0, modChipmunkStruct_Point P1, modChipmunkStruct_Point P2 )
 {
     return (P1.x - P0.x)*(P2.y - P0.y) - (P2.x - P0.x)*(P1.y - P0.y);
 }

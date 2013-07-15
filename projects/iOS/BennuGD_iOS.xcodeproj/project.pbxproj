@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */ = {isa = PBXBuildFile; fileRef = 92098DEF13A534B200F70BC2 /* mod_chipmunk.c */; };
 		920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06A6152BBF0C001BDE54 /* libpng.a */; };
 		921B48181391CE07005F1832 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48171391CE07005F1832 /* UIKit.framework */; };
 		921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921B48191391CE07005F1832 /* Foundation.framework */; };
@@ -94,17 +93,33 @@
 		921B4AEE1391E237005F1832 /* files.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AE71391E237005F1832 /* files.c */; };
 		921B4AF01391E237005F1832 /* xctype.c in Sources */ = {isa = PBXBuildFile; fileRef = 921B4AEB1391E237005F1832 /* xctype.c */; };
 		92307D481461F1B00011C04E /* mod_multi.c in Sources */ = {isa = PBXBuildFile; fileRef = 92307D461461F1B00011C04E /* mod_multi.c */; };
+		923C7E8917946A5100E88B25 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 923C7E8817946A5100E88B25 /* Default-568h@2x.png */; };
+		923C7EB017946C1C00E88B25 /* agua.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA317946C1C00E88B25 /* agua.c */; };
+		923C7EB117946C1C00E88B25 /* arbitros.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA417946C1C00E88B25 /* arbitros.c */; };
+		923C7EB217946C1C00E88B25 /* Arreglos.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA517946C1C00E88B25 /* Arreglos.c */; };
+		923C7EB317946C1C00E88B25 /* automGenTerr.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA617946C1C00E88B25 /* automGenTerr.c */; };
+		923C7EB417946C1C00E88B25 /* Constraints.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA717946C1C00E88B25 /* Constraints.c */; };
+		923C7EB517946C1C00E88B25 /* convexHull.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA817946C1C00E88B25 /* convexHull.c */; };
+		923C7EB617946C1C00E88B25 /* Cuerpo.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EA917946C1C00E88B25 /* Cuerpo.c */; };
+		923C7EB717946C1C00E88B25 /* Espacio.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAA17946C1C00E88B25 /* Espacio.c */; };
+		923C7EB817946C1C00E88B25 /* Handlers.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAB17946C1C00E88B25 /* Handlers.c */; };
+		923C7EB917946C1C00E88B25 /* HeapSort.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAC17946C1C00E88B25 /* HeapSort.c */; };
+		923C7EBA17946C1C00E88B25 /* LL.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAD17946C1C00E88B25 /* LL.c */; };
+		923C7EBB17946C1C00E88B25 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAE17946C1C00E88B25 /* main.c */; };
+		923C7EBC17946C1C00E88B25 /* Miscelanea.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EAF17946C1C00E88B25 /* Miscelanea.c */; };
+		923C7EC417946CD100E88B25 /* mod_sensor.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EC017946CD100E88B25 /* mod_sensor.c */; };
+		923C7EC517946EB700E88B25 /* libChipmunk-iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 923C7EA217946B2F00E88B25 /* libChipmunk-iPhone.a */; };
+		923C7EC617946EDF00E88B25 /* libSDL2_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 923C7E9617946AE200E88B25 /* libSDL2_mixer.a */; };
+		923C7EC917946F1400E88B25 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 927DAC5F152BCC2B0057F110 /* libtremor.a */; };
+		923C7ECA17946F4F00E88B25 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 923C7E9017946ACF00E88B25 /* libSDL2.a */; };
+		923C7EDE1794721400E88B25 /* fmath.c in Sources */ = {isa = PBXBuildFile; fileRef = 923C7EDD1794721400E88B25 /* fmath.c */; };
 		926744DC15DC329A00411F01 /* iOSBennuGD_accelerometers.prg in Resources */ = {isa = PBXBuildFile; fileRef = 926744DB15DC329A00411F01 /* iOSBennuGD_accelerometers.prg */; };
-		927DAC64152BCF690057F110 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 920C06B3152BC041001BDE54 /* libSDL2.a */; };
 		927DAC70152BCFD70057F110 /* bgload.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC6E152BCFD70057F110 /* bgload.c */; };
 		927DAC73152BD2D50057F110 /* g_compat.c in Sources */ = {isa = PBXBuildFile; fileRef = 927DAC71152BD2D50057F110 /* g_compat.c */; };
 		92976B8713BD29CE00CAECB5 /* libblit.c in Sources */ = {isa = PBXBuildFile; fileRef = 92976B8613BD29CE00CAECB5 /* libblit.c */; };
-		92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92A6320D13BD2E1D00382D60 /* libtremor.a */; };
 		92BA623C14807B7E00910969 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9219AEDD147F23CF00A7AD83 /* libcurl.a */; };
 		92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */; };
 		92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */ = {isa = PBXBuildFile; fileRef = 92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */; };
-		92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */; };
-		92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */; };
 		92E9FDA01490369E007F890B /* mod_curl.c in Sources */ = {isa = PBXBuildFile; fileRef = 92E9FD9D1490369E007F890B /* mod_curl.c */; };
 		92F5825315DC29A90004297D /* libkey.c in Sources */ = {isa = PBXBuildFile; fileRef = 92F5824D15DC29A90004297D /* libkey.c */; };
 		92F5825415DC29A90004297D /* mod_key.c in Sources */ = {isa = PBXBuildFile; fileRef = 92F5825115DC29A90004297D /* mod_key.c */; };
@@ -118,20 +133,6 @@
 			remoteGlobalIDString = 920C066F152BBE27001BDE54;
 			remoteInfo = libpng;
 		};
-		920C06B2152BC041001BDE54 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
-			remoteInfo = libSDL;
-		};
-		920C06B4152BC041001BDE54 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 006E982211955059001DE610;
-			remoteInfo = testsdl;
-		};
 		9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */;
@@ -139,12 +140,40 @@
 			remoteGlobalIDString = 9219AC16147F1AE700A7AD83;
 			remoteInfo = libcurl;
 		};
-		9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */ = {
+		923C7E8F17946ACF00E88B25 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = 9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */;
+			containerPortal = 923C7E8A17946ACE00E88B25 /* SDL.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = FD6526630DE8FCCB002AD96B;
+			remoteInfo = libSDL;
+		};
+		923C7E9517946AE200E88B25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 923C7E9117946AE200E88B25 /* SDL_mixer.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = BE1FA95407AF96B2004B6283;
 			remoteInfo = "Static Library";
+		};
+		923C7E9D17946B2F00E88B25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D3E5F0490AA32FDE004E361B;
+			remoteInfo = ChipmunkDemo;
+		};
+		923C7E9F17946B2F00E88B25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D34963BB0B56CAA300CAD239;
+			remoteInfo = ChipmunkStatic;
+		};
+		923C7EA117946B2F00E88B25 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D3C3787A11063B1B003EF1D9;
+			remoteInfo = "ChipmunkStatic-iPhone";
 		};
 		927DAC5E152BCC2B0057F110 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -152,20 +181,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 9232A5B31396D47300058FDB;
 			remoteInfo = tremor;
-		};
-		92CD380213BD40EA000D5ED7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92098DA213A52B7300F70BC2;
-			remoteInfo = "Chipmunk-iOS";
-		};
-		92CD380913BD4221000D5ED7 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 92098DA113A52B7300F70BC2;
-			remoteInfo = "Chipmunk-iOS";
 		};
 		92E9FDA214903FE0007F890B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -177,11 +192,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		92098DEE13A534B200F70BC2 /* COPYING */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = COPYING; sourceTree = "<group>"; };
-		92098DEF13A534B200F70BC2 /* mod_chipmunk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_chipmunk.c; sourceTree = "<group>"; };
 		92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_chipmunk_symbols.h; sourceTree = "<group>"; };
 		920C069E152BBF0B001BDE54 /* libpng.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libpng.xcodeproj; path = ../../3rdparty/libpng/projects/iOS/libpng.xcodeproj; sourceTree = "<group>"; };
-		920C06A8152BC040001BDE54 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL2/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
 		9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = libcurl.xcodeproj; path = "../../3rdparty/curl-7.23.1/iOS_project/libcurl.xcodeproj"; sourceTree = "<group>"; };
 		921B48131391CE07005F1832 /* iOSBennuGD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSBennuGD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		921B48171391CE07005F1832 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -375,7 +387,26 @@
 		921B4AEB1391E237005F1832 /* xctype.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = xctype.c; sourceTree = "<group>"; };
 		92307D461461F1B00011C04E /* mod_multi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_multi.c; sourceTree = "<group>"; };
 		92307D471461F1B00011C04E /* mod_multi_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_multi_symbols.h; sourceTree = "<group>"; };
-		9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL2_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
+		923C7E8817946A5100E88B25 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		923C7E8A17946ACE00E88B25 /* SDL.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL.xcodeproj; path = "../../3rdparty/SDL/Xcode-iOS/SDL/SDL.xcodeproj"; sourceTree = "<group>"; };
+		923C7E9117946AE200E88B25 /* SDL_mixer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SDL_mixer.xcodeproj; path = "../../3rdparty/SDL_mixer/Xcode-iOS/SDL_mixer.xcodeproj"; sourceTree = "<group>"; };
+		923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Chipmunk6.xcodeproj; path = "../../3rdparty/Chipmunk-6.1.3/xcode/Chipmunk6.xcodeproj"; sourceTree = "<group>"; };
+		923C7EA317946C1C00E88B25 /* agua.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = agua.c; sourceTree = "<group>"; };
+		923C7EA417946C1C00E88B25 /* arbitros.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = arbitros.c; sourceTree = "<group>"; };
+		923C7EA517946C1C00E88B25 /* Arreglos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Arreglos.c; sourceTree = "<group>"; };
+		923C7EA617946C1C00E88B25 /* automGenTerr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = automGenTerr.c; sourceTree = "<group>"; };
+		923C7EA717946C1C00E88B25 /* Constraints.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Constraints.c; sourceTree = "<group>"; };
+		923C7EA817946C1C00E88B25 /* convexHull.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = convexHull.c; sourceTree = "<group>"; };
+		923C7EA917946C1C00E88B25 /* Cuerpo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Cuerpo.c; sourceTree = "<group>"; };
+		923C7EAA17946C1C00E88B25 /* Espacio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Espacio.c; sourceTree = "<group>"; };
+		923C7EAB17946C1C00E88B25 /* Handlers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Handlers.c; sourceTree = "<group>"; };
+		923C7EAC17946C1C00E88B25 /* HeapSort.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = HeapSort.c; sourceTree = "<group>"; };
+		923C7EAD17946C1C00E88B25 /* LL.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = LL.c; sourceTree = "<group>"; };
+		923C7EAE17946C1C00E88B25 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		923C7EAF17946C1C00E88B25 /* Miscelanea.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Miscelanea.c; sourceTree = "<group>"; };
+		923C7EC017946CD100E88B25 /* mod_sensor.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_sensor.c; sourceTree = "<group>"; };
+		923C7EC117946CD100E88B25 /* mod_sensor_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_sensor_symbols.h; sourceTree = "<group>"; };
+		923C7EDD1794721400E88B25 /* fmath.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fmath.c; sourceTree = "<group>"; };
 		926744DB15DC329A00411F01 /* iOSBennuGD_accelerometers.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD_accelerometers.prg; path = TestData/iOSBennuGD_accelerometers.prg; sourceTree = "<group>"; };
 		927DAC56152BCC2A0057F110 /* tremor.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = tremor.xcodeproj; path = ../../3rdparty/libtremor/iOS/tremor/tremor.xcodeproj; sourceTree = "<group>"; };
 		927DAC6E152BCFD70057F110 /* bgload.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = bgload.c; sourceTree = "<group>"; };
@@ -387,9 +418,6 @@
 		92A632B913BD302800382D60 /* libpng.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libpng.a; sourceTree = SOURCE_ROOT; };
 		92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */ = {isa = PBXFileReference; lastKnownFileType = file; name = iOSBennuGD.dcb; path = TestData/iOSBennuGD.dcb; sourceTree = "<group>"; };
 		92C9D05013E9FCCB002B8B84 /* iOSBennuGD.prg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = iOSBennuGD.prg; path = TestData/iOSBennuGD.prg; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libSDL_mixer.a; sourceTree = SOURCE_ROOT; };
-		92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Chipmunk-iOS.xcodeproj"; path = "../../3rdparty/Chipmunk-5.3.4/Chipmunk-iOS/Chipmunk-iOS.xcodeproj"; sourceTree = "<group>"; };
-		92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libChipmunk-iOS.a"; sourceTree = SOURCE_ROOT; };
 		92E9FD9D1490369E007F890B /* mod_curl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mod_curl.c; sourceTree = "<group>"; };
 		92E9FDA1149036DD007F890B /* mod_curl_symbols.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_curl_symbols.h; sourceTree = "<group>"; };
 		92F5824D15DC29A90004297D /* libkey.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = libkey.c; sourceTree = "<group>"; };
@@ -404,12 +432,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				927DAC64152BCF690057F110 /* libSDL2.a in Frameworks */,
+				923C7ECA17946F4F00E88B25 /* libSDL2.a in Frameworks */,
+				923C7EC917946F1400E88B25 /* libtremor.a in Frameworks */,
+				923C7EC617946EDF00E88B25 /* libSDL2_mixer.a in Frameworks */,
+				923C7EC517946EB700E88B25 /* libChipmunk-iPhone.a in Frameworks */,
 				920C06A7152BBF27001BDE54 /* libpng.a in Frameworks */,
 				92BA623C14807B7E00910969 /* libcurl.a in Frameworks */,
-				92CD380C13BD422A000D5ED7 /* libChipmunk-iOS.a in Frameworks */,
-				92CD37C613BD3B66000D5ED7 /* libSDL_mixer.a in Frameworks */,
-				92A6320E13BD2E1D00382D60 /* libtremor.a in Frameworks */,
 				921B48181391CE07005F1832 /* UIKit.framework in Frameworks */,
 				921B481A1391CE07005F1832 /* Foundation.framework in Frameworks */,
 				921B481C1391CE07005F1832 /* CoreGraphics.framework in Frameworks */,
@@ -426,10 +454,8 @@
 		92098DE913A5313000F70BC2 /* External dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				92CD37C513BD3B66000D5ED7 /* libSDL_mixer.a */,
 				92A632B913BD302800382D60 /* libpng.a */,
 				92A6320D13BD2E1D00382D60 /* libtremor.a */,
-				92CD380B13BD422A000D5ED7 /* libChipmunk-iOS.a */,
 			);
 			name = "External dependencies";
 			sourceTree = "<group>";
@@ -437,8 +463,19 @@
 		92098DED13A534B200F70BC2 /* mod_chipmunk */ = {
 			isa = PBXGroup;
 			children = (
-				92098DEE13A534B200F70BC2 /* COPYING */,
-				92098DEF13A534B200F70BC2 /* mod_chipmunk.c */,
+				923C7EA317946C1C00E88B25 /* agua.c */,
+				923C7EA417946C1C00E88B25 /* arbitros.c */,
+				923C7EA517946C1C00E88B25 /* Arreglos.c */,
+				923C7EA617946C1C00E88B25 /* automGenTerr.c */,
+				923C7EA717946C1C00E88B25 /* Constraints.c */,
+				923C7EA817946C1C00E88B25 /* convexHull.c */,
+				923C7EA917946C1C00E88B25 /* Cuerpo.c */,
+				923C7EAA17946C1C00E88B25 /* Espacio.c */,
+				923C7EAB17946C1C00E88B25 /* Handlers.c */,
+				923C7EAC17946C1C00E88B25 /* HeapSort.c */,
+				923C7EAD17946C1C00E88B25 /* LL.c */,
+				923C7EAE17946C1C00E88B25 /* main.c */,
+				923C7EAF17946C1C00E88B25 /* Miscelanea.c */,
 				92098DF013A534B200F70BC2 /* mod_chipmunk_symbols.h */,
 			);
 			path = mod_chipmunk;
@@ -448,15 +485,6 @@
 			isa = PBXGroup;
 			children = (
 				920C06A6152BBF0C001BDE54 /* libpng.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		920C06A9152BC040001BDE54 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				920C06B3152BC041001BDE54 /* libSDL2.a */,
-				920C06B5152BC041001BDE54 /* testsdl.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -472,12 +500,13 @@
 		921B48081391CE07005F1832 = {
 			isa = PBXGroup;
 			children = (
+				923C7E8A17946ACE00E88B25 /* SDL.xcodeproj */,
+				923C7E9117946AE200E88B25 /* SDL_mixer.xcodeproj */,
+				923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */,
+				923C7E8817946A5100E88B25 /* Default-568h@2x.png */,
 				927DAC56152BCC2A0057F110 /* tremor.xcodeproj */,
-				920C06A8152BC040001BDE54 /* SDL.xcodeproj */,
-				9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */,
 				920C069E152BBF0B001BDE54 /* libpng.xcodeproj */,
 				9219AED5147F23CF00A7AD83 /* libcurl.xcodeproj */,
-				92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */,
 				921B4AE41391E237005F1832 /* common */,
 				921B4AC31391DDFB005F1832 /* bgdi */,
 				921B49551391D8A3005F1832 /* modules */,
@@ -534,6 +563,7 @@
 		921B491F1391D866005F1832 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				923C7EDD1794721400E88B25 /* fmath.c */,
 				921B49201391D866005F1832 /* copy.c */,
 				921B49211391D866005F1832 /* dcbr.c */,
 				921B49221391D866005F1832 /* dirs.c */,
@@ -623,6 +653,7 @@
 				921B4A211391D8A4005F1832 /* mod_say */,
 				921B4A241391D8A4005F1832 /* mod_screen */,
 				921B4A271391D8A4005F1832 /* mod_scroll */,
+				923C7EBD17946CD100E88B25 /* mod_sensor */,
 				921B4A2A1391D8A4005F1832 /* mod_sort */,
 				921B4A2D1391D8A4005F1832 /* mod_sound */,
 				921B4A351391D8A4005F1832 /* mod_string */,
@@ -1112,12 +1143,39 @@
 			path = mod_multi;
 			sourceTree = "<group>";
 		};
-		9240F153151E72AC00CA9E0D /* Products */ = {
+		923C7E8B17946ACE00E88B25 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9240F15A151E72AD00CA9E0D /* libSDL_mixer.a */,
+				923C7E9017946ACF00E88B25 /* libSDL2.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		923C7E9217946AE200E88B25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				923C7E9617946AE200E88B25 /* libSDL2_mixer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		923C7E9817946B2E00E88B25 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				923C7E9E17946B2F00E88B25 /* ChipmunkDemo.app */,
+				923C7EA017946B2F00E88B25 /* libChipmunk.a */,
+				923C7EA217946B2F00E88B25 /* libChipmunk-iPhone.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		923C7EBD17946CD100E88B25 /* mod_sensor */ = {
+			isa = PBXGroup;
+			children = (
+				923C7EC017946CD100E88B25 /* mod_sensor.c */,
+				923C7EC117946CD100E88B25 /* mod_sensor_symbols.h */,
+			);
+			path = mod_sensor;
 			sourceTree = "<group>";
 		};
 		927DAC57152BCC2A0057F110 /* Products */ = {
@@ -1145,14 +1203,6 @@
 				92C9D04E13E9FCC5002B8B84 /* iOSBennuGD.dcb */,
 			);
 			name = "Game Resources";
-			sourceTree = "<group>";
-		};
-		92CD37FC13BD40EA000D5ED7 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				92CD380313BD40EA000D5ED7 /* libChipmunk-iOS.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		92E9FD9A1490369E007F890B /* mod_curl */ = {
@@ -1198,7 +1248,6 @@
 			);
 			dependencies = (
 				92E9FDA314903FE0007F890B /* PBXTargetDependency */,
-				92CD380A13BD4221000D5ED7 /* PBXTargetDependency */,
 			);
 			name = BennuGD_iOS;
 			productName = BennuGD_iOS;
@@ -1211,7 +1260,7 @@
 		921B480A1391CE07005F1832 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0460;
 			};
 			buildConfigurationList = 921B480D1391CE07005F1832 /* Build configuration list for PBXProject "BennuGD_iOS" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1225,8 +1274,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 92CD37FC13BD40EA000D5ED7 /* Products */;
-					ProjectRef = 92CD37FB13BD40EA000D5ED7 /* Chipmunk-iOS.xcodeproj */;
+					ProductGroup = 923C7E9817946B2E00E88B25 /* Products */;
+					ProjectRef = 923C7E9717946B2E00E88B25 /* Chipmunk6.xcodeproj */;
 				},
 				{
 					ProductGroup = 9219AED6147F23CF00A7AD83 /* Products */;
@@ -1237,12 +1286,12 @@
 					ProjectRef = 920C069E152BBF0B001BDE54 /* libpng.xcodeproj */;
 				},
 				{
-					ProductGroup = 920C06A9152BC040001BDE54 /* Products */;
-					ProjectRef = 920C06A8152BC040001BDE54 /* SDL.xcodeproj */;
+					ProductGroup = 923C7E8B17946ACE00E88B25 /* Products */;
+					ProjectRef = 923C7E8A17946ACE00E88B25 /* SDL.xcodeproj */;
 				},
 				{
-					ProductGroup = 9240F153151E72AC00CA9E0D /* Products */;
-					ProjectRef = 9240F152151E72AC00CA9E0D /* SDL_mixer.xcodeproj */;
+					ProductGroup = 923C7E9217946AE200E88B25 /* Products */;
+					ProjectRef = 923C7E9117946AE200E88B25 /* SDL_mixer.xcodeproj */;
 				},
 				{
 					ProductGroup = 927DAC57152BCC2A0057F110 /* Products */;
@@ -1264,20 +1313,6 @@
 			remoteRef = 920C06A5152BBF0C001BDE54 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		920C06B3152BC041001BDE54 /* libSDL2.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libSDL2.a;
-			remoteRef = 920C06B2152BC041001BDE54 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		920C06B5152BC041001BDE54 /* testsdl.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = testsdl.app;
-			remoteRef = 920C06B4152BC041001BDE54 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		9219AEDD147F23CF00A7AD83 /* libcurl.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1285,11 +1320,39 @@
 			remoteRef = 9219AEDC147F23CF00A7AD83 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		9240F15A151E72AD00CA9E0D /* libSDL_mixer.a */ = {
+		923C7E9017946ACF00E88B25 /* libSDL2.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
-			path = libSDL_mixer.a;
-			remoteRef = 9240F159151E72AD00CA9E0D /* PBXContainerItemProxy */;
+			path = libSDL2.a;
+			remoteRef = 923C7E8F17946ACF00E88B25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923C7E9617946AE200E88B25 /* libSDL2_mixer.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDL2_mixer.a;
+			remoteRef = 923C7E9517946AE200E88B25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923C7E9E17946B2F00E88B25 /* ChipmunkDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = ChipmunkDemo.app;
+			remoteRef = 923C7E9D17946B2F00E88B25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923C7EA017946B2F00E88B25 /* libChipmunk.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libChipmunk.a;
+			remoteRef = 923C7E9F17946B2F00E88B25 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		923C7EA217946B2F00E88B25 /* libChipmunk-iPhone.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libChipmunk-iPhone.a";
+			remoteRef = 923C7EA117946B2F00E88B25 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		927DAC5F152BCC2B0057F110 /* libtremor.a */ = {
@@ -1297,13 +1360,6 @@
 			fileType = archive.ar;
 			path = libtremor.a;
 			remoteRef = 927DAC5E152BCC2B0057F110 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		92CD380313BD40EA000D5ED7 /* libChipmunk-iOS.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libChipmunk-iOS.a";
-			remoteRef = 92CD380213BD40EA000D5ED7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1316,6 +1372,7 @@
 				92C9D04F13E9FCC5002B8B84 /* iOSBennuGD.dcb in Resources */,
 				92C9D05113E9FCCB002B8B84 /* iOSBennuGD.prg in Resources */,
 				926744DC15DC329A00411F01 /* iOSBennuGD_accelerometers.prg in Resources */,
+				923C7E8917946A5100E88B25 /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1403,7 +1460,6 @@
 				921B4AED1391E237005F1832 /* debug.c in Sources */,
 				921B4AEE1391E237005F1832 /* files.c in Sources */,
 				921B4AF01391E237005F1832 /* xctype.c in Sources */,
-				92098E0213A534B200F70BC2 /* mod_chipmunk.c in Sources */,
 				92976B8713BD29CE00CAECB5 /* libblit.c in Sources */,
 				92307D481461F1B00011C04E /* mod_multi.c in Sources */,
 				92E9FDA01490369E007F890B /* mod_curl.c in Sources */,
@@ -1411,17 +1467,27 @@
 				927DAC73152BD2D50057F110 /* g_compat.c in Sources */,
 				92F5825315DC29A90004297D /* libkey.c in Sources */,
 				92F5825415DC29A90004297D /* mod_key.c in Sources */,
+				923C7EB017946C1C00E88B25 /* agua.c in Sources */,
+				923C7EB117946C1C00E88B25 /* arbitros.c in Sources */,
+				923C7EB217946C1C00E88B25 /* Arreglos.c in Sources */,
+				923C7EB317946C1C00E88B25 /* automGenTerr.c in Sources */,
+				923C7EB417946C1C00E88B25 /* Constraints.c in Sources */,
+				923C7EB517946C1C00E88B25 /* convexHull.c in Sources */,
+				923C7EB617946C1C00E88B25 /* Cuerpo.c in Sources */,
+				923C7EB717946C1C00E88B25 /* Espacio.c in Sources */,
+				923C7EB817946C1C00E88B25 /* Handlers.c in Sources */,
+				923C7EB917946C1C00E88B25 /* HeapSort.c in Sources */,
+				923C7EBA17946C1C00E88B25 /* LL.c in Sources */,
+				923C7EBB17946C1C00E88B25 /* main.c in Sources */,
+				923C7EBC17946C1C00E88B25 /* Miscelanea.c in Sources */,
+				923C7EC417946CD100E88B25 /* mod_sensor.c in Sources */,
+				923C7EDE1794721400E88B25 /* fmath.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		92CD380A13BD4221000D5ED7 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Chipmunk-iOS";
-			targetProxy = 92CD380913BD4221000D5ED7 /* PBXContainerItemProxy */;
-		};
 		92E9FDA314903FE0007F890B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = libcurl;
@@ -1539,26 +1605,26 @@
 					NO_MODIMAGE,
 					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
+					"CP_USE_DOUBLES=0",
+					NO_FSOCK,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					../../3rdparty/SDL2/include,
-					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
+					../../3rdparty/SDL/include,
+					"../../3rdparty/Chipmunk-6.1.3/include/chipmunk/",
 					../../3rdparty/libpng/,
-					../../3rdparty/SDL2_mixer/,
-					../../3rdparty/fmod/iOS/inc/,
+					../../3rdparty/SDL_mixer/,
 					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
+					"\"$(SRCROOT)/../../3rdparty/Chipmunk-6.1.3/iOS\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../../3rdparty/fmod/iOS/lib\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lc++",
@@ -1592,26 +1658,26 @@
 					NO_MODIMAGE,
 					NO_MODFMODEX,
 					"VERSION='\"1.0.0\"'",
+					"CP_USE_DOUBLES=0",
+					NO_FSOCK,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				HEADER_SEARCH_PATHS = (
 					../../core/include,
 					../../core/bgdrtm/include,
 					"../../modules/**",
-					../../3rdparty/SDL2/include,
-					"../../3rdparty/Chipmunk-5.3.4/include/chipmunk/",
+					../../3rdparty/SDL/include,
+					"../../3rdparty/Chipmunk-6.1.3/include/chipmunk/",
 					../../3rdparty/libpng/,
-					../../3rdparty/SDL2_mixer/,
-					../../3rdparty/fmod/iOS/inc/,
+					../../3rdparty/SDL_mixer/,
 					"../../3rdparty/curl-7.23.1/include/",
 				);
 				INFOPLIST_FILE = "BennuGD_iOS/BennuGD_iOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../3rdparty/Chipmunk-5.3.4/iOS\"",
+					"\"$(SRCROOT)/../../3rdparty/Chipmunk-6.1.3/iOS\"",
 					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/../../3rdparty/fmod/iOS/lib\"",
 				);
 				OTHER_LDFLAGS = (
 					"-lc++",

@@ -32,15 +32,15 @@ extern cpSpace * modChipmunk_cpEspacio;
 //    res=v>trr;
 //}
 
-INLINE float Max(float a,float b){
+static inline float Max(float a,float b){
 return a>b? a:b;
 }
 
-INLINE float Min(float a,float b){
+static inline float Min(float a,float b){
 return a<b? a:b;
 }
 
-INLINE int Metaball(int x,int y, int*xp,int*yp, int tam, float t, float tr)
+static inline int Metaball(int x,int y, int*xp,int*yp, int tam, float t, float tr)
 {
     //printf("%d %d %d %p %d\n",params[0],params[1],params[2],params[3],params[4]); fflush(stdout);
     float v=0.0,a,b;
