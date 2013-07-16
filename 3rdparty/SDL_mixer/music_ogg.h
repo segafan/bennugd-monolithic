@@ -32,15 +32,15 @@
 #endif
 
 typedef struct {
-	SDL_RWops *rw;
-	int freerw;
-	int playing;
-	int volume;
-	OggVorbis_File vf;
-	int section;
-	SDL_AudioCVT cvt;
-	int len_available;
-	Uint8 *snd_available;
+    SDL_RWops *src;
+    int freesrc;
+    int playing;
+    int volume;
+    OggVorbis_File vf;
+    int section;
+    SDL_AudioCVT cvt;
+    int len_available;
+    Uint8 *snd_available;
 } OGG_music;
 
 /* Initialize the Ogg Vorbis player, with the given mixer settings
@@ -52,7 +52,7 @@ extern int OGG_init(SDL_AudioSpec *mixer);
 extern void OGG_setvolume(OGG_music *music, int volume);
 
 /* Load an OGG stream from an SDL_RWops object */
-extern OGG_music *OGG_new_RW(SDL_RWops *rw, int freerw);
+extern OGG_music *OGG_new_RW(SDL_RWops *src, int freesrc);
 
 /* Start playback of a given OGG stream */
 extern void OGG_play(OGG_music *music);
