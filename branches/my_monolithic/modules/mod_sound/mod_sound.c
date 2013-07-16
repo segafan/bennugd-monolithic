@@ -94,21 +94,21 @@ DLVARFIXUP  __bgdexport( mod_sound, globals_fixup )[] =
 /* Interfaz SDL_RWops Bennu              */
 /* ------------------------------------- */
 
-static int SDLCALL __modsound_seek_cb( SDL_RWops *context, int offset, int whence )
+static Sint64 SDLCALL __modsound_seek_cb( SDL_RWops *context, Sint64 offset, int whence )
 {
     if ( file_seek( context->hidden.unknown.data1, offset, whence ) < 0 ) return ( -1 );
     return( file_pos( context->hidden.unknown.data1 ) );
     //    return ( file_seek( context->hidden.unknown.data1, offset, whence ) );
 }
 
-static int SDLCALL __modsound_read_cb( SDL_RWops *context, void *ptr, int size, int maxnum )
+static size_t SDLCALL __modsound_read_cb( SDL_RWops *context, void *ptr, size_t size, size_t maxnum )
 {
     int ret = file_read( context->hidden.unknown.data1, ptr, size * maxnum );
     if ( ret > 0 ) ret /= size;
     return( ret );
 }
 
-static int SDLCALL __modsound_write_cb( SDL_RWops *context, const void *ptr, int size, int num )
+static size_t SDLCALL __modsound_write_cb( SDL_RWops *context, const void *ptr, size_t size, size_t num )
 {
     int ret = file_write( context->hidden.unknown.data1, ( void * )ptr, size * num );
     if ( ret > 0 ) ret /= size;
@@ -263,7 +263,7 @@ static int load_song( const char * filename )
 
     if ( !( fp = file_open( filename, "rb0" ) ) ) return ( 0 );
 
-    if ( !( music = Mix_LoadMUS_RW( SDL_RWFromBGDFP( fp ) ) ) )
+    if ( !( music = Mix_LoadMUS_RW( SDL_RWFromBGDFP( fp ), 0 ) ) )
     {
         file_close( fp );
         fprintf( stderr, "Couldn't load %s: %s\n", filename, SDL_GetError() );
@@ -875,6 +875,8 @@ static int reverse_stereo( int canal, int flip )
 
 static int modsound_load_song( INSTANCE * my, int * params )
 {
+    printf("JGE: LOAD_SONG IS BROKEN RIGHT NOW\nIgnoring your request\n");
+//    return -1;
 #ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
