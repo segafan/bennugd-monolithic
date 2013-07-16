@@ -875,8 +875,6 @@ static int reverse_stereo( int canal, int flip )
 
 static int modsound_load_song( INSTANCE * my, int * params )
 {
-    printf("JGE: LOAD_SONG IS BROKEN RIGHT NOW\nIgnoring your request\n");
-//    return -1;
 #ifndef TARGET_DINGUX_A320
     int var;
     const char * filename ;
