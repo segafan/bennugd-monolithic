@@ -19,7 +19,7 @@
   3. This notice may not be removed or altered from any source distribution.
 
   Header to handle loading FLAC music files in SDL.
-	~ Austen Dicken (admin@cvpcs.org)
+    ~ Austen Dicken (admin@cvpcs.org)
 */
 
 /* $Id:  $ */
@@ -29,33 +29,33 @@
 #include <FLAC/stream_decoder.h>
 
 typedef struct {
-	FLAC__uint64 sample_size;
-	unsigned sample_rate;
-	unsigned channels;
-	unsigned bits_per_sample;
-	FLAC__uint64 total_samples;
+    FLAC__uint64 sample_size;
+    unsigned sample_rate;
+    unsigned channels;
+    unsigned bits_per_sample;
+    FLAC__uint64 total_samples;
 
-	// the following are used to handle the callback nature of the writer
-	int max_to_read;
-	char *data;				// pointer to beginning of data array
-	int data_len;			// size of data array
-	int data_read;			// amount of data array used
-	char *overflow;			// pointer to beginning of overflow array
-	int overflow_len;		// size of overflow array
-	int overflow_read;		// amount of overflow array used
+    // the following are used to handle the callback nature of the writer
+    int max_to_read;
+    char *data;             // pointer to beginning of data array
+    int data_len;           // size of data array
+    int data_read;          // amount of data array used
+    char *overflow;         // pointer to beginning of overflow array
+    int overflow_len;       // size of overflow array
+    int overflow_read;      // amount of overflow array used
 } FLAC_Data;
 
 typedef struct {
-	int playing;
-	int volume;
-	int section;
-	FLAC__StreamDecoder *flac_decoder;
-	FLAC_Data flac_data;
-	SDL_RWops *rwops;
-	int freerw;
-	SDL_AudioCVT cvt;
-	int len_available;
-	Uint8 *snd_available;
+    int playing;
+    int volume;
+    int section;
+    FLAC__StreamDecoder *flac_decoder;
+    FLAC_Data flac_data;
+    SDL_RWops *src;
+    int freesrc;
+    SDL_AudioCVT cvt;
+    int len_available;
+    Uint8 *snd_available;
 } FLAC_music;
 
 /* Initialize the FLAC player, with the given mixer settings
@@ -67,7 +67,7 @@ extern int FLAC_init(SDL_AudioSpec *mixer);
 extern void FLAC_setvolume(FLAC_music *music, int volume);
 
 /* Load an FLAC stream from an SDL_RWops object */
-extern FLAC_music *FLAC_new_RW(SDL_RWops *rw, int freerw);
+extern FLAC_music *FLAC_new_RW(SDL_RWops *src, int freesrc);
 
 /* Start playback of a given FLAC stream */
 extern void FLAC_play(FLAC_music *music);
