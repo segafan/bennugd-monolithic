@@ -272,10 +272,9 @@ static int bgd_get_window_size( INSTANCE * my, int * params )
 static int bgd_get_desktop_size( INSTANCE * my, int * params )
 {
 #if SDL_VERSION_ATLEAST(2,0,0)
-    int i;
     SDL_DisplayMode mode;
     
-    if(SDL_GetDesktopDisplayMode(i, &mode) < 0 ) return -1;
+    if(SDL_GetDesktopDisplayMode(0, &mode) < 0 ) return -1;
 
     if ( params[0] ) *(( int * )( params[0] ) ) = mode.w;
     if ( params[1] ) *(( int * )( params[1] ) ) = mode.h;
