@@ -16,7 +16,7 @@ MIKMOD_LIBRARY_PATH := external/libmikmod-3.1.12
 
 # Enable this if you want to support loading MP3 music via SMPEG
 # The library path should be a relative path to this directory.
-SUPPORT_MP3_SMPEG := true
+SUPPORT_MP3_SMPEG := false
 SMPEG_LIBRARY_PATH := external/smpeg2-2.0.0
 
 # Enable this if you want to support loading OGG Vorbis music via Tremor
