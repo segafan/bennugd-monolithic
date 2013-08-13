@@ -84,113 +84,50 @@ Begin
         if(joy_getaxis(0, 1) > 10000)
             text += " JOY.DOWN "+joy_getaxis(0, 1);
         end
-        if(joy_getbutton(0, 0))
-            text += " UP ";
-        end
-        if(joy_getbutton(0,1))
-            text += " DOWN ";
-        end
-        if(joy_getbutton(0,2))
-            text += " LEFT ";
-        end
-        if(joy_getbutton(0,3))
-            text += " RIGHT ";
-        end
-        if(joy_getbutton(0,4))
-            text += " CENTER ";
-        end
-        if(joy_getbutton(0,5))
-            text += " A ";
-        end
-        if(joy_getbutton(0,6))
-            text += " B ";
-        end
-        if(joy_getbutton(0,7))
-            text += " C ";
-        end
-        if(joy_getbutton(0,8))
-            text += " X ";
-        end
-        if(joy_getbutton(0,9))
-            text += " Y ";
-        end
-        if(joy_getbutton(0,10))
-            text += " Z ";
-        end
-        if(joy_getbutton(0,11))
-            text += " L1 ";
-        end
-        if(joy_getbutton(0,12))
-            text += " R1 ";
-        end
-        if(joy_getbutton(0,13))
-            text += " L2 ";
+        if(joy_getbutton(0, 13))
+            text += " LT (13) ";
         end
         if(joy_getbutton(0,14))
-            text += " R2 ";
+            text += " RT (14) ";
+        end
+        if(joy_getbutton(0,0))
+            text += " UP (0) ";
+        end
+        if(joy_getbutton(0,1))
+            text += " DOWN (1) ";
+        end
+        if(joy_getbutton(0,3))
+            text += " RIGHT (3) ";
+        end
+        if(joy_getbutton(0,2))
+            text += " LEFT (2) ";
+        end
+        if(joy_getbutton(0,5))
+            text += " O (5) ";
+        end
+        if(joy_getbutton(0,8))
+            text += " U (8) ";
+        end
+        if(joy_getbutton(0,9))
+            text += " Y (9) ";
+        end
+        if(joy_getbutton(0,6))
+            text += " A (6) ";
+        end
+        if(joy_getbutton(0,12))
+            text += " R1 (12) ";
+        end
+        if(joy_getbutton(0,11))
+            text += " L1 (11) ";
         end
         if(joy_getbutton(0,15))
-            text += " THUMBL ";
+            text += " Joy press/L3 (15) ";
         end
         if(joy_getbutton(0,16))
-            text += " THUMBR ";
-        end
-        if(joy_getbutton(0,17))
-            text += " START ";
-        end
-        if(joy_getbutton(0,18))
-            text += " SELECT ";
+            text += " Joy press/R3 (16) ";
         end
         if(joy_getbutton(0,19))
-            text += " MODE ";
-        end
-        if(joy_getbutton(0,20))
-            text += " 1 ";
-        end
-        if(joy_getbutton(0,21))
-            text += " 2 ";
-        end
-        if(joy_getbutton(0,22))
-            text += " 3 ";
-        end
-        if(joy_getbutton(0,23))
-            text += " 4 ";
-        end
-        if(joy_getbutton(0,24))
-            text += " 5 ";
-        end
-        if(joy_getbutton(0,25))
-            text += " 6 ";
-        end
-        if(joy_getbutton(0,26))
-            text += " 7 ";
-        end
-        if(joy_getbutton(0,27))
-            text += " 8 ";
-        end
-        if(joy_getbutton(0,28))
-            text += " 9 ";
-        end
-        if(joy_getbutton(0,29))
-            text += " 10 ";
-        end
-        if(joy_getbutton(0,30))
-            text += " 11 ";
-        end
-        if(joy_getbutton(0,31))
-            text += " 12 ";
-        end
-        if(joy_getbutton(0,32))
-            text += " 13 ";
-        end
-        if(joy_getbutton(0,33))
-            text += " 14 ";
-        end
-        if(joy_getbutton(0,34))
-            text += " 15 ";
-        end
-        if(joy_getbutton(0,35))
-            text += " 16 ";
+            text += " LT (19) ";
         end
         if(mouse.left)
             text += " M.LEFT ";
