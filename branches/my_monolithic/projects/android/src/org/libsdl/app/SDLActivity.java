@@ -82,6 +82,9 @@ public class SDLActivity extends Activity {
         mSurface = new SDLSurface(getApplication());
         mEGLContext = EGL10.EGL_NO_CONTEXT;
         
+        // Don't allow the screen lock
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         mLayout = new AbsoluteLayout(this);
         mLayout.addView(mSurface);
         
