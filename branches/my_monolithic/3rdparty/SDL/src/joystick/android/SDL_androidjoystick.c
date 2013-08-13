@@ -37,6 +37,7 @@
 static SDL_Joystick **SYS_Joysticks;
 static char **SYS_JoystickNames;
 static int SYS_numjoysticks;
+static int initialized;
 
 /* Function to convert Android keyCodes into SDL ones.
  * This code manipulation is done to get a sequential list of codes.
@@ -77,6 +78,8 @@ int
 SDL_SYS_JoystickInit(void)
 {
     int i = 0;
+    
+    SDL_Log("JoystickInit");
 
     SYS_numjoysticks = Android_JNI_GetNumJoysticks();
     SYS_Joysticks = (SDL_Joystick **)SDL_malloc(SYS_numjoysticks*sizeof(SDL_Joystick *));
@@ -100,6 +103,8 @@ SDL_SYS_JoystickInit(void)
     {
         SYS_JoystickNames[i] = Android_JNI_GetJoystickName(i);
     }
+    
+    initialized = 1;
 
     return (SYS_numjoysticks);
 }
@@ -215,7 +220,9 @@ SDL_JoystickGUID SDL_SYS_JoystickGetGUID(SDL_Joystick * joystick)
 int
 Android_OnPadDown(int padId, int keycode)
 {
-    SDL_PrivateJoystickButton(SYS_Joysticks[padId], keycode_to_SDL(keycode), SDL_PRESSED);
+    if (initialized) {
+        SDL_PrivateJoystickButton(SYS_Joysticks[padId], keycode_to_SDL(keycode), SDL_PRESSED);
+    }
 
     return 0;
 }
@@ -223,7 +230,9 @@ Android_OnPadDown(int padId, int keycode)
 int
 Android_OnPadUp(int padId, int keycode)
 {
-    SDL_PrivateJoystickButton(SYS_Joysticks[padId], keycode_to_SDL(keycode), SDL_RELEASED);
+    if (initialized) {
+        SDL_PrivateJoystickButton(SYS_Joysticks[padId], keycode_to_SDL(keycode), SDL_RELEASED);
+    }
 
     return 0;
 }
@@ -233,7 +242,9 @@ Android_OnJoy(int joyId, int axis, float value)
 {
     // Android gives joy info normalized as [-1.0, 1.0] or [0.0, 1.0]
     // TODO: Are the reported values right?
-    SDL_PrivateJoystickAxis(SYS_Joysticks[joyId], axis, (Sint16) (32767.*value) );
+    if (initialized) {
+        SDL_PrivateJoystickAxis(SYS_Joysticks[joyId], axis, (Sint16) (32767.*value) );
+    }
 
     return 0;
 }
