@@ -461,7 +461,7 @@ void sysproc_init()
 
         if ( !library )
         {
-            SDL_Log( "%s\n", dliberror() ) ;
+            SDL_Log( "FATAL ERROR: Couldn't open library \"%s\", quitting. \"%s\"\n", filename, dliberror() ) ;
             exit( 0 );
         }
 
