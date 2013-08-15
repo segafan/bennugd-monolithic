@@ -36,7 +36,7 @@
         struct _keyequiv    * next ;
     } key_equiv ;
 
-    typedef int (* HOTKEY_CALLBACK) (SDL_keysym);
+    typedef int (* HOTKEY_CALLBACK) (SDL_Keysym);
 
     #ifndef _LIBKEY_C
     extern DLLIMPORT void hotkey_add(int mod, int sym, HOTKEY_CALLBACK callback);
