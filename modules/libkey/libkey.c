@@ -62,13 +62,8 @@ enum {
 
 typedef struct
 {
-#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_Scancode sym;   /* SDL virtual keysym */
     SDL_Keymod mod;   /* current key modifiers */
-#else
-    SDLKey sym;   /* SDL virtual keysym */
-    SDLMod mod;   /* current key modifiers */
-#endif
     HOTKEY_CALLBACK callback;
 } hotkey ;
 
@@ -80,19 +75,14 @@ static int hotkey_count = 0 ;
 
 /* Publicas */
 key_equiv key_table[127] ;              /* Now we have a search table with equivs */
-unsigned char * keystate = NULL;        /* Pointer to key states */
+const Uint8 * keystate = NULL;        /* Pointer to key states */
 
 /* ---------------------------------------------------------------------- */
 
-#if SDL_VERSION_ATLEAST(2,0,0)
 static int sdl_equiv[SDL_NUM_SCANCODES+1] ;
-#else
-static int sdl_equiv[SDLK_LAST+1] ;
-#endif
 
 static int equivs[] =
 {
-#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_SCANCODE_ESCAPE,        1,
     SDL_SCANCODE_1,             2,
     SDL_SCANCODE_KP_1,          2,
@@ -216,127 +206,6 @@ static int equivs[] =
     SDL_SCANCODE_VOLUMEDOWN,   101,
     SDL_SCANCODE_AC_BACK,      102,
     SDL_SCANCODE_AC_SEARCH,    103,
-#else
-    SDLK_ESCAPE,        1,
-    SDLK_1,             2,
-    SDLK_KP1,           2,
-    SDLK_2,             3,
-    SDLK_KP2,           3,
-    SDLK_3,             4,
-    SDLK_KP3,           4,
-    SDLK_4,             5,
-    SDLK_KP4,           5,
-    SDLK_5,             6,
-    SDLK_KP5,           6,
-    SDLK_6,             7,
-    SDLK_KP6,           7,
-    SDLK_7,             8,
-    SDLK_KP7,           8,
-    SDLK_8,             9,
-    SDLK_KP8,           9,
-    SDLK_9,             10,
-    SDLK_KP9,           10,
-    SDLK_0,             11,
-    SDLK_KP0,           11,
-    SDLK_MINUS,         12,
-    SDLK_EQUALS,        13,
-    SDLK_BACKSPACE,     14,
-    SDLK_TAB,           15,
-    SDLK_q,             16,
-    SDLK_w,             17,
-    SDLK_e,             18,
-    SDLK_r,             19,
-    SDLK_t,             20,
-    SDLK_y,             21,
-    SDLK_u,             22,
-    SDLK_i,             23,
-    SDLK_o,             24,
-    SDLK_p,             25,
-    SDLK_LEFTBRACKET,   26,
-    SDLK_RIGHTBRACKET,  27,
-    SDLK_RETURN,        28,
-    SDLK_KP_ENTER,      28,
-    SDLK_LCTRL,         29,
-    SDLK_RCTRL,         29,
-    SDLK_LCTRL,         96,
-    SDLK_RCTRL,         94,
-    SDLK_a,             30,
-    SDLK_s,             31,
-    SDLK_d,             32,
-    SDLK_f,             33,
-    SDLK_g,             34,
-    SDLK_h,             35,
-    SDLK_j,             36,
-    SDLK_k,             37,
-    SDLK_l,             38,
-    SDLK_SEMICOLON,     39,
-    SDLK_QUOTE,         40,
-    SDLK_BACKQUOTE,     41,
-    SDLK_LSHIFT,        42,
-    SDLK_BACKSLASH,     43,
-    SDLK_z,             44,
-    SDLK_x,             45,
-    SDLK_c,             46,
-    SDLK_v,             47,
-    SDLK_b,             48,
-    SDLK_n,             49,
-    SDLK_m,             50,
-    SDLK_COMMA,         51,
-    SDLK_PERIOD,        52,
-    SDLK_KP_PERIOD,     52,
-    SDLK_SLASH,         53,
-    SDLK_KP_DIVIDE,     53,
-    SDLK_RSHIFT,        54,
-    /*  SDLK_PRINT,         55,*/
-    SDLK_KP_MULTIPLY,   55,
-    SDLK_LALT,          56,
-    SDLK_RALT,          56,
-    SDLK_LALT,          95,
-    SDLK_RALT,          93,
-    SDLK_MODE,          93,
-    SDLK_MODE,          56,
-    SDLK_RMETA,         56,
-    SDLK_LMETA,         56,
-    SDLK_SPACE,         57,
-    SDLK_CAPSLOCK,      58,
-    SDLK_F1,            59,
-    SDLK_F2,            60,
-    SDLK_F3,            61,
-    SDLK_F4,            62,
-    SDLK_F5,            63,
-    SDLK_F6,            64,
-    SDLK_F7,            65,
-    SDLK_F8,            66,
-    SDLK_F9,            67,
-    SDLK_F10,           68,
-    SDLK_NUMLOCK,       69,
-    SDLK_SCROLLOCK,     70,
-    SDLK_HOME,          71,
-    SDLK_UP,            72,
-    SDLK_PAGEUP,        73,
-    SDLK_KP_MINUS,      74,
-    SDLK_LEFT,          75,
-    SDLK_RIGHT,         77,
-    SDLK_KP_PLUS,       78,
-    SDLK_END,           79,
-    SDLK_DOWN,          80,
-    SDLK_PAGEDOWN,      81,
-    SDLK_INSERT,        82,
-    SDLK_DELETE,        83,
-    SDLK_F11,           87,
-    SDLK_F12,           88,
-    SDLK_LESS,          89,
-    SDLK_PLUS,          90,
-    SDLK_GREATER,       91,
-    SDLK_QUESTION,      92,
-    SDLK_CARET,         93,
-    SDLK_SYSREQ,        55,
-    SDLK_PAUSE,         95,
-    SDLK_MENU,          97,
-    SDLK_LSUPER,        98,
-    SDLK_RSUPER,        99,
-    SDLK_COMPOSE,       99,
-#endif
     -1, -1
 } ;
 
@@ -549,11 +418,7 @@ void hotkey_add( int mod, int sym, HOTKEY_CALLBACK callback )
 static void process_key_events()
 {
     SDL_Event e ;
-#if SDL_VERSION_ATLEAST(2,0,0)
     SDL_Keymod m ;
-#else
-    SDLMod m ;
-#endif
     int k, asc ;
     int pressed ;
     key_equiv * curr ;
@@ -593,11 +458,7 @@ static void process_key_events()
         GLODWORD( libkey,  SCANCODE )  = 0 ;
     }
 
-#if SDL_VERSION_ATLEAST(2,0,0)
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_KEYDOWN, SDL_KEYUP ) > 0 )
-#else
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_EVENTMASK(SDL_KEYDOWN)|SDL_EVENTMASK(SDL_KEYUP) ) > 0 )
-#endif
     {
         switch ( e.type )
         {
@@ -618,11 +479,7 @@ static void process_key_events()
                 if ( ignore_key ) break ;
 
                 /* Almacena la pulsación de la tecla */
-#if SDL_VERSION_ATLEAST(2,0,0)
                 k = sdl_equiv[e.key.keysym.scancode];
-#else
-                k = sdl_equiv[e.key.keysym.sym];
-#endif
 
                 m = e.key.keysym.mod ;
 
@@ -634,7 +491,7 @@ static void process_key_events()
                         asc = win_to_dos[e.key.keysym.scancode & 0xFF] ;
 
                         /* ascii mayusculas */
-                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )
+                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDL_SCANCODE_CAPSLOCK] ) )
                             asc -= 0x20 ;
                     }
                     else
@@ -653,7 +510,7 @@ static void process_key_events()
                         asc = win_to_dos[e.key.keysym.scancode & 0x7F] ;
 
                         /*ascii mayusculas */
-                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDLK_CAPSLOCK] ) )
+                        if ( asc >= 'a' && asc <= 'z' && ( m & KMOD_LSHIFT || m & KMOD_RSHIFT || keystate[SDL_SCANCODE_CAPSLOCK] ) )
                             asc -= 0x20 ;
                     }
                     else
@@ -728,13 +585,7 @@ void __bgdexport( libkey, module_initialize )()
         ptr += 2 ;
     }
 
-#if SDL_VERSION_ATLEAST(2,0,0)
     if ( !keystate ) keystate = SDL_GetKeyboardState( NULL );
-#else
-    if ( !keystate ) keystate = SDL_GetKeyState( NULL );
-
-    SDL_EnableUNICODE( 1 );
-#endif
 }
 
 /* ---------------------------------------------------------------------- */
