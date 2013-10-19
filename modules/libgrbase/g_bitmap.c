@@ -289,8 +289,6 @@ void bitmap_set_cpoint( GRAPH * map, uint32_t point, int x, int y )
 {
     uint32_t n;
 
-    if ( point < 0 ) return ;
-
     if ( point == 0 ) map->modified = 1;
 
     if ( map->ncpoints <= point )

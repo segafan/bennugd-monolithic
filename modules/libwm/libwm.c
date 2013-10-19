@@ -30,12 +30,9 @@
 
 #include <SDL.h>
 
-#if SDL_VERSION_ATLEAST(2,0,0)
-#include "g_compat.h"
-#   define __LIB_RENDER
-#   include <g_video.h>
-#   include <librender.h>
-#endif
+#define __LIB_RENDER
+#include <g_video.h>
+#include <librender.h>
 
 #include "bgdrtm.h"
 
@@ -97,7 +94,6 @@ static void wm_events()
 
     GLODWORD( libwm, EXIT_STATUS ) = 0 ;
 
-#if SDL_VERSION_ATLEAST(2,0,0)
     /* Handle the plethora of events different systems can produce here */
     while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUIT, SDL_WINDOWEVENT ) > 0 )
     {
@@ -113,12 +109,7 @@ static void wm_events()
                         GLODWORD(libwm, WINDOW_STATUS) = 0;
                         break;
                     case SDL_WINDOWEVENT_RESTORED:
-                        if(enable_scale) {
-                            gr_set_mode(scale_screen->w, scale_screen->h,
-                                        scale_screen->format->BitsPerPixel);
-                        } else {
-                            gr_set_mode(screen->w, screen->h, screen->format->BitsPerPixel);
-                        }
+                        gr_set_mode(screen->w, screen->h, screen->format->BitsPerPixel);
                         GLODWORD(libwm, WINDOW_STATUS) = 1;
                         break;
                     case SDL_WINDOWEVENT_ENTER:
@@ -145,26 +136,6 @@ static void wm_events()
                 break ;
         }
     }
-#else
-    while ( SDL_PeepEvents( &e, 1, SDL_GETEVENT, SDL_QUITMASK | SDL_ACTIVEEVENTMASK ) )
-    {
-        switch ( e.type )
-        {
-                /* WINDOW MANAGER EVENTS */
-            case SDL_QUIT:
-                /* UPDATE  exit status... initilized each frame */
-                GLODWORD( libwm, EXIT_STATUS ) = 1 ;
-//                bgdrtm_exit( -1 );
-                break ;
-
-            case SDL_ACTIVEEVENT:
-                if ( e.active.state & SDL_APPACTIVE ) GLODWORD( libwm, WINDOW_STATUS ) = ( e.active.gain ) ? 1 : 0 ;
-                if ( e.active.state & SDL_APPINPUTFOCUS ) GLODWORD( libwm, FOCUS_STATUS ) = ( e.active.gain ) ? 1 : 0 ;
-                if ( e.active.state & SDL_APPMOUSEFOCUS ) GLODWORD( libwm, MOUSE_STATUS ) = ( e.active.gain ) ? 1 : 0 ;
-                break ;
-        }
-    }
-#endif
 }
 
 /* --------------------------------------------------------------------------- */

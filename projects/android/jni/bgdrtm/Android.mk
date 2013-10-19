@@ -18,6 +18,7 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_say/ \
 	$(MODULES_PATH)/mod_string/ \
 	$(MODULES_PATH)/mod_math/ \
+	$(MODULES_PATH)/mod_mem/ \
 	$(MODULES_PATH)/mod_time/ \
 	$(MODULES_PATH)/mod_file/ \
 	$(MODULES_PATH)/mod_sound/ \
@@ -60,7 +61,8 @@ LOCAL_C_INCLUDES := $(CORE_PATH)/include \
 	$(MODULES_PATH)/mod_multi/ \
 	$(MODULES_PATH)/mod_curl/ \
 	$(MODULES_PATH)/mod_sensor/ \
-	$(MODULES_PATH)/mod_chipmunk/
+	$(MODULES_PATH)/mod_chipmunk/ \
+	$(MODULES_PATH)/mod_iap/
 
 LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-D__BGDRTM__ \
@@ -68,7 +70,6 @@ LOCAL_CFLAGS := -DVERSION='"1.0.0"' \
 	-DNO_MODMATHI \
 	-DNO_MODIMAGE \
 	-DNO_MODICONV \
-	-DNO_MODMEM \
 	-DNO_MODFMODEX \
 	-DNO_FSOCK \
 	-DCP_USE_DOUBLES=0 \
@@ -98,6 +99,7 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_say/mod_say.c \
 	../../../../modules/mod_string/mod_string.c \
 	../../../../modules/mod_math/mod_math.c \
+    ../../../../modules/mod_mem/mod_mem.c \
 	../../../../modules/mod_time/mod_time.c \
 	../../../../modules/mod_file/mod_file.c \
 	../../../../modules/mod_sound/mod_sound.c \
@@ -121,7 +123,6 @@ LOCAL_SRC_FILES := \
 	../../../../modules/libblit/libblit.c \
 	../../../../modules/libvideo/g_regions.c \
 	../../../../modules/libvideo/g_video.c \
-   	../../../../modules/libvideo/g_compat.c \
 	../../../../modules/librender/g_fade.c \
 	../../../../modules/librender/g_frame.c \
 	../../../../modules/librender/g_instance.c \
@@ -129,10 +130,6 @@ LOCAL_SRC_FILES := \
 	../../../../modules/librender/g_rects.c \
 	../../../../modules/librender/g_screen.c \
 	../../../../modules/librender/librender.c \
-	../../../../modules/librender/scaler_hq2x.c \
-	../../../../modules/librender/scaler_normal.c \
-	../../../../modules/librender/scaler_scale2x.c \
-	../../../../modules/librender/scaler_scanline.c \
 	../../../../modules/mod_video/mod_video.c \
 	../../../../modules/libmouse/libmouse.c \
 	../../../../modules/mod_map/file_fnt.c \
@@ -178,7 +175,8 @@ LOCAL_SRC_FILES := \
 	../../../../modules/mod_chipmunk/arbitros.c \
 	../../../../modules/mod_chipmunk/automGenTerr.c \
 	../../../../modules/mod_chipmunk/convexHull.c \
-	../../../../modules/mod_chipmunk/main.c
+	../../../../modules/mod_chipmunk/main.c \
+	../../../../modules/mod_iap/mod_iap_fake.c
 
 LOCAL_LDLIBS := -llog -ldl -lz
 LOCAL_SHARED_LIBRARIES += SDL2 SDL2_mixer png

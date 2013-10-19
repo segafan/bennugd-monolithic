@@ -106,7 +106,7 @@ int sensor_axes(int i) {
     
 #ifndef FAKE
     if (i >= SDL_NumSensors() || i < 0 || !sensor[i]) {
-        return;
+        return  -1;
     }
     
     n = SDL_SensorNumAxes(sensor[i]);

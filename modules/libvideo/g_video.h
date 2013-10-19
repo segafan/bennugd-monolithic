@@ -65,35 +65,33 @@
 extern GRAPH * icon ;
 
 extern SDL_Surface * screen ;
-extern SDL_Surface * scale_screen ;
+
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
+extern SDL_Texture *texture;
 
 extern char * apptitle ;
 
 extern int scr_width ;
 extern int scr_height ;
+extern int renderer_width;
+extern int renderer_height;
 
 extern int scr_initialized ;
 
 extern int enable_16bits ;
-extern int enable_scale ;
 extern int full_screen ;
 extern int double_buffer ;
 extern int hardware_scr ;
 extern int grab_input ;
 extern int frameless ;
-extern int scale_mode ;
 
 extern int waitvsync ;
 
 extern int scale_resolution ;
-extern int * scale_resolution_table_w;
-extern int * scale_resolution_table_h;
 
 extern int scale_resolution_aspectratio;
 extern int scale_resolution_orientation;
-
-extern int scale_resolution_aspectratio_offx;
-extern int scale_resolution_aspectratio_offy;
 
 /* --------------------------------------------------------------------------- */
 

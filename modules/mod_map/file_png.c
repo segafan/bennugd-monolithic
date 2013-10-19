@@ -179,7 +179,7 @@ GRAPH * gr_read_png( const char * filename )
             if ( strncmp(text_ptr[n].key, "BennuGD_CP", 10) == 0 )
             {
                 cp = atoi(text_ptr[n].key + 10);
-                if ( cp >= 0 && cp < bitmap->ncpoints )
+                if ( cp < bitmap->ncpoints )
                 {
                     x = atoi( strtok( text_ptr[n].text, ";" ) );
                     y = atoi( strtok( NULL, ";" ) );

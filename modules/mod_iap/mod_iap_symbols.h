@@ -1,9 +1,5 @@
 /*
- *  Copyright © 2006-2012 SplinterGU (Fenix/Bennugd)
- *  Copyright © 2002-2006 Fenix Team (Fenix)
- *  Copyright © 1999-2002 José Luis Cebrián Pagüe (Fenix)
- *
- *  This file is part of Bennu - Game Development
+ *  Copyright (c) 2011-2013 Joseba García Echebarria. All rights reserved.
  *
  *  This software is provided 'as-is', without any express or implied
  *  warranty. In no event will the authors be held liable for any damages
@@ -25,5 +21,26 @@
  *     distribution.
  *
  */
- 
-extern void platform_init();
+
+#ifndef __MODIAP_SYMBOLS_H
+#define __MODIAP_SYMBOLS_H
+
+#include <bgddl.h>
+
+#ifdef __BGDC__
+DLSYSFUNCS __bgdexport( mod_iap, functions_exports )[] =
+{
+    { "IAP_INIT"            , "S"     , TYPE_INT       , 0 },
+    { "IAP_RECEIPTS_READY"  , ""      , TYPE_INT       , 0 },
+    { "IAP_SHUTDOWN"        , ""      , TYPE_UNDEFINED , 0 },
+    { "IAP_PURCHASED"       , "S"     , TYPE_INT       , 0 },
+    { "IAP_ISOUYA"          , ""      , TYPE_INT       , 0 },
+    { "IAP_PURCHASE"        , "SP"    , TYPE_INT       , 0 },
+    { 0                     , 0       , 0              , 0 }
+};
+#else
+extern DLSYSFUNCS __bgdexport( mod_iap, functions_exports )[];
+extern void __bgdexport( mod_iap, module_finalize )();
+#endif
+
+#endif

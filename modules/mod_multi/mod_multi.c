@@ -27,7 +27,6 @@
 #include <bgddl.h>
 #include <libvideo.h>
 #include <g_video.h>
-#include <g_compat.h>
 #include <libmouse_symbols.h>
 #include <SDL.h>
 #include "bgddl.h"
@@ -35,10 +34,6 @@
 
 #ifndef MAX_POINTERS
 #   define MAX_POINTERS 10
-#endif
-
-#if ! SDL_VERSION_ATLEAST(2,0,0)
-#    error This module needs SDL 2.0, refusing to compile
 #endif
 
 /* --------------------------------------------------------------------------- */
@@ -61,98 +56,6 @@ enum {
     MOUSEY,
     MOUSELEFT = 9
 };
-
-/* Given a pair of coords, convert them to the value the user expects,
-  taking into account screen rotations, scaling and stuff
- */
-void convert_coords(float *x, float *y) {
-    if ( scale_resolution != -1 )
-    {
-        if ( scale_resolution_aspectratio == SRA_PRESERVE )
-        {
-            if ( scale_screen->w > scale_screen->h )
-            {
-                switch( scale_resolution_orientation )
-                {
-                    case    SRO_NORMAL:
-                        *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        break;
-
-                    case    SRO_LEFT:
-                        *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        break;
-
-                    case    SRO_DOWN:
-                        *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        break;
-
-                    case    SRO_RIGHT:
-                        *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        break;
-                }
-            }
-            else
-            {
-                switch( scale_resolution_orientation )
-                {
-                    case    SRO_NORMAL:
-                        *x = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        *y = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        break;
-
-                    case    SRO_LEFT:
-                        *x = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        *y = (                           *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        break;
-
-                    case    SRO_DOWN:
-                        *x = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->w / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        *y = ( (double)scale_screen->h - *y - scale_resolution_aspectratio_offy ) * ( (double)screen->h / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        break;
-
-                    case    SRO_RIGHT:
-                        *x = (                           *y - scale_resolution_aspectratio_offy ) * ( (double)screen->w / ( (double)scale_screen->h - scale_resolution_aspectratio_offy * 2 ) );
-                        *y = ( (double)scale_screen->w - *x - scale_resolution_aspectratio_offx ) * ( (double)screen->h / ( (double)scale_screen->w - scale_resolution_aspectratio_offx * 2 ) );
-                        break;
-                }
-            }
-        }
-        else
-        {
-            switch( scale_resolution_orientation )
-            {
-                case    SRO_NORMAL:
-                    *x = (                           *x ) * ( (double)screen->w / (double)scale_screen->w );
-                    *y = (                           *y ) * ( (double)screen->h / (double)scale_screen->h );
-                    break;
-
-                case    SRO_LEFT:
-                    *x = ( (double)scale_screen->h - *y ) * ( (double)screen->w / (double)scale_screen->h );
-                    *y = (                           *x ) * ( (double)screen->h / (double)scale_screen->w );
-                    break;
-
-                case    SRO_DOWN:
-                    *x = ( (double)scale_screen->w - *x ) * ( (double)screen->w / (double)scale_screen->w );
-                    *y = ( (double)scale_screen->h - *y ) * ( (double)screen->h / (double)scale_screen->h );
-                    break;
-
-                case    SRO_RIGHT:
-                    *x = (                           *y ) * ( (double)screen->w / (double)scale_screen->h );
-                    *y = ( (double)scale_screen->w - *x ) * ( (double)screen->h / (double)scale_screen->w );
-                    break;
-            }
-        }
-    }
-    else if ( enable_scale || scale_mode != SCALE_NONE )
-    {
-        *x = *x / 2 ;
-        *y = *y / 2 ;
-    }
-}
 
 /* Return the position of finger in the pointers array, if it's not there,
 return the first unused entry.
@@ -182,7 +85,6 @@ int get_sdlfinger_index(SDL_FingerID finger) {
 void parse_input_events() {
     int n=0;
     float x=0.0, y=0.0;
-    float sdlx, sdly;
     double width=0, height=0;
     double w_width=0, w_height=0;
     SDL_DisplayMode mode;
@@ -190,10 +92,7 @@ void parse_input_events() {
 
     // SDL will give us the touch position relative to the whole window
     // but we might have set a different virtual resolution
-    if(scale_screen) {
-        width  = scale_screen->w;
-        height = scale_screen->h;
-    } else if(screen) {
+    if(screen) {
         width  = screen->w;
         height = screen->h;
     } else {
@@ -222,20 +121,20 @@ void parse_input_events() {
                 n = get_sdlfinger_index(e.tfinger.fingerId);
 
                 // Quit if fingerId not found or array full
-                if (n == -1)
+                if (n == -1) {
                     break;
+                }
 
                 // Store the amount of fingers onscreen
                 numpointers = SDL_GetNumTouchFingers(e.tfinger.touchId);
                 // Store the data about this finger's position
                 pointers[n].fingerid = e.tfinger.fingerId;
                 pointers[n].active = SDL_TRUE;
-                x = ( (float)e.tfinger.x + (float)width  / ( 2.0 * (float)w_width  ) - 0.5 ) * w_width;
-                y = ( (float)e.tfinger.y + (float)height / ( 2.0 * (float)w_height ) - 0.5 ) * w_height;
+                x = e.tfinger.x * width;
+                y = e.tfinger.y * height;
                 pointers[n].pressure = (float)e.tfinger.pressure * 255;
 
                 // Convert the touch location taking scaling/rotations into account
-                convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
 
@@ -259,12 +158,11 @@ void parse_input_events() {
                     break;
 
                 // Update the data about this finger's position
-                x = ( (float)e.tfinger.x + (float)width  / ( 2.0 * (float)w_width  ) - 0.5 ) * w_width;
-                y = ( (float)e.tfinger.y + (float)height / ( 2.0 * (float)w_height ) - 0.5 ) * w_height;
+                x = e.tfinger.x * width;
+                y = e.tfinger.y * height;
                 pointers[n].pressure = (float)e.tfinger.pressure * 255;
 
                 // Convert the touch location taking scaling/rotations into account
-                convert_coords(&x, &y);
                 pointers[n].x = (int)x;
                 pointers[n].y = (int)y;
 
