@@ -25,10 +25,9 @@ import java.lang.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
 /**
- SDL Activity
- */
+    SDL Activity
+*/
 public class SDLActivity extends Activity {
     private static final String TAG = "SDL";
     
@@ -267,7 +266,6 @@ public class SDLActivity extends Activity {
                                             int action, float x,
                                             float y, float p);
     public static native void onNativeAccel(float x, float y, float z);
-    public static native void nativeRunAudioThread();
     
     
     // Java functions called from C
@@ -561,38 +559,26 @@ public class SDLActivity extends Activity {
         // latency already
         desiredFrames = Math.max(desiredFrames, (AudioTrack.getMinBufferSize(sampleRate, channelConfig, audioFormat) + frameSize - 1) / frameSize);
         
-        mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate,
-                                     channelConfig, audioFormat, desiredFrames * frameSize, AudioTrack.MODE_STREAM);
-        
-        // Instantiating AudioTrack can "succeed" without an exception and the track may still be invalid
-        // Ref: https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/AudioTrack.java
-        // Ref: http://developer.android.com/reference/android/media/AudioTrack.html#getState()
-        
-        if (mAudioTrack.getState() != AudioTrack.STATE_INITIALIZED) {
-            Log.e("SDL", "Failed during initialization of Audio Track");
-            mAudioTrack = null;
-            return -1;
+        if (mAudioTrack == null) {
+            mAudioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate,
+                    channelConfig, audioFormat, desiredFrames * frameSize, AudioTrack.MODE_STREAM);
+            
+            // Instantiating AudioTrack can "succeed" without an exception and the track may still be invalid
+            // Ref: https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/media/java/android/media/AudioTrack.java
+            // Ref: http://developer.android.com/reference/android/media/AudioTrack.html#getState()
+            
+            if (mAudioTrack.getState() != AudioTrack.STATE_INITIALIZED) {
+                Log.e("SDL", "Failed during initialization of Audio Track");
+                mAudioTrack = null;
+                return -1;
+            }
+            
+            mAudioTrack.play();
         }
-        
-        audioStartThread();
-        
+       
         Log.v("SDL", "SDL audio: got " + ((mAudioTrack.getChannelCount() >= 2) ? "stereo" : "mono") + " " + ((mAudioTrack.getAudioFormat() == AudioFormat.ENCODING_PCM_16BIT) ? "16-bit" : "8-bit") + " " + (mAudioTrack.getSampleRate() / 1000f) + "kHz, " + desiredFrames + " frames buffer");
         
         return 0;
-    }
-    
-    public static void audioStartThread() {
-        mAudioThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                mAudioTrack.play();
-                nativeRunAudioThread();
-            }
-        });
-        
-        // I'd take REALTIME if I could get it!
-        mAudioThread.setPriority(Thread.MAX_PRIORITY);
-        mAudioThread.start();
     }
     
     public static void audioWriteShortBuffer(short[] buffer) {
@@ -630,19 +616,8 @@ public class SDLActivity extends Activity {
             }
         }
     }
-    
+
     public static void audioQuit() {
-        if (mAudioThread != null) {
-            try {
-                mAudioThread.join();
-            } catch(Exception e) {
-                Log.v("SDL", "Problem stopping audio thread: " + e);
-            }
-            mAudioThread = null;
-            
-            //Log.v("SDL", "Finished waiting for audio thread");
-        }
-        
         if (mAudioTrack != null) {
             mAudioTrack.stop();
             mAudioTrack = null;
