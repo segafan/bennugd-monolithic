@@ -384,9 +384,9 @@ void Android_JNI_openURL(const char* url)
     JNIEnv *mEnv = Android_JNI_GetEnv();
     mid = (*mEnv)->GetStaticMethodID(mEnv, mActivityClass,"openURL", "(Ljava/lang/String;)V");
     if (mid) {
-        jstring Url = mEnv->NewStringUTF(url);
-        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
-        mEnv->DeleteLocalRef(Url);
+        jstring Url = (jstring)((*mEnv)->NewStringUTF(mEnv, url));
+        (*mEnv)->CallStaticVoidMethod(mEnv, mActivityClass, mid, Url);
+        (*mEnv)->DeleteLocalRef(mEnv, Url);
     }
 }
 
