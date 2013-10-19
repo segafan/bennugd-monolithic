@@ -75,11 +75,8 @@ int bgload( int ( *fn )(), int * params )
 {
     bgdata *t = prep( params );
     t->fn = fn;
-#if SDL_VERSION_ATLEAST(2,0,0)
+
     SDL_CreateThread( bgDoLoad, "BennuGD BG loading thread", (void *)t );
-#else
-    SDL_CreateThread( bgDoLoad, ( void * )t );
-#endif
     return 0 ;
 }
 

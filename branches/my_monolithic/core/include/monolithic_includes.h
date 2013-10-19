@@ -105,6 +105,9 @@
 #ifndef NO_FSOCK
 #   include <fsock_symbols.h>
 #endif
+#ifndef NO_MODIAP
+#   include <mod_iap_symbols.h>
+#endif
 
 typedef struct
 {
@@ -221,6 +224,9 @@ basic_symbols symbol_list[] =
 #ifndef NO_FSOCK
     { "fsock.fakelib" , NULL, NULL, NULL, NULL, NULL, fsock_functions_exports },
 #endif
+#ifndef NO_MODIAP
+    { "mod_iap.fakelib" , NULL, NULL, NULL, NULL, NULL, mod_iap_functions_exports },
+#endif
     { NULL              , NULL, NULL, NULL, NULL, NULL, NULL }
 };
 
@@ -312,7 +318,10 @@ extra_symbols symbol_list_runtime[] =
     { NULL, NULL, mod_sensor_module_initialize, mod_sensor_module_finalize, NULL, NULL, NULL, NULL }, //mod_sensor
 #endif
 #ifndef NO_FSOCK
-    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL } //fsock
+    { NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }, //fsock
+#endif
+#ifndef NO_MODIAP
+    { NULL, NULL, NULL, mod_iap_module_finalize, NULL, NULL, NULL, NULL }, //mod_iap
 #endif
 };
 #endif

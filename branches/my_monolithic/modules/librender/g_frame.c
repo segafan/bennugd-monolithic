@@ -260,18 +260,7 @@ void gr_refresh_palette()
                 palette[ n ].b = *pal++;
             }
         }
-        if ( scale_screen )
-#if SDL_VERSION_ATLEAST(2,0,0)
-            SDL_SetPaletteColors(scale_screen->format->palette, palette, 0, 256);
-#else
-            SDL_SetColors( scale_screen, palette, 0, 256 ) ;
-#endif
-        else
-#if SDL_VERSION_ATLEAST(2,0,0)
-            SDL_SetPaletteColors(screen->format->palette, palette, 0, 256);
-#else
-            SDL_SetColors( screen, palette, 0, 256 ) ;
-#endif
+        SDL_SetPaletteColors(screen->format->palette, palette, 0, 256);
     }
 
     palette_changed = 0;

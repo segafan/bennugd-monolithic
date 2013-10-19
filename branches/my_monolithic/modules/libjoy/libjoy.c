@@ -84,11 +84,7 @@ int libjoy_num( void )
 int libjoy_name( int joy )
 {
     int result;
-#if SDL_VERSION_ATLEAST(2,0,0)
     result = string_new( SDL_JoystickNameForIndex( joy ) );
-#else
-    result = string_new( SDL_JoystickName( joy ) );
-#endif
     string_use( result );
     return result;
 }

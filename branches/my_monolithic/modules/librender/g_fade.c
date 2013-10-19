@@ -80,18 +80,7 @@ static void activate_vpalette()
                     vpalette[ n ].b = sys_pixel_format->palette->rgb[ n ].b + ( 255 - sys_pixel_format->palette->rgb[ n ].b ) * ( fade_pos.b - 100 ) / 100;
             }
 
-            if ( scale_screen )
-#if SDL_VERSION_ATLEAST(2,0,0)
-                SDL_SetPaletteColors(scale_screen->format->palette, vpalette, 0, 256);
-#else
-                SDL_SetColors( scale_screen, vpalette, 0, 256 ) ;
-#endif
-            else
-#if SDL_VERSION_ATLEAST(2,0,0)
-                SDL_SetPaletteColors(screen->format->palette, vpalette, 0, 256);
-#else
-                SDL_SetColors( screen, vpalette, 0, 256 ) ;
-#endif
+            SDL_SetPaletteColors(screen->format->palette, vpalette, 0, 256);
         }
     }
 }

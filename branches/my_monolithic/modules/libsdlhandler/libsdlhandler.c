@@ -33,20 +33,15 @@
 
 static void  dump_new_events()
 {
-    SDL_Event event;
     /* Remove all pendings events */
 
     /* We can't return -1, just return 0 (no event) on error */
-#if SDL_VERSION_ATLEAST(2,0,0)
     // We'll only discard events that no module knows how to handle here...
     // Otherwise some events seem to get discarded
     SDL_FlushEvents(SDL_SYSWMEVENT, SDL_SYSWMEVENT);
     SDL_FlushEvents(SDL_TEXTEDITING, SDL_TEXTINPUT);
     SDL_FlushEvents(SDL_JOYDEVICEADDED, SDL_CONTROLLERDEVICEREMAPPED);
     SDL_FlushEvents(SDL_DOLLARGESTURE, SDL_LASTEVENT);
-#else
-    while ( SDL_PeepEvents( &event, 1, SDL_GETEVENT, SDL_ALLEVENTS ) > 0 );
-#endif
 
     /* Get new events */
     SDL_PumpEvents();
@@ -57,22 +52,12 @@ static void  dump_new_events()
 
 void __bgdexport( libsdlhandler, module_initialize )()
 {
-#if SDL_VERSION_ATLEAST(2,0,0)
-    // This is different in SDL 2.0
-#else
-    if ( !SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_InitSubSystem( SDL_INIT_EVENTTHREAD );
-#endif
 }
 
 /* ----------------------------------------------------------------- */
 
 void __bgdexport( libsdlhandler, module_finalize )()
 {
-#if SDL_VERSION_ATLEAST(2,0,0)
-    // This is different in SDL 2.0
-#else
-    if ( SDL_WasInit( SDL_INIT_EVENTTHREAD ) ) SDL_QuitSubSystem( SDL_INIT_EVENTTHREAD );
-#endif
 }
 
 /* ----------------------------------------------------------------- */
