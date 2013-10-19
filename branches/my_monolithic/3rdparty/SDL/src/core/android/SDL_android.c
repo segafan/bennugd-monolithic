@@ -378,6 +378,18 @@ void Android_JNI_SetActivityTitle(const char *title)
     }
 }
 
+void Android_JNI_openURL(const char* url)
+{
+    jmethodID mid;
+    JNIEnv *mEnv = Android_JNI_GetEnv();
+    mid = (*mEnv)->GetStaticMethodID(mEnv, mActivityClass,"openURL", "(Ljava/lang/String;)V");
+    if (mid) {
+        jstring Url = mEnv->NewStringUTF(url);
+        mEnv->CallStaticVoidMethod(mActivityClass, mid, Url);
+        mEnv->DeleteLocalRef(Url);
+    }
+}
+
 SDL_bool Android_JNI_GetAccelerometerValues(float values[3])
 {
     int i;
