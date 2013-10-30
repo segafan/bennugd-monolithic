@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>loopwave</ProjectName>
-    <RootNamespace>loopwave</RootNamespace>
-    <ProjectGuid>{AAAD1CB5-7ADA-47AE-85A0-08A6EC48FAFB}</ProjectGuid>
+    <ProjectName>testgesture</ProjectName>
+    <RootNamespace>testgesture</RootNamespace>
+    <ProjectGuid>{55812185-D13C-4022-9C81-32E0F4A08996}</ProjectGuid>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -109,8 +109,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"
-copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
+      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy SDL</Message>
@@ -144,8 +143,7 @@ copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"
-copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
+      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy SDL</Message>
@@ -180,8 +178,7 @@ copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"
-copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
+      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy SDL</Message>
@@ -215,19 +212,18 @@ copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
       <SubSystem>Windows</SubSystem>
     </Link>
     <PostBuildEvent>
-      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"
-copy "$(SolutionDir)\..\test\sample.wav" "$(TargetDir)\sample.wav"</Command>
+      <Command>copy "$(SolutionDir)\SDL\$(Platform)\$(Configuration)\SDL2.dll" "$(TargetDir)\SDL2.dll"</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy SDL</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Test\Loopwave.c" />
-  </ItemGroup>
-  <ItemGroup>
     <Library Include="..\..\SDL\$(Platform)\$(Configuration)\SDL2.lib" />
     <Library Include="..\..\SDLmain\$(Platform)\$(Configuration)\SDL2main.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\test\testgesture.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
