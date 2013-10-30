@@ -74,6 +74,7 @@
 #endif
 
 #include "bgddl.h"
+#include <SDL.h>
 
 /*
  * Dynamic memory
@@ -161,7 +162,11 @@ static int modmem_memory_free( INSTANCE * my, int * params )
 
 static int modmem_memory_total( INSTANCE * my, int * params )
 {
+#if SDL_VERSION_ATLEAST(2, 0, 1)
     return 1024*SDL_GetSystemRAM();
+#else
+    return 0;
+#endif
 }
 
 static int modmem_memcmp( INSTANCE * my, int * params )
