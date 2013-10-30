@@ -10,23 +10,19 @@
   freely.
 */
 
-/* Simple program:  Test relative mouse motion */
-
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 
 #include "SDL_test_common.h"
 
-
 static SDLTest_CommonState *state;
-static SDL_Rect rect;
 
+/* Call this instead of exit(), so we can clean up SDL: atexit() is evil. */
 static void
-DrawRects(SDL_Renderer * renderer)
+quit(int rc)
 {
-    SDL_SetRenderDrawColor(renderer, 255, 127, 0, 255);
-    SDL_RenderFillRect(renderer,&rect);
+    SDLTest_CommonQuit(state);
+    exit(rc);
 }
 
 int
@@ -43,60 +39,49 @@ main(int argc, char *argv[])
     if (!state) {
         return 1;
     }
-    for (i = 1; i < argc;i++) {
-        SDLTest_CommonArg(state, i);
+
+    for (i = 1; i < argc;) {
+        int consumed;
+
+        consumed = SDLTest_CommonArg(state, i);
+        if (consumed == 0) {
+            consumed = -1;
+        }
+        if (consumed < 0) {
+            SDL_Log("Usage: %s %s\n", argv[0], SDLTest_CommonUsage(state));
+            quit(1);
+        }
+        i += consumed;
     }
     if (!SDLTest_CommonInit(state)) {
-        return 2;
+        quit(2);
     }
 
-    /* Create the windows and initialize the renderers */
     for (i = 0; i < state->num_windows; ++i) {
         SDL_Renderer *renderer = state->renderers[i];
-        SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
         SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
         SDL_RenderClear(renderer);
+        SDL_RenderPresent(renderer);
     }
 
-    srand((unsigned int)time(NULL));
-    if(SDL_SetRelativeMouseMode(SDL_TRUE) < 0) {
-        return 3;
-    };
-
-    rect.x = DEFAULT_WINDOW_WIDTH / 2;
-    rect.y = DEFAULT_WINDOW_HEIGHT / 2;
-    rect.w = 10;
-    rect.h = 10;
     /* Main render loop */
     done = 0;
     while (!done) {
         /* Check for events */
         while (SDL_PollEvent(&event)) {
             SDLTest_CommonEvent(state, &event, &done);
-            switch(event.type) {
-                case SDL_MOUSEMOTION:
-                {
-                    rect.x += event.motion.xrel;
-                    rect.y += event.motion.yrel;
-                }
-                break;
+
+            if (event.type == SDL_DROPFILE) {
+                char *dropped_filedir = event.drop.file;
+                SDL_Log("File dropped on window: %s", dropped_filedir);
+                SDL_free(dropped_filedir);
             }
-        }
-        for (i = 0; i < state->num_windows; ++i) {
-            SDL_Renderer *renderer = state->renderers[i];
-            if (state->windows[i] == NULL)
-                continue;
-            SDL_SetRenderDrawColor(renderer, 0xA0, 0xA0, 0xA0, 0xFF);
-            SDL_RenderClear(renderer);
-
-            DrawRects(renderer);
-
-            SDL_RenderPresent(renderer);
         }
     }
 
-    SDLTest_CommonQuit(state);
-    return 0;
+    quit(0);
+    /* keep the compiler happy ... */
+    return(0);
 }
 
 /* vi: set ts=4 sw=4 expandtab: */
